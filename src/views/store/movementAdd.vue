@@ -1,0 +1,187 @@
+<template>
+    <div class="app-container">
+        <div class="dataTable">
+            <el-form :inline="true" label-position="right" label-width="64px" style="width: 100%; margin-top:0px;">
+                <el-form-item label="单据日期:" prop="billDate">
+                    <el-date-picker v-model="temp.billDate" type="date" placeholder="单据日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+                </el-form-item>
+                <el-form-item label="单据号:" prop="billNo">
+                    <el-input size="mini" v-model="temp.billNo" placeholder="单据号" />
+                </el-form-item>
+                <el-form-item label="业务类型:" prop="bizTypeId">
+                    <bizTypeList @selectChange="selectChange" :selectId="temp.bizTypeId"></bizTypeList>
+                </el-form-item>
+                <el-form-item label="移出仓库:" prop="outWarehouseId">
+                    <warehouseList @selectChange="selectChange" keyType="outWarehouseId" :selectId="temp.outWarehouseId"></warehouseList>
+                </el-form-item>
+                <el-form-item label="移入仓库:" prop="inWarehouseId">
+                    <warehouseList @selectChange="selectChange" keyType="inWarehouseId" :selectId="temp.inWarehouseId"></warehouseList>
+                </el-form-item>
+                <el-form-item label="移出车辆:" prop="outTruckId">
+                    <truckList @selectChange="selectChange" keyType="outTruckId" :selectId="temp.outTruckId"></truckList>
+                </el-form-item>
+                <el-form-item label="移入车辆:" prop="inTruckId">
+                    <truckList @selectChange="selectChange" keyType="inTruckId" :selectId="temp.inTruckId"></truckList>
+                </el-form-item>
+                <el-form-item label="业务员:" prop="staffId">
+                    <staffList @selectChange="selectChange" :selectId="temp.staffId"></staffList>
+                </el-form-item>
+            </el-form>
+        </div>
+        <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini" cell-class-name="tdCell">
+            <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
+            <el-table-column label="商品代码">
+                <template slot-scope="scope">
+                    <itemList :selectId="scope.row.itemId" :selectCode="scope.row.itemCode" :index="scope.$index" @changeVal="changeVal"></itemList>
+                </template>
+            </el-table-column>
+            <el-table-column label="商品名称">
+                <template slot-scope="{row}">
+                    <input type="text" class="inputCell" v-model="row.itemName" disabled>
+                </template>
+            </el-table-column>
+            <el-table-column label="规格">
+                <template slot-scope="{row}">
+                    <input type="text" class="inputCell" v-model="row.norms" disabled>
+                </template>
+            </el-table-column>
+            <el-table-column label="单位">
+                <template slot-scope="{row}">
+                    <input type="text" class="inputCell tx-c" v-model="row.uom" disabled>
+                </template>
+            </el-table-column>
+            <el-table-column label="数量">
+                <template slot-scope="{row}">
+                    <input type="text" class="inputCell tx-r" v-model="row.qty">
+                </template>
+            </el-table-column>
+            <el-table-column label="批号">
+                <template slot-scope="{row}">
+                    <input type="text" class="inputCell" v-model="row.batchNo">
+                </template>
+            </el-table-column>
+            <el-table-column label="生产日期" width="120">
+                <template slot-scope="{row}">
+                    <el-date-picker :editable="false" v-model="row.productionDate" type="date" placeholder="" size="mini" style="width:100%" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+                </template>
+            </el-table-column>
+            <el-table-column label="保质期(天)">
+                <template slot-scope="{row}">
+                    <input type="text" class="inputCell tx-r" v-model="row.qualityDays">
+                </template>
+            </el-table-column>
+            <el-table-column label="备注">
+                <template slot-scope="{row}">
+                    <input type="text" class="inputCell" v-model="row.remarks">
+                </template>
+            </el-table-column>
+        </el-table>
+        <div class="dataTable" style="margin-top: 10px">
+            <el-form :inline="true" label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
+                <el-form-item label="制单日期:" prop="recordDate">
+                    <el-date-picker :editable="false" v-model="temp.recordDate" type="date" placeholder="制单日期" size="mini" style="width:145px" :clearable="false" value-format="yyyy-MM-dd">
+                    </el-date-picker>
+                </el-form-item>
+                <el-form-item label="制单人:" prop="recorderId">
+                    <el-input size="mini" v-model="temp.recorder" placeholder="制单人" />
+                </el-form-item>
+                <el-form-item label="审核日期:" prop="auditDate">
+                    <el-date-picker :editable="false" v-model="temp.auditDate" type="date" placeholder="审核日期" size="mini" style="width:145px" :clearable="false" value-format="yyyy-MM-dd">
+                    </el-date-picker>
+                </el-form-item>
+                <el-form-item label="审核人:" prop="auditorId">
+                    <el-input size="mini" v-model="temp.auditor" placeholder="审核人" />
+                </el-form-item>
+            </el-form>
+        </div>
+        <div class="tx-c" style="margin-top:15px" v-if="status!=1&&status!=2">
+            <el-button class="filter-item" type="primary" @click="save">保存</el-button>
+        </div>
+    </div>
+</template>
+<script>
+import { saveMovement, getMovementById } from '@/api/store'
+import { deleteEmptyProp, addNullObj } from '@/utils';
+import staffList from '@/components/selects/staffList';
+import deptList from '@/components/selects/deptList';
+import warehouseList from '@/components/selects/warehouseList';
+import truckList from '@/components/selects/truckList';
+import bizTypeList from '@/components/selects/bizTypeList';
+import itemList from '@/components/selects/itemList';
+import { getName,getNowDate } from '@/utils/auth'
+export default {
+    name: 'movementAdd',
+    components: {
+        staffList,
+        deptList,
+        warehouseList,
+        truckList,
+        bizTypeList,
+        itemList
+    },
+    data() {
+        return {
+            id: '',
+            status: this.$route.query.status,
+            tableData: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
+            temp: {
+                billDate:getNowDate(),
+                billNo: '',
+                bizTypeId: '',
+                staffId: '',
+                outWarehouseId: '',
+                inWarehouseId: '',
+                outTruckId: '',
+                inTruckId: '',
+                auditDate: "",
+                auditor: "",
+                recordDate:getNowDate()+" 00:00:00",
+                recorder: getName()
+            }
+        }
+    },
+    created() {
+        if (this.$route.query.id) {
+            this.id = this.$route.query.id;
+            getMovementById(this.id).then(res => {
+                for (var key in this.temp) {
+                    this.temp[key] = res.data.body[key]
+                }
+                this.tableData = addNullObj(res.data.body.movementLine);
+            })
+        }
+    },
+    methods: {
+        selectChange(obj) {
+            for (var key in obj) {
+                this.temp[key] = obj[key];
+            }
+        },
+        changeVal(obj) {
+            for (var key in obj) {
+                this.tableData[obj.index][key] = obj[key];
+            }
+            if (obj.index + 1 == this.tableData.length) {
+                this.tableData.push({});
+                this.$nextTick(() => {
+                    let container = this.$el.querySelector('.el-table__body-wrapper');
+                    container.scrollTop = container.scrollHeight;
+                })
+            }
+        },
+        save() {
+            this.temp.id = this.id;
+            this.temp.movementLine = deleteEmptyProp(this.tableData);
+            saveMovement(this.temp).then(res => {
+                if (res.data.errorCode == 0) {
+                    this.$message.success(this.temp.id==""?'新增成功':'修改成功');
+                    this.$store.dispatch('tagsView/delView', this.$route);
+                    this.$router.replace('/store/movement');
+                } else {
+                    this.$message.error(res.data.msg)
+                }
+            })
+        }
+    }
+}
+</script>

@@ -1,0 +1,359 @@
+<template>
+    <div class="main">
+        <div class="leftTree">
+            <div style="margin-bottom:10px">
+                <el-input v-model="search" size="mini" placeholder="商品名称搜索" style="width:150px;margin-right: 5px" />
+                <el-button size="mini" class="filter-item" type="primary" @click="getData">搜索</el-button>
+            </div>
+            <el-table :data="treeData" border fit style="width: 100%;" size="mini" :row-class-name="rowClass" :row-style="curStyle" max-height="500" @row-click="rowClick">
+                <el-table-column label="商品列表">
+                    <template slot-scope="{row}">
+                        <span>{{row.itemName}}</span>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
+        <div class="app-container">
+            <div class="filter-container">
+                <el-button size="mini" class="filter-item" type="primary" @click="handleAnyModify">批量修改</el-button>
+            </div>
+            <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit style="width: 100%;" size="mini">
+                <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
+                <el-table-column label="价格组编码">
+                    <template slot-scope="{row}">
+                        <span>{{row.priceGroupCode}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="价格组名称">
+                    <template slot-scope="{row}">
+                        <span>{{row.priceGroupName}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="售价(元)" align="right">
+                    <template slot-scope="{row}">
+                        <span>{{row.price|Fixed}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="最新价(元)" align="right">
+                    <template slot-scope="{row}">
+                        <span>{{row.lastPrice|Fixed}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="生效时间" width="140" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.effectiveDate}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="生效" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.isDisable==0?'是':'否'}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" align="center" width="220">
+                    <template slot-scope="{row}">
+                        <el-button type="primary" size="mini" @click="handleCompile(row)">改售价</el-button>
+                        <el-button type="danger" size="mini" @click="handleDel(row.id)">删除</el-button>
+                        <el-button type="warning" size="mini" @click="updateStatus(row)">{{row.isDisable==1?'生效':'失效'}}</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <el-dialog :close-on-click-modal="false" title="修改售价" :visible.sync="dialogFormVisible" width="420px">
+                <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="90px" style="width: 320px; margin-left:30px;">
+                    <el-form-item label="售价(元)" prop="price">
+                        <el-input v-model="temp.price" placeholder="售价" />
+                    </el-form-item>
+                    <el-form-item label="生效时间" prop="effectiveDate">
+                        <el-date-picker v-model="temp.effectiveDate" type="date" style="width:182px" placeholder="生效时间" value-format="yyyy-MM-dd"></el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="修改类型" prop="modifiedType">
+                        <el-select v-model="temp.modifiedType" placeholder="修改类型">
+                            <el-option label="不可修改" value="0"></el-option>
+                            <el-option label="可修改" value="1"></el-option>
+                            <el-option label="按商品" value="2"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="是否有效" prop="isDisable">
+                      <el-radio v-model="temp.isDisable" label="0">是</el-radio>
+                      <el-radio v-model="temp.isDisable" label="1">否</el-radio>
+                    </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer" align="center">
+                    <el-button @click="dialogFormVisible = false">取消</el-button>
+                    <el-button type="primary" @click="handleModify()">确定</el-button>
+                </div>
+            </el-dialog>
+            <el-dialog :close-on-click-modal="false" title="批量修改价格" :visible.sync="dialogFormVisible2" :show-close="false" ::close-on-click-modal="false" width="820px">
+                <el-table ref="checkTable" :data="tableList" border fit style="width: 100%;" size="mini" cell-class-name="compileall">
+                    <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
+                    <el-table-column label="价格组代码" align="left">
+                        <template slot-scope="{row}">
+                            <span>{{row.priceGroupCode}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="价格组名称" align="left">
+                        <template slot-scope="{row}">
+                            <span>{{row.priceGroupName}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="售价" align="right">
+                        <template slot-scope="{row}">
+                            <el-input v-model="row.price" size="mini" placeholder="售价" width="120" />
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="生效时间">
+                        <template slot-scope="{row}">
+                            <el-date-picker v-model="row.effectiveDate" type="date" placeholder="生效时间" size="mini" style="width:105px" :clearable="false">
+                            </el-date-picker>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="修改类型" align="center">
+                        <template slot-scope="{row}">
+                            <el-select v-model="row.modifiedType" placeholder="修改类型">
+                                <el-option label="可修改" value="1"></el-option>
+                                <el-option label="不可修改" value="0"></el-option>
+                                <el-option label="按商品" value="2"></el-option>
+                            </el-select>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="是否生效" width="120" align="center">
+                        <template slot-scope="{row}">
+                            <el-radio v-model="row.isDisable" label="0" style="margin-right:10px">是</el-radio>
+                            <el-radio v-model="row.isDisable" label="1">否</el-radio>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <div slot="footer" class="dialog-footer" align="center">
+                    <el-button @click="dialogFormVisible2 = false">取消</el-button>
+                    <el-button type="primary" @click="handleModify2()">确定</el-button>
+                </div>
+            </el-dialog>
+        </div>
+    </div>
+</template>
+<script>
+import { getPrice, savePrice, delPrice, updatePriceDisabled, getItem, updatePriceByItemIdPriceGroupIdList, updateLastPriceByItemIdPriceGroupId,updatePriceByItemIdPriceGroupId } from '@/api/basedata'
+export default {
+    name: 'priceIndex',
+    data() {
+        const validateNum = (rule, value, callback) => {
+            if (value == 0) {
+                callback(new Error('售价不能为零'))
+            } else if (value < 0) {
+                callback(new Error('售价不能小于零'))
+            } else {
+                callback()
+            }
+        }
+        return {
+            search: '',
+            tableKey: 0,
+            treeData: [],
+            getIndex: 0,
+            tableData: [],
+            tableList: [],
+            total: 0,
+            defaultProps: {
+                children: 'children',
+                label: 'itemName'
+            },
+            listLoading: true,
+            listQuery: {
+                itemId: ''
+            },
+            temp: {
+                price: '',
+                id:"",
+                priceGroupId:'',
+                modifiedType:'1',
+                isDisable:'0',
+                itemId:'',
+                effectiveDate: new Date()
+            },
+            temp1: {
+                lastPrice: '',
+                priceGroupId: '',
+            },
+            dialogFormVisible: false,
+            dialogFormVisible2: false,
+            dialogStatus: '',
+            rules: {
+                price: [{ required: true, trigger: 'change',validator: validateNum }],
+                effectiveDate: [{ required: false, message: '生效时间不能为空', trigger: 'change' }],
+            },
+            rules1: {
+                lastPrice: [{ required: true, message: '最新价格不能为空', trigger: 'change' }]
+            }
+        }
+    },
+    filters: {
+        Fixed: function(num) {
+            if (!num) { return '0.0000' }
+            return parseFloat(num).toFixed(4);
+        }
+    },
+    created() {
+        this.getData();
+    },
+    methods: {
+        getData() {
+            var obj = {
+                pageIndex: 1,
+                pageNum: 20,
+                queryParam: { itemCode: '', itemName: this.search }
+            }
+            getItem(obj).then(res => {
+                this.treeData = res.data.data;
+                if (this.treeData.length > 0) {
+                    this.listQuery.itemId = this.treeData[0].id;
+                    this.getList()
+                }
+            })
+        },
+        arrCopy(arr) {
+            var newArr = arr.map(function(value){
+                 return value;
+            });
+            return newArr
+        },
+        handleAnyModify() {
+            this.dialogFormVisible2 = true;
+            for (var i = 0; i < this.tableList.length; i++) {
+                if(this.tableList[i].effectiveDate==null){
+                    this.tableList[i].effectiveDate = new Date()
+                }
+            }
+        },
+        rowClass({ row, rowIndex }) {
+            row.index = rowIndex;
+        },
+        curStyle({ row, rowIndex }) {
+            if ((this.getIndex) === rowIndex) {
+                return {
+                    "background-color": "#e8f4ff"
+                }
+            }
+        },
+        rowClick(row, column, event) {
+            this.getIndex = row.index;
+            this.listQuery.itemId = row.id;
+            this.getList();
+        },
+        getList() {
+            this.listLoading = true
+            getPrice(this.listQuery).then(res => {
+                this.listLoading = false
+                for (var i = 0; i < res.data.data.length; i++) {
+                    res.data.data[i].modifiedType = String(res.data.data[i].modifiedType)
+                    res.data.data[i].isDisable = String(res.data.data[i].isDisable)
+                    res.data.data[i].price = parseFloat(res.data.data[i].price).toFixed(4)
+                }
+                this.tableData = this.arrCopy(res.data.data);
+                this.tableList = this.arrCopy(res.data.data);
+            })
+        },
+        handleCompile(obj) {
+            this.dialogFormVisible = true
+            for (var key in this.temp) {
+                this.temp[key] = obj[key]
+            }
+            this.temp.price = parseFloat(obj.price).toFixed(4)
+            this.$nextTick(() => {
+                this.$refs['dataForm'].clearValidate()
+            })
+        },
+        updateStatus(data) {
+            this.$confirm('确定' + (data.isDisable == 1 ? '解禁？' : '禁用？'), '提示', {
+                confirmButtonText: '确定',closeOnClickModal:false,
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                this.changeAvaiable(data);
+            });
+        },
+        changeAvaiable(data) {
+            var obj = { id: data.id, isDisable: data.isDisable == 1 ? 0 : 1 }
+            updatePriceDisabled(obj).then(res => {
+                if (res.data.errorCode == 0) {
+                    this.getList();
+                    this.$message.success(data.isDisable == 1 ? '解禁？' : '禁用？' + '成功')
+                } else {
+                    this.$message.error(res.data.msg)
+                }
+            })
+        },
+        handleFilter() {
+            this.listQuery.page = 1
+            this.getList()
+        },
+        handleDel(id) {
+            this.$confirm('你确认要删除吗?', '提示', {
+                confirmButtonText: '确定',closeOnClickModal:false,
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                this.delItem(id)
+            });
+        },
+        handleModify() {
+            this.$refs['dataForm'].validate((valid) => {
+                if (valid) {
+                    updatePriceByItemIdPriceGroupId(this.temp).then(res => {
+                        if (res.data.errorCode == 0) {
+                            this.getList();
+                            this.dialogFormVisible = false
+                            this.$message.success('修改成功')
+                        } else {
+                            this.$message.error(res.data.msg)
+                        }
+                    })
+                }
+            })
+        },
+        handleModify2() {
+            updatePriceByItemIdPriceGroupIdList(this.tableList).then(res => {
+                if (res.data.errorCode == 0) {
+                    this.dialogFormVisible2 = false
+                    this.getList()
+                    this.$message.success('批量修改成功')
+                } else {
+                    this.$message.error(res.data.msg)
+                }
+            })
+        },
+        delItem(id) {
+            delPrice(id).then(res => {
+                if (res.data.errorCode == 0) {
+                    this.getList();
+                    this.dialogFormVisible = false
+                    this.$message.success('删除成功')
+                } else {
+                    this.$message.error(res.data.msg)
+                }
+            })
+        }
+    }
+}
+</script>
+<style scoped>
+.main {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 0 10px;
+    padding-left: 240px;
+}
+
+.leftTree {
+    width: 220px;
+    height: 100%;
+    background-color: #fff;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.tableDiv {
+    width: 100%;
+}
+
+</style>
