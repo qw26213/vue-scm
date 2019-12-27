@@ -1,34 +1,35 @@
 <template>
     <div class="login-container">
-        <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
+        <el-form ref="requsetFrom" :model="requsetFrom" :rules="loginRules" class="login-form" autocomplete="on" label-position="left" label-width="110px" style="width:400px;margin: 100px auto 0">
             <div class="title-container">
-                <h3 class="title">进销存系统用户登录</h3>
+                <h3 class="title">找回密码</h3>
             </div>
-            <el-form-item prop="orgCode">
-                <span class="svg-container"><svg-icon icon-class="chart" /></span>
-                <el-input clearable autocomplete="off" v-model="loginForm.orgCode" placeholder="企业代码" type="text" maxlength='6' />
+            <el-form-item label="企业代码" prop="orgCode">
+                <el-input v-model="requsetFrom.orgCode" placeholder="企业代码" />
             </el-form-item>
-            <el-form-item prop="userAccount">
-                <span class="svg-container"><svg-icon icon-class="user" /></span>
-                <el-input clearable autocomplete="off" v-model="loginForm.userAccount" placeholder="账号" type="text" />
+            <el-form-item label="用户账号" prop="userAccount">
+                <el-input v-model="requsetFrom.userAccount" placeholder="用户账号" />
             </el-form-item>
-            <el-form-item prop="password">
-                <span class="svg-container"><svg-icon icon-class="password" /></span>
-                <el-input clearable autocomplete="off" v-model="loginForm.password" placeholder="密码" type="password" />
+            <el-form-item label="注册邮箱" prop="mail">
+                <el-input v-model="requsetFrom.mail" placeholder="注册邮箱" />
+            </el-form-item>
+            <el-form-item label="新密码" prop="password">
+                <el-input v-model="requsetFrom.password" placeholder="新密码" />
+            </el-form-item>
+            <el-form-item label="确认新密码" prop="againPassword">
+                <el-input v-model="requsetFrom.againPassword" placeholder="确认新密码" />
             </el-form-item>
             <div class="bot clearfix">
-              <span class="fl" @click="toPath('/forgetPsd')">忘记密码?</span>
-              <span class="fr" @click="toPath('/register')">注册新用户</span>
+              <span class="fr" @click="toPath('/login')">返回登录</span>
             </div>
-            <el-checkbox v-model="isRemember">记住企业代码</el-checkbox>
-            <el-button :loading="loading" type="primary" style="width:100%;margin:30px auto;" @click="handleLogin">登录</el-button>
+            <el-button :loading="loading" type="primary" style="width:100%;margin:30px auto;" @click="handleRegister">保 存</el-button>
         </el-form>
     </div>
 </template>
 <script>
-import {loginCheck,getIndexInfo} from '@/api/user'
+import { register } from '@/api/login'
 export default {
-    name: 'login',
+    name: 'register',
     data() {
         const validateOrcode = (rule, value, callback) => {
             if (value.length < 6) {
@@ -46,47 +47,40 @@ export default {
         }
         return {
             loginUrl:'',
-            loginForm: {
+            taxList:[],
+            areaList:[],
+            requsetFrom: {
                 orgCode: '',
                 userAccount: '',
-                password: ''
+                password: '',
+                againPassword:'',
+                mail:''
             },
             isRemember:true,
             loginRules: {
                 orgCode: [{ required: true, trigger: 'blur', validator: validateOrcode }],
                 userAccount: [{ required: true,message:'账号不能为空', trigger: 'blur'}],
-                password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+                password: [{ required: true, trigger: 'blur', validator: validatePassword }],
+                againPassword: [{ required: true, trigger: 'blur', validator: validatePassword }],
+                mail: [{ required: true, trigger: 'blur', message:'注册邮箱不能为空' }]
             },
             loading: false,
             redirect: this.$route.query.redirect
         }
     },
-    created(){
-      if(localStorage.orgCode){
-        this.loginForm.orgCode = localStorage.orgCode
-        this.loginForm.userAccount = localStorage.userAccount
-      }else{
-        this.loginForm.orgCode = "";
-        this.loginForm.userAccount = "";
-      }
-    },
     methods: {
       toPath(path){
-        this.$router.push(path);
+        this.$router.push({ path: path})
       },
-      handleLogin() {
-        if(this.isRemember){
-          localStorage.orgCode = this.loginForm.orgCode
-          localStorage.userAccount = this.loginForm.userAccount
-        } else {
-          localStorage.removeItem('orgCode');
-          localStorage.removeItem('userAccount');
-        }
-        this.$refs.loginForm.validate(valid => {
+      handleRegister() {
+        this.$refs.requsetFrom.validate(valid => {
           if (valid) {
             this.loading = true
-            this.$store.dispatch('user/login', this.loginForm).then(() => {
-              this.$router.push({ path: this.redirect || '/'})
+            register(this.requsetFrom).then((res) => {
+              if(res.data.errorCode==0)
+                this.$message.success('注册成功！');
+              else
+                this.$message.error(res.data.msg);
               this.loading = false
             }).catch(err => {
               this.loading = false
@@ -96,17 +90,12 @@ export default {
           }
         })
       }
-    },
-    mounted(){
-      console.log(this.isRemember)
-      document.onkeydown=() => {
-        if (window.event.keyCode == 13) {
-          this.handleLogin();
-        }
-      }
     }
 }
 </script>
-<style lang="scss">
-
+<style scoped>
+.title{text-align: center;margin-bottom: 20px}
+.bot{margin: 10px 0}
+.bot span{display: inline-block;font-size: 14px;color: #666;cursor:pointer;}
+.bot span:hover{color:#333;}
 </style>

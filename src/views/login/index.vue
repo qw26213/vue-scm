@@ -2,7 +2,7 @@
     <div class="login-container">
         <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
             <div class="title-container">
-                <h3 class="title">找回密码</h3>
+                <h3 class="title">登录经销存管理系统</h3>
             </div>
             <el-form-item prop="orgCode">
                 <span class="svg-container"><svg-icon icon-class="chart" /></span>
@@ -17,7 +17,7 @@
                 <el-input clearable autocomplete="off" v-model="loginForm.password" placeholder="密码" type="password" />
             </el-form-item>
             <div class="bot clearfix">
-              <span class="fl" @click="$router.go(-1)">返回登录</span>
+              <span class="fl" @click="toPath('/forgetPsd')">忘记密码？</span>
               <span class="fr" @click="toPath('/register')">注册新用户</span>
             </div>
             <el-checkbox v-model="isRemember">记住企业代码</el-checkbox>
