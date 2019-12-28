@@ -6,6 +6,10 @@ Vue.use(Router)
 import Layout from '@/layout'
 import setView from '@/layout/set'
 
+import saleRouter from './modules/saleRouter'
+import purchaseRouter from './modules/purchaseRouter'
+
+
 export const constantRoutes = [{
     path: '/redirect',
     component: Layout,
@@ -45,115 +49,9 @@ export const constantRoutes = [{
  * asyncRoutes
  * the routes that need to be dynamically loaded based on user roles
  */
-export const asyncRoutes = [{
-        path: '/sale',
-        component: Layout,
-        redirect: '/sale/data',
-        name: 'sale',
-        meta: {
-            title: '销售',
-            icon: 'table'
-        },
-        children: [{
-            path: 'data',
-            component: () => import('@/views/sale/data'),
-            name: 'saleData',
-            meta: {
-                title: '销售单'
-            }
-        }, {
-            path: 'add',
-            component: () => import('@/views/sale/add'),
-            name: 'saleAdd',
-            hidden:true,
-            meta: {
-                title: '添加销售单'
-            }
-        }, {
-            path: 'modify',
-            component: () => import('@/views/sale/add'),
-            name: 'saleModify',
-            hidden:true,
-            meta: {
-                title: '编辑销售单'
-            }
-        }, {
-            path: 'saleList',
-            component: () => import('@/views/sale/list'),
-            name: 'saleList',
-            meta: {
-                title: '销售订单'
-            }
-        }, {
-            path: 'saleTable',
-            component: () => import('@/views/sale/table'),
-            name: 'saleTable',
-            meta: {
-                title: '销售退货'
-            }
-        }, {
-            path: 'saleInvoice',
-            component: () => import('@/views/sale/invoice'),
-            name: 'saleInvoice',
-            meta: {
-                title: '销售发票'
-            }
-        }]
-    }, {
-        path: '/purchase',
-        component: Layout,
-        redirect: '/purchase/data',
-        name: 'purchase',
-        meta: {
-            title: '采购',
-            icon: 'table'
-        },
-        children: [{
-            path: 'data',
-            component: () => import('@/views/purchase/data'),
-            name: 'purchaseData',
-            meta: {
-                title: '进货单'
-            }
-        }, {
-            path: 'add',
-            component: () => import('@/views/purchase/add'),
-            name: 'purchaseAdd',
-            hidden:true,
-            meta: {
-                title: '添加进货单'
-            }
-        }, {
-            path: 'modify',
-            component: () => import('@/views/purchase/add'),
-            name: 'purchaseModify',
-            hidden:true,
-            meta: {
-                title: '编辑进货单'
-            }
-        }, {
-            path: 'purchaseOrder',
-            component: () => import('@/views/purchase/list'),
-            name: 'purchaseOrder',
-            meta: {
-                title: '采购订单'
-            }
-        }, {
-            path: 'purchaseTable',
-            component: () => import('@/views/purchase/table'),
-            name: 'purchaseTable',
-            meta: {
-                title: '采购退货'
-            }
-        }, {
-            path: 'purchaseInvoice',
-            component: () => import('@/views/purchase/invoice'),
-            name: 'purchaseInvoice',
-            meta: {
-                title: '采购发票'
-            }
-        }]
-    }, 
+export const asyncRoutes = [
+    saleRouter, 
+    purchaseRouter, 
     // {
     //     path: '/interact',
     //     component: Layout,
@@ -277,7 +175,7 @@ export const asyncRoutes = [{
             name: 'warehousingAdd',
             hidden:true,
             meta: {
-                title: '添加入库单'
+                title: '新增入库单'
             }
         },{
             path: 'warehousingModify',
@@ -300,7 +198,7 @@ export const asyncRoutes = [{
             name: 'outboundOrderAdd',
             hidden:true,
             meta: {
-                title: '添加出库单'
+                title: '新增出库单'
             }
         }, {
             path: 'outboundOrderModify',
@@ -323,7 +221,7 @@ export const asyncRoutes = [{
             name: 'allocationAdd',
             hidden:true,
             meta: {
-                title: '添加调拨单'
+                title: '新增调拨单'
             }
         }, {
             path: 'allocationModify',
@@ -346,7 +244,7 @@ export const asyncRoutes = [{
             name: 'movementAdd',
             hidden:true,
             meta: {
-                title: '添加移库单'
+                title: '新增移库单'
             }
         }, {
             path: 'movementModify',

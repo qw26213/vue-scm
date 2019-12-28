@@ -60,6 +60,11 @@
                     <input type="text" class="inputCell tx-c" v-model="row.uom" disabled>
                 </template>
             </el-table-column>
+            <el-table-column label="辅助单位" v-if="temp.presaleType=='2'" width="150">
+                <template slot-scope="scope">
+                    <measList :resdata="measList" :selectId="scope.row.subMeasId" :index="scope.$index" @changeVal="changeVal1"></measList>
+                </template>
+            </el-table-column>
             <el-table-column label="计量单位" v-if="temp.presaleType=='2'" width="150">
                 <template slot-scope="scope">
                     <measList :resdata="measList" :selectId="scope.row.measId" :index="scope.$index" @changeVal="changeVal1"></measList>
@@ -73,6 +78,11 @@
             <el-table-column label="品类代码" width="150" v-if="temp.presaleType=='2'">
                 <template slot-scope="scope">
                     <invCatgList :resdata="invCatgList" :selectId="scope.row.invCatgId" :index="scope.$index" @changeVal="changeVal1"></invCatgList>
+                </template>
+            </el-table-column>
+            <el-table-column label="换算率" v-if="temp.presaleType=='2'" width="100">
+                <template slot-scope="{row}">
+                    <input type="text" class="inputCell" v-model="row.exchangeRate" disabled>
                 </template>
             </el-table-column>
             <el-table-column label="单价">

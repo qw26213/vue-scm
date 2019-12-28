@@ -119,7 +119,7 @@ $light_gray:#333333;
     position: relative;
     width: 420px;
     max-width: 100%;
-    padding: 160px 35px 0;
+    padding: 120px 35px 0;
     margin: 0 auto;
     overflow: hidden;
   }
