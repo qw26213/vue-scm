@@ -350,3 +350,11 @@ export function buildPresaleVoucher(data) {
     data
   })
 }
+
+export function getItemPrice(data){
+  return request({
+    url:'/drp/bd/price/getPriceSVOByItemIdCustId',
+    method: 'post',
+    data
+  })
+}

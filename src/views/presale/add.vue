@@ -25,11 +25,15 @@
                       <el-option label="按品类" value="2"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="合计金额:" prop="beginBalance">
-                    <el-input size="mini" v-model="temp.beginBalance" placeholder="合计金额" disabled/>
+                <el-form-item label="有效日期:" prop="expirationDate">
+                    <el-date-picker :editable="false" v-model="temp.expirationDate" :disabled="temp.presaleType==0" type="date" placeholder="有效日期" size="mini" :clearable="false" value-format="yyyy-MM-dd">
+                    </el-date-picker>
                 </el-form-item>
-                <el-form-item label="现结金额:" prop="currPayAmount">
-                    <el-input size="mini" v-model="temp.currPayAmount" placeholder="现结金额" style="width:72px" disabled />
+                <el-form-item label="合计金额:" prop="amount">
+                    <el-input size="mini" v-model="temp.amount" placeholder="合计金额" disabled/>
+                </el-form-item>
+                <el-form-item label="现结金额:" prop="beginBalance">
+                    <el-input size="mini" v-model="temp.beginBalance" placeholder="现结金额" style="width:72px" disabled />
                     <el-button size="mini" style="width:44px;padding:6px" @click="showSettleType">选择</el-button>
                 </el-form-item>
             </el-form>
@@ -139,9 +143,9 @@
     </div>
 </template>
 <script>
-import {savePresale,getPresaleById} from '@/api/store'
-import { getMeas,getInvCatg } from '@/api/basedata'
-import {deleteEmptyProp,addNullObj} from '@/utils'
+import {savePresale,getPresaleById} from '@/api/store';
+import { getMeas,getInvCatg } from '@/api/basedata';
+import {deleteEmptyProp,addNullObj} from '@/utils';
 import staffList from '@/components/selects/staffList';
 import custList from '@/components/selects/custList';
 import itemList from '@/components/selects/itemList';
@@ -166,6 +170,8 @@ export default {
             measList:[],
             temp: {
                 billNo:'',
+                amount:'',
+                expirationDate:'',
                 billDate:getNowDate(),
                 custName:'',
                 presaleType:'1',
@@ -242,7 +248,7 @@ export default {
                     amount+=Number(this.tableData[i].beginBalance);
                 }
             }
-            this.temp.beginBalance = Number(parseFloat(amount).toFixed(2));
+            this.temp.amount = parseFloat(amount).toFixed(2);
         },
         selectChange(obj){
             for(var key in obj){

@@ -1,5 +1,5 @@
 <template>
-  <el-select v-model="curCode" style="width:145px" size="mini" placeholder="请选择结算方式" class="filter-settleType" @change="changeVal">
+  <el-select v-model="curCode" style="width:145px" size="mini" placeholder="选择结算方式" class="filter-settleType" @change="changeVal">
     <el-option v-for="settleType in settleTypeList" :key="settleType.id" :label="settleType.settleTypeName" :value="settleType.settleTypeCode">
     </el-option>
   </el-select>

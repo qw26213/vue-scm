@@ -30,6 +30,11 @@
           <span>{{row.abbr}}</span>
         </template>
       </el-table-column>
+      <el-table-column label="地址">
+        <template slot-scope="{row}">
+          <span>{{row.addr}}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="联系人">
         <template slot-scope="{row}">
           <span>{{row.contact}}</span>
@@ -40,22 +45,22 @@
           <span>{{row.tel}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="邮箱地址">
-        <template slot-scope="{row}">
-          <span>{{row.email}}</span>
-        </template>
-      </el-table-column>
       <el-table-column label="微信号">
         <template slot-scope="{row}">
           <span>{{row.wechat}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="透支额度" align="right">
+      <el-table-column label="预收余额" align="right" width="100">
+        <template slot-scope="{row}">
+          <span>{{row.advrBalance|Fixed}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="透支额度" align="right" width="100">
         <template slot-scope="{row}">
           <span>{{row.creditLimit|Fixed}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="已透支金额" align="right">
+      <el-table-column label="已透支金额" align="right" width="100">
         <template slot-scope="{row}">
           <span>{{row.overdraftBalance|Fixed}}</span>
         </template>
@@ -85,7 +90,7 @@
           <el-input v-model="temp.custName" placeholder="客户名称" />
         </el-form-item>
         <el-form-item label="助记码" prop="mnemonicCode">
-          <el-input v-model="temp.mnemonicCode" placeholder="助记码" />
+          <el-input v-model="temp.mnemonicCode" placeholder="助记码" disabled />
         </el-form-item>
         <el-form-item label="简称" prop="abbr">
           <el-input v-model="temp.abbr" placeholder="简称" />
@@ -96,8 +101,11 @@
         <el-form-item label="电话" prop="tel">
           <el-input v-model="temp.tel" placeholder="电话" />
         </el-form-item>
-        <el-form-item label="邮箱地址" prop="email">
-          <el-input v-model="temp.email" placeholder="邮箱地址" />
+        <el-form-item label="邮箱" prop="email">
+          <el-input v-model="temp.email" placeholder="邮箱" />
+        </el-form-item>
+        <el-form-item label="地址" prop="addr">
+          <el-input v-model="temp.addr" placeholder="地址" />
         </el-form-item>
         <el-form-item label="微信号" prop="wechat">
           <el-input v-model="temp.wechat" placeholder="微信号" />
@@ -186,6 +194,7 @@ export default {
       },
       temp: {
         custName: '',
+        addr:'',
         custCode: '',
         creditLimit:'',
         visitCycle:'',

@@ -8,13 +8,13 @@
       <custList @selectChange="selectChange" ctrType="list"></custList>
       <staffList @selectChange="selectChange" ctrType="list" :selectId="listQuery.queryParam.staffId"></staffList>
       <el-select v-model="listQuery.queryParam.status" placeholder="单据状态" size="mini">
-        <el-option label="全部" value=""></el-option>
+        <el-option label="全部" value="null"></el-option>
         <el-option label="未审核" value="0"></el-option>
         <el-option label="已审核" value="1"></el-option>
         <el-option label="已生成" value="2"></el-option>
       </el-select>
       <el-select v-model="listQuery.queryParam.isOutboundOrder" placeholder="出库单状态" size="mini">
-        <el-option label="全部" value=""></el-option>
+        <el-option label="全部" value="null"></el-option>
         <el-option label="未生成出库单" value="0"></el-option>
         <el-option label="已生成出库单" value="1"></el-option>
       </el-select>
@@ -105,7 +105,7 @@
 </template>
 
 <script>
-import { getSales,delSales,auditSales,buildSales} from '@/api/store'
+import { getSales,delSales,auditSales,buildSales,getItemPrice} from '@/api/store'
 import { parseTime } from '@/utils'
 import staffList from '@/components/selects/staffList';
 import custList from '@/components/selects/custList';

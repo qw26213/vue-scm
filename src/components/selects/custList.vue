@@ -1,5 +1,5 @@
 <template>
-  <el-select v-model="curId" style="width:145px" filterable remote reserve-keyword :remote-method="remoteGet" size="mini" @focus="searchThis($event)" @change="changeVal" placeholder="请选择客户">
+  <el-select v-model="curId" style="width:145px" filterable remote reserve-keyword :remote-method="remoteGet" size="mini" @focus="searchThis($event)" @change="changeVal" placeholder="选择客户">
     <el-option v-for="item in custList" :key="item.id" :label="item.custName" :value="item.id">
     </el-option>
   </el-select>
@@ -25,7 +25,7 @@ export default {
     },
     watch:{
       'selectId'(){
-        if(this.selectId!=''){
+        if(this.selectId!=''&&this.selectName!=''){
           this.custList=[{custName:this.selectName,id:this.selectId}]
           this.curId = this.selectId
         }

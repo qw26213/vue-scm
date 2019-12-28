@@ -82,8 +82,8 @@
         <el-form-item label="电话" prop="tel">
           <el-input v-model="temp.tel" placeholder="电话" />
         </el-form-item>
-        <el-form-item label="邮箱地址" prop="email">
-          <el-input v-model="temp.email" placeholder="邮箱地址" />
+        <el-form-item label="邮箱" prop="email">
+          <el-input v-model="temp.email" placeholder="邮箱" />
         </el-form-item>
         <el-form-item label="微信号" prop="wechat">
           <el-input v-model="temp.wechat" placeholder="微信号" />
@@ -180,7 +180,7 @@ export default {
       for(var key in this.temp){
         this.temp[key] = ''
       }
-      this.temp.isDisable = ''
+      this.temp.isDisable = '0'
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })

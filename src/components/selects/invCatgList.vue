@@ -1,5 +1,5 @@
 <template>
-    <el-select v-model="curId" style="width:150px" placeholder="请选择品类" size="mini" @change="changeVal">
+    <el-select v-model="curId" style="width:150px" placeholder="选择品类" size="mini" @change="changeVal">
         <el-option v-for="item in resdata" :label="item.invCatgCode" :value="item.id"></el-option>
     </el-select>
 </template>

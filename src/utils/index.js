@@ -295,6 +295,8 @@ export function deleteEmptyProp(arr){
   for (var i=0;i<arr.length;i++) {
     if (arr[i].itemId&&arr[i].itemId != '') {
       newArr.push(arr[i])
+    }else if (arr[i].invCatgId&&arr[i].invCatgId != '') {
+      newArr.push(arr[i])
     }
   }
   return newArr;

@@ -1,5 +1,5 @@
 <template>
-    <el-select v-model="curId" style="width:145px" placeholder="请选择业务员" size="mini" @change="changeVal">
+    <el-select v-model="curId" style="width:145px" placeholder="选择业务员" size="mini" @change="changeVal">
         <el-option v-for="item in list" :label="item.staffName" :value="item.id"></el-option>
     </el-select>
 </template>
@@ -31,7 +31,7 @@ export default {
             var arr = [];
             getStaff().then(res => {
                 if(this.ctrType=="list"){
-                    arr = [{staffName:'全部员工',id:'null'}]
+                    arr = [{staffName:'全部业务员',id:'null'}]
                 }
                 this.list = arr.concat(res.data.data)
             }).catch(err=>{

@@ -5,10 +5,10 @@
             <span class="zhi">至</span>
             <el-date-picker :editable="false" v-model="listQuery.queryParam.date2" type="date" placeholder="结束日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
             <el-input size="mini" v-model="listQuery.queryParam.billNo" placeholder="单据号" />
-            <warehouseList @selectChange="selectChange" keyType="outWarehouseId" ctrType="list" :selectId="listQuery.queryParam.outWarehouseId"></warehouseList>
-            <warehouseList @selectChange="selectChange" keyType="inWarehouseId" ctrType="list" :selectId="listQuery.queryParam.inWarehouseId"></warehouseList>
-            <truckList @selectChange="selectChange" keyType="outTruckId" ctrType="list" :selectId="listQuery.queryParam.outTruckId"></truckList>
-            <truckList @selectChange="selectChange" keyType="inTruckId" ctrType="list" :selectId="listQuery.queryParam.inTruckId"></truckList>
+            <warehouseList @selectChange="selectChange" keyType="outWarehouseId" placeTxt="移出仓库" ctrType="list" :selectId="listQuery.queryParam.outWarehouseId"></warehouseList>
+            <warehouseList @selectChange="selectChange" keyType="inWarehouseId" placeTxt="移入仓库" ctrType="list" :selectId="listQuery.queryParam.inWarehouseId"></warehouseList>
+            <truckList @selectChange="selectChange" keyType="outTruckId" placeTxt="移出车辆" ctrType="list" :selectId="listQuery.queryParam.outTruckId"></truckList>
+            <truckList @selectChange="selectChange" keyType="inTruckId" placeTxt="移入车辆" ctrType="list" :selectId="listQuery.queryParam.inTruckId"></truckList>
             <el-button size="mini" type="primary" @click="getList">查询</el-button>
             <el-button size="mini" type="primary" @click="handleAdd">新增</el-button>
         </div>

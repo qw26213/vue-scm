@@ -107,47 +107,6 @@ export default {
     }
 }
 </script>
-<style lang="scss">
-$bg:#333;
-$light_gray:#fff;
-$cursor: #333;
-@supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
-  .login-container .el-input input {
-    color: $cursor;
-  }
-}
-/* reset element-ui css */
-.login-container {
-  .el-input {
-    display: inline-block;
-    height: 47px;
-    width: 310px;
-    input {
-      background: transparent;
-      border: 0px;
-      -webkit-appearance: none;
-      border-radius: 0px;
-      padding: 12px 5px 12px 15px;
-      color: #333;
-      height: 47px;
-      &:-webkit-autofill {
-        box-shadow: 0 0 0px 1000px #fff inset !important;
-        -webkit-text-fill-color: $cursor !important;
-      }
-    }
-  }
-  .el-form-item {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: #fff;
-    border-radius: 5px;
-    color: #333;
-  }
-}
-.bot{margin: 10px 0}
-.bot span{display: inline-block;font-size: 14px;color: #666;cursor:pointer;}
-.bot span:hover{color:#333;}
-</style>
-
 <style lang="scss" scoped>
 $bg:#f5f5f5;
 $light_gray:#333333;
@@ -191,15 +150,8 @@ $light_gray:#333333;
       font-weight: bold;
     }
   }
-  .thirdparty-button {
-    position: absolute;
-    right: 0;
-    bottom: 6px;
-  }
-  @media only screen and (max-width: 470px) {
-    .thirdparty-button {
-      display: none;
-    }
-  }
 }
+.bot{margin: 10px 0}
+.bot span{display: inline-block;font-size: 14px;color: #666;cursor:pointer;}
+.bot span:hover{color:#333;}
 </style>

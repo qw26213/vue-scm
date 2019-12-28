@@ -1,5 +1,5 @@
 <template>
-    <el-select v-model="curId" style="width:145px" placeholder="请选择车辆" size="mini" @change="changeVal">
+    <el-select v-model="curId" style="width:145px" :placeholder="placeholderTxt" size="mini" @change="changeVal">
         <el-option v-for="item in list" :label="item.truckName" :value="item.id"></el-option>
     </el-select>
 </template>
@@ -7,11 +7,12 @@
 import {getTruck} from '@/api/basedata'
 export default {
     name: 'list',
-    props: ['selectId','keyType','ctrType'],
+    props: ['selectId','keyType','ctrType','placeTxt'],
     data(){
       return {
         list:[],
         curId:this.selectId,
+        placeholderTxt:'',
         curName:''
       }
     },
@@ -21,7 +22,12 @@ export default {
         }
     },
     mounted(){
-      this.getData();
+        this.getData();
+        if(this.placeTxt){
+            this.placeholderTxt = this.placeTxt
+        }else{
+            this.placeholderTxt = "选择车辆"
+        }
     },
     methods: {
         changeVal(val){

@@ -1,5 +1,5 @@
 <template>
-    <div class="login-container">
+    <div class="else-container">
         <el-form ref="requsetFrom" :model="requsetFrom" :rules="loginRules" class="login-form" autocomplete="on" label-position="left" label-width="110px" style="width:400px;margin: 100px auto 0">
             <div class="title-container">
                 <h3 class="title">找回密码</h3>

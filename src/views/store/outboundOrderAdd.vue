@@ -90,7 +90,7 @@
             </el-table-column>
             <el-table-column label="价税合计">
                 <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-r" v-model="row.vatAmount" disabled>
+                    <input type="text" class="inputCell tx-r" v-model="row.vatAmount||0" disabled>
                 </template>
             </el-table-column>
             <el-table-column label="是否赠品" align="center">
