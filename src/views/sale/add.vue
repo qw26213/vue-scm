@@ -175,7 +175,7 @@
 </template>
 <script>
 import {saveSales,getSalesById,getItemPrice} from '@/api/store';
-import {deleteEmptyProp,addNullObj} from '@/utils';
+import {deleteEmptyProp,addNullObj,addNullObj2} from '@/utils';
 import staffList from '@/components/selects/staffList';
 import bizTypeList from '@/components/selects/bizTypeList'
 import custList from '@/components/selects/custList';
@@ -229,7 +229,7 @@ export default {
             getSalesById(this.id).then(res=>{
                 if(res.data.body){
                     for(var key in this.temp){
-                        this.temp[key] = res.data.body[key]
+                        this.temp[key] = res.data.body[key];
                     }
                     this.temp.autoAdvr = true;
                     for(var i=0;i<res.data.body.salesLine.length;i++){
@@ -237,7 +237,7 @@ export default {
                             this.tableData[i][this.keys[j]] = res.data.body.salesLine[i][this.keys[j]]
                         }
                     }
-                    this.settleData = res.data.body.settleTypeDetail
+                    this.settleData = addNullObj2(res.data.body.settleTypeDetail)
                 }
             })
         }

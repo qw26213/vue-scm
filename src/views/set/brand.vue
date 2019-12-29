@@ -20,6 +20,11 @@
           <span>{{row.brandName}}</span>
         </template>
       </el-table-column>
+      <el-table-column label="备注">
+        <template slot-scope="{row}">
+          <span>{{row.remarks}}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="是否可用" align="center" width="120">
         <template slot-scope="{row}">
           <span>{{row.isDisable==0?'是':'否'}}</span>
@@ -42,6 +47,9 @@
         </el-form-item>
         <el-form-item label="品牌代码" prop="brandCode">
           <el-input v-model="temp.brandCode" placeholder="品牌代码" />
+        </el-form-item>
+        <el-form-item label="备注" prop="remarks">
+          <el-input v-model="temp.remarks" placeholder="备注" />
         </el-form-item>
         <el-form-item label="是否可用" prop="isDisable">
           <el-radio v-model="temp.isDisable" label="0">是</el-radio>
@@ -103,6 +111,7 @@ export default {
       temp: {
         brandName: '',
         brandCode: '',
+        remarks:'',
         isDisable: "0"
       },
       dialogFormVisible1: false,

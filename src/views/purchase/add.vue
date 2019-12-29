@@ -166,7 +166,7 @@
 <script>
 import { savePurchase, getPurchaseById } from '@/api/store';
 import { getAllNoADVR } from '@/api/basedata';
-import { deleteEmptyProp, addNullObj } from '@/utils';
+import { deleteEmptyProp, addNullObj,addNullObj2 } from '@/utils';
 import staffList from '@/components/selects/staffList';
 import supplierList from '@/components/selects/supplierList';
 import warehouseList from '@/components/selects/warehouseList';
@@ -219,7 +219,7 @@ export default {
                         this.tableData[i][this.keys[j]] = res.data.body.purchaseLine[i][this.keys[j]]
                     }
                 }
-                this.settleData = res.data.body.settleTypeDetail
+                this.settleData = addNullObj2(res.data.body.settleTypeDetail)
             })
         }
     },

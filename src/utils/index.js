@@ -310,6 +310,14 @@ export function addNullObj(arr){
   return newArr;
 }
 
+export function addNullObj2(arr){
+  var newArr = [{},{},{},{},{}];
+  for (var i=0;i<arr.length;i++) {
+    newArr.splice(i,1,arr[i])
+  }
+  return newArr;
+}
+
 /**
  * This is just a simple version of deep copy
  * Has a lot of edge cases bug
