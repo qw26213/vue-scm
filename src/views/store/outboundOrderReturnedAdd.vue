@@ -123,7 +123,7 @@
     </div>
 </template>
 <script>
-import { saveOutboundOrder, getOutboundOrderById } from '@/api/store'
+import { saveOutboundOrderReturned, getOutboundOrderReturnedById } from '@/api/store'
 import { deleteEmptyProp, addNullObj } from '@/utils'
 import staffList from '@/components/selects/staffList';
 import custList from '@/components/selects/custList';
@@ -133,7 +133,7 @@ import bizTypeList from '@/components/selects/bizTypeList';
 import itemList from '@/components/selects/itemList';
 import { getName,getNowDate } from '@/utils/auth'
 export default {
-    name: 'outboundOrderAdd',
+    name: 'outboundOrderReturnedAdd',
     components: { custList, bizTypeList, staffList, warehouseList, truckList, itemList },
     data() {
         return {
@@ -160,7 +160,7 @@ export default {
     created() {
         if (this.$route.query.id) {
             this.id = this.$route.query.id;
-            getOutboundOrderById(this.id).then(res => {
+            getOutboundOrderReturnedById(this.id).then(res => {
                 if (res.data.body) {
                     for (var key in this.temp) {
                         this.temp[key] = res.data.body[key]
@@ -212,12 +212,12 @@ export default {
         },
         save() {
             this.temp.id = this.id;
-            this.temp.outboundOrderLine = deleteEmptyProp(this.tableData);
-            saveOutboundOrder(this.temp).then(res => {
+            this.temp.outboundOrderReturnedLine = deleteEmptyProp(this.tableData);
+            saveOutboundOrderReturned(this.temp).then(res => {
                 if (res.data.errorCode == 0) {
                     this.$message.success(this.temp.id==""?'新增成功':'修改成功');
                     this.$store.dispatch('tagsView/delView', this.$route);
-                    this.$router.replace('/store/outboundOrder');
+                    this.$router.replace('/store/outboundOrderReturned');
                 } else {
                     this.$message.error(res.data.msg)
                 }

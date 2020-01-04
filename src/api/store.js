@@ -161,6 +161,54 @@ export function buildWarehousingEntry(data) {
     data
   })
 }
+// ------------销售退货入库-------------
+export function getWarehousingReturned(data) {
+  return request({
+    url: '/drp/ic/warehousingEntryReturned/getResPageData',
+    method: 'post',
+    data
+  })
+}
+
+export function getWarehousingReturnedById(id) {
+  return request({
+    url: '/drp/ic/warehousingEntryReturned/getByHeaderId',
+    method: 'post',
+    data:{id:id}
+  })
+}
+
+export function saveWarehousingReturned(data) {
+  return request({
+    url: '/drp/ic/warehousingEntryReturned/save',
+    method: 'post',
+    data
+  })
+}
+
+export function delWarehousingReturned(id) {
+  return request({
+    url: '/drp/ic/warehousingEntryReturned/deleteByHeaderId',
+    method: 'post',
+    data:{id:id}
+  })
+}
+
+export function auditWarehousingReturned(id) {
+  return request({
+    url: '/drp/ic/warehousingEntryReturned/auditByHeaderId',
+    method: 'post',
+    data:{id:id}
+  })
+}
+
+export function buildWarehousingEntryReturned(data) {
+  return request({
+    url: '/drp/ic/warehousingEntryReturned/buildWarehousingEntryReturnedByHeaderId',
+    method: 'post',
+    data
+  })
+}
 
 //-----出库单----
 export function getOutboundOrder(data) {
@@ -211,6 +259,55 @@ export function buildOutboundOrder(data) {
   })
 }
 
+// ------采购退货出库----
+export function getOutboundOrderReturned(data) {
+  return request({
+    url: '/drp/ic/outboundOrderReturned/getResPageData',
+    method: 'post',
+    data
+  })
+}
+
+export function getOutboundOrderReturnedById(id) {
+  return request({
+    url: '/drp/ic/outboundOrderReturned/getByHeaderId',
+    method: 'post',
+    data:{id:id}
+  })
+}
+
+export function saveOutboundOrderReturned(data) {
+  return request({
+    url: '/drp/ic/outboundOrderReturned/save',
+    method: 'post',
+    data
+  })
+}
+
+export function delOutboundOrderReturned(id) {
+  return request({
+    url: '/drp/ic/outboundOrderReturned/deleteByHeaderId',
+    method: 'post',
+    data:{id:id}
+  })
+}
+
+export function auditOutboundOrderReturned(id) {
+  return request({
+    url: '/drp/ic/outboundOrderReturned/auditByHeaderId',
+    method: 'post',
+    data:{id:id}
+  })
+}
+
+export function buildOutboundOrderReturned(data) {
+  return request({
+    url: '/drp/ic/outboundOrderReturned/buildSalesByHeaderId',
+    method: 'post',
+    data
+  })
+}
+
 //-----销售单----
 export function getSales(data) {
   return request({
@@ -255,6 +352,55 @@ export function auditSales(id) {
 export function buildSales(data) {
   return request({
     url: '/drp/so/sales/buildOutboundOrderByHeaderId',
+    method: 'post',
+    data
+  })
+}
+
+// 销售退货
+export function getSalesReturned(data) {
+  return request({
+    url: '/drp/so/salesReturned/getResPageData',
+    method: 'post',
+    data
+  })
+}
+
+export function getSalesReturnedById(id) {
+  return request({
+    url: '/drp/so/salesReturned/getByHeaderId',
+    method: 'post',
+    data:{id:id}
+  })
+}
+
+export function saveSalesReturned(data) {
+  return request({
+    url: '/drp/so/salesReturned/save',
+    method: 'post',
+    data
+  })
+}
+
+export function delSalesReturned(id) {
+  return request({
+    url: '/drp/so/salesReturned/deleteByHeaderId',
+    method: 'post',
+    data:{id:id}
+  })
+}
+
+export function auditSalesReturned(id) {
+  return request({
+    url: '/drp/so/salesReturned/auditByHeaderId',
+    method: 'post',
+    data:{id:id}
+  })
+}
+
+export function buildSalesReturned(data) {
+  return request({
+    url: '/drp/so/salesReturned/buildOutboundOrderByHeaderId',
     method: 'post',
     data
   })

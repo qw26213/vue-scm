@@ -11,17 +11,14 @@
                 <el-form-item label="业务类型:" prop="bizTypeId">
                     <bizTypeList @selectChange="selectChange" :selectId="temp.bizTypeId"></bizTypeList>
                 </el-form-item>
-                <el-form-item label="客户:" prop="custId">
-                    <custList @selectChange="selectChange" :selectId="temp.custId"></custList>
-                </el-form-item>
-                <el-form-item label="业务员:" prop="staffId">
-                    <staffList @selectChange="selectChange" :selectId="temp.staffId"></staffList>
+                <el-form-item label="供应商:" prop="supplierId">
+                    <supplierList @selectChange="selectChange" :selectId="temp.supplierId"></supplierList>
                 </el-form-item>
                 <el-form-item label="仓库:" prop="warehouseId">
                     <warehouseList @selectChange="selectChange" keyType="warehouseId" :selectId="temp.warehouseId"></warehouseList>
                 </el-form-item>
-                <el-form-item label="车辆:" prop="truckId">
-                    <truckList @selectChange="selectChange" keyType="truckId" :selectId="temp.truckId"></truckList>
+                <el-form-item label="业务员:" prop="staffId">
+                    <staffList @selectChange="selectChange" :selectId="temp.staffId"></staffList>
                 </el-form-item>
             </el-form>
         </div>
@@ -29,7 +26,7 @@
             <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
             <el-table-column label="商品代码">
                 <template slot-scope="scope">
-                    <itemList :selectId="scope.row.itemCode" :index="scope.$index" @changeVal="changeVal"></itemList>
+                    <itemList :selectId="scope.row.itemId" :selectCode="scope.row.itemCode" :index="scope.$index" @changeVal="changeVal"></itemList>
                 </template>
             </el-table-column>
             <el-table-column label="商品名称">
@@ -90,7 +87,7 @@
             </el-table-column>
             <el-table-column label="价税合计">
                 <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-r" v-model="row.vatAmount||0" disabled>
+                    <input type="text" class="inputCell tx-r" v-model="row.vatAmount" disabled>
                 </template>
             </el-table-column>
             <el-table-column label="是否赠品" align="center">
@@ -123,33 +120,30 @@
     </div>
 </template>
 <script>
-import { saveOutboundOrder, getOutboundOrderById } from '@/api/store'
+import { saveWarehousingReturned, getWarehousingReturnedById } from '@/api/store'
 import { deleteEmptyProp, addNullObj } from '@/utils'
 import staffList from '@/components/selects/staffList';
-import custList from '@/components/selects/custList';
+import supplierList from '@/components/selects/supplierList';
 import warehouseList from '@/components/selects/warehouseList';
-import truckList from '@/components/selects/truckList';
 import bizTypeList from '@/components/selects/bizTypeList';
 import itemList from '@/components/selects/itemList';
 import { getName,getNowDate } from '@/utils/auth'
 export default {
-    name: 'outboundOrderAdd',
-    components: { custList, bizTypeList, staffList, warehouseList, truckList, itemList },
+    name: 'warehousingReturnedAdd',
+    components: { staffList, warehouseList, supplierList, bizTypeList, itemList },
     data() {
         return {
             id: '',
-            status: this.$route.query.status,
+            status: this.$route.query.satus,
             tableData: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
             temp: {
                 billDate:getNowDate(),
                 billNo: '',
-                custId: '',
+                supplierId: '',
                 bizTypeId: '',
                 staffId: '',
                 warehouseId: '',
-                truckId: '',
                 warehouseName: '',
-                truckName: '',
                 auditDate: "",
                 auditor: "",
                 recordDate:getNowDate()+" 00:00:00",
@@ -160,13 +154,11 @@ export default {
     created() {
         if (this.$route.query.id) {
             this.id = this.$route.query.id;
-            getOutboundOrderById(this.id).then(res => {
-                if (res.data.body) {
-                    for (var key in this.temp) {
-                        this.temp[key] = res.data.body[key]
-                    }
-                    this.tableData = addNullObj(res.data.body.warehousingEntryLine);
+            getWarehousingReturnedById(this.id).then(res => {
+                for (var key in this.temp) {
+                    this.temp[key] = res.data.body[key]
                 }
+                this.tableData = addNullObj(res.data.body.warehousingReturnedEntryLine);
             })
         }
     },
@@ -174,14 +166,14 @@ export default {
         calculate(index) {
             var qty = this.tableData[index].qty;
             var price = this.tableData[index].price;
-            if(qty&&price){
+            if (qty && price) {
                 var amount = parseFloat(Number(qty) * Number(price)).toFixed(2);
                 this.$set(this.tableData[index],'amount',amount)
                 this.$set(this.tableData[index],'vatAmount',amount)
                 var taxRate = this.tableData[index].taxRate;
-                if(taxRate){
-                    var taxAmount = parseFloat(Number(amount)*Number(taxRate)/100).toFixed(2);
-                    var vatAmount = parseFloat(Number(amount)*(Number(taxRate)/100+1)).toFixed(2);
+                if (taxRate) {
+                    var taxAmount = parseFloat(Number(amount) * Number(taxRate) / 100).toFixed(2);
+                    var vatAmount = parseFloat(Number(amount) + Number(taxAmount)).toFixed(2)
                     this.$set(this.tableData[index],'taxAmount',taxAmount)
                     this.$set(this.tableData[index],'vatAmount',vatAmount)
                 }
@@ -193,9 +185,6 @@ export default {
             }
             if (obj && obj.warehouseName) {
                 this.temp.warehouseName = obj.warehouseName
-            }
-            if (obj && obj.truckName) {
-                this.temp.truckName = obj.truckName
             }
         },
         changeVal(obj) {
@@ -212,12 +201,12 @@ export default {
         },
         save() {
             this.temp.id = this.id;
-            this.temp.outboundOrderLine = deleteEmptyProp(this.tableData);
-            saveOutboundOrder(this.temp).then(res => {
+            this.temp.warehousingReturnedEntryLine = deleteEmptyProp(this.tableData);
+            saveWarehousingReturned(this.temp).then(res => {
                 if (res.data.errorCode == 0) {
-                    this.$message.success(this.temp.id==""?'新增成功':'修改成功');
-                    this.$store.dispatch('tagsView/delView', this.$route);
-                    this.$router.replace('/store/outboundOrder');
+                    this.$message.success(this.temp.id == "" ? '新增成功' : '修改成功');
+                    this.$store.dispatch('tagsView/delView', this.$route)
+                    this.$router.replace('/store/warehousingReturned');
                 } else {
                     this.$message.error(res.data.msg)
                 }

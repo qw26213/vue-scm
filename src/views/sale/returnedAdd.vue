@@ -3,8 +3,7 @@
         <div class="dataTable">
             <el-form :inline="true" label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
                 <el-form-item label="单据日期:" prop="billDate">
-                    <el-date-picker :editable="false" v-model="temp.billDate" type="date" placeholder="单据日期" size="mini" :clearable="false" value-format="yyyy-MM-dd">
-                    </el-date-picker>
+                    <el-date-picker :editable="false" v-model="temp.billDate" type="date" placeholder="单据日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
                 </el-form-item>
                 <el-form-item label="单据号:" prop="billNo">
                     <el-input size="mini" v-model="temp.billNo" placeholder="单据号" />
@@ -12,27 +11,35 @@
                 <el-form-item label="业务类型:" prop="bizTypeId">
                     <bizTypeList @selectChange="selectChange" :selectId="temp.bizTypeId"></bizTypeList>
                 </el-form-item>
-                <el-form-item label="供应商:" prop="supplierId">
-                    <supplierList @selectChange="selectChange" :selectId="temp.supplierId"></supplierList>
+                <el-form-item label="客户:" prop="custId">
+                    <custList @selectChange="selectChange" keyType="custId" :selectId="temp.custId" :selectName="temp.custName"></custList>
+                </el-form-item>
+                <el-form-item label="结算客户:" prop="settleCustId">
+                    <custList @selectChange="selectChange" keyType="settleCustId" :selectId="temp.settleCustId"></custList>
                 </el-form-item>
                 <el-form-item label="仓库:" prop="warehouseId">
                     <warehouseList @selectChange="selectChange" keyType="warehouseId" :selectId="temp.warehouseId"></warehouseList>
                 </el-form-item>
+                <el-form-item label="车辆:" prop="truckId">
+                    <truckList @selectChange="selectChange" keyType="truckId" :selectId="temp.truckId"></truckList>
+                </el-form-item>
                 <el-form-item label="业务员:" prop="staffId">
                     <staffList @selectChange="selectChange" :selectId="temp.staffId"></staffList>
                 </el-form-item>
-                <el-form-item label="付款方式:" prop="paymentTypeId">
+                <el-form-item label="收款方式:" prop="paymentTypeId">
                     <paymentTypeList @selectChange="selectChange" :selectId="temp.paymentTypeId"></paymentTypeList>
                 </el-form-item>
-                <el-form-item label="付款到期日:" prop="paymentDueDate">
-                    <el-date-picker :editable="false" v-model="temp.paymentDueDate" type="date" placeholder="付款到期日" size="mini" :clearable="false" value-format="yyyy-MM-dd">
-                    </el-date-picker>
+                <el-form-item label="收款到期日:" prop="paymentDueDate">
+                    <el-date-picker :editable="false" v-model="temp.paymentDueDate" type="date" placeholder="收款到期日" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
                 </el-form-item>
                 <el-form-item label="合计金额:" prop="itemAmount">
-                    <el-input size="mini" v-model="temp.itemAmount" placeholder="合计金额" disabled/>
+                    <el-input size="mini" v-model="temp.itemAmount" placeholder="合计金额" disabled />
                 </el-form-item>
-                <el-form-item label="使用预付:" prop="advPayAmount">
-                    <el-input size="mini" v-model="temp.advPayAmount" placeholder="使用预付" />
+                <el-form-item label="抹零金额:" prop="withoutPayAmount">
+                    <el-input size="mini" v-model="temp.withoutPayAmount" placeholder="抹零金额" />
+                </el-form-item>
+                <el-form-item label="使用预收:" prop="advPayAmount">
+                    <el-input size="mini" v-model="temp.advPayAmount" placeholder="使用预收" />
                 </el-form-item>
                 <el-form-item label="现结金额:" prop="currPayAmount">
                     <el-input size="mini" v-model="temp.currPayAmount" placeholder="现结金额" style="width:72px" disabled />
@@ -41,13 +48,16 @@
                 <el-form-item label="返利金额:" prop="rebateAmount">
                     <el-input size="mini" v-model="temp.rebateAmount" placeholder="返利金额" />
                 </el-form-item>
+                <el-form-item label="使用预收款:" prop="autoAdvr">
+                    <el-checkbox v-model="temp.autoAdvr"></el-checkbox>
+                </el-form-item>
             </el-form>
         </div>
-        <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini" cell-class-name="tdCell" height="501" append>
+        <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini" cell-class-name="tdCell">
             <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
             <el-table-column label="商品代码" width="160">
                 <template slot-scope="scope">
-                    <itemList :selectId="scope.row.itemId" :selectCode="scope.row.itemCode" :index="scope.$index" @changeVal="changeVal"></itemList>
+                    <itemList :selectCode="scope.row.itemCode" :selectId="scope.row.itemId" :index="scope.$index" @changeVal="changeVal"></itemList>
                 </template>
             </el-table-column>
             <el-table-column label="商品名称" width="160">
@@ -57,7 +67,7 @@
             </el-table-column>
             <el-table-column label="规格">
                 <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-l" v-model="row.norms" disabled>
+                    <input type="text" class="inputCell tx-r" v-model="row.norms" disabled>
                 </template>
             </el-table-column>
             <el-table-column label="单位" width="60">
@@ -67,7 +77,7 @@
             </el-table-column>
             <el-table-column label="批号">
                 <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-l" v-model="row.batchNo">
+                    <input type="text" class="inputCell tx-r" v-model="row.batchNo">
                 </template>
             </el-table-column>
             <el-table-column label="生产日期" width="120">
@@ -81,14 +91,14 @@
                     <input type="text" class="inputCell tx-r" v-model="row.qualityDays">
                 </template>
             </el-table-column>
-            <el-table-column label="数量">
+            <el-table-column label="单价(元)">
                 <template slot-scope="scope">
-                    <input type="text" :index="scope.$index" class="inputCell tx-r" v-model="scope.row.qty" @change="calculate(scope.$index)">
+                    <input type="text" class="inputCell tx-r" v-model="scope.row.price" @change="calculate(scope.$index)">
                 </template>
             </el-table-column>
-            <el-table-column label="单价">
+            <el-table-column label="数量">
                 <template slot-scope="scope">
-                    <input type="text" :index="scope.$index" class="inputCell tx-r" v-model="scope.row.price" @change="calculate(scope.$index)">
+                    <input type="text" class="inputCell tx-r" v-model="scope.row.qty" @change="calculate(scope.$index)">
                 </template>
             </el-table-column>
             <el-table-column label="金额">
@@ -117,6 +127,27 @@
                 </template>
             </el-table-column>
         </el-table>
+        <div class="dataTable" style="margin-top: 10px">
+            <el-form :inline="true" label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
+                <el-form-item label="制单日期:" prop="recordDate">
+                    <el-date-picker :editable="false" v-model="temp.recordDate" type="date" placeholder="制单日期" size="mini" :clearable="false" value-format="yyyy-MM-dd">
+                    </el-date-picker>
+                </el-form-item>
+                <el-form-item label="制单人:" prop="recorderId">
+                    <el-input size="mini" v-model="temp.recorder" placeholder="制单人" />
+                </el-form-item>
+                <el-form-item label="审核日期:" prop="auditDate">
+                    <el-date-picker :editable="false" v-model="temp.auditDate" type="date" placeholder="审核日期" size="mini" :clearable="false" value-format="yyyy-MM-dd">
+                    </el-date-picker>
+                </el-form-item>
+                <el-form-item label="审核人:" prop="auditorId">
+                    <el-input size="mini" v-model="temp.auditor" placeholder="审核人" />
+                </el-form-item>
+            </el-form>
+        </div>
+        <div class="tx-c" style="margin-top:15px" v-if="status!=1&&status!=2">
+          <el-button class="filter-item" type="primary" @click="save">保存</el-button>
+        </div>
         <el-dialog :close-on-click-modal="false" title="结算方式" :visible.sync="dialogFormVisible" width="392px">
             <el-table :data="settleData" border fit highlight-current-row style="width: 100%;" size="mini" cell-class-name="tdCell">
                 <el-table-column label="名称" width="146">
@@ -140,96 +171,85 @@
                 <el-button type="primary" @click="dialogFormVisible = false">确定</el-button>
             </div>
         </el-dialog>
-        <div class="dataTable" style="margin-top: 10px">
-            <el-form :inline="true" label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
-                <el-form-item label="制单日期:" prop="recordDate">
-                    <el-date-picker :editable="false" v-model="temp.recordDate" type="date" placeholder="制单日期" size="mini" style="width:145px" :clearable="false" value-format="yyyy-MM-dd">
-                    </el-date-picker>
-                </el-form-item>
-                <el-form-item label="制单人:" prop="recorder">
-                    <el-input size="mini" v-model="temp.recorder" placeholder="制单人" />
-                </el-form-item>
-                <el-form-item label="审核日期:" prop="auditDate">
-                    <el-date-picker :editable="false" v-model="temp.auditDate" type="date" placeholder="审核日期" size="mini" style="width:145px" :clearable="false" value-format="yyyy-MM-dd">
-                    </el-date-picker>
-                </el-form-item>
-                <el-form-item label="审核人:" prop="auditor">
-                    <el-input size="mini" v-model="temp.auditor" placeholder="审核人" />
-                </el-form-item>
-            </el-form>
-        </div>
-        <div class="tx-c" style="margin-top:15px" v-if="status!=1&&status!=2">
-            <el-button class="filter-item" type="primary" @click="save">保存</el-button>
-        </div>
     </div>
 </template>
 <script>
-import { savePurchaseReturned, getPurchaseReturnedById } from '@/api/store';
-import { getAllNoADVR } from '@/api/basedata';
-import { deleteEmptyProp, addNullObj,addNullObj2 } from '@/utils';
+import {saveSalesReturned,getSalesReturnedById,getItemPrice} from '@/api/store';
+import {deleteEmptyProp,addNullObj,addNullObj2} from '@/utils';
 import staffList from '@/components/selects/staffList';
-import supplierList from '@/components/selects/supplierList';
+import bizTypeList from '@/components/selects/bizTypeList'
+import custList from '@/components/selects/custList';
+import truckList from '@/components/selects/truckList';
 import warehouseList from '@/components/selects/warehouseList';
 import paymentTypeList from '@/components/selects/paymentTypeList';
 import itemList from '@/components/selects/itemList';
-import bizTypeList from "@/components/selects/bizTypeList";
 import settleTypeList from "@/components/selects/settleTypeList";
 import { getName,getNowDate } from '@/utils/auth'
 export default {
-    name: 'returnedAdd',
-    components: { staffList, warehouseList, supplierList, bizTypeList, paymentTypeList, itemList,settleTypeList },
+    name: 'saleAdd',
+    components: { staffList,warehouseList,custList,truckList,bizTypeList,paymentTypeList,itemList,settleTypeList },
     data() {
         return {
-            id: '',
-            status: this.$route.query.status,
-            dialogFormVisible: false,
-            tableData: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
-            settleData: [{}, {}, {}, {},{}],
-            keys: ["itemId", "itemCode", "itemName", "norms", "uom", "subUom", "exchangeRate", "batchNo", "productionDate", "qualityName", "qualityDays", "qty", "price", "amount", "taxRate", "taxAmount", "vatAmount", "invoiceNo", "bGift"],
+            id:'',
+            status:this.$route.query.status,
+            settleData:[{},{},{},{},{}],
+            dialogFormVisible:false,
+            tableData: [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}],
+            keys:["itemId","itemCode","itemName","norms","uom","subUom","exchangeRate","batchNo","productionDate","qualityName","qualityDays","qty","price","amount","taxRate","taxAmount","vatAmount","invoiceNo","isGift"],
             temp: {
                 billDate:getNowDate(),
-                billNo: '',
-                bizTypeId: '',
-                supplierId: "",
-                warehouseId: '',
-                warehouseName: '',
-                staffId: '',
-                paymentTypeId: '',
+                billNo:'',
+                bizTypeId:'',
+                autoAdvr:true,
+                custId:'',
+                custName:'',
+                settleCustId:'',
+                warehouseId:'',
+                warehouseName:'',
+                truckId:'',
+                truckName:'',
+                staffId:'',
+                paymentTypeId:'',
                 paymentDueDate:'',
-                itemAmount: '',
-                advPayAmount: '',
-                currPayAmount: '',
-                rebateAmount: '',
-                auditDate:'',
-                auditor: "",
-                recordDate:getNowDate()+" 00:00:00",
-                recorder: getName()
+                currPayAmount:0,
+                itemAmount:0,
+                advPayAmount:0,
+                rebateAmount:0,
+                withoutPayAmount:0,
+                auditDate:"",
+                auditor:"",
+                recordDate:getNowDate()+' 00:00:00',
+                recorder:getName()
             }
         }
     },
     created() {
-        if (this.$route.query.id) {
+        if(this.$route.query.id){
             this.id = this.$route.query.id;
-            getPurchaseReturnedById(this.id).then(res => {
-                for (var key in this.temp) {
-                    this.temp[key] = res.data.body[key]
-                }
-                for (var i = 0; i < res.data.body.purchaseReturnedLine.length; i++) {
-                    for (var j = 0; j < this.keys.length; j++) {
-                        this.tableData[i][this.keys[j]] = res.data.body.purchaseReturnedLine[i][this.keys[j]]
+            getSalesReturnedById(this.id).then(res=>{
+                if(res.data.body){
+                    for(var key in this.temp){
+                        this.temp[key] = res.data.body[key];
                     }
+                    this.temp.autoAdvr = true;
+                    for(var i=0;i<res.data.body.salesReturnedLine.length;i++){
+                        for(var j=0;j<this.keys.length;j++){
+                            this.tableData[i][this.keys[j]] = res.data.body.salesReturnedLine[i][this.keys[j]]
+                        }
+                    }
+                    this.settleData = addNullObj2(res.data.body.settleTypeDetail)
                 }
-                this.settleData = addNullObj2(res.data.body.settleTypeDetail)
             })
         }
     },
     methods: {
-        calculate(index) {
-            var qty = this.tableData[index].qty;
+        calculate(index){
             var price = this.tableData[index].price;
+            var qty = this.tableData[index].qty;
             if(qty&&price){
                 var amount = parseFloat(Number(qty) * Number(price)).toFixed(2);
                 this.$set(this.tableData[index],'amount',amount)
+                this.$set(this.tableData[index],'taxAmount',0)
                 this.$set(this.tableData[index],'vatAmount',amount)
                 var taxRate = this.tableData[index].taxRate;
                 if(taxRate){
@@ -237,8 +257,10 @@ export default {
                     var vatAmount = parseFloat(Number(amount)*(Number(taxRate)/100+1)).toFixed(2);
                     this.$set(this.tableData[index],'taxAmount',taxAmount)
                     this.$set(this.tableData[index],'vatAmount',vatAmount)
-                    this.calculateTotal();
+                }else{
+                    this.$set(this.tableData[index],'taxRate',0)
                 }
+                this.calculateTotal();
             }
         },
         calculate1(index){
@@ -250,29 +272,14 @@ export default {
             }
             this.temp.currPayAmount = parseFloat(amount).toFixed(2);
         },
-        calculate2(){
-            if(this.temp.advPayAmount){
-                this.temp.currPayAmount = this.temp.itemAmount - this.temp.advPayAmount;
-            } else {
-                this.temp.currPayAmount = this.temp.itemAmount;
-            }
-        },
-        calculateTotal() {
+        calculateTotal(){
             var amount = 0;
-            for (var i = 0; i < this.tableData.length; i++) {
-                if (this.tableData[i] && this.tableData[i].vatAmount) {
-                    amount += Number(this.tableData[i].vatAmount);
+            for(var i=0;i<this.tableData.length;i++){
+                if(this.tableData[i]&&this.tableData[i].vatAmount){
+                    amount+=Number(this.tableData[i].vatAmount);
                 }
             }
             this.temp.itemAmount = parseFloat(amount).toFixed(2);
-        },
-        selectChange(obj) {
-            for (var key in obj) {
-                this.temp[key] = obj[key];
-            }
-            if (obj && obj.warehouseName) {
-                this.temp.warehouseName = obj.warehouseName
-            }
         },
         showSettleType() {
             this.dialogFormVisible = true
@@ -282,27 +289,49 @@ export default {
                 this.settleData[obj.index][key] = obj[key];
             }
         },
-        changeVal(obj) {
-            for (var key in obj) {
-                this.tableData[obj.index][key] = obj[key];
+        selectChange(obj){
+            for(var key in obj){
+                this.temp[key]=obj[key];
             }
-            if (obj.index + 1 == this.tableData.length) {
-                this.tableData.push({});
-                this.$nextTick(() => {
-                    let container = this.$el.querySelector('.el-table__body-wrapper');
-                    container.scrollTop = container.scrollHeight;
+            if(obj&&obj.warehouseName){
+                for(var i=0;i<this.tableData.length;i++){
+                  this.tableData[i].warehouseId = obj.warehouseId
+                }
+            }
+            if(obj&&obj.truckName){
+                for(var i=0;i<this.tableData.length;i++){
+                  this.tableData[i].truckId = obj.truckId
+                }
+            }
+        },
+        changeVal(obj){
+            for(var key in obj){
+                this.tableData[obj.index][key]=obj[key];
+            }
+            if(this.temp.custId){
+                getItemPrice({custId:this.temp.custId,itemId:this.tableData[obj.index].itemId}).then(res=>{
+                    if(res.data.toString()==""){
+                        this.tableData[obj.index].price = 0
+                    }else{
+                        if(res.data.price<0){
+                            this.$message.error("须先设定商品价格(价格-价格设定)")
+                        }else{
+                            this.tableData[obj.index].price = parseFloat(res.data.price).toFixed(4)
+                        }
+                    }
                 })
             }
         },
         save() {
             this.temp.id = this.id;
-            this.temp.purchaseReturnedLine = deleteEmptyProp(this.tableData);
+            this.temp.salesReturnedLine = deleteEmptyProp(this.tableData);
+            this.temp.advPayAmount = Number(this.temp.advPayAmount);
             this.temp.settleTypeDetail = this.settleData;
-            savePurchaseReturned(this.temp).then(res => {
+            saveSalesReturned(this.temp).then(res => {
                 if (res.data.errorCode == 0) {
-                    this.$message.success(this.temp.id == "" ? '新增成功' : '修改成功');
+                    this.$message.success(this.id==""?'新增成功':'修改成功');
                     this.$store.dispatch('tagsView/delView', this.$route);
-                    this.$router.replace('/purchaseReturned/data');
+                    this.$router.replace('/sale/data');
                 } else {
                     this.$message.error(res.data.msg)
                 }

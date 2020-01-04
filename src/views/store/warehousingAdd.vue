@@ -92,7 +92,7 @@
             </el-table-column>
             <el-table-column label="是否赠品" align="center">
                 <template slot-scope="{row}">
-                    <el-checkbox v-model="row.bGift"></el-checkbox>
+                    <el-checkbox v-model="row.isGift" false-label="0" true-label="1"></el-checkbox>
                 </template>
             </el-table-column>
         </el-table>

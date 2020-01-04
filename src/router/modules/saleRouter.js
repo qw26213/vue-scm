@@ -39,11 +39,27 @@ const saleRouter = {
             title: '销售订单'
         }
     }, {
-        path: 'saleTable',
-        component: () => import('@/views/sale/table'),
-        name: 'saleTable',
+        path: 'returned',
+        component: () => import('@/views/sale/returned'),
+        name: 'returned',
         meta: {
             title: '销售退货'
+        }
+    }, {
+        path: 'returnedAdd',
+        component: () => import('@/views/sale/returnedAdd'),
+        name: 'returnedAdd',
+        hidden:true,
+        meta: {
+            title: '新增销售退货'
+        }
+    }, {
+        path: 'returnedModify',
+        component: () => import('@/views/sale/returnedAdd'),
+        name: 'returnedModify',
+        hidden:true,
+        meta: {
+            title: '编辑销售退货'
         }
     }, {
         path: 'saleInvoice',
