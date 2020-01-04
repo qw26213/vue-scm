@@ -30,14 +30,14 @@
           <span>{{row.arAp|format}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="是否可用" align="center">
-        <template slot-scope="{row}">
-          <span>{{row.isDisable==0?'是':'否'}}</span>
-        </template>
-      </el-table-column>
       <el-table-column label="备注">
         <template slot-scope="{row}">
           <span>{{row.remarks}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="是否可用" align="center">
+        <template slot-scope="{row}">
+          <span>{{row.isDisable==0?'是':'否'}}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="190">
@@ -67,6 +67,9 @@
           <el-radio v-model="temp.arAp" label="AP">应付</el-radio>
           <el-radio v-model="temp.arAp" label="ADVR">预收</el-radio>
           <el-radio v-model="temp.arAp" label="ADVP">预付</el-radio>
+        </el-form-item>
+        <el-form-item label="备注" prop="remarks">
+          <el-input v-model="temp.remarks" placeholder="备注" />
         </el-form-item>
         <el-form-item label="是否可用" prop="isDisable">
           <el-radio v-model="temp.isDisable" label="0">是</el-radio>
@@ -115,6 +118,7 @@ export default {
         settleTypeCode: '',
         coaCode:'',
         arAp:'',
+        remarks:'',
         isDisable: "0"
       },
       dialogFormVisible: false,
@@ -149,6 +153,7 @@ export default {
       this.temp.settleTypeCode = ''
       this.temp.coaCode = ''
       this.temp.arAp = ''
+      this.temp.remarks = ''
       this.temp.isDisable = '0'
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
@@ -161,6 +166,7 @@ export default {
       this.temp.settleTypeName = obj.settleTypeName
       this.temp.settleTypeCode = obj.settleTypeCode
       this.temp.coaCode = obj.coaCode
+      this.temp.remarks = obj.remarks
       this.temp.arAp = obj.arAp==null?'':obj.arAp;
       this.temp.isDisable = String(obj.isDisable)
       this.$nextTick(() => {

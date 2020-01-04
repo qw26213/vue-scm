@@ -102,31 +102,31 @@
                 </el-table-column>
             </el-table>
             <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.limit" @pagination="getList" />
-            <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增商品':'修改商品'" :visible.sync="dialogFormVisible" width="760px">
-                <el-form ref="dataForm" :rules="rules" :model="temp" :inline="true" label-position="right" label-width="130px" style="width: 690px; margin-left:30px;overflow:auto;height:600px">
-                    <el-form-item label="商品代码" prop="itemCode">
+            <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增商品':'修改商品'" :visible.sync="dialogFormVisible" width="740px">
+                <el-form ref="dataForm" :rules="rules" :model="temp" :inline="true" label-position="left" label-width="110px" style="width: 680px; margin-left:30px;overflow:auto;height:600px">
+                    <el-form-item label="商品代码" prop="itemCode" style="margin-right:20px">
                         <el-input v-model="temp.itemCode" placeholder="商品代码" />
                     </el-form-item>
                     <el-form-item label="商品名称" prop="itemName">
                         <el-input v-model="temp.itemName" placeholder="商品名称" />
                     </el-form-item>
-                    <el-form-item label="规格" prop="norms">
+                    <el-form-item label="规格" prop="norms" style="margin-right:20px">
                         <el-input v-model="temp.norms" placeholder="规格" />
                     </el-form-item>
                     <el-form-item label="主单位" prop="measId">
-                        <el-select v-model="temp.measId" style="width:180px" class="filter-item">
+                        <el-select v-model="temp.measId" style="width:185px" class="filter-item">
                             <el-option v-for="item in measList" :key="item.id" :label="item.measName" :value="item.id"></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="辅助单位" prop="subMeasId">
-                        <el-select v-model="temp.subMeasId" style="width:180px" class="filter-item">
+                    <el-form-item label="辅助单位" prop="subMeasId" style="margin-right:20px">
+                        <el-select v-model="temp.subMeasId" style="width:185px" class="filter-item">
                             <el-option v-for="item in measList" :key="item.id" :label="item.measName" :value="item.id"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="换算率" prop="exchangeRate">
                         <el-input v-model="temp.exchangeRate" placeholder="换算率" />
                     </el-form-item>
-                    <el-form-item label="税率" prop="taxRate">
+                    <el-form-item label="税率" prop="taxRate" style="margin-right:20px">
                         <el-input v-model="temp.taxRate" placeholder="税率" />
                     </el-form-item>
                     <el-form-item label="品牌" prop="brandId">
@@ -134,26 +134,32 @@
                             <el-option v-for="item in brandList" :key="item.id" :label="item.brandName" :value="item.id"></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="建议最低价" prop="price0">
+                    <el-form-item label="建议最低价" prop="price0" style="margin-right:20px">
                         <el-input v-model="temp.price0" placeholder="建议最低价" />
                     </el-form-item>
                     <el-form-item label="销售最低价" prop="lowestPrice">
                         <el-input v-model="temp.lowestPrice" placeholder="销售最低价" />
                     </el-form-item>
-                    <el-form-item label="计价方式" prop="priceModeCode">
-                        <el-select v-model="temp.priceModeCode" style="width:180px" class="filter-item">
+                    <el-form-item label="计价方式" prop="priceModeCode" style="margin-right:20px">
+                        <el-select v-model="temp.priceModeCode" style="width:185px" class="filter-item">
                             <el-option label="移动平均" value="0"></el-option>
                             <el-option label="个别计价" value="1"></el-option>
                             <el-option label="先进先出" value="2"></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="产地" prop="prodArea">
-                        <el-input v-model="temp.prodArea" placeholder="产地" />
+                    <el-form-item label="商品产地" prop="prodArea">
+                        <el-input v-model="temp.prodArea" placeholder="商品产地" />
                     </el-form-item>
-                    <el-form-item label="保质期(天)" prop="qualityDays">
+                    <el-form-item label="保质期(天)" prop="qualityDays" style="margin-right:20px">
                         <el-input v-model="temp.qualityDays" placeholder="保质期" />
                     </el-form-item>
-                    <el-form-item label="销售用计量单位" prop="measSale">
+                    <el-form-item label="商品属性" prop="attr">
+                        <el-radio-group v-model="temp.attr">
+                            <el-radio label="0" style="margin-right:10px">库存商品</el-radio>
+                            <el-radio label="1">负单价商品</el-radio>
+                        </el-radio-group>
+                    </el-form-item>
+                    <el-form-item label="销售用计量单位" style="width:295px;margin-right:20px" prop="measSale">
                         <el-radio v-model="temp.measSale" label="1" style="margin-right:10px">主单位</el-radio>
                         <el-radio v-model="temp.measSale" label="0">辅助单位</el-radio>
                     </el-form-item>
@@ -175,32 +181,24 @@
                             <el-radio label="2">按业务员</el-radio>
                         </el-radio-group>
                     </el-form-item>
-                    <el-form-item label="商品属性" prop="attr">
-                        <el-radio v-model="temp.attr" label="0" style="margin-right:10px">库存商品</el-radio>
-                        <el-radio v-model="temp.attr" label="1">负单价商品</el-radio>
+                    <el-form-item label="" style="width:155px"></el-form-item>
+                    <el-form-item label="" prop="isBatch">
+                        <el-checkbox v-model="temp.isBatch" false-label="0" true-label="1" style="margin-right:10px">序列号管理</el-checkbox>
                     </el-form-item>
-                    <el-form-item label="序列号管理" prop="isBatch">
-                        <el-radio v-model="temp.isBatch" label="1" style="margin-right:10px">是</el-radio>
-                        <el-radio v-model="temp.isBatch" label="0">否</el-radio>
+                    <el-form-item label="" prop="negativeType">
+                        <el-checkbox v-model="temp.negativeType" false-label="0" true-label="1" style="margin-right:10px">允许负库存</el-checkbox>
                     </el-form-item>
-                    <el-form-item label="允许负库存" prop="negativeType">
-                        <el-radio-group v-model="temp.negativeType">
-                            <el-radio label="1" style="margin-right:10px">是</el-radio>
-                            <el-radio label="0" style="margin-right:10px">否</el-radio>
-                            <el-radio label="2">按仓库</el-radio>
-                        </el-radio-group>
+                    <el-form-item label="" prop="isRefrigerated">
+                        <el-checkbox v-model="temp.isRefrigerated" false-label="0" true-label="1" style="margin-right:10px">低温</el-checkbox>
                     </el-form-item>
-                    <el-form-item label="是否低温" prop="isRefrigerated">
-                        <el-radio v-model="temp.isRefrigerated" label="1" style="margin-right:10px">是</el-radio>
-                        <el-radio v-model="temp.isRefrigerated" label="0">否</el-radio>
+                    <el-form-item label="" prop="isQuality">
+                        <el-checkbox v-model="temp.isQuality" false-label="0" true-label="1" style="margin-right:10px">保质期管理</el-checkbox>
                     </el-form-item>
-                    <el-form-item label="保质期管理" prop="isQuality">
-                        <el-radio v-model="temp.isQuality" label="1" style="margin-right:10px">是</el-radio>
-                        <el-radio v-model="temp.isQuality" label="0">否</el-radio>
+                    <el-form-item label="" prop="isSale">
+                        <el-checkbox v-model="temp.isSale" false-label="0" true-label="1" style="margin-right:10px">在售</el-checkbox>
                     </el-form-item>
-                    <el-form-item label="是否在售" prop="isSale" style="width:278px">
-                        <el-radio v-model="temp.isSale" label="1" style="margin-right:10px">是</el-radio>
-                        <el-radio v-model="temp.isSale" label="0">否</el-radio>
+                    <el-form-item label="备注" prop="remarks" style="margin-right:20px">
+                      <el-input v-model="temp.remarks" placeholder="备注" />
                     </el-form-item>
                     <el-form-item label="是否可用" prop="isDisable">
                         <el-radio v-model="temp.isDisable" label="0" style="margin-right:10px">是</el-radio>
@@ -270,6 +268,7 @@ export default {
                 negativeType: '1',
                 isQuality: '0',
                 isSale: '1',
+                remarks:'',
                 isDisable: "0"
             },
             dialogFormVisible: false,

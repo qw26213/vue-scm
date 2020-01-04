@@ -91,6 +91,9 @@
         <el-form-item label="电话" prop="tel">
           <el-input v-model="temp.tel" placeholder="电话" />
         </el-form-item>
+        <el-form-item label="备注" prop="remarks">
+          <el-input v-model="temp.remarks" placeholder="备注" />
+        </el-form-item>
         <el-form-item label="是否可用" prop="isDisable">
           <el-radio v-model="temp.isDisable" label="0">是</el-radio>
           <el-radio v-model="temp.isDisable" label="1">否</el-radio>
@@ -154,6 +157,7 @@ export default {
         truckLength:'',
         truckTonnage:'',
         truckCapacity:'',
+        remarks:'',
         isDisable: "0"
       },
       dialogFormVisible: false,

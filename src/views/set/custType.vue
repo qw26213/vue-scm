@@ -23,14 +23,14 @@
           <span>{{row.custTypeName}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="是否可用" align="center">
-        <template slot-scope="{row}">
-          <span>{{row.isDisable==0?'是':'否'}}</span>
-        </template>
-      </el-table-column>
       <el-table-column label="备注">
         <template slot-scope="{row}">
           <span>{{row.remarks}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="是否可用" align="center">
+        <template slot-scope="{row}">
+          <span>{{row.isDisable==0?'是':'否'}}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="250">

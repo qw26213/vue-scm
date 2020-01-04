@@ -106,13 +106,13 @@ export default {
         page: 1,
         staffCode: '',
         deptId:'',
-        remarks:'',
         staffName: ''
       },
       showReviewer: false,
       temp: {
         id:'',
         staffName: '',
+        remarks:'',
         staffCode: '',
         isDisable: "0"
       },

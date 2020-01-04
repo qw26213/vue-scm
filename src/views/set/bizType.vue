@@ -20,14 +20,14 @@
           <span>{{row.bizTypeName}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="是否可用" align="center">
-        <template slot-scope="{row}">
-          <span>{{row.isDisable==0?'是':'否'}}</span>
-        </template>
-      </el-table-column>
       <el-table-column label="备注">
         <template slot-scope="{row}">
           <span>{{row.remarks}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="是否可用" align="center">
+        <template slot-scope="{row}">
+          <span>{{row.isDisable==0?'是':'否'}}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="230">
@@ -47,6 +47,9 @@
         </el-form-item>
         <el-form-item label="业务类型名称" prop="bizTypeName">
           <el-input v-model="temp.bizTypeName" placeholder="业务类型名称" />
+        </el-form-item>
+        <el-form-item label="备注" prop="remarks">
+          <el-input v-model="temp.remarks" placeholder="备注" />
         </el-form-item>
         <el-form-item label="是否可用" prop="isDisable">
           <el-radio v-model="temp.isDisable" label="0">是</el-radio>
@@ -83,6 +86,7 @@ export default {
       temp: {
         bizTypeName: '',
         bizTypeCode: '',
+        remarks:'',
         isDisable: "0"
       },
       dialogFormVisible: false,
@@ -113,7 +117,7 @@ export default {
       this.temp.id = ''
       this.temp.bizTypeName = ''
       this.temp.bizTypeCode = ''
-      this.temp.parentCode = ''
+      this.temp.remarks = ''
       this.temp.isDisable = '0'
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
@@ -125,7 +129,7 @@ export default {
       this.temp.id = obj.id
       this.temp.bizTypeName = obj.bizTypeName
       this.temp.bizTypeCode = obj.bizTypeCode
-      this.temp.parentCode = obj.parentCode
+      this.temp.remarks = obj.remarks
       this.temp.isDisable = String(obj.isDisable)
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()

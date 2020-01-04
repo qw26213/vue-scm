@@ -43,12 +43,30 @@ const purchaseRouter = {
             title: '采购订单'
         }
     }, {
-        path: 'purchaseTable',
+        path: 'returned',
         component: () =>
-            import ('@/views/purchase/table'),
-        name: 'purchaseTable',
+            import ('@/views/purchase/returned'),
+        name: 'returned',
         meta: {
             title: '采购退货'
+        }
+    }, {
+        path: 'returnedAdd',
+        component: () =>
+            import ('@/views/purchase/returnedAdd'),
+        name: 'returnedAdd',
+        hidden: true,
+        meta: {
+            title: '新增采购退货'
+        }
+    }, {
+        path: 'returnedModify',
+        component: () =>
+            import ('@/views/purchase/returnedAdd'),
+        name: 'returnedModify',
+        hidden: true,
+        meta: {
+            title: '编辑采购退货'
         }
     }, {
         path: 'purchaseInvoice',

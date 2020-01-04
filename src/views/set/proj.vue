@@ -20,6 +20,11 @@
           <span>{{row.projName}}</span>
         </template>
       </el-table-column>
+      <el-table-column label="备注">
+        <template slot-scope="{row}">
+          <span>{{row.remarks}}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="是否可用" align="center">
         <template slot-scope="{row}">
           <span>{{row.isDisable==0?'是':'否'}}</span>
@@ -42,6 +47,9 @@
         </el-form-item>
         <el-form-item label="项目名称" prop="projName">
           <el-input v-model="temp.projName" placeholder="项目名称" />
+        </el-form-item>
+        <el-form-item label="备注" prop="remarks">
+          <el-input v-model="temp.remarks" placeholder="备注" />
         </el-form-item>
         <el-form-item label="是否可用" prop="isDisable">
           <el-radio v-model="temp.isDisable" label="0">是</el-radio>
@@ -78,6 +86,7 @@ export default {
       temp: {
         projName: '',
         projCode: '',
+        remarks:'',
         isDisable: "0"
       },
       dialogFormVisible: false,

@@ -140,6 +140,9 @@
               </el-dropdown-menu>
             </el-dropdown>
         </el-form-item>
+        <el-form-item label="备注" prop="remarks">
+          <el-input v-model="temp.remarks" placeholder="备注" />
+        </el-form-item>
         <el-form-item label="价格组" prop="priceGroupId">
           <el-select v-model="temp.priceGroupId" style="width:180px" class="filter-item">
             <el-option v-for="item in priceGroupList" :key="item.id" :label="item.priceGroupName" :value="item.id">
@@ -203,6 +206,7 @@ export default {
         channelTypeName:'',
         custTypeName:'',
         custTypeId:'',
+        remarks:'',
         isDisable: "0"
       },
       dialogFormVisible: false,

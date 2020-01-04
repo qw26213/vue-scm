@@ -22,6 +22,8 @@ export default {
         curIndex:this.index,
         curId:this.selectId,
         curName:"",
+        curSubUom:"",
+        curExchangeRate:"",
         curCode:"",
         curNorms:"",
         curUom:"",
@@ -64,6 +66,8 @@ export default {
               this.curName = this.itemList[i].itemName
               this.curNorms = this.itemList[i].norms
               this.curUom = this.itemList[i].uom
+              this.curSubUom = this.itemList[i].subUom
+              this.curExchangeRate = this.itemList[i].exchangeRate
             }
           }
           var obj = {
@@ -72,7 +76,9 @@ export default {
             norms:this.curNorms,
             uom:this.curUom,
             itemId:this.curId,
-            index:this.curIndex
+            index:this.curIndex,
+            subUom:this.curSubUom,
+            exchangeRate:this.curExchangeRate
           }
           this.$emit('changeVal',obj)
         }

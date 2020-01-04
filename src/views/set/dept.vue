@@ -30,6 +30,11 @@
           <span>{{row.leader}}</span>
         </template>
       </el-table-column>
+      <el-table-column label="备注">
+        <template slot-scope="{row}">
+          <span>{{row.remarks}}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="是否可用" align="center">
         <template slot-scope="{row}">
           <span>{{row.isDisable==0?'是':'否'}}</span>
@@ -54,6 +59,9 @@
         </el-form-item>
         <el-form-item label="负责人" prop="leader">
           <el-input v-model="temp.leader" placeholder="负责人" />
+        </el-form-item>
+        <el-form-item label="备注" prop="remarks">
+          <el-input v-model="temp.remarks" placeholder="备注" />
         </el-form-item>
         <el-form-item label="是否可用" prop="isDisable">
           <el-radio v-model="temp.isDisable" label="0">是</el-radio>
@@ -96,6 +104,7 @@ export default {
         deptCode: '',
         parentId: '',
         leader:'',
+        remarks:'',
         isDisable: "0"
       },
       dialogFormVisible: false,
@@ -145,6 +154,7 @@ export default {
       this.temp.deptName = ''
       this.temp.deptCode = ''
       this.temp.leader = ''
+      this.temp.remarks = ''
       this.temp.isDisable = '0'
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
@@ -157,6 +167,7 @@ export default {
       this.temp.deptName = obj.deptName
       this.temp.deptCode = obj.deptCode
       this.temp.leader = obj.leader
+      this.temp.remarks = obj.remarks
       this.temp.isDisable = String(obj.isDisable)
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()

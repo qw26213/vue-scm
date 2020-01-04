@@ -22,3 +22,18 @@ export function register(data) {
   })
 }
 
+export function forgotSentVerifyCode(data){
+  return request({
+    url: '/drp/forgotSentVerifyCode',
+    method: 'post',
+    data
+  })
+}
+
+export function forgotPSWSave(data){
+  return request({
+    url: '/drp/forgotPSWSave',
+    method: 'post',
+    data
+  })
+}

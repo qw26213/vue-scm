@@ -56,6 +56,62 @@ export function buildVoucherByHeaderId(data) {
     data:data
   })
 }
+// -----------采购退货----------
+export function getPurchaseReturned(data) {
+  return request({
+    url: '/drp/po/purchaseReturned/getResPageData',
+    method: 'post',
+    data
+  })
+}
+
+export function getPurchaseReturnedById(id) {
+  return request({
+    url: '/drp/po/purchaseReturned/getByHeaderId',
+    method: 'post',
+    data:{id:id}
+  })
+}
+
+export function savePurchaseReturned(data) {
+  return request({
+    url: '/drp/po/purchaseReturned/save',
+    method: 'post',
+    data
+  })
+}
+
+export function delPurchaseReturned(id) {
+  return request({
+    url: '/drp/po/purchaseReturned/deleteByHeaderId',
+    method: 'post',
+    data:{id:id}
+  })
+}
+
+export function auditPurchaseReturned(id) {
+  return request({
+    url: '/drp/po/purchaseReturned/auditByHeaderId',
+    method: 'post',
+    data:{id:id}
+  })
+}
+
+export function buildPurchaseReturnedEntry(data) {
+  return request({
+    url: '/drp/po/purchaseReturned/buildWarehousingEntryByHeaderId',
+    method: 'post',
+    data:data
+  })
+}
+
+export function buildVoucherReturnedByHeaderId(data) {
+  return request({
+    url: '/drp/po/purchaseReturned/buildVoucherByHeaderId',
+    method: 'post',
+    data:data
+  })
+}
 
 //-----入库单----
 export function getWarehousing(data) {
@@ -358,3 +414,5 @@ export function getItemPrice(data){
     data
   })
 }
+
+// ---------------------退货-----------------
