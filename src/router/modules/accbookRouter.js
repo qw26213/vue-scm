@@ -23,58 +23,58 @@ const accbookRouter = {
             title: '明细账'
         }
     }, {
-        path: 'detailaccount',
-        component: () => import('@/views/accbook/detailaccount'),
-        name: 'detailaccount',
+        path: 'subsidiary',
+        component: () => import('@/views/accbook/subsidiary'),
+        name: 'subsidiary',
         meta: {
             title: '明细账(分录)'
         }
     }, {
-        path: 'detailaccount',
-        component: () => import('@/views/accbook/detailaccount'),
-        name: 'detailaccount',
+        path: 'balance',
+        component: () => import('@/views/accbook/balance'),
+        name: 'balance',
         meta: {
             title: '科目余额表'
         }
     }, {
-        path: 'detailaccount',
-        component: () => import('@/views/accbook/detailaccount'),
-        name: 'detailaccount',
+        path: 'manyaccount',
+        component: () => import('@/views/accbook/manyaccount'),
+        name: 'manyaccount',
         meta: {
             title: '多栏账'
         }
     }, {
-        path: 'detailaccount',
-        component: () => import('@/views/accbook/detailaccount'),
-        name: 'detailaccount',
+        path: 'numberdetailaccount',
+        component: () => import('@/views/accbook/numberdetailaccount'),
+        name: 'numberdetailaccount',
         meta: {
             title: '数量明细账'
         }
     }, {
-        path: 'detailaccount',
-        component: () => import('@/views/accbook/detailaccount'),
-        name: 'detailaccount',
+        path: 'subsidiarynum',
+        component: () => import('@/views/accbook/subsidiarynum'),
+        name: 'subsidiarynum',
         meta: {
             title: '数量明细账(分录)'
         }
     }, {
-        path: 'detailaccount',
-        component: () => import('@/views/accbook/detailaccount'),
-        name: 'detailaccount',
+        path: 'checkbalance',
+        component: () => import('@/views/accbook/checkbalance'),
+        name: 'checkbalance',
         meta: {
             title: '项目余额表'
         }
     }, {
-        path: 'detailaccount',
-        component: () => import('@/views/accbook/detailaccount'),
-        name: 'detailaccount',
+        path: 'checkdetail',
+        component: () => import('@/views/accbook/checkdetail'),
+        name: 'checkdetail',
         meta: {
             title: '项目明细表'
         }
     }, {
-        path: 'detailaccount',
-        component: () => import('@/views/accbook/detailaccount'),
-        name: 'detailaccount',
+        path: 'projsubsidiary',
+        component: () => import('@/views/accbook/projsubsidiary'),
+        name: 'projsubsidiary',
         meta: {
             title: '项目余额表(分录)'
         }

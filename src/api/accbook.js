@@ -24,25 +24,25 @@ export function getData3(data) {
   })
 }
 
-export function getData4(data) {
+export function getSubsidiary(data) {
   return request({
-    url: '/drp/accbook/ledger/datatables',
+    url: '/drp/accbook/subsidiary/datatables',
     method: 'post',
     data
   })
 }
 
-export function getData5(data) {
+export function getBalance(data) {
   return request({
-    url: '/drp/accbook/ledger/datatables',
+    url: '/drp/accbook/balance/datatables',
     method: 'post',
     data
   })
 }
 
-export function getData6(data) {
+export function getMultisubsidiary(data) {
   return request({
-    url: '/drp/accbook/ledger/datatables',
+    url: '/drp/accbook/multisubsidiary/datatables',
     method: 'post',
     data
   })
