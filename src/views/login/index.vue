@@ -89,6 +89,7 @@ export default {
               this.$router.push({ path: this.redirect || '/'})
               this.loading = false
             }).catch(err => {
+              this.$message.error(err)
               this.loading = false
             })
           } else {
@@ -98,7 +99,6 @@ export default {
       }
     },
     mounted(){
-      console.log(this.isRemember)
       document.onkeydown=() => {
         if (window.event.keyCode == 13) {
           this.handleLogin();

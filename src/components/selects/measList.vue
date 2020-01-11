@@ -1,15 +1,16 @@
 <template>
     <el-select v-model="curId" style="width:150px" placeholder="" size="mini" @change="changeVal">
-        <el-option v-for="item in resdata" :label="item.measName" :value="item.id"></el-option>
+        <el-option v-for="item in list" :label="item.measName" :value="item.id"></el-option>
     </el-select>
 </template>
 <script>
 import { getMeas } from '@/api/basedata'
 export default {
     name: 'list',
-    props: ['selectId','index','resdata'],
+    props: ['selectId','index','resdata','keyType'],
     data(){
       return {
+        list:[],
         curName:'',
         curCode:'',
         curId:this.selectId
@@ -20,6 +21,13 @@ export default {
             this.curId = this.selectId
         }
     },
+    created(){
+        var list = this.resdata;
+        if(this.keyType=='subMeas'){
+            var list = [{id:'',measName:'无'},...this.resdata]
+        }
+        this.list = list
+    },
     methods: {
         changeVal(val){
             for(var i=0;i<this.resdata.length;i++){
@@ -27,7 +35,11 @@ export default {
                   this.curName = this.resdata[i].measName;
                 }
             }
-            var obj = {measId:val,measName:this.curName,index:this.index}
+            if(this.keyType=='subMeas'){
+                var obj = {subMeasId:val,subMeasName:this.curName,index:this.index}
+            }else{
+                var obj = {measId:val,measName:this.curName,index:this.index}
+            }
             this.$emit('changeVal',obj)
         }
     }

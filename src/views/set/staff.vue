@@ -210,7 +210,7 @@ export default {
         }
       })
     },
-    handleAdd(obj) {
+    handleAdd() {
       if(this.curItemLeaf==0){
         this.$message.error('只有末级部门才能添加');return;
       }

@@ -20,11 +20,7 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   response => {
     let res = response.data;
-    if (res.errorCode == '999000') {
-      console.log("errorCode=999000");
-    } else {
-      return response;
-    }
+    return response;
   },
   error => {
     if (error.response) {

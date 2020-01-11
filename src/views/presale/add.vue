@@ -7,7 +7,7 @@
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="单据号:" prop="billNo">
-                    <el-input size="mini" v-model="temp.billNo" placeholder="单据号" />
+                    <el-input size="mini" v-model="temp.billNo" placeholder="单据号" disabled />
                 </el-form-item>
                 <el-form-item label="业务类型:" prop="bizTypeId">
                     <bizTypeList @selectChange="selectChange" :selectId="temp.bizTypeId"></bizTypeList>
@@ -77,12 +77,12 @@
             </el-table-column>
             <el-table-column label="计量单位" v-if="temp.presaleType=='2'" key='3' width="150">
                 <template slot-scope="scope">
-                    <measList :resdata="measList" :selectId="scope.row.measId" :index="scope.$index" @changeVal="changeVal1"></measList>
+                    <measList :resdata="measList" :selectId="scope.row.measId" keyType="meas" :index="scope.$index" @changeVal="changeVal1"></measList>
                 </template>
             </el-table-column>
             <el-table-column label="辅助单位" v-if="temp.presaleType=='2'" key='4' width="150">
                 <template slot-scope="scope">
-                    <measList :resdata="measList" :selectId="scope.row.subMeasId" :index="scope.$index" @changeVal="changeVal1"></measList>
+                    <measList :resdata="measList" :selectId="scope.row.subMeasId" keyType="subMeas" :index="scope.$index" @changeVal="changeVal1"></measList>
                 </template>
             </el-table-column>
             <el-table-column label="换算率" v-if="temp.presaleType=='2'||temp.presaleType=='1'" key="5" width="100">

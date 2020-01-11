@@ -6,7 +6,7 @@
                     <el-date-picker :editable="false" v-model="temp.billDate" type="date" placeholder="单据日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
                 </el-form-item>
                 <el-form-item label="单据号:" prop="billNo">
-                    <el-input size="mini" v-model="temp.billNo" placeholder="单据号" />
+                    <el-input size="mini" v-model="temp.billNo" placeholder="单据号" disabled />
                 </el-form-item>
                 <el-form-item label="业务类型:" prop="bizTypeId">
                     <bizTypeList @selectChange="selectChange" :selectId="temp.bizTypeId"></bizTypeList>

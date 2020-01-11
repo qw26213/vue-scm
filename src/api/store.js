@@ -553,6 +553,7 @@ export function buildPresaleVoucher(data) {
   })
 }
 
+// ---销售单获取商品价格
 export function getItemPrice(data){
   return request({
     url:'/drp/bd/price/getPriceSVOByItemIdCustId',
@@ -560,5 +561,55 @@ export function getItemPrice(data){
     data
   })
 }
+
+// --------预收退款
+export function getPresaleReturned(data) {
+  return request({
+    url: '/drp/ps/presaleReturned/getResPageData',
+    method: 'post',
+    data
+  })
+}
+
+export function getPresaleReturnedById(id) {
+  return request({
+    url: '/drp/ps/presaleReturned/getByHeaderId',
+    method: 'post',
+    data:{id:id}
+  })
+}
+
+export function savePresaleReturned(data) {
+  return request({
+    url: '/drp/ps/presaleReturned/save',
+    method: 'post',
+    data
+  })
+}
+
+export function delPresaleReturned(id) {
+  return request({
+    url: '/drp/ps/presaleReturned/deleteByHeaderId',
+    method: 'post',
+    data:{id:id}
+  })
+}
+
+export function auditPresaleReturned(id) {
+  return request({
+    url: '/drp/ps/presaleReturned/auditByHeaderId',
+    method: 'post',
+    data:{id:id}
+  })
+}
+
+export function buildPresaleReturnedVoucher(data) {
+  return request({
+    url: '/drp/ps/presaleReturned/buildVoucherByHeaderId',
+    method: 'post',
+    data
+  })
+}
+
 
 // ---------------------退货-----------------

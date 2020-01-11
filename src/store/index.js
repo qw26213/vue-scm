@@ -2,7 +2,9 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import getters from './getters'
 
-Vue.use(Vuex)
+if (process.env.NODE_ENV === 'development') {
+  Vue.use(Vuex)
+}
 
 const modulesFiles = require.context('./modules', true, /\.js$/)
 

@@ -26,6 +26,23 @@ const presaleRouter = {
         name: 'presaleModify',
         hidden: true,
         meta: { title: '编辑预收单' }
+    },{
+        path: 'returned',
+        component: () => import('@/views/presale/returned'),
+        name: 'presaleReturnedData',
+        meta: { title: '预收退款' }
+    }, {
+        path: 'returnedAdd',
+        component: () => import('@/views/presale/returnedAdd'),
+        hidden: true,
+        name: 'presaleReturnedAdd',
+        meta: { title: '新增预收退款' }
+    }, {
+        path: 'returneModify',
+        component: () => import('@/views/presale/returnedAdd'),
+        name: 'presaleReturnedAdd',
+        hidden: true,
+        meta: { title: '编辑预收退款' }
     }]
 }
 

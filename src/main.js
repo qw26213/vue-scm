@@ -4,8 +4,14 @@ import Cookies from 'js-cookie'
 
 import 'normalize.css/normalize.css'
 
-import Element from 'element-ui'
+import ELEMENT from 'element-ui'
+
+if (process.env.NODE_ENV === 'development') {
+	require('element-ui/lib/theme-chalk/index.css')
+}
+
 import './styles/element-variables.scss';
+
 import axios from "./utils/request";
 
 import '@/styles/index.scss'
@@ -19,7 +25,7 @@ import './permission'
 
 import * as filters from './filters'
 
-Vue.use(Element, {
+Vue.use(ELEMENT, {
   size: Cookies.get('size') || 'medium'
 })
 

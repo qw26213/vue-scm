@@ -36,18 +36,22 @@ const actions = {
     const { orgCode,userAccount, password } = obj
     return new Promise((resolve, reject) => {
       loginCheck({ orgCode: orgCode.trim(),userAccount:userAccount.trim(), password: password }).then(res => {
-        const { data } = res;
-        let token = data.body||"";
-        commit('SET_TOKEN', token)
-        setToken(token)
-        getIndexInfo(this.loginForm).then(res=>{
-          var user = res.data.userInfo;
-          commit('SET_NAME', user.userName)
-          commit('SET_AVATAR', 'https://panjiachen.gitee.io/vue-element-admin-site/home.png')
-        }).catch( err => {
-            console.log(err);
-        });
-        resolve()
+        if(res.data.errorCode==0){
+          const { data } = res;
+          let token = data.body||"";
+          commit('SET_TOKEN', token)
+          setToken(token)
+          getIndexInfo(this.loginForm).then(res=>{
+            var user = res.data.userInfo;
+            commit('SET_NAME', user.userName)
+            commit('SET_AVATAR', 'https://panjiachen.gitee.io/vue-element-admin-site/home.png')
+          }).catch( err => {
+              console.log(err);
+          });
+          resolve()
+        }else{
+          reject(res.data.msg)
+        }
       }).catch(error => {
         reject(error)
       })

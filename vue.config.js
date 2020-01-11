@@ -1,9 +1,19 @@
 'use strict'
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
-
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 function resolve(dir) {
   return path.join(__dirname, dir)
+}
+
+function getProdExternals() {
+  return {
+    'vue': 'Vue',
+    'vuex': 'Vuex',
+    'vue-router': 'VueRouter',
+    'axios': 'axios',
+    'element-ui': 'ELEMENT'
+  };
 }
 
 const name = defaultSettings.title || 'vue';
@@ -24,6 +34,14 @@ module.exports = {
   },
   configureWebpack: {
     name: name,
+    externals:process.env.NODE_ENV === 'development'?{}:getProdExternals(),
+    plugins: [
+      new HtmlWebpackPlugin({
+        filename: 'index.html',
+        template: process.env.NODE_ENV === 'development'?'public/index.dev.html':'public/index.html',
+        inject: true
+      })
+    ],
     resolve: {
       alias: {
         '@': resolve('src')
@@ -50,13 +68,11 @@ module.exports = {
         symbolId: 'icon-[name]'
       })
       .end()
-    // set preserveWhitespace
     config.module.rule('vue').use('vue-loader').loader('vue-loader').tap(options => {
         options.compilerOptions.preserveWhitespace = true
         return options
       }).end()
     config
-      // https://webpack.js.org/configuration/devtool/#development
       .when(process.env.NODE_ENV === 'development',
         config => config.devtool('cheap-source-map')
       )

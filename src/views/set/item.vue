@@ -23,6 +23,11 @@
                         <span>{{row.itemName}}</span>
                     </template>
                 </el-table-column>
+                <el-table-column label="规格" width="90" align="right">
+                    <template slot-scope="{row}">
+                        <span>{{row.norms}}</span>
+                    </template>
+                </el-table-column>
                 <el-table-column label="品牌">
                     <template slot-scope="{row}">
                         <span>{{row.brandName}}</span>
@@ -56,11 +61,6 @@
                 <el-table-column label="换算率" width="72" align="right">
                     <template slot-scope="{row}">
                         <span>{{row.exchangeRate}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column label="规格" width="90" align="right">
-                    <template slot-scope="{row}">
-                        <span>{{row.norms}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="税率" width="90" align="right">
@@ -103,7 +103,7 @@
             </el-table>
             <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.limit" @pagination="getList" />
             <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增商品':'修改商品'" :visible.sync="dialogFormVisible" width="740px">
-                <el-form ref="dataForm" :rules="rules" :model="temp" :inline="true" label-position="left" label-width="110px" style="width: 680px; margin-left:30px;overflow:auto;height:600px">
+                <el-form ref="dataForm" :rules="rules" :model="temp" :inline="true" label-position="left" label-width="110px" style="width:680px; margin-left:30px;overflow:auto;height:600px">
                     <el-form-item label="商品代码" prop="itemCode" style="margin-right:20px">
                         <el-input v-model="temp.itemCode" placeholder="商品代码" />
                     </el-form-item>
