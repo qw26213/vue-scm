@@ -222,6 +222,8 @@ export default {
         }else{
           this.$message.error(res.data.msg)
         }
+      }).catch(() => {
+          this.$message.error('生成失败，请稍后重试！')
       })
     },
     handleCreateVouter(status,id1,id2){

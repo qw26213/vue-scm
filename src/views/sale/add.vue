@@ -18,10 +18,10 @@
                     <custList @selectChange="selectChange" keyType="settleCustId" :selectId="temp.settleCustId"></custList>
                 </el-form-item>
                 <el-form-item label="仓库:" prop="warehouseId">
-                    <warehouseList @selectChange="selectChange" keyType="warehouseId" :selectId="temp.warehouseId"></warehouseList>
+                    <warehouseList @selectChange="selectChange" keyType="warehouseId" allowNull="1" :selectId="temp.warehouseId"></warehouseList>
                 </el-form-item>
                 <el-form-item label="车辆:" prop="truckId">
-                    <truckList @selectChange="selectChange" keyType="truckId" :selectId="temp.truckId"></truckList>
+                    <truckList @selectChange="selectChange" keyType="truckId" allowNull="1" :selectId="temp.truckId"></truckList>
                 </el-form-item>
                 <el-form-item label="业务员:" prop="staffId">
                     <staffList @selectChange="selectChange" :selectId="temp.staffId"></staffList>

@@ -13,8 +13,10 @@ import storeRouter from './modules/storeRouter'
 import priceRouter from './modules/priceRouter'
 import setRouter from './modules/setRouter'
 import grossprofitRouter from './modules/grossprofitRouter'
-import accbookRouter from './modules/accbookRouter'
+import accountRouter from './modules/accountRouter'
+import reportRouter from './modules/reportRouter'
 import hrRouter from './modules/hrRouter'
+import visitRouter from './modules/visitRouter'
 
 export const constantRoutes = [{
     path: '/redirect',
@@ -53,15 +55,17 @@ export const constantRoutes = [{
 }]
 
 export const asyncRoutes = [
-    hrRouter,
-    grossprofitRouter,
-    accbookRouter,
-    saleRouter, 
     purchaseRouter, 
+    saleRouter, 
     arapRouter,
     presaleRouter,
     storeRouter, 
-    priceRouter, 
+    priceRouter,
+    visitRouter,
+    accountRouter,
+    reportRouter,
+    hrRouter,
+    grossprofitRouter,
     setRouter,
     { path: '*', redirect: '/404', hidden: true }
 ]

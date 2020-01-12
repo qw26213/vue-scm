@@ -85,16 +85,16 @@
         </el-table>
         <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
         <el-dialog :close-on-click-modal="false" title="请选择销售单日期" :visible.sync="dialogFormVisible" width="400px">
-          <el-form style="margin-top:30px;text-align:center;">
-            <el-form-item label="" prop="isBillDate">
-              <el-radio v-model="isBillDate" label="0" style="margin-right:10px">当前日期</el-radio>
-              <el-radio v-model="isBillDate" label="1">出库单日期</el-radio>
-            </el-form-item>
-          </el-form>
-          <div slot="footer" class="dialog-footer" align="center">
-              <el-button type="default" @click="dialogFormVisible = false">取消</el-button>
-              <el-button type="primary" @click="createBill">确定</el-button>
-          </div>
+            <el-form style="margin-top:30px;text-align:center;">
+                <el-form-item label="" prop="isBillDate">
+                    <el-radio v-model="isBillDate" label="0" style="margin-right:10px">当前日期</el-radio>
+                    <el-radio v-model="isBillDate" label="1">出库单日期</el-radio>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer" align="center">
+                <el-button type="default" @click="dialogFormVisible = false">取消</el-button>
+                <el-button type="primary" @click="createBill">确定</el-button>
+            </div>
         </el-dialog>
     </div>
 </template>
@@ -108,37 +108,37 @@ import truckList from '@/components/selects/truckList';
 import Pagination from '@/components/Pagination';
 export default {
     name: 'outboundOrder',
-    components: { Pagination,staffList,custList,warehouseList,truckList },
+    components: { Pagination, staffList, custList, warehouseList, truckList },
     data() {
         return {
             tableKey: 0,
             tableData: [],
-            dialogFormVisible:false,
+            dialogFormVisible: false,
             total: 0,
             listLoading: true,
-            curBillId:'',
-            isBillDate:'0',
+            curBillId: '',
+            isBillDate: '0',
             listQuery: {
                 pageIndex: 1,
                 pageNum: 20,
                 queryParam: {
                     date1: getNowDate(),
                     date2: getNowDate(),
-                    supplierId:'',
-                    custId:'',
-                    staffId:'',
-                    truckId:'',
-                    warehouseId:'',
+                    supplierId: '',
+                    custId: '',
+                    staffId: '',
+                    truckId: '',
+                    warehouseId: '',
                     billNo: ""
                 }
             }
         }
     },
     filters: {
-      Fixed: function(num) {
-          if (!num) { return '0.00' }
-          return parseFloat(num).toFixed(2);
-      }
+        Fixed: function(num) {
+            if (!num) { return '0.00' }
+            return parseFloat(num).toFixed(2);
+        }
     },
     created() {
         this.getList();
@@ -174,25 +174,27 @@ export default {
                 })
             });
         },
-        handleCreateBill(status,id1,id2){
-          if(status==1){
-            alert('查看出库单')
-          }else{
-            this.curBillId = id1;
-            this.dialogFormVisible = true;
-          }
-        },
-        createBill(){
-          var obj = {isBillDate:this.isBillDate,id:this.curBillId}
-          buildOutboundOrder(obj).then(res => {
-            if(res.data.errorCode==0){
-              this.dialogFormVisible = false;
-              this.getList();
-              this.$message.success('生成销售单成功')
-            }else{
-              this.$message.error(res.data.msg)
+        handleCreateBill(status, id1, id2) {
+            if (status == 1) {
+                this.$router.push('/sale/modify?id=' + id2 + '&status=' + status)
+            } else {
+                this.curBillId = id1;
+                this.dialogFormVisible = true;
             }
-          });
+        },
+        createBill() {
+            var obj = { isBillDate: this.isBillDate, id: this.curBillId }
+            buildOutboundOrder(obj).then(res => {
+                if (res.data.errorCode == 0) {
+                    this.dialogFormVisible = false;
+                    this.getList();
+                    this.$message.success('生成销售单成功')
+                } else {
+                    this.$message.error(res.data.msg)
+                }
+            }).catch(() => {
+                this.$message.error('生成失败，请稍后重试！')
+            });
         },
         handleAdd() {
             this.$store.dispatch('tagsView/delView', this.$route);

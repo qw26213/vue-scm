@@ -48,17 +48,17 @@
           <span>{{row.supplierName}}</span>
           </template>
       </el-table-column>
-      <el-table-column label="付款方式">
+      <el-table-column label="收款方式">
           <template slot-scope="{row}">
           <span>{{row.paymentTypeName}}</span>
           </template>
       </el-table-column>
-      <el-table-column label="付款到期日" align="center">
+      <el-table-column label="收款到期日" align="center">
         <template slot-scope="{row}">
           <span>{{row.paymentDueDate}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="使用预付" align="right">
+      <el-table-column label="使用预收" align="right">
         <template slot-scope="{row}">
           <span>{{row.advPayAmount|Fixed}}</span>
         </template>
@@ -88,8 +88,8 @@
           <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status==0?'编辑':'查看'}}</span>
           <span class="ctrl" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
           <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
-          <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isWarehousingEntry,row.id,row.warehousingEntryHeaderId)">{{row.isWarehousingEntry==1?'查看':'生成'}}入库单</span>
-          <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId)">{{row.isJeHeader==1?'查看':'生成'}}采购凭证</span>
+          <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isWarehousingEntry,row.id,row.warehousingEntryHeaderId)">{{row.isWarehousingEntry==1?'查看':'生成'}}退货出库单</span>
+          <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId)">{{row.isJeHeader==1?'查看':'生成'}}退货凭证</span>
         </template>
       </el-table-column>
     </el-table>
@@ -206,7 +206,7 @@ export default {
     },
     handleCreateBill(status,id1,id2){
       if(status==1){
-        this.$router.push('/store/warehousingModify?id='+id2)
+        this.$router.push('/store/warehousingReturnedModify?id='+id2)
       }else{
         this.curBillId = id1;
         this.dialogFormVisible1 = true;

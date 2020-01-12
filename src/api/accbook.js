@@ -70,5 +70,17 @@ export function getProjsubsidiary(data) {
   })
 }
 
-
+export function getVoucherTable(data) {
+  return request({
+    url: '/drp/accbook/voucher/datatables',
+    method: 'post',
+    data
+  })
+}
+export function getCatogery() {
+  return request({
+    url: '/drp/gl/catogery/list',
+    method: 'post'
+  })
+}
 

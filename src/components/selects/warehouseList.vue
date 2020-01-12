@@ -7,7 +7,7 @@
 import { getWarehouse } from '@/api/basedata'
 export default {
     name: 'list',
-    props: ['selectId','keyType','ctrType','placeTxt'],
+    props: ['selectId','keyType','ctrType','placeTxt','allowNull'],
     data() {
         return {
             list: [],
@@ -44,6 +44,9 @@ export default {
                 var arr = [];
                 if(this.ctrType=="list"){
                     arr = [{warehouseName:'全部仓库',id:'null'}]
+                }
+                if(this.allowNull&&this.allowNull=="1"){
+                    arr = [{warehouseName:'无',id:''}]
                 }
                 this.list = arr.concat(res.data.data)
             })

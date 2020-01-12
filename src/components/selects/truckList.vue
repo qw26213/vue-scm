@@ -7,7 +7,7 @@
 import {getTruck} from '@/api/basedata'
 export default {
     name: 'list',
-    props: ['selectId','keyType','ctrType','placeTxt'],
+    props: ['selectId','keyType','ctrType','placeTxt','allowNull'],
     data(){
       return {
         list:[],
@@ -40,6 +40,9 @@ export default {
             getTruck().then(res => {
                 if(this.ctrType=="list"){
                     arr = [{truckName:'全部车辆',id:'null'}]
+                }
+                if(this.allowNull&&this.allowNull=="1"){
+                    arr = [{truckName:'无',id:''}]
                 }
                 this.list = arr.concat(res.data.data)
             }).catch(err=>{

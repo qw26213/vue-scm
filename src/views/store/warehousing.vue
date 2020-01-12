@@ -70,16 +70,16 @@
         </el-table>
         <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
         <el-dialog :close-on-click-modal="false" title="请选择进货单日期" :visible.sync="dialogFormVisible" width="400px">
-          <el-form style="margin-top:30px;text-align:center;">
-            <el-form-item label="" prop="isBillDate">
-              <el-radio v-model="isBillDate" label="0" style="margin-right:10px">当前日期</el-radio>
-              <el-radio v-model="isBillDate" label="1">入库单日期</el-radio>
-            </el-form-item>
-          </el-form>
-          <div slot="footer" class="dialog-footer" align="center">
-              <el-button type="default" @click="dialogFormVisible = false">取消</el-button>
-              <el-button type="primary" @click="createBill">确定</el-button>
-          </div>
+            <el-form style="margin-top:30px;text-align:center;">
+                <el-form-item label="" prop="isBillDate">
+                    <el-radio v-model="isBillDate" label="0" style="margin-right:10px">当前日期</el-radio>
+                    <el-radio v-model="isBillDate" label="1">入库单日期</el-radio>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer" align="center">
+                <el-button type="default" @click="dialogFormVisible = false">取消</el-button>
+                <el-button type="primary" @click="createBill">确定</el-button>
+            </div>
         </el-dialog>
     </div>
 </template>
@@ -93,14 +93,14 @@ import warehouseList from '@/components/selects/warehouseList';
 import { getNowDate } from '@/utils/auth'
 export default {
     name: 'warehousing',
-    components: { staffList, warehouseList, supplierList,Pagination },
+    components: { staffList, warehouseList, supplierList, Pagination },
     data() {
         return {
             tableKey: 0,
             tableData: [],
-            dialogFormVisible:false,
-            curBillId:'',
-            isBillDate:'0',
+            dialogFormVisible: false,
+            curBillId: '',
+            isBillDate: '0',
             total: 0,
             listLoading: true,
             listQuery: {
@@ -109,13 +109,13 @@ export default {
                 queryParam: {
                     date1: getNowDate(),
                     date2: getNowDate(),
-                    billNo:"",
-                    supplierId:'',
-                    staffId:'',
-                    warehouseId:'',
-                    status:'',
-                    isWarehousingEntry:'',
-                    isJeHeader:''
+                    billNo: "",
+                    supplierId: '',
+                    staffId: '',
+                    warehouseId: '',
+                    status: '',
+                    isWarehousingEntry: '',
+                    isJeHeader: ''
                 }
             }
         }
@@ -154,25 +154,27 @@ export default {
                 })
             });
         },
-        handleCreateBill(status,id1,id2){
-          if(status==1){
-            alert('查看进货单')
-          }else{
-            this.curBillId = id1;
-            this.dialogFormVisible = true;
-          }
-        },
-        createBill(){
-          var obj = {isBillDate:this.isBillDate,id:this.curBillId}
-          buildWarehousingEntry(obj).then(res => {
-            if(res.data.errorCode==0){
-              this.dialogFormVisible = false;
-              this.getList();
-              this.$message.success('生成进货单成功')
-            }else{
-              this.$message.error(res.data.msg)
+        handleCreateBill(status, id1, id2) {
+            if (status == 1) {
+                this.$router.push('/purchase/modify?id=' + id2 + '&status=' + status)
+            } else {
+                this.curBillId = id1;
+                this.dialogFormVisible = true;
             }
-          });
+        },
+        createBill() {
+            var obj = { isBillDate: this.isBillDate, id: this.curBillId }
+            buildWarehousingEntry(obj).then(res => {
+                if (res.data.errorCode == 0) {
+                    this.dialogFormVisible = false;
+                    this.getList();
+                    this.$message.success('生成进货单成功')
+                } else {
+                    this.$message.error(res.data.msg)
+                }
+            }).catch(() => {
+                this.$message.error('生成失败，请稍后重试！')
+            });
         },
         handleAdd() {
             this.$store.dispatch('tagsView/delView', this.$route)

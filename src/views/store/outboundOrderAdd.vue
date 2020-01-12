@@ -29,7 +29,7 @@
             <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
             <el-table-column label="商品代码">
                 <template slot-scope="scope">
-                    <itemList :selectId="scope.row.itemCode" :index="scope.$index" @changeVal="changeVal"></itemList>
+                    <itemList :selectId="scope.row.itemId" :selectCode="scope.row.itemCode" :index="scope.$index" @changeVal="changeVal"></itemList>
                 </template>
             </el-table-column>
             <el-table-column label="商品名称">
@@ -165,7 +165,7 @@ export default {
                     for (var key in this.temp) {
                         this.temp[key] = res.data.body[key]
                     }
-                    this.tableData = addNullObj(res.data.body.warehousingEntryLine);
+                    this.tableData = addNullObj(res.data.body.outboundOrderLine);
                 }
             })
         }

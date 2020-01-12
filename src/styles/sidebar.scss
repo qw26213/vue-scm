@@ -60,7 +60,7 @@
     }
 
     .svg-icon {
-      margin-right: 16px;
+      margin-right: 12px;
     }
 
     .el-menu {
@@ -90,6 +90,10 @@
       &:hover {
         background-color: $subMenuHover !important;
       }
+    }
+    & .nest-menu .el-submenu .el-menu .nest-menu .el-menu-item{
+      height: 32px;line-height: 32px;
+      font-size: 12px;
     }
   }
 

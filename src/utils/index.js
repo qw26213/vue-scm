@@ -395,3 +395,18 @@ export function fetchRoles(arr){
   }
   return codes
 }
+
+export function getNowDate() {
+    var d = new Date();
+    var y = d.getFullYear()
+    var m = d.getMonth() + 1;
+    var d = d.getDate();
+    return y+'-'+(m<10?'0'+m:m)+'-'+(d<10?'0'+d:d);
+}
+
+export function getNowMonth() {
+    var d = new Date();
+    var y = d.getFullYear()
+    var m = d.getMonth() + 1;
+    return y+'-'+(m<10?'0'+m:m)
+}

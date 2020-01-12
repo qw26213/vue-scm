@@ -1,6 +1,7 @@
 import axios from 'axios'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
+import context from '@/main'
 
 // axios 配置
 axios.defaults.timeout = 60000;
@@ -24,10 +25,11 @@ axios.interceptors.response.use(
   },
   error => {
     if (error.response) {
-      switch (error.response.status) {
-        case 401:
-          console.log('response.status: 401');
-      }
+      console.log("后台报错")
+      // switch (error.response.status) {
+      //   case 401:
+      //     console.log('response.status: 401');
+      // }
     }
     //判断超时原因 路由跳转页面
     return Promise.reject(error.data);

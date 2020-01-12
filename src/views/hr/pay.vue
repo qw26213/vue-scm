@@ -9,6 +9,7 @@
       <el-button size="mini" type="primary" @click="downloadModel">下载模板</el-button>
       <el-button size="mini" type="primary" @click="handImport">薪酬导入</el-button>
     </div>
+    <input enctype="multipart/form-data" ref="uploadFile" style="display:none" type="file" @change="importFile($event)" />
     <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;">
       <el-table-column label="序号" type="index" width="50" align="center">
       </el-table-column>
@@ -61,10 +62,10 @@
     <el-dialog title="薪酬导入" :visible.sync="dialogVisible2" width="400px">
       <el-form ref="dataForm" :model="temp2" label-position="left" label-width="72px" style="margin-left:20px;">
         <el-form-item label="选择月份" style="margin-right:20px">
-          <el-date-picker :editable="false" v-model="temp2.fileperiodCode" type="month" placeholder="选择月份" style="width:230px" :clearable="false" value-format="yyyy-MM"></el-date-picker>
+          <el-date-picker :editable="false" v-model="temp2.periodCode" type="month" placeholder="选择月份" style="width:230px" :clearable="false" value-format="yyyy-MM"></el-date-picker>
         </el-form-item>
         <el-form-item label="选择文件">
-          <el-button size="small" type="primary"><i class="el-icon-upload" style="margin-right:5px"></i>点击上传</el-button>
+          <el-button size="small" type="primary" @click="handFileImport"><i class="el-icon-upload" style="margin-right:5px"></i>点击上传</el-button>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer" align="center">
@@ -76,10 +77,9 @@
 </template>
 
 <script>
-import { getPayData,getNationalityType,getCertificateType,saveEmployee } from '@/api/hr'
+import { getPayData,getNationalityType,getCertificateType,saveEmployee,paydetailImport } from '@/api/hr'
 import { getDept } from '@/api/basedata'
-import { getNowDate } from '@/utils/auth'
-import { debounce } from '@/utils/index'
+import { debounce,getNowMonth,getNowDate } from '@/utils/index'
 import Pagination from '@/components/Pagination'
 export default {
   name: 'employeeList',
@@ -104,10 +104,7 @@ export default {
         endDate:''
       },
       temp2: {
-        fileperiodCode:'',
-        status:'',
-        deptId:'',
-        endDate:''
+        periodCode:getNowMonth()
       },
       dialogVisible1: false,
       dialogVisible2: false
@@ -135,13 +132,50 @@ export default {
     handImport(){
       this.dialogVisible2 = true
     },
+    handFileImport(){
+      this.$refs.uploadFile.click();
+    },
+    importFile(event){
+      this.formData = new FormData();
+      var fileObj = event.currentTarget.files[0];
+      if(fileObj==null||fileObj==undefined){return;}
+      this.formData.append("file", fileObj);
+      this.formData.append("fileName", 'employee.xlsx');
+    },
+    paydetailFileImport(){
+      let obj= {
+        periodCode: this.temp2.periodCode,
+        fileName: "employee.xlsx"
+      }
+      paydetailImport(obj).then(res => {
+        if(res.data.errorCode == 0){
+          this.getList();
+        } else {
+          this.$message.error(res.data.msg)
+        }
+      })
+    },
     handleImport(){
-      this.dialogVisible2 = false
+      this.$axios({
+          url: '/drp/hr/paydetail/uploadexcel',
+          method: 'POST',
+          data: this.formData,
+          timeout: 10000,
+          headers: { 'Content-Type': 'multipart/form-data' }
+      }).then(res => {
+        if(res.status == 200){
+          this.dialogVisible2 = false
+          this.paydetailFileImport();
+        }else{
+          this.$message.error("系统错误")
+        }
+      }).catch(res=>{
+          this.$message.error("导入失败,请稍后重试")
+      })
     }
   }
 }
 </script>
 <style scoped>
 .filter-item{position: relative;}
-#uploadFile{display: none;}
 </style>

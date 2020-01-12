@@ -22,7 +22,8 @@ module.exports = {
   publicPath: '',
   outputDir: 'dist',
   assetsDir: 'static',
-  lintOnSave: process.env.NODE_ENV !== 'production',
+  // lintOnSave: process.env.NODE_ENV !== 'production',
+  lintOnSave: false,
   productionSourceMap: false,
   devServer: {
     port: '80',
@@ -77,6 +78,7 @@ module.exports = {
     proxy: {
       '/drp': {
         target: 'http://49.232.47.16/',
+        // target: 'http://192.168.1.107/',
         ws: true,
         changeOrigin: true,// 如果接口跨域，需要进行这个参数配置
         // secure: false,// 如果是https接口，需要配置这个参数

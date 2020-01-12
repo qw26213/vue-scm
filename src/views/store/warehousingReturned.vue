@@ -64,7 +64,7 @@
                     <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status==0?'编辑':'查看'}}</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
-                    <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isPurchase,row.id,row.purchaseHeaderId)">{{row.isPurchase==1?'查看':'生成'}}进货单</span>
+                    <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isPurchase,row.id,row.purchaseHeaderId)">{{row.isPurchase==1?'查看':'生成'}}采购退货单</span>
                 </template>
             </el-table-column>
         </el-table>
@@ -84,7 +84,7 @@
     </div>
 </template>
 <script>
-import { getwarehousingReturned, savewarehousingReturned, delwarehousingReturned, auditwarehousingReturned, buildwarehousingReturnedEntry } from '@/api/store'
+import { getWarehousingReturned, saveWarehousingReturned, delWarehousingReturned, auditWarehousingReturned, buildWarehousingReturnedEntry } from '@/api/store'
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
 import staffList from '@/components/selects/staffList';
@@ -131,7 +131,7 @@ export default {
         },
         getList() {
             this.listLoading = true
-            getwarehousingReturned(this.listQuery).then(res => {
+            getWarehousingReturned(this.listQuery).then(res => {
                 this.listLoading = false
                 this.tableData = res.data.data
             }).catch(err => {
@@ -144,7 +144,7 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                auditwarehousingReturned(id).then(res => {
+                auditWarehousingReturned(id).then(res => {
                     if (res.data.errorCode == 0) {
                         this.getList();
                         this.$message.success('审核成功')
@@ -156,7 +156,7 @@ export default {
         },
         handleCreateBill(status,id1,id2){
           if(status==1){
-            alert('查看进货单')
+            this.$router.push('/purchaseReturned/modify?id=' + id2 + '&status=' + status)
           }else{
             this.curBillId = id1;
             this.dialogFormVisible = true;
@@ -164,7 +164,7 @@ export default {
         },
         createBill(){
           var obj = {isBillDate:this.isBillDate,id:this.curBillId}
-          buildwarehousingReturnedEntry(obj).then(res => {
+          buildWarehousingReturnedEntry(obj).then(res => {
             if(res.data.errorCode==0){
               this.dialogFormVisible = false;
               this.getList();
@@ -188,7 +188,7 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                delwarehousingReturned(id).then(res => {
+                delWarehousingReturned(id).then(res => {
                     if (res.data.errorCode == 0) {
                         this.getList();
                         this.dialogFormVisible = false

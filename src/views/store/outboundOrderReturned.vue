@@ -79,7 +79,7 @@
                     <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status==0?'编辑':'查看'}}</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
-                    <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isSales,row.id,row.salesHeaderId)">{{row.isSales==1?'查看':'生成'}}销售单</span>
+                    <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isSales,row.id,row.salesHeaderId)">{{row.isSales==1?'查看':'生成'}}销售退货单</span>
                 </template>
             </el-table-column>
         </el-table>
@@ -176,6 +176,7 @@ export default {
         },
         handleCreateBill(status,id1,id2){
           if(status==1){
+            this.$router.push('/saleReturned/modify?id=' + id2 + '&status=' + status)
             alert('查看出库单')
           }else{
             this.curBillId = id1;

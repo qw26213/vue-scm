@@ -7,6 +7,7 @@ export function getEmployee(data) {
     data
   })
 }
+
 export function saveEmployee(data) {
   return request({
     url: '/drp/hr/employee/save',
@@ -22,12 +23,30 @@ export function getPayData(data) {
     data
   })
 }
+
+export function employeeImport(data) {
+  return request({
+    url: '/drp/hr/employee/importdata',
+    method: 'post',
+    data
+  })
+}
+
+export function paydetailImport(data) {
+  return request({
+    url: '/drp/hr/paydetail/importdata',
+    method: 'post',
+    data
+  })
+}
+
 export function getNationalityType() {
   return request({
     url: '/drp/std/nationalityType/getAll',
     method: 'post'
   })
 }
+
 export function getCertificateType() {
   return request({
     url: '/drp/std/certificateType/getAll',

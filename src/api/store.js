@@ -161,7 +161,7 @@ export function buildWarehousingEntry(data) {
     data
   })
 }
-// ------------销售退货入库-------------
+// ------------销售退货出库-------------
 export function getWarehousingReturned(data) {
   return request({
     url: '/drp/ic/warehousingEntryReturned/getResPageData',
@@ -259,7 +259,7 @@ export function buildOutboundOrder(data) {
   })
 }
 
-// ------采购退货出库----
+// ------采购退货入库----
 export function getOutboundOrderReturned(data) {
   return request({
     url: '/drp/ic/outboundOrderReturned/getResPageData',
