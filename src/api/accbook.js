@@ -8,17 +8,17 @@ export function getTotalAccount(data) {
   })
 }
 
-export function getData2(data) {
+export function getProjbalance(data) {
   return request({
-    url: '/drp/accbook/ledger/datatables',
+    url: '/drp/accbook/projbalance/datatables',
     method: 'post',
     data
   })
 }
 
-export function getData3(data) {
+export function getDetail(data) {
   return request({
-    url: '/drp/accbook/ledger/datatables',
+    url: '/drp/accbook/subsidiary/datatables',
     method: 'post',
     data
   })
@@ -47,3 +47,28 @@ export function getMultisubsidiary(data) {
     data
   })
 }
+export function getSubsidiarynum(data) {
+  return request({
+    url: '/drp/accbook/subsidiarynum/datatables',
+    method: 'post',
+    data
+  })
+}
+export function getLedgernum(data) {
+  return request({
+    url: '/drp/accbook/ledgernum/datatables',
+    method: 'post',
+    data
+  })
+}
+
+export function getProjsubsidiary(data) {
+  return request({
+    url: '/drp/accbook/projsubsidiary/datatables',
+    method: 'post',
+    data
+  })
+}
+
+
+

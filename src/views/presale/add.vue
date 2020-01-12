@@ -36,6 +36,9 @@
                     <el-input size="mini" v-model="temp.beginBalance" placeholder="现结金额" style="width:72px" disabled />
                     <el-button size="mini" style="width:44px;padding:6px" @click="showSettleType">选择</el-button>
                 </el-form-item>
+                <el-form-item label="余额:" prop="balance" v-if="status==1">
+                    <el-input size="mini" v-model="temp.balance" placeholder="余额" />
+                </el-form-item>
             </el-form>
         </div>
         <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini" cell-class-name="tdCell" max-height="600">
@@ -103,6 +106,16 @@
             <el-table-column label="金额">
                 <template slot-scope="{row}">
                     <input type="text" class="inputCell tx-r" v-model="row.beginBalance" disabled>
+                </template>
+            </el-table-column>
+            <el-table-column label="余量">
+                <template slot-scope="{row}">
+                    <input type="text" class="inputCell tx-r" v-model="row.balanceQty" v-if="temp.presaleType=='2'||temp.presaleType=='1'&&status==1">
+                </template>
+            </el-table-column>
+            <el-table-column label="余额">
+                <template slot-scope="{row}">
+                    <input type="text" class="inputCell tx-r" v-model="row.balance" v-if="temp.presaleType=='2'||temp.presaleType=='1'&&status==1">
                 </template>
             </el-table-column>
             <el-table-column label="备注">
@@ -196,6 +209,7 @@ export default {
                 beginBalance:'',
                 auditDate:"",
                 auditor:"",
+                balance:0,
                 recordDate:getNowDate()+" 00:00:00",
                 recorder:getName()
             },
@@ -293,6 +307,8 @@ export default {
                 } else {
                     this.$message.error(res.data.msg)
                 }
+            }).catch(()=>{
+                this.$message.error('保存失败，请稍后重试！')
             })
         }
     }

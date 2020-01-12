@@ -1,10 +1,10 @@
 #app {
   .el-menu-item {
-    line-height: 48px;height: 48px;
+    line-height: 42px;height: 42px;
   }
   .el-submenu__title {
-    height: 48px;
-    line-height: 48px;
+    height: 42px;
+    line-height: 42px;
   }
   .main-container {
     min-height: 100%;
@@ -27,7 +27,6 @@
     z-index: 1001;
     overflow: hidden;
 
-    // reset element-ui css
     .horizontal-collapse-transition {
       transition: 0s width ease-in-out, 0s padding-left ease-in-out, 0s padding-right ease-in-out;
     }
@@ -180,7 +179,6 @@
   }
 }
 
-// when menu collapsed
 .el-menu--vertical {
   &>.el-menu {
     .svg-icon {
@@ -190,14 +188,12 @@
 
   .nest-menu .el-submenu>.el-submenu__title,
   .el-menu-item {
-    line-height: 48px;height: 48px;
+    line-height: 42px;height: 42px;
     &:hover {
-      // you can use $subMenuHover
       background-color: $menuHover !important;
     }
   }
 
-  // the scroll bar appears when the subMenu is too long
   >.el-menu--popup {
     max-height: 100vh;
     overflow-y: auto;

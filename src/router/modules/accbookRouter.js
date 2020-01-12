@@ -44,6 +44,13 @@ const accbookRouter = {
             title: '多栏账'
         }
     }, {
+        path: 'numbertotalaccount',
+        component: () => import('@/views/accbook/numbertotalaccount'),
+        name: 'numbertotalaccount',
+        meta: {
+            title: '数量总账'
+        }
+    }, {
         path: 'numberdetailaccount',
         component: () => import('@/views/accbook/numberdetailaccount'),
         name: 'numberdetailaccount',
@@ -76,7 +83,7 @@ const accbookRouter = {
         component: () => import('@/views/accbook/projsubsidiary'),
         name: 'projsubsidiary',
         meta: {
-            title: '项目余额表(分录)'
+            title: '项目明细表(分录)'
         }
     }]
 }

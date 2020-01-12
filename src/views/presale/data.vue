@@ -17,6 +17,7 @@
         <el-option label="未生成凭证" value="0"></el-option>
         <el-option label="已生成凭证" value="1"></el-option>
       </el-select>
+      <el-checkbox v-model="listQuery.queryParam.nonZeroBalance" false-label="0" true-label="1">有余额</el-checkbox>
       <el-button size="mini" type="primary" @click="getList">查询</el-button>
       <el-button size="mini" type="primary" @click="handleAdd">新增</el-button>
     </div>
@@ -52,6 +53,11 @@
       <el-table-column label="金额" align="right">
         <template slot-scope="{row}">
           <span>{{row.beginBalance|Fixed}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="余额" align="right">
+        <template slot-scope="{row}">
+          <span>{{row.balance|Fixed}}</span>
         </template>
       </el-table-column>
       <el-table-column label="状态" align="center">
@@ -118,7 +124,8 @@ export default {
           staffId:'',
           custId:'',
           status:'',
-          isJeHeader:''
+          isJeHeader:'',
+          nonZeroBalance:0
         }
       }
     }

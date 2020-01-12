@@ -3,7 +3,7 @@
     <div class="filter-container">
       <el-button size="mini" type="primary" @click="handleAdd">新增</el-button>
       <el-button size="mini" type="primary" @click="downloadModel">下载模板</el-button>
-      <el-button size="mini" type="primary" @click="handDownload">人员导入</el-button>
+      <el-button size="mini" type="primary" @click="handImport">人员导入</el-button>
     </div>
     <input enctype="multipart/form-data" id="uploadFile" type="file" @change="importDevice($event)" />
     <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;">
@@ -71,7 +71,8 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog :title="dialogStatus=='create'?'新增员工':'编辑员工'" :visible.sync="dialogFormVisible" width="620px">
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+    <el-dialog :title="dialogStatus=='create'?'新增员工':'编辑员工'" :visible.sync="dialogVisible1" width="620px">
       <el-form ref="dataForm" :model="temp" :rules="rules" inline label-position="left" label-width="72px" style="margin-left:20px;">
         <el-form-item label="编码" style="margin-right:20px" prop="code">
           <el-input v-model="temp.code" placeholder="编码" />
@@ -118,18 +119,34 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer" align="center">
-        <el-button @click="dialogFormVisible = false">取消</el-button>
+        <el-button @click="dialogVisible1 = false">取消</el-button>
         <el-button type="primary" @click="handleSave()">确定</el-button>
       </div>
     </el-dialog>
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+    <el-dialog title="人员导入" :visible.sync="dialogVisible2" width="448px">
+      <el-form ref="dataForm" :model="temp2" label-position="left" label-width="72px" style="margin-left:20px;">
+        <el-form-item label="选择月份" style="margin-right:20px">
+          <el-date-picker :editable="false" v-model="temp2.fileperiodCode" type="month" placeholder="选择月份" style="width:230px" :clearable="false" value-format="yyyy-MM"></el-date-picker>
+        </el-form-item>
+        <el-form-item label="选择文件">
+          <el-button size="small" type="primary"><i class="el-icon-upload" style="margin-right:5px"></i>点击上传</el-button>
+        </el-form-item>
+        <p><el-checkbox>同时在辅助核算-部门中新增或按编码修改部门名称</el-checkbox></p>
+        <p><el-checkbox>如果辅助核算-职员中不存在,同时在辅助核算-职员中增加</el-checkbox></p>
+        <p>注：如果按证照类型+证照号码存在人员重复,会按最新数据自动更新人员,原薪资数据不变!</p>
+      </el-form>
+      <div slot="footer" class="dialog-footer" align="center">
+        <el-button @click="dialogVisible2 = false">取消</el-button>
+        <el-button type="primary" @click="handleImport()">导入</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { getEmployee,getNationalityType,getCertificateType,saveEmployee } from '@/api/hr'
 import { getDept } from '@/api/basedata'
-import { parseTime } from '@/utils'
+import { parseTime,debounce } from '@/utils'
 import Pagination from '@/components/Pagination'
 export default {
   name: 'employeeList',
@@ -137,6 +154,7 @@ export default {
   data() {
     return {
       tableKey: 0,
+      downloadModel:debounce(this.downloadFile,1000,true),
       tableData: null,
       total: 0,
       listLoading: true,
@@ -159,7 +177,11 @@ export default {
         isIncomplete:0,
         tel:''
       },
-      dialogFormVisible: false,
+      temp2:{
+
+      },
+      dialogVisible1: false,
+      dialogVisible2:false,
       dialogStatus: '',
       rules:{
         name: [{ required: true, message: '姓名不能为空', trigger: 'change' }],
@@ -189,14 +211,17 @@ export default {
         this.listLoading = false
       })
     },
-    downloadModel(){
-
+    downloadFile(){
+      window.location.href = 'http://49.232.47.16/drp/business/employee.xlsx'
     },
-    handDownload(){
-
+    handImport(){
+      this.dialogVisible2 = true
+    },
+    handleImport(){
+      this.dialogVisible2 = false
     },
     handleAdd() {
-      this.dialogFormVisible = true
+      this.dialogVisible1 = true
       this.dialogStatus = 'create'
       this.temp.id = ''
       for(var key in this.temp){
@@ -210,7 +235,7 @@ export default {
       })
     },
     handleCompile(obj) {
-      this.dialogFormVisible = true
+      this.dialogVisible1 = true
       this.dialogStatus = 'update'
       for(var key in this.temp){
         this.temp[key] = String(obj[key])
@@ -222,7 +247,7 @@ export default {
     handleSave(){
       saveEmployee(this.temp).then(res => {
         if(res.data.errorCode==0){
-          this.dialogFormVisible = false
+          this.dialogVisible1 = false
           this.$message.success(this.temp.id==''?'新增':'修改'+'人员成功')
         }else{
           this.$message.error(res.data.msg)

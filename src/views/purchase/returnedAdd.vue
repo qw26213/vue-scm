@@ -306,6 +306,8 @@ export default {
                 } else {
                     this.$message.error(res.data.msg)
                 }
+            }).catch(()=>{
+                this.$message.error('保存失败，请稍后重试！')
             })
         }
     }

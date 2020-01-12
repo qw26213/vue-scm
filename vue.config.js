@@ -22,7 +22,7 @@ module.exports = {
   publicPath: '',
   outputDir: 'dist',
   assetsDir: 'static',
-  lintOnSave: false,
+  lintOnSave: process.env.NODE_ENV !== 'production',
   productionSourceMap: false,
   devServer: {
     port: '80',
@@ -52,11 +52,7 @@ module.exports = {
     config.plugins.delete('preload') // TODO: need test
     config.plugins.delete('prefetch') // TODO: need test
 
-    // set svg-sprite-loader
-    config.module
-      .rule('svg')
-      .exclude.add(resolve('src/icons'))
-      .end()
+    config.module.rule('svg').exclude.add(resolve('src/icons')).end()
     config.module
       .rule('icons')
       .test(/\.svg$/)
@@ -76,5 +72,26 @@ module.exports = {
       .when(process.env.NODE_ENV === 'development',
         config => config.devtool('cheap-source-map')
       )
+  },
+  devServer: {
+    proxy: {
+      '/drp': {
+        target: 'http://49.232.47.16/',
+        ws: true,
+        changeOrigin: true,// 如果接口跨域，需要进行这个参数配置
+        // secure: false,// 如果是https接口，需要配置这个参数
+        pathRewrite: {// 如果接口本身没有/drp需要通过pathRewrite来重写了地址
+          '^/drp': '/drp'
+        }
+      },
+      '/bpo/v2': {
+        target: 'https://opms-test.bytedance.com',
+        ws: true,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/bpo/v2': '/bpo/v2'
+        }
+      }
+    }
   }
 }

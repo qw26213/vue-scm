@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-date-picker :editable="false" v-model="listQuery.date1" type="date" placeholder="开始日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+      <el-date-picker :editable="false" v-model="listQuery.periodCode1" type="date" placeholder="开始日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
       <span class="zhi">至</span>
-      <el-date-picker :editable="false" v-model="listQuery.date2" type="date" placeholder="结束日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+      <el-date-picker :editable="false" v-model="listQuery.periodCode2" type="date" placeholder="结束日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
       <el-button size="mini" type="primary" @click="getList">查询</el-button>
     </div>
 
@@ -45,7 +45,6 @@
           <span>{{row.balance}}</span>
         </template>
       </el-table-column>
-      </el-table-column>
     </el-table>
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
   </div>
@@ -53,7 +52,7 @@
 
 <script>
 import { getMultisubsidiary } from '@/api/accbook'
-import { parseTime } from '@/utils'
+import { getNowDate } from '@/utils/auth'
 import Pagination from '@/components/Pagination' 
 export default {
   name: 'grossprofit2',
@@ -65,10 +64,10 @@ export default {
       total: 0,
       listLoading: true,
       listQuery: {
-        page: 1,
-        date1: new Date(),
-        date2: new Date(),
-        limit: 20
+        periodCode1:getNowDate(),
+        periodCode2:getNowDate(),
+        page:1,
+        limit:20
       }
     }
   },

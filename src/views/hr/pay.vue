@@ -7,7 +7,7 @@
       <el-button size="mini" type="primary" @click="getList">查询</el-button>
       <el-button size="mini" type="primary" @click="copyPay">复制工资表</el-button>
       <el-button size="mini" type="primary" @click="downloadModel">下载模板</el-button>
-      <el-button size="mini" type="primary" @click="handImport">薪资导入</el-button>
+      <el-button size="mini" type="primary" @click="handImport">薪酬导入</el-button>
     </div>
     <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;">
       <el-table-column label="序号" type="index" width="50" align="center">
@@ -44,9 +44,9 @@
           </el-select>
         </el-form-item>
         <el-form-item label="期间选择" style="margin-right:20px">
-          <el-date-picker :editable="false" v-model="temp1.periodStar" type="date" placeholder="入职日期" style="width:115px" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+          <el-date-picker :editable="false" v-model="temp1.periodStar" type="date" placeholder="开始日期" style="width:115px" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
           <span>至</span>
-          <el-date-picker :editable="false" v-model="temp1.periodEnd" type="date" placeholder="离职日期" style="width:115px" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+          <el-date-picker :editable="false" v-model="temp1.periodEnd" type="date" placeholder="结束日期" style="width:115px" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
         </el-form-item>
         <el-form-item label="是否覆盖">
           <el-radio v-model="temp1.cover" label="1">是</el-radio>
@@ -58,10 +58,10 @@
         <el-button type="primary" @click="handleSave()">确定</el-button>
       </div>
     </el-dialog>
-    <el-dialog title="薪酬导入" :visible.sync="dialogVisible2" width="350px">
+    <el-dialog title="薪酬导入" :visible.sync="dialogVisible2" width="400px">
       <el-form ref="dataForm" :model="temp2" label-position="left" label-width="72px" style="margin-left:20px;">
-        <el-form-item label="选择日期" style="margin-right:20px">
-          <el-date-picker :editable="false" v-model="temp2.fileperiodCode" type="date" placeholder="入职日期" style="width:185px" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+        <el-form-item label="选择月份" style="margin-right:20px">
+          <el-date-picker :editable="false" v-model="temp2.fileperiodCode" type="month" placeholder="选择月份" style="width:230px" :clearable="false" value-format="yyyy-MM"></el-date-picker>
         </el-form-item>
         <el-form-item label="选择文件">
           <el-button size="small" type="primary"><i class="el-icon-upload" style="margin-right:5px"></i>点击上传</el-button>
@@ -69,7 +69,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer" align="center">
         <el-button @click="dialogVisible2 = false">取消</el-button>
-        <el-button type="primary" @click="handleSave()">导入</el-button>
+        <el-button type="primary" @click="handleImport()">导入</el-button>
       </div>
     </el-dialog>
   </div>
@@ -78,8 +78,8 @@
 <script>
 import { getPayData,getNationalityType,getCertificateType,saveEmployee } from '@/api/hr'
 import { getDept } from '@/api/basedata'
-import { parseTime } from '@/utils'
 import { getNowDate } from '@/utils/auth'
+import { debounce } from '@/utils/index'
 import Pagination from '@/components/Pagination'
 export default {
   name: 'employeeList',
@@ -90,6 +90,7 @@ export default {
       tableData: null,
       total: 0,
       listLoading: true,
+      downloadModel:debounce(this.downloadFile,1000,true),
       listQuery: {
         periodCode1:getNowDate(),
         periodCode2:getNowDate(),
@@ -128,31 +129,14 @@ export default {
     copyPay(){
       this.dialogVisible1 = true
     },
-    downloadModel(){
-
+    downloadFile(){
+      window.location.href = 'http://49.232.47.16/drp/business/employee.xlsx'
     },
     handImport(){
       this.dialogVisible2 = true
     },
-    handleCompile(obj) {
-      this.dialogVisible1 = true
-      this.dialogStatus = 'update'
-      for(var key in this.temp){
-        this.temp[key] = String(obj[key])
-      }
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
-    },
-    handleSave(){
-      saveEmployee(this.temp).then(res => {
-        if(res.data.errorCode==0){
-          this.dialogVisible1 = false
-          this.$message.success(this.temp.id==''?'新增':'修改'+'人员成功')
-        }else{
-          this.$message.error(res.data.msg)
-        }
-      })
+    handleImport(){
+      this.dialogVisible2 = false
     }
   }
 }

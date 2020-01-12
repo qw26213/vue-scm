@@ -56,8 +56,6 @@ aside { background: #eef1f6; padding: 8px 24px; margin-bottom: 20px; border-radi
   }
 }
 
-
-//main-container全局样式
 .app-container { padding: 20px; }
 .components-container { margin: 30px 50px; position: relative; }
 .pagination-container { margin-top: 30px; }
@@ -103,12 +101,11 @@ input:disabled{background-color:#ffffff;}
 .el-message-box{width:270px}
 .el-message-box__btns{text-align:center;padding:10px 15px 0}
 .el-message-box__btns button:nth-child(2){margin-left:20px}
-/*.compileall .el-input__inner{text-align:right}*/
 
 .filter-container .el-date-editor.el-input--mini{width: 120px;}
 .filter-container .el-select--mini{width: 120px!important;}
 .filter-container .el-input--mini{width: 120px;}
 
 .filter-container .el-input .el-input__inner {width: 100%;padding-left: 8px }
-.filter-container .el-date-editor.el-input .el-input__inner{padding-left: 30px}
+.filter-container .el-date-editor.el-input .el-input__inner{padding-left: 30px;padding-right:20px}
 .filter-container .el-button--mini{margin-left: 10px;margin-right: 0}

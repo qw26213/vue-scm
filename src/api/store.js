@@ -156,7 +156,7 @@ export function auditWarehousing(id) {
 
 export function buildWarehousingEntry(data) {
   return request({
-    url: '/drp/ic/warehousingEntry/buildWarehousingEntryByHeaderId',
+    url: '/drp/ic/warehousingEntry/buildPurchaseByHeaderId',
     method: 'post',
     data
   })
@@ -204,7 +204,7 @@ export function auditWarehousingReturned(id) {
 
 export function buildWarehousingEntryReturned(data) {
   return request({
-    url: '/drp/ic/warehousingEntryReturned/buildWarehousingEntryReturnedByHeaderId',
+    url: '/drp/ic/warehousingEntryReturned/buildPurchaseReturnedByHeaderId',
     method: 'post',
     data
   })
