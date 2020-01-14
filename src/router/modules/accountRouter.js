@@ -7,7 +7,7 @@ const accountRouter = {
     name: 'account',
     meta: {
         title: '总账',
-        icon: 'money'
+        icon: 'account'
     },
     children: [{
         path: '/accbook',

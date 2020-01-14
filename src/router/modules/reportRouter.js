@@ -6,7 +6,7 @@ const accountRouter = {
     name: 'report',
     meta: {
         title: '报表',
-        icon:'table'
+        icon:'report'
     },
     children: [{
         path: 'debt',

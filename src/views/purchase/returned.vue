@@ -16,10 +16,10 @@
         <el-option label="已审核" value="1"></el-option>
         <el-option label="已生成" value="2"></el-option>
       </el-select>
-      <el-select v-model="listQuery.queryParam.isWarehousingEntry" placeholder="入库单状态" size="mini">
+      <el-select v-model="listQuery.queryParam.isWarehousingEntry" placeholder="采购退库单状态" size="mini">
         <el-option label="全部" value="null"></el-option>
-        <el-option label="未生成入库单" value="0"></el-option>
-        <el-option label="已生成入库单" value="1"></el-option>
+        <el-option label="未生成退货出库单" value="0"></el-option>
+        <el-option label="已生成退货出库单" value="1"></el-option>
       </el-select>
       <el-select v-model="listQuery.queryParam.isJeHeader" placeholder="凭证状态" size="mini">
         <el-option label="全部" value="null"></el-option>

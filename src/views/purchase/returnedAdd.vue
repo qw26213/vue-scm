@@ -31,8 +31,8 @@
                 <el-form-item label="合计金额:" prop="itemAmount">
                     <el-input size="mini" v-model="temp.itemAmount" placeholder="合计金额" disabled/>
                 </el-form-item>
-                <el-form-item label="使用预收:" prop="advPayAmount">
-                    <el-input size="mini" v-model="temp.advPayAmount" placeholder="使用预付" />
+                <el-form-item label="退预付:" prop="advPayAmount">
+                    <el-input size="mini" v-model="temp.advPayAmount" placeholder="退预付" />
                 </el-form-item>
                 <el-form-item label="现结金额:" prop="currPayAmount">
                     <el-input size="mini" v-model="temp.currPayAmount" placeholder="现结金额" style="width:72px" disabled />
@@ -219,7 +219,7 @@ export default {
                         this.tableData[i][this.keys[j]] = res.data.body.purchaseReturnedLine[i][this.keys[j]]
                     }
                 }
-                this.settleData = addNullObj2(res.data.body.settleTypeDetail)
+                this.settleData = addNullObj2(res.data.body.settleTypeReturnedDetail)
             })
         }
     },
@@ -297,12 +297,12 @@ export default {
         save() {
             this.temp.id = this.id;
             this.temp.purchaseReturnedLine = deleteEmptyProp(this.tableData);
-            this.temp.settleTypeDetail = this.settleData;
+            this.temp.settleTypeReturnedDetail = this.settleData;
             savePurchaseReturned(this.temp).then(res => {
                 if (res.data.errorCode == 0) {
                     this.$message.success(this.temp.id == "" ? '新增成功' : '修改成功');
                     this.$store.dispatch('tagsView/delView', this.$route);
-                    this.$router.replace('/purchaseReturned/data');
+                    this.$router.replace('/purchase/returned');
                 } else {
                     this.$message.error(res.data.msg)
                 }

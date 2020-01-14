@@ -18,10 +18,10 @@
                     <custList @selectChange="selectChange" keyType="settleCustId" :selectId="temp.settleCustId"></custList>
                 </el-form-item>
                 <el-form-item label="仓库:" prop="warehouseId">
-                    <warehouseList @selectChange="selectChange" keyType="warehouseId" :selectId="temp.warehouseId"></warehouseList>
+                    <warehouseList @selectChange="selectChange" allowNull="1" keyType="warehouseId" :selectId="temp.warehouseId"></warehouseList>
                 </el-form-item>
                 <el-form-item label="车辆:" prop="truckId">
-                    <truckList @selectChange="selectChange" keyType="truckId" :selectId="temp.truckId"></truckList>
+                    <truckList @selectChange="selectChange" allowNull="1" keyType="truckId" :selectId="temp.truckId"></truckList>
                 </el-form-item>
                 <el-form-item label="业务员:" prop="staffId">
                     <staffList @selectChange="selectChange" :selectId="temp.staffId"></staffList>
@@ -38,9 +38,6 @@
                 <el-form-item label="抹零金额:" prop="withoutPayAmount">
                     <el-input size="mini" v-model="temp.withoutPayAmount" placeholder="抹零金额" />
                 </el-form-item>
-                <el-form-item label="使用预收:" prop="advPayAmount">
-                    <el-input size="mini" v-model="temp.advPayAmount" placeholder="使用预收" />
-                </el-form-item>
                 <el-form-item label="现结金额:" prop="currPayAmount">
                     <el-input size="mini" v-model="temp.currPayAmount" placeholder="现结金额" style="width:72px" disabled />
                     <el-button size="mini" style="width:44px;padding:6px" @click="showSettleType">选择</el-button>
@@ -49,7 +46,7 @@
                     <el-input size="mini" v-model="temp.rebateAmount" placeholder="返利金额" />
                 </el-form-item>
                 <el-form-item label="使用预收款:" prop="autoAdvr">
-                    <el-checkbox v-model="temp.autoAdvr"></el-checkbox>
+                    <el-checkbox v-model="temp.autoAdvr" false-label="0" true-label="1"></el-checkbox>
                 </el-form-item>
             </el-form>
         </div>
@@ -200,7 +197,7 @@ export default {
                 billDate:getNowDate(),
                 billNo:'',
                 bizTypeId:'',
-                autoAdvr:true,
+                autoAdvr:'1',
                 custId:'',
                 custName:'',
                 settleCustId:'',
@@ -237,7 +234,7 @@ export default {
                             this.tableData[i][this.keys[j]] = res.data.body.salesReturnedLine[i][this.keys[j]]
                         }
                     }
-                    this.settleData = addNullObj2(res.data.body.settleTypeDetail)
+                    this.settleData = addNullObj2(res.data.body.settleTypeReturnedDetail)
                 }
             })
         }
@@ -326,12 +323,12 @@ export default {
             this.temp.id = this.id;
             this.temp.salesReturnedLine = deleteEmptyProp(this.tableData);
             this.temp.advPayAmount = Number(this.temp.advPayAmount);
-            this.temp.settleTypeDetail = this.settleData;
+            this.temp.settleTypeReturnedDetail = this.settleData;
             saveSalesReturned(this.temp).then(res => {
                 if (res.data.errorCode == 0) {
                     this.$message.success(this.id==""?'新增成功':'修改成功');
                     this.$store.dispatch('tagsView/delView', this.$route);
-                    this.$router.replace('/sale/data');
+                    this.$router.replace('/sale/returned');
                 } else {
                     this.$message.error(res.data.msg)
                 }

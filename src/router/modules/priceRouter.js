@@ -6,7 +6,7 @@ const priceRouter = {
         name: 'price',
         meta: {
             title: '价格',
-            icon: 'money'
+            icon: 'price'
         },
         children: [{
             path: 'priceGroup',

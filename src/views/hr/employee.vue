@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <div class="filter-container">
+    <div class="filter-container tx-r">
       <el-button size="mini" type="primary" @click="handleAdd">新增</el-button>
       <el-button size="mini" type="primary" @click="downloadModel">下载模板</el-button>
       <el-button size="mini" type="primary" @click="handImport">人员导入</el-button>

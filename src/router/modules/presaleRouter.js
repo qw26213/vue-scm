@@ -7,7 +7,7 @@ const presaleRouter = {
     name: 'presale',
     meta: {
         title: '预收',
-        icon: 'table',
+        icon: 'collect',
     },
     children: [{
         path: 'data',

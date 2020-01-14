@@ -7,7 +7,7 @@ const setRouter = {
         name: 'set',
         meta: {
             title: '设置',
-            icon: 'set'
+            icon: 'setting'
         },
         children: [{
                 path: 'baseData',

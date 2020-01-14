@@ -6,7 +6,7 @@ const saleRouter = {
     name: 'sale',
     meta: {
         title: '销售',
-        icon: 'table'
+        icon: 'certificate'
     },
     children: [{
         path: 'data',

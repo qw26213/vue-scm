@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-date-picker :editable="false" v-model="listQuery.periodCode1" type="date" placeholder="开始日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+      <el-date-picker :editable="false" v-model="listQuery.periodCode1" type="month" placeholder="开始月份" size="mini" value-format="yyyy-MM"></el-date-picker>
       <span class="zhi">至</span>
-      <el-date-picker :editable="false" v-model="listQuery.periodCode2" type="date" placeholder="结束日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+      <el-date-picker :editable="false" v-model="listQuery.periodCode2" type="month" placeholder="结束月份" size="mini" value-format="yyyy-MM"></el-date-picker>
       <el-button size="mini" type="primary" @click="getList">查询</el-button>
       <el-button size="mini" type="primary" @click="copyPay">复制工资表</el-button>
       <el-button size="mini" type="primary" @click="downloadModel">下载模板</el-button>
@@ -45,9 +45,9 @@
           </el-select>
         </el-form-item>
         <el-form-item label="期间选择" style="margin-right:20px">
-          <el-date-picker :editable="false" v-model="temp1.periodStar" type="date" placeholder="开始日期" style="width:115px" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+          <el-date-picker :editable="false" v-model="temp1.periodStar" type="month" placeholder="月份" style="width:115px" value-format="yyyy-MM-dd"></el-date-picker>
           <span>至</span>
-          <el-date-picker :editable="false" v-model="temp1.periodEnd" type="date" placeholder="结束日期" style="width:115px" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+          <el-date-picker :editable="false" v-model="temp1.periodEnd" type="month" placeholder="月份" style="width:115px" value-format="yyyy-MM-dd"></el-date-picker>
         </el-form-item>
         <el-form-item label="是否覆盖">
           <el-radio v-model="temp1.cover" label="1">是</el-radio>
@@ -62,7 +62,7 @@
     <el-dialog title="薪酬导入" :visible.sync="dialogVisible2" width="400px">
       <el-form ref="dataForm" :model="temp2" label-position="left" label-width="72px" style="margin-left:20px;">
         <el-form-item label="选择月份" style="margin-right:20px">
-          <el-date-picker :editable="false" v-model="temp2.periodCode" type="month" placeholder="选择月份" style="width:230px" :clearable="false" value-format="yyyy-MM"></el-date-picker>
+          <el-date-picker :editable="false" v-model="temp2.periodCode" type="month" placeholder="选择月份" style="width:230px" value-format="yyyy-MM"></el-date-picker>
         </el-form-item>
         <el-form-item label="选择文件">
           <el-button size="small" type="primary" @click="handFileImport"><i class="el-icon-upload" style="margin-right:5px"></i>点击上传</el-button>
@@ -98,10 +98,10 @@ export default {
         limit:20
       },
       temp1: {
-        certificateType:'',
-        comDate:'',
-        deptId:'',
-        endDate:''
+        salaryType:'',
+        periodStar:'',
+        periodEnd:'',
+        cover:'1'
       },
       temp2: {
         periodCode:getNowMonth()

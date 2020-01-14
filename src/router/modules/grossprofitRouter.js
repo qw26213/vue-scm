@@ -6,7 +6,7 @@ const grossprofitRouter = {
     name: 'grossprofit',
     meta: {
         title: '毛利',
-        icon: 'money'
+        icon: 'obtain'
     },
     children: [{
         path: 'grossprofit1',

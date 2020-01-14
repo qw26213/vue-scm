@@ -6,7 +6,7 @@ const hrRouter = {
         name: 'hr',
         meta: {
             title: '薪酬',
-            icon: 'money'
+            icon: 'people'
         },
         children: [{
             path: 'employee',

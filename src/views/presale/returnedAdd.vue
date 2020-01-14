@@ -220,7 +220,7 @@ export default {
                     }
                 }
                 this.tableData = addNullObj(res.data.body.presaleReturnedLine);
-                this.settleData = addNullObj2(res.data.body.settleTypeDetail)
+                this.settleData = addNullObj2(res.data.body.settleTypeReturnedDetail)
             })
         }
     },
@@ -284,12 +284,12 @@ export default {
         save() {
             this.temp.id = this.id;
             this.temp.presaleReturnedLine = deleteEmptyProp(this.tableData);
-            this.temp.settleTypeDetail = this.settleData;
+            this.temp.settleTypeReturnedDetail = this.settleData;
             savePresaleReturned(this.temp).then(res => {
                 if (res.data.errorCode == 0) {
                     this.$message.success(this.temp.id==""?'新增成功':'修改成功');
                     this.$store.dispatch('tagsView/delView', this.$route);
-                    this.$router.replace('/presaleReturned/data');
+                    this.$router.replace('/presale/returned');
                 } else {
                     this.$message.error(res.data.msg)
                 }

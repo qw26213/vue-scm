@@ -6,7 +6,7 @@ const hrRouter = {
     name: 'visit',
     meta: {
         title: '拜访',
-        icon:'table'
+        icon:'visitor'
     },
     children: [{
         path: 'add',

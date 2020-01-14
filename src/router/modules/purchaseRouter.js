@@ -6,7 +6,7 @@ const purchaseRouter = {
     name: 'purchase',
     meta: {
         title: '采购',
-        icon: 'table'
+        icon: 'shopping'
     },
     children: [{
         path: 'data',

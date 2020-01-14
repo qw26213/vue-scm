@@ -6,7 +6,7 @@ const arapRouter = {
     name: 'interact',
     meta: {
         title: '往来',
-        icon: 'table'
+        icon: 'change'
     },
     children: [{
         path: 'interactData',
