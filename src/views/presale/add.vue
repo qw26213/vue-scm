@@ -149,7 +149,7 @@
             <el-table :data="settleData" border fit highlight-current-row style="width: 100%;" size="mini" cell-class-name="tdCell">
                 <el-table-column label="名称" width="146">
                     <template slot-scope="scope">
-                        <settleTypeList :selectCode="scope.row.settleTypeCode" :selectArap="scope.row.arAp" :selectName="scope.row.settleTypeName" :index="scope.$index" @settleTypeChange="settleTypeChange">
+                        <settleTypeList :settleTypeArr="settleTypeArr" :selectCode="scope.row.settleTypeCode" :selectArap="scope.row.arAp" :selectName="scope.row.settleTypeName" :index="scope.$index" @settleTypeChange="settleTypeChange">
                         </settleTypeList>
                     </template>
                 </el-table-column>
@@ -171,6 +171,7 @@
     </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 import {savePresale,getPresaleById} from '@/api/store';
 import { getMeas,getInvCatg } from '@/api/basedata';
 import {deleteEmptyProp,addNullObj,addNullObj2} from '@/utils';
@@ -181,7 +182,7 @@ import bizTypeList from '@/components/selects/bizTypeList';
 import invCatgList from '@/components/selects/invCatgList';
 import settleTypeList from '@/components/selects/settleTypeList';
 import measList from '@/components/selects/measList';
-import { getName,getNowDate } from '@/utils/auth'
+import { getName,getNowDate } from '@/utils/auth';
 export default {
     name: 'presaleAdd',
     components:{
@@ -210,14 +211,21 @@ export default {
                 auditDate:"",
                 auditor:"",
                 balance:0,
-                recordDate:getNowDate()+" 00:00:00",
+                recordDate:getNowDate() + " 00:00:00",
                 recorder:getName()
             },
             dialogFormVisible:false,
             settleData:[{},{},{},{},{}]
         }
     },
+    computed: {
+        ...mapGetters([
+          'settleTypeArr',
+          'truckList'
+        ])
+    },
     created() {
+        this.$store.dispatch('basedata/getSettleType')
         getMeas().then(res => {
             this.measList = res.data.data
         })
@@ -235,6 +243,7 @@ export default {
                 }
                 this.tableData = addNullObj(res.data.body.presaleLine);
                 this.settleData = addNullObj2(res.data.body.settleTypeDetail)
+                this.calculateTotal()
             })
         }
     },

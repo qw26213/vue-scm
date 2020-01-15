@@ -152,7 +152,7 @@
             <el-table :data="settleData" border fit highlight-current-row style="width: 100%;" size="mini" cell-class-name="tdCell">
                 <el-table-column label="名称" width="146">
                     <template slot-scope="scope">
-                        <settleTypeList :selectCode="scope.row.settleTypeCode" :selectArap="scope.row.arAp" :selectName="scope.row.settleTypeName" :index="scope.$index" @settleTypeChange="settleTypeChange">
+                        <settleTypeList :settleTypeArr="settleTypeArr" :selectCode="scope.row.settleTypeCode" :selectArap="scope.row.arAp" :selectName="scope.row.settleTypeName" :index="scope.$index" @settleTypeChange="settleTypeChange">
                         </settleTypeList>
                     </template>
                 </el-table-column>
@@ -174,6 +174,7 @@
     </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 import {saveSales,getSalesById,getItemPrice} from '@/api/store';
 import {deleteEmptyProp,addNullObj,addNullObj2} from '@/utils';
 import staffList from '@/components/selects/staffList';
@@ -223,7 +224,14 @@ export default {
             }
         }
     },
+    computed: {
+        ...mapGetters([
+          'settleTypeArr',
+          'truckList'
+        ])
+    },
     created() {
+        this.$store.dispatch('basedata/getSettleType')
         if(this.$route.query.id){
             this.id = this.$route.query.id;
             getSalesById(this.id).then(res=>{

@@ -8,23 +8,15 @@
 import { getAllNoADVR } from '@/api/basedata'
 export default {
     name: 'settleTypeList',
-    props: ['selectCode','selectName','selectArap','index'],
-    data(){
+    props: ['selectCode','selectName','selectArap','index','settleTypeArr'],
+    data () {
       return {
-        listQuery: {
-          page: 1,
-          settleTypeCode: '',
-          settleTypeName: ''
-        },
         curArAp:'',
         curCode:this.selectCode,
         curName:'',
         curIndex:this.index,
-        settleTypeList:[]
+        settleTypeList:this.settleTypeArr
       }
-    },
-    mounted(){
-      this.getList('');
     },
     methods: {
         changeVal(val){
@@ -42,27 +34,6 @@ export default {
             index:this.curIndex
           }
           this.$emit('settleTypeChange',obj)
-        },
-        searchThis(e){
-            this.getList(e.target.value);
-        },
-        getList(name){
-          this.listQuery.settleTypeName = name;
-          getAllNoADVR(this.listQuery).then(res => {
-            this.settleTypeList = res.data.data;
-          })
-        },
-        remoteGet(query) {
-          if (query !== '') {
-            this.getList(query);
-          } else {
-            this.settleTypeList = [];
-          }
-        },
-        getData() {
-            getCust(this.listQuery).then(res => {
-                this.settleTypeList = res.data.data
-            })
         }
     }
 }
