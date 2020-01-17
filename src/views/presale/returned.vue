@@ -191,11 +191,11 @@ export default {
     },
     handleAdd(obj) {
       this.$store.dispatch('tagsView/delView', this.$route);
-      this.$router.push('/presaleReturned/add')
+      this.$router.push('/presale/returnedAdd')
     },
     handleCompile(id,status) {
       this.$store.dispatch('tagsView/delView', this.$route);
-      this.$router.push('/presaleReturned/modify?id='+id+'&status='+status)
+      this.$router.push('/presale/returnedModify?id='+id+'&status='+status)
     },
     handleDel(id){
       this.$confirm('确定删除吗?', '提示', {

@@ -20,9 +20,9 @@
                 </el-form-item>
                 <el-form-item label="预收类型:" prop="presaleReturnedType">
                     <el-select v-model="temp.presaleReturnedType" placeholder="预收类型" size="mini" @change="initTable">
-                      <el-option label="按钱" value="0"></el-option>
-                      <el-option label="按商品" value="1"></el-option>
-                      <el-option label="按品类" value="2"></el-option>
+                        <el-option label="按钱" value="0"></el-option>
+                        <el-option label="按商品" value="1"></el-option>
+                        <el-option label="按品类" value="2"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="有效日期:" prop="expirationDate">
@@ -30,7 +30,7 @@
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="合计金额:" prop="amount">
-                    <el-input size="mini" v-model="temp.amount" placeholder="合计金额" disabled/>
+                    <el-input size="mini" v-model="temp.amount" placeholder="合计金额" disabled />
                 </el-form-item>
                 <el-form-item label="现结金额:" prop="beginBalance">
                     <el-input size="mini" v-model="temp.beginBalance" placeholder="现结金额" style="width:72px" disabled />
@@ -130,7 +130,7 @@
             </el-form>
         </div>
         <div class="tx-c" style="margin-top:15px" v-if="status!=1&&status!=2">
-          <el-button class="filter-item" type="primary" @click="save">保存</el-button>
+            <el-button class="filter-item" type="primary" @click="save">保存</el-button>
         </div>
         <el-dialog :close-on-click-modal="false" title="结算方式" :visible.sync="dialogFormVisible" width="392px">
             <el-table :data="settleData" border fit highlight-current-row style="width: 100%;" size="mini" cell-class-name="tdCell">
@@ -158,9 +158,9 @@
     </div>
 </template>
 <script>
-import {savePresaleReturned,getPresaleReturnedById} from '@/api/store';
-import { getMeas,getInvCatg } from '@/api/basedata';
-import {deleteEmptyProp,addNullObj,addNullObj2} from '@/utils';
+import { savePresaleReturned, getPresaleReturnedById } from '@/api/store';
+import { getMeas, getInvCatg } from '@/api/basedata';
+import { deleteEmptyProp, addNullObj, addNullObj2 } from '@/utils';
 import staffList from '@/components/selects/staffList';
 import custList from '@/components/selects/custList';
 import itemList from '@/components/selects/itemList';
@@ -168,39 +168,45 @@ import bizTypeList from '@/components/selects/bizTypeList';
 import invCatgList from '@/components/selects/invCatgList';
 import settleTypeList from '@/components/selects/settleTypeList';
 import measList from '@/components/selects/measList';
-import { getName,getNowDate } from '@/utils/auth'
+import { getName, getNowDate } from '@/utils/auth'
 export default {
     name: 'presaleReturnedAdd',
-    components:{
-        staffList,custList,bizTypeList,itemList,invCatgList,settleTypeList,measList
+    components: {
+        staffList,
+        custList,
+        bizTypeList,
+        itemList,
+        invCatgList,
+        settleTypeList,
+        measList
     },
     data() {
         return {
-            id:'',
-            isDisabled:false,
-            status:this.$route.query.status,
-            tableData: [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}],
-            keys:['invCatgName','invCatgid',"itemId","itemCode","itemName","norms","uom","subUom","exchangeRate","beginBalanceQty","price","taxRate","taxAmount","vatAmount","remarks","isGift",'measId'],
-            invCatgList:[],
-            measList:[],
+            id: '',
+            isDisabled: false,
+            status: this.$route.query.status,
+            tableData: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
+            keys: ['invCatgName', 'invCatgid', "itemId", "itemCode", "itemName", "norms", "uom", "subUom", "exchangeRate", "beginBalanceQty", "price", "taxRate", "taxAmount", "vatAmount", "remarks", "isGift", 'measId'],
+            invCatgList: [],
+            measList: [],
             temp: {
-                billNo:'',
-                amount:'',
-                expirationDate:'',
-                billDate:getNowDate(),
-                custName:'',
-                presaleReturnedType:'1',
-                staffId:'',
-                custId:'',
-                bizTypeId:'',
-                beginBalance:'',
-                auditDate:"",
-                auditor:"",
-                recordDate:getNowDate()+" 00:00:00",
-                recorder:getName()
+                billNo: '',
+                amount: '',
+                expirationDate: '',
+                billDate: getNowDate(),
+                custName: '',
+                presaleReturnedType: '1',
+                staffId: '',
+                custId: '',
+                bizTypeId: '',
+                beginBalance: '',
+                auditDate: "",
+                auditor: "",
+                recordDate: getNowDate() + " 00:00:00",
+                recorder: getName()
             },
-            dialogFormVisible:false,
-            settleData:[{},{},{},{},{}]
+            dialogFormVisible: false,
+            settleData: [{}, {}, {}, {}, {}]
         }
     },
     created() {
@@ -210,47 +216,47 @@ export default {
         getInvCatg().then(res => {
             this.invCatgList = res.data.data
         })
-        if(this.$route.query.id){
+        if (this.$route.query.id) {
             this.id = this.$route.query.id;
-            getPresaleReturnedById(this.id).then(res=>{
-                for(var key in this.temp){
-                    this.temp[key] = res.data.body[key]
-                    if(key=='presaleReturnedType'){
-                        this.temp[key] = String(res.data.body[key])
+            getPresaleReturnedById(this.id).then(res => {
+                for (var key in this.temp) {
+                    this.temp[key] = res.data.data[key]
+                    if (key == 'presaleReturnedType') {
+                        this.temp[key] = String(res.data.data[key])
                     }
                 }
-                this.tableData = addNullObj(res.data.body.presaleReturnedLine);
-                this.settleData = addNullObj2(res.data.body.settleTypeDetail)
+                this.tableData = addNullObj(res.data.data.presaleReturnedLine);
+                this.settleData = addNullObj2(res.data.data.settleTypeDetail)
             })
         }
     },
     methods: {
-        initTable(val){
-            this.tableData = [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}];
+        initTable(val) {
+            this.tableData = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
         },
         showSettleType() {
             this.dialogFormVisible = true
         },
-        settleTypeChange(obj){
+        settleTypeChange(obj) {
             for (var key in obj) {
                 this.settleData[obj.index][key] = obj[key];
             }
         },
-        changeVal1(obj){
-            for(var key in obj){
-                this.tableData[obj.index][key]=obj[key];
+        changeVal1(obj) {
+            for (var key in obj) {
+                this.tableData[obj.index][key] = obj[key];
             }
         },
-        calculate(index){
+        calculate(index) {
             var qty = this.tableData[index].beginBalanceQty;
             var price = this.tableData[index].price;
-            if(qty&&price){
-                var beginBalance = parseFloat(Number(qty)*Number(price)).toFixed(2);
-                this.$set(this.tableData[index],'beginBalance',beginBalance)
+            if (qty && price) {
+                var beginBalance = parseFloat(Number(qty) * Number(price)).toFixed(2);
+                this.$set(this.tableData[index], 'beginBalance', beginBalance)
                 this.calculateTotal();
             }
         },
-        calculate1(){
+        calculate1() {
             var amount = 0;
             for (var i = 0; i < this.settleData.length; i++) {
                 if (this.settleData[i] && this.settleData[i].amount) {
@@ -259,25 +265,25 @@ export default {
             }
             this.temp.beginBalance = parseFloat(amount).toFixed(2);
         },
-        calculateTotal(){
+        calculateTotal() {
             var amount = 0;
-            for(var i=0;i<this.tableData.length;i++){
-                if(this.tableData[i]&&this.tableData[i].beginBalance){
-                    amount+=Number(this.tableData[i].beginBalance);
+            for (var i = 0; i < this.tableData.length; i++) {
+                if (this.tableData[i] && this.tableData[i].beginBalance) {
+                    amount += Number(this.tableData[i].beginBalance);
                 }
             }
             this.temp.amount = parseFloat(amount).toFixed(2);
         },
-        selectChange(obj){
-            for(var key in obj){
-                this.temp[key]=obj[key];
+        selectChange(obj) {
+            for (var key in obj) {
+                this.temp[key] = obj[key];
             }
         },
-        changeVal(obj){
-            for(var key in obj){
-                this.tableData[obj.index][key]=obj[key];
+        changeVal(obj) {
+            for (var key in obj) {
+                this.tableData[obj.index][key] = obj[key];
             }
-            if(obj.index+1==this.tableData.length){
+            if (obj.index + 1 == this.tableData.length) {
                 this.tableData.push({});
             }
         },
@@ -287,13 +293,13 @@ export default {
             this.temp.settleTypeDetail = this.settleData;
             savePresaleReturned(this.temp).then(res => {
                 if (res.data.errorCode == 0) {
-                    this.$message.success(this.temp.id==""?'新增成功':'修改成功');
+                    this.$message.success(this.temp.id == "" ? '新增成功' : '修改成功');
                     this.$store.dispatch('tagsView/delView', this.$route);
                     this.$router.replace('/presaleReturned/data');
                 } else {
                     this.$message.error(res.data.msg)
                 }
-            }).catch(()=>{
+            }).catch(() => {
                 this.$message.error('保存失败，请稍后重试！')
             })
         }

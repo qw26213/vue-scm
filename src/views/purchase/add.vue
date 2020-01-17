@@ -220,14 +220,14 @@ export default {
             this.id = this.$route.query.id;
             getPurchaseById(this.id).then(res => {
                 for (var key in this.temp) {
-                    this.temp[key] = res.data.body[key]
+                    this.temp[key] = res.data.data[key]
                 }
-                for (var i = 0; i < res.data.body.purchaseLine.length; i++) {
+                for (var i = 0; i < res.data.data.purchaseLine.length; i++) {
                     for (var j = 0; j < this.keys.length; j++) {
-                        this.tableData[i][this.keys[j]] = res.data.body.purchaseLine[i][this.keys[j]]
+                        this.tableData[i][this.keys[j]] = res.data.data.purchaseLine[i][this.keys[j]]
                     }
                 }
-                this.settleData = addNullObj2(res.data.body.settleTypeDetail)
+                this.settleData = addNullObj2(res.data.data.settleTypeDetail)
             })
         }
     },

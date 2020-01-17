@@ -118,7 +118,7 @@ export default {
       this.listLoading = true
       getPayData(this.listQuery).then(res => {
         this.listLoading = false
-        this.tableData = res.data.body
+        this.tableData = res.data.data
       }).catch(err=>{
         this.listLoading = false
       })

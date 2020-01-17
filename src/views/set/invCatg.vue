@@ -126,14 +126,14 @@ export default {
     },
     getLeftTree(){
       getItemTree({parentId:'',includeRoot:1}).then(res => {
-        this.treeData = res.data.body
+        this.treeData = res.data.data
       })
     },
     getList() {
       this.listLoading = true
       getItemTree(this.listQuery).then(res => {
         this.listLoading = false
-        this.tableData = res.data.body
+        this.tableData = res.data.data
       }).catch(err=>{
         this.listLoading = false
       })

@@ -563,7 +563,7 @@
     </div>
 </template>
 <script>
-import { getDeptData,getPeriodList } from '@/api/report'
+import { getDeptData, getPeriodList } from '@/api/report'
 import { getNowMonth } from '@/utils/index'
 export default {
     name: 'dept',
@@ -571,7 +571,7 @@ export default {
         return {
             tableKey: 0,
             tableData: [],
-            periodList:[],
+            periodList: [],
             total: 0,
             listLoading: true,
             listQuery: {
@@ -607,6 +607,7 @@ td {
     height: 36px;
     padding-left: 10px
 }
+
 .label {
     text-align: right;
     font-size: 14px;
@@ -614,5 +615,4 @@ td {
     line-height: 40px;
     padding: 0 12px 0 0;
 }
-
 </style>

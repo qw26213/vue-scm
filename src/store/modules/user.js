@@ -38,7 +38,7 @@ const actions = {
       loginCheck({ orgCode: orgCode.trim(),userAccount:userAccount.trim(), password: password }).then(res => {
         if(res.data.errorCode==0){
           const { data } = res;
-          let token = data.body||"";
+          let token = data.data||"";
           commit('SET_TOKEN', token)
           setToken(token)
           getIndexInfo(this.loginForm).then(res=>{

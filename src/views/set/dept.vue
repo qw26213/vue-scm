@@ -127,7 +127,7 @@ export default {
     },
     getLeftTree(){
       getDeptTree({parentId:'',includeRoot:1}).then(res => {
-        this.treeData = res.data.body
+        this.treeData = res.data.data
       }).catch(err=>{
         this.listLoading = false
       })
@@ -136,7 +136,7 @@ export default {
       this.listLoading = true
       getDeptTree(this.listQuery).then(res => {
         this.listLoading = false
-        this.tableData = res.data.body
+        this.tableData = res.data.data
       })
     },
     handleNodeClick(e){

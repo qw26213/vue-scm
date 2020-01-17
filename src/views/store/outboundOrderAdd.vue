@@ -161,11 +161,11 @@ export default {
         if (this.$route.query.id) {
             this.id = this.$route.query.id;
             getOutboundOrderById(this.id).then(res => {
-                if (res.data.body) {
+                if (res.data.data) {
                     for (var key in this.temp) {
-                        this.temp[key] = res.data.body[key]
+                        this.temp[key] = res.data.data[key]
                     }
-                    this.tableData = addNullObj(res.data.body.outboundOrderLine);
+                    this.tableData = addNullObj(res.data.data.outboundOrderLine);
                 }
             })
         }

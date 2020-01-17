@@ -255,10 +255,10 @@ export default {
     },
     getTree(){
       getChannelTree({parentId:'',includeRoot:0}).then(res => {
-        this.treeData1 = res.data.body
+        this.treeData1 = res.data.data
       })
       getCustTypeTree({parentId:'',includeRoot:0}).then(res => {
-        this.treeData2 = res.data.body
+        this.treeData2 = res.data.data
       })
       getPriceGroup({}).then(res => {
         this.priceGroupList = res.data.data

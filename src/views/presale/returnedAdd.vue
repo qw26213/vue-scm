@@ -222,13 +222,13 @@ export default {
             this.id = this.$route.query.id;
             getPresaleReturnedById(this.id).then(res=>{
                 for(var key in this.temp){
-                    this.temp[key] = res.data.body[key]
+                    this.temp[key] = res.data.data[key]
                     if(key=='presaleReturnedType'){
-                        this.temp[key] = String(res.data.body[key])
+                        this.temp[key] = String(res.data.data[key])
                     }
                 }
-                this.tableData = addNullObj(res.data.body.presaleReturnedLine);
-                this.settleData = addNullObj2(res.data.body.settleTypeReturnedDetail)
+                this.tableData = addNullObj(res.data.data.presaleReturnedLine);
+                this.settleData = addNullObj2(res.data.data.settleTypeReturnedDetail)
             })
         }
     },

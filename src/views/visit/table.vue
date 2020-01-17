@@ -62,7 +62,7 @@
     </div>
 </template>
 <script>
-import { getVoucherTable, getCatogery} from '@/api/accbook'
+import { getVoucherTable, getCatogery } from '@/api/accbook'
 import { getNowMonth } from '@/utils/index'
 import Pagination from '@/components/Pagination'
 export default {
@@ -72,7 +72,7 @@ export default {
         return {
             tableKey: 0,
             tableData: [],
-            catogeryList:[],
+            catogeryList: [],
             total: 0,
             listLoading: true,
             listQuery: {
@@ -86,9 +86,9 @@ export default {
     },
     created() {
         getCatogery().then(res => {
-          this.catogeryList = res.data;
-          this.listQuery.jeCatogeryId = res.data[0].id
-          this.getList()
+            this.catogeryList = res.data;
+            this.listQuery.jeCatogeryId = res.data[0].id
+            this.getList()
         })
     },
     methods: {

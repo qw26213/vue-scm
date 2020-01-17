@@ -142,7 +142,7 @@ export default {
   methods: {
     getLeftTree(){
       getCustTypeTree({parentId:'',includeRoot:1}).then(res => {
-        this.treeData = res.data.body
+        this.treeData = res.data.data
       }).catch(err=>{
         this.listLoading = false
       })
@@ -176,7 +176,7 @@ export default {
       this.selectIdArr = getStrByData(row.custList);
       var selectIds = this.selectIdArr.join(',');
       getCustListByCustTypeId({ custTypeId: row.id }).then(res => {
-        this.selectIdArr = getStrByData(res.data.body);
+        this.selectIdArr = getStrByData(res.data.data);
         var selectIds = this.selectIdArr.join(',');
         this.custList.forEach(row => {
           if(selectIds.indexOf(row.id) >= 0){
@@ -204,7 +204,7 @@ export default {
       this.listLoading = true
       getCustTypeTreeDataByParentId(this.listQuery).then(res => {
         this.listLoading = false
-        this.tableData = res.data.body
+        this.tableData = res.data.data
       }).catch(err=>{
         this.listLoading = false
       })

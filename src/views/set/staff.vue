@@ -150,7 +150,7 @@ export default {
     },
     getTree(){
       getDeptTree({parentId:'',includeRoot:1}).then(res => {
-        this.treeData = res.data.body
+        this.treeData = res.data.data
       })
     },
     getList() {

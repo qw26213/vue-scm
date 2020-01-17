@@ -235,17 +235,17 @@ export default {
         if(this.$route.query.id){
             this.id = this.$route.query.id;
             getSalesById(this.id).then(res=>{
-                if(res.data.body){
+                if(res.data.data){
                     for(var key in this.temp){
-                        this.temp[key] = res.data.body[key];
+                        this.temp[key] = res.data.data[key];
                     }
                     this.temp.autoAdvr = true;
-                    for(var i=0;i<res.data.body.salesLine.length;i++){
+                    for(var i=0;i<res.data.data.salesLine.length;i++){
                         for(var j=0;j<this.keys.length;j++){
-                            this.tableData[i][this.keys[j]] = res.data.body.salesLine[i][this.keys[j]]
+                            this.tableData[i][this.keys[j]] = res.data.data.salesLine[i][this.keys[j]]
                         }
                     }
-                    this.settleData = addNullObj2(res.data.body.settleTypeDetail)
+                    this.settleData = addNullObj2(res.data.data.settleTypeDetail)
                 }
             })
         }

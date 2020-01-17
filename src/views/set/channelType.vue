@@ -170,7 +170,7 @@ export default {
       this.dialogFormVisible1 = true
       this.handleObj = row;
       getCustListByChannelTypeId({ channelTypeId: row.id }).then(res => {
-        this.selectIdArr = getStrByData(res.data.body);
+        this.selectIdArr = getStrByData(res.data.data);
         var selectIds = this.selectIdArr.join(',');
         this.custList.forEach(row => {
           if(selectIds.indexOf(row.id) >= 0){
@@ -196,14 +196,14 @@ export default {
     },
     getLeftTree(){
       getChannelTree({parentId:'',includeRoot:1}).then(res => {
-        this.treeData = res.data.body
+        this.treeData = res.data.data
       })
     },
     getList() {
       this.listLoading = true
       getChannelTree(this.listQuery).then(res => {
         this.listLoading = false
-        this.tableData = res.data.body
+        this.tableData = res.data.data
       })
     },
     handleAdd(obj) {

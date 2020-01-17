@@ -13,6 +13,7 @@ const mutations = {
 
 const actions = {
   getSettleType({ commit }, data) {
+    if(state.settleTypeArr.length>0){return}
     getAllNoADVR().then(res => {
       commit('SET_SETTLETYPE', res.data.data)
     })

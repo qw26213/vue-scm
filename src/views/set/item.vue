@@ -318,7 +318,7 @@ export default {
                 this.listLoading = false
             })
             getItemTree({ parentId: '', includeRoot: 1 }).then(res => {
-                this.treeData = res.data.body
+                this.treeData = res.data.data
             })
             getBrand({}).then(res => {
                 this.brandList = res.data.data

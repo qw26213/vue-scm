@@ -145,9 +145,9 @@ export default {
             this.id = this.$route.query.id;
             getMovementById(this.id).then(res => {
                 for (var key in this.temp) {
-                    this.temp[key] = res.data.body[key]
+                    this.temp[key] = res.data.data[key]
                 }
-                this.tableData = addNullObj(res.data.body.movementLine);
+                this.tableData = addNullObj(res.data.data.movementLine);
             })
         }
     },

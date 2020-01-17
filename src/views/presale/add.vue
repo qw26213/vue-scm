@@ -236,13 +236,13 @@ export default {
             this.id = this.$route.query.id;
             getPresaleById(this.id).then(res=>{
                 for(var key in this.temp){
-                    this.temp[key] = res.data.body[key]
+                    this.temp[key] = res.data.data[key]
                     if(key=='presaleType'){
-                        this.temp[key] = String(res.data.body[key])
+                        this.temp[key] = String(res.data.data[key])
                     }
                 }
-                this.tableData = addNullObj(res.data.body.presaleLine);
-                this.settleData = addNullObj2(res.data.body.settleTypeDetail)
+                this.tableData = addNullObj(res.data.data.presaleLine);
+                this.settleData = addNullObj2(res.data.data.settleTypeDetail)
                 this.calculateTotal()
             })
         }

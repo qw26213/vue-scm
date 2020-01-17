@@ -131,9 +131,9 @@ export default {
             this.id = this.$route.query.id;
             getAllocationById(this.id).then(res=>{
                 for(var key in this.temp){
-                    this.temp[key] = res.data.body[key]
+                    this.temp[key] = res.data.data[key]
                 }
-                this.tableData = addNullObj(res.data.body.allocationLine);
+                this.tableData = addNullObj(res.data.data.allocationLine);
             })
         }
     },
