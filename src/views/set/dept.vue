@@ -146,7 +146,7 @@ export default {
     },
     handleAdd(obj) {
       if(this.listQuery.parentId==''){
-        this.$message.error('请先选择一个部门');return
+        this.$message.error('请先选择一个上级部门');return
       }
       this.dialogFormVisible = true
       this.dialogStatus = 'create'

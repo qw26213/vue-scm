@@ -140,7 +140,7 @@ export default {
     },
     handleAdd(obj) {
       if(this.parentId==''){
-        this.$message.error('请先选择一个商品分类');return
+        this.$message.error('请先选择一个上级商品分类');return
       }
       this.dialogFormVisible = true
       this.dialogStatus = 'create'

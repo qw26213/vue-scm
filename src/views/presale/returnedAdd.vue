@@ -18,16 +18,12 @@
                 <el-form-item label="业务员:" prop="staffId">
                     <staffList @selectChange="selectChange" :selectId="temp.staffId"></staffList>
                 </el-form-item>
-                <el-form-item label="预收类型:" prop="presaleReturnedType">
-                    <el-select v-model="temp.presaleReturnedType" placeholder="预收类型" size="mini" @change="initTable">
+                <el-form-item label="预收类型:" prop="presaleType">
+                    <el-select v-model="temp.presaleType" placeholder="预收类型" size="mini" @change="initTable">
                       <el-option label="按钱" value="0"></el-option>
                       <el-option label="按商品" value="1"></el-option>
                       <el-option label="按品类" value="2"></el-option>
                     </el-select>
-                </el-form-item>
-                <el-form-item label="有效日期:" prop="expirationDate">
-                    <el-date-picker :editable="false" v-model="temp.expirationDate" :disabled="temp.presaleReturnedType==0" type="date" placeholder="有效日期" size="mini" :clearable="false" value-format="yyyy-MM-dd">
-                    </el-date-picker>
                 </el-form-item>
                 <el-form-item label="合计金额:" prop="amount">
                     <el-input size="mini" v-model="temp.amount" placeholder="合计金额" disabled/>
@@ -40,64 +36,64 @@
         </div>
         <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini" cell-class-name="tdCell" max-height="600">
             <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
-            <el-table-column label="商品代码" width="160" v-if="temp.presaleReturnedType=='1'">
+            <el-table-column label="商品代码" width="160" v-if="temp.presaleType=='1'">
                 <template slot-scope="scope">
                     <itemList :selectCode="scope.row.itemCode" :selectId="scope.row.itemId" :index="scope.$index" @changeVal="changeVal"></itemList>
                 </template>
             </el-table-column>
-            <el-table-column label="商品名称" width="160" v-if="temp.presaleReturnedType=='1'">
+            <el-table-column label="商品名称" width="160" v-if="temp.presaleType=='1'">
                 <template slot-scope="{row}">
                     <input type="text" class="inputCell" v-model="row.itemName" disabled>
                 </template>
             </el-table-column>
-            <el-table-column label="规格" v-if="temp.presaleReturnedType=='1'">
+            <el-table-column label="规格" v-if="temp.presaleType=='1'">
                 <template slot-scope="{row}">
                     <input type="text" class="inputCell tx-r" v-model="row.norms" disabled>
                 </template>
             </el-table-column>
-            <el-table-column label="单位" v-if="temp.presaleReturnedType=='1'">
+            <el-table-column label="单位" v-if="temp.presaleType=='1'">
                 <template slot-scope="{row}">
                     <input type="text" class="inputCell tx-c" v-model="row.uom" disabled>
                 </template>
             </el-table-column>
-            <el-table-column label="辅助单位" v-if="temp.presaleReturnedType=='1'">
+            <el-table-column label="辅助单位" v-if="temp.presaleType=='1'">
                 <template slot-scope="{row}">
                     <input type="text" class="inputCell tx-c" v-model="row.subUom" disabled>
                 </template>
             </el-table-column>
-            <el-table-column label="品类代码" v-if="temp.presaleReturnedType=='2'" key="1" width="150">
+            <el-table-column label="品类代码" v-if="temp.presaleType=='2'" key="1" width="150">
                 <template slot-scope="scope">
                     <invCatgList :resdata="invCatgList" :selectId="scope.row.invCatgId" :index="scope.$index" @changeVal="changeVal1"></invCatgList>
                 </template>
             </el-table-column>
-            <el-table-column label="品类名称" v-if="temp.presaleReturnedType=='2'" key="2" width="160">
+            <el-table-column label="品类名称" v-if="temp.presaleType=='2'" key="2" width="160">
                 <template slot-scope="{row}">
                     <input type="text" class="inputCell" v-model="row.invCatgName" disabled>
                 </template>
             </el-table-column>
-            <el-table-column label="计量单位" v-if="temp.presaleReturnedType=='2'" key='3' width="150">
+            <el-table-column label="计量单位" v-if="temp.presaleType=='2'" key='3' width="150">
                 <template slot-scope="scope">
                     <measList :resdata="measList" :selectId="scope.row.measId" keyType="meas" :index="scope.$index" @changeVal="changeVal1"></measList>
                 </template>
             </el-table-column>
-            <el-table-column label="辅助单位" v-if="temp.presaleReturnedType=='2'" key='4' width="150">
+            <el-table-column label="辅助单位" v-if="temp.presaleType=='2'" key='4' width="150">
                 <template slot-scope="scope">
                     <measList :resdata="measList" :selectId="scope.row.subMeasId" keyType="subMeas" :index="scope.$index" @changeVal="changeVal1"></measList>
                 </template>
             </el-table-column>
-            <el-table-column label="换算率" v-if="temp.presaleReturnedType=='2'||temp.presaleReturnedType=='1'" key="5" width="100">
+            <el-table-column label="换算率" v-if="temp.presaleType=='2'||temp.presaleType=='1'" key="5" width="100">
                 <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-c" v-model="row.exchangeRate" :disabled="temp.presaleReturnedType=='1'">
+                    <input type="text" class="inputCell tx-c" v-model="row.exchangeRate" :disabled="temp.presaleType=='1'">
                 </template>
             </el-table-column>
             <el-table-column label="单价">
                 <template slot-scope="scope">
-                    <input type="text" class="inputCell tx-r" v-model="scope.row.price" @change="calculate(scope.$index)" :disabled="temp.presaleReturnedType==0">
+                    <input type="text" class="inputCell tx-r" v-model="scope.row.price" @change="calculate(scope.$index)" :disabled="temp.presaleType==0">
                 </template>
             </el-table-column>
             <el-table-column label="数量">
                 <template slot-scope="scope">
-                    <input type="text" class="inputCell tx-r" v-model="scope.row.beginBalanceQty" @change="calculate(scope.$index)" :disabled="temp.presaleReturnedType==0">
+                    <input type="text" class="inputCell tx-r" v-model="scope.row.beginBalanceQty" @change="calculate(scope.$index)" :disabled="temp.presaleType==0">
                 </template>
             </el-table-column>
             <el-table-column label="金额">
@@ -107,7 +103,7 @@
             </el-table-column>
             <el-table-column label="备注">
                 <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-r" v-model="row.remarks" :disabled="temp.presaleReturnedType==0">
+                    <input type="text" class="inputCell tx-r" v-model="row.remarks" :disabled="temp.presaleType==0">
                 </template>
             </el-table-column>
         </el-table>
@@ -187,10 +183,9 @@ export default {
             temp: {
                 billNo:'',
                 amount:'',
-                expirationDate:'',
                 billDate:getNowDate(),
                 custName:'',
-                presaleReturnedType:'1',
+                presaleType:'1',
                 staffId:'',
                 custId:'',
                 bizTypeId:'',
@@ -211,7 +206,7 @@ export default {
         ])
     },
     created() {
-        this.$store.dispatch('basedata/getSettleType')
+        this.$store.dispatch('basedata/getPresaleReturnedSettleType')
         getMeas().then(res => {
             this.measList = res.data.data
         })
@@ -223,7 +218,7 @@ export default {
             getPresaleReturnedById(this.id).then(res=>{
                 for(var key in this.temp){
                     this.temp[key] = res.data.data[key]
-                    if(key=='presaleReturnedType'){
+                    if(key=='presaleType'){
                         this.temp[key] = String(res.data.data[key])
                     }
                 }

@@ -158,7 +158,7 @@ export default {
                 for (var key in this.temp) {
                     this.temp[key] = res.data.data[key]
                 }
-                this.tableData = addNullObj(res.data.data.warehousingReturnedEntryLine);
+                this.tableData = addNullObj(res.data.data.warehousingEntryReturnedLine);
             })
         }
     },
@@ -201,7 +201,7 @@ export default {
         },
         save() {
             this.temp.id = this.id;
-            this.temp.warehousingReturnedEntryLine = deleteEmptyProp(this.tableData);
+            this.temp.warehousingEntryReturnedLine = deleteEmptyProp(this.tableData);
             saveWarehousingReturned(this.temp).then(res => {
                 if (res.data.errorCode == 0) {
                     this.$message.success(this.temp.id == "" ? '新增成功' : '修改成功');

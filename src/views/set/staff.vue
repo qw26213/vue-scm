@@ -215,7 +215,7 @@ export default {
         this.$message.error('只有末级部门才能添加');return;
       }
       if(this.deptId==''){
-        this.$message.error('请先选择一个部门');return;
+        this.$message.error('请先选择一个上级部门');return;
       }
       this.dialogFormVisible = true
       this.dialogStatus = 'create'

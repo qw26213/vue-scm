@@ -197,11 +197,11 @@ export default {
         },
         handleAdd() {
             this.$store.dispatch('tagsView/delView', this.$route);
-            this.$router.push('/store/outboundOrderReturnedReturnedAdd')
+            this.$router.push('/store/outboundOrderReturnedAdd')
         },
         handleCompile(id, status) {
             this.$store.dispatch('tagsView/delView', this.$route);
-            this.$router.push('/store/outboundOrderReturnedReturnedModify?id=' + id + '&status=' + status)
+            this.$router.push('/store/outboundOrderReturnedModify?id=' + id + '&status=' + status)
         },
         handleDel(id) {
             this.$confirm('确定删除吗?', '提示', {

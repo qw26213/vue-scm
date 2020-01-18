@@ -612,4 +612,41 @@ export function buildPresaleReturnedVoucher(data) {
 }
 
 
-// ---------------------退货-----------------
+// ---------------------结算方式（6个）-----------------
+
+export function queryPurchaseSettleType(){
+  return request({
+    url: '/drp/po/purchase/getSettleTypeList',
+    method: 'post'
+  })
+}
+export function queryPurchaseReturnedSettleType(){
+  return request({
+    url: '/drp/po/purchaseReturned/getSettleTypeList',
+    method: 'post'
+  })
+}
+export function querySalesSettleType(){
+  return request({
+    url: '/drp/so/sales/getSettleTypeList',
+    method: 'post'
+  })
+}
+export function querySalesReturnedSettleType(){
+  return request({
+    url: '/drp/so/salesReturned/getSettleTypeList',
+    method: 'post'
+  })
+}
+export function queryPresaleSettleType(){
+  return request({
+    url: '/drp/ps/presale/getSettleTypeList',
+    method: 'post'
+  })
+}
+export function queryPresaleReturnedSettleType(){
+  return request({
+    url: '/drp/ps/presaleReturned/getSettleTypeList',
+    method: 'post'
+  })
+}

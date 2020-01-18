@@ -65,7 +65,7 @@ const setRouter = {
                         path: 'custType',
                         component: () => import('@/views/set/custType'),
                         name: 'baseCustType',
-                        meta: { title: '客户类别', }
+                        meta: { title: '客户类型', }
                     }, {
                         path: 'cust',
                         component: () => import('@/views/set/cust'),

@@ -215,7 +215,7 @@ export default {
         ])
     },
     created() {
-        this.$store.dispatch('basedata/getSettleType')
+        this.$store.dispatch('basedata/getPurchaseSettleType')
         if (this.$route.query.id) {
             this.id = this.$route.query.id;
             getPurchaseById(this.id).then(res => {

@@ -141,7 +141,7 @@
                         <el-input v-model="temp.lowestPrice" placeholder="销售最低价" />
                     </el-form-item>
                     <el-form-item label="计价方式" prop="priceModeCode" style="margin-right:20px">
-                        <el-select v-model="temp.priceModeCode" style="width:185px" class="filter-item">
+                        <el-select v-model="temp.priceModeCode" style="width:185px" class="filter-item" disabled>
                             <el-option label="移动平均" value="0"></el-option>
                             <el-option label="个别计价" value="1"></el-option>
                             <el-option label="先进先出" value="2"></el-option>

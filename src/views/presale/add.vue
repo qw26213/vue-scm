@@ -225,7 +225,7 @@ export default {
         ])
     },
     created() {
-        this.$store.dispatch('basedata/getSettleType')
+        this.$store.dispatch('basedata/getPresaleSettleType')
         getMeas().then(res => {
             this.measList = res.data.data
         })

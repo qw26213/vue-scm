@@ -201,7 +201,7 @@ export default {
                 billDate:getNowDate(),
                 billNo:'',
                 bizTypeId:'',
-                autoAdvr:1,
+                autoAdvr:'1',
                 custId:'',
                 custName:'',
                 settleCustId:'',
@@ -231,7 +231,7 @@ export default {
         ])
     },
     created() {
-        this.$store.dispatch('basedata/getSettleType')
+        this.$store.dispatch('basedata/getSalesSettleType')
         if(this.$route.query.id){
             this.id = this.$route.query.id;
             getSalesById(this.id).then(res=>{

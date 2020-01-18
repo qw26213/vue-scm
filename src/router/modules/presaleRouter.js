@@ -38,7 +38,7 @@ const presaleRouter = {
         name: 'presaleReturnedAdd',
         meta: { title: '新增预收退款' }
     }, {
-        path: 'returneModify',
+        path: 'returnedModify',
         component: () => import('@/views/presale/returnedAdd'),
         name: 'presaleReturnedAdd',
         hidden: true,

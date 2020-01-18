@@ -152,6 +152,7 @@ export default {
         truckName: ''
       },
       temp: {
+        id:'',
         truckName: '',
         truckCode: '',
         truckLength:'',

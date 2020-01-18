@@ -122,7 +122,7 @@
                 <el-input v-model="temp.channelTypeName" placeholder="渠道类型" />
               </span>
               <el-dropdown-menu slot="dropdown" :visible-change="menuVisible1">
-                <div style="width:185px;height:260px">
+                <div style="width:185px;max-height:260px">
                   <el-tree :data="treeData1" :props="defaultProps1" @node-click="handleNodeClick1" default-expand-all></el-tree>
                 </div>
               </el-dropdown-menu>
@@ -134,20 +134,20 @@
                 <el-input v-model="temp.custTypeName" placeholder="客户类别" />
               </span>
               <el-dropdown-menu slot="dropdown">
-                <div style="width:185px;height:260px">
+                <div style="width:185px;max-height:260px">
                   <el-tree :data="treeData2" :props="defaultProps2" @node-click="handleNodeClick2" default-expand-all></el-tree>
                 </div>
               </el-dropdown-menu>
             </el-dropdown>
-        </el-form-item>
-        <el-form-item label="备注" prop="remarks">
-          <el-input v-model="temp.remarks" placeholder="备注" />
         </el-form-item>
         <el-form-item label="价格组" prop="priceGroupId">
           <el-select v-model="temp.priceGroupId" style="width:180px" class="filter-item">
             <el-option v-for="item in priceGroupList" :key="item.id" :label="item.priceGroupName" :value="item.id">
             </el-option>
           </el-select>
+        </el-form-item>
+        <el-form-item label="备注" prop="remarks">
+          <el-input v-model="temp.remarks" placeholder="备注" />
         </el-form-item>
         <el-form-item label="是否可用" prop="isDisable" align="center" width="80">
           <el-radio v-model="temp.isDisable" label="0">是</el-radio>
@@ -204,8 +204,9 @@ export default {
         mnemonicCode:'',
         channelTypeId:'',
         channelTypeName:'',
-        custTypeName:'',
         custTypeId:'',
+        priceGroupId:'',
+        custTypeName:'',
         remarks:'',
         isDisable: "0"
       },
@@ -234,14 +235,15 @@ export default {
       if(e.leaf==1){
         document.getElementById("dropTit1").click();
         this.temp.channelTypeName = e.channelTypeName;
-        this.temp.channelTypeId = e.channelTypeId;
+        this.temp.channelTypeId = e.id;
       }
     },
     handleNodeClick2(e){
       if(e.leaf==1){
         document.getElementById("dropTit2").click();
+        console.log(e)
         this.temp.custTypeName = e.custTypeName;
-        this.temp.custTypeId = e.custTypeId;
+        this.temp.custTypeId = e.id;
       }
     },
     getList() {

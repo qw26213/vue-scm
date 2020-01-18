@@ -211,7 +211,7 @@ export default {
     },
     handleAdd(obj) {
       if(this.listQuery.parentId==''){
-        this.$message.error('请先选择一个客户类型');return
+        this.$message.error('请先选择一个上级客户类别');return
       }
       this.dialogFormVisible = true
       this.dialogStatus = 'create'
