@@ -25,12 +25,26 @@
           <span>{{row.coaCode}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="收付标志">
+      <el-table-column label="收付标志" align="center">
         <template slot-scope="{row}">
           <span>{{row.arAp|format}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="备注">
+      <el-table-column align="left" label="应用场景" min-width="240" show-overflow-tooltip>
+        <template slot-scope="{row}">
+          <span>
+          {{row.poEnable==1?'采购、':''}}
+          {{row.soEnable==1?'销售、':''}}
+          {{row.psEnable==1?'预收、':''}}
+          {{row.poReturnedEnable==1?'采购退款、':''}}
+          {{row.soReturnedEnable==1?'销售退款、':''}}
+          {{row.psReturnedEnable==1?'预收退款、':''}}
+          {{row.recEnable==1?'收款、':''}}
+          {{row.payEnable==1?'付款':''}}
+          </span>
+        </template>
+      </el-table-column>
+      <el-table-column label="备注" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span>{{row.remarks}}</span>
         </template>
@@ -50,8 +64,8 @@
     </el-table>
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
-    <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增结算方式':'修改结算方式'" :visible.sync="dialogFormVisible" width="500px">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="110px" style="width: 380px; margin-left:35px;">
+    <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增结算方式':'修改结算方式'" :visible.sync="dialogFormVisible" width="600px">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="110px" style="width: 540px;margin-left:10px">
         <el-form-item label="结算方式代码" prop="settleTypeCode">
           <el-input v-model="temp.settleTypeCode" placeholder="结算方式代码" />
         </el-form-item>
@@ -62,11 +76,25 @@
           <el-input v-model="temp.coaCode" placeholder="对应科目代码" />
         </el-form-item>
         <el-form-item label="收付标志" prop="arAp">
-          <el-radio v-model="temp.arAp" label="">无</el-radio>
-          <el-radio v-model="temp.arAp" label="AR">应收(赊销)</el-radio>
-          <el-radio v-model="temp.arAp" label="AP">应付</el-radio>
-          <el-radio v-model="temp.arAp" label="ADVR">预收</el-radio>
-          <el-radio v-model="temp.arAp" label="ADVP">预付</el-radio>
+          <el-radio v-model="temp.arAp" style="margin-right:10px" label="">无</el-radio>
+          <el-radio v-model="temp.arAp" style="margin-right:10px" label="CURR">现金</el-radio>
+          <el-radio v-model="temp.arAp" style="margin-right:10px" label="BANK">银行存款</el-radio>
+          <el-radio v-model="temp.arAp" style="margin-right:10px" label="CC">信用卡</el-radio>
+          <el-radio v-model="temp.arAp" style="margin-right:10px" label="ALIPAY">支付宝</el-radio>
+          <el-radio v-model="temp.arAp" style="margin-right:10px" label="WECHATPAY">微信支付</el-radio>
+          <el-radio v-model="temp.arAp" style="margin-right:10px" label="AR">应收(赊销)</el-radio>
+          <el-radio v-model="temp.arAp" style="margin-right:10px" label="AP">应付</el-radio>
+          <el-radio v-model="temp.arAp" style="margin-right:10px" label="ADVR">预收</el-radio>
+        </el-form-item>
+        <el-form-item label="应用场景" prop="poEnable">
+            <el-checkbox style="margin-right:10px" v-model="temp.poEnable" false-label="0" true-label="1">采购</el-checkbox>
+            <el-checkbox style="margin-right:10px" v-model="temp.soEnable" false-label="0" true-label="1">销售</el-checkbox>
+            <el-checkbox style="margin-right:10px" v-model="temp.psEnable" false-label="0" true-label="1">预收</el-checkbox>
+            <el-checkbox style="margin-right:10px" v-model="temp.poReturnedEnable" false-label="0" true-label="1">采购退款</el-checkbox>
+            <el-checkbox style="margin-right:10px" v-model="temp.soReturnedEnable" false-label="0" true-label="1">销售退款</el-checkbox>
+            <el-checkbox style="margin-right:10px" v-model="temp.psReturnedEnable" false-label="0" true-label="1">预收退款</el-checkbox>
+            <el-checkbox style="margin-right:10px" v-model="temp.recEnable" false-label="0" true-label="1">收款</el-checkbox>
+            <el-checkbox v-model="temp.payEnable" false-label="0" true-label="1">付款</el-checkbox>
         </el-form-item>
         <el-form-item label="备注" prop="remarks">
           <el-input v-model="temp.remarks" placeholder="备注" />
@@ -95,11 +123,16 @@ export default {
   components: { Pagination },
   filters: {
       format: function(str) {
-          if (!str) { return '无' }
           if (str=='AR') { return '应收(赊销)' }
-          if (str=='AP') { return '应付' }
-          if (str=='ADVP') { return '预付' }
-          if (str=='ADVR') { return '预收' }
+          else if (str=='CURR') { return '现金' }
+          else if (str=='BANK') { return '银行存款' }
+          else if (str=='ALIPAY') { return '支付宝' }
+          else if (str=='WECHATPAY') { return '微信支付' }
+          else if (str=='CC') { return '信用卡' }
+          else if (str=='AP') { return '应付' }
+          else if (str=='ADVP') { return '预付' }
+          else if (str=='ADVR') { return '预收' }
+          else {return '——'}
       }
   },
   data() {
@@ -119,6 +152,14 @@ export default {
         coaCode:'',
         arAp:'',
         remarks:'',
+        poEnable: '1',
+        soEnable: '1',
+        psEnable: '1',
+        poReturnedEnable: '1',
+        soReturnedEnable: '1',
+        psReturnedEnable: '1',
+        recEnable: '1',
+        payEnable: '1',
         isDisable: "0"
       },
       dialogFormVisible: false,

@@ -32,22 +32,22 @@
       </el-table-column>
       <el-table-column label="是否主仓库" align="center">
         <template slot-scope="{row}">
-          <span>{{row.isMain==0?'是':'否'}}</span>
+          <span>{{row.isMain==1?'是':'否'}}</span>
         </template>
       </el-table-column>
       <el-table-column label="是否虚拟仓库" align="center">
         <template slot-scope="{row}">
-          <span>{{row.isVirtual==0?'是':'否'}}</span>
+          <span>{{row.isVirtual==1?'是':'否'}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="是否负库存" align="center">
+      <el-table-column label="允许负库存" align="center">
         <template slot-scope="{row}">
-          <span>{{row.isNegative==0?'是':'否'}}</span>
+          <span>{{row.isNegative==1?'是':'否'}}</span>
         </template>
       </el-table-column>
       <el-table-column label="是否冷藏" align="center">
         <template slot-scope="{row}">
-          <span>{{row.isRefrigerated==0?'是':'否'}}</span>
+          <span>{{row.isRefrigerated==1?'是':'否'}}</span>
         </template>
       </el-table-column>
       <el-table-column label="是否可用" align="center">
@@ -64,8 +64,8 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增仓库':'修改仓库'" :visible.sync="dialogFormVisible" width="680px">
-      <el-form ref="dataForm" :rules="rules" :model="temp" :inline="true" label-position="right" label-width="100px" style="width: 610px; margin-left:30px;">
+    <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增仓库':'修改仓库'" :visible.sync="dialogFormVisible" width="600px">
+      <el-form ref="dataForm" :rules="rules" :model="temp" :inline="true" label-position="right" label-width="100px" style="width: 560px; margin-left:5px;">
         <el-form-item label="仓库代码" prop="warehouseCode">
           <el-input v-model="temp.warehouseCode" placeholder="仓库代码" />
         </el-form-item>
@@ -83,7 +83,7 @@
         <el-form-item label="负责人" prop="manager">
           <el-input v-model="temp.manager" placeholder="负责人" />
         </el-form-item>
-        <el-form-item label="是否负库存" prop="isNegative">
+        <el-form-item label="允许负库存" prop="isNegative">
           <el-radio v-model="temp.isNegative" label="1">是</el-radio>
           <el-radio v-model="temp.isNegative" label="0">否</el-radio>
         </el-form-item>

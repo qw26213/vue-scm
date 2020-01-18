@@ -99,7 +99,7 @@ export function auditPurchaseReturned(id) {
 
 export function buildPurchaseReturnedEntry(data) {
   return request({
-    url: '/drp/po/purchaseReturned/buildWarehousingEntryByHeaderId',
+    url: '/drp/po/purchaseReturned/buildWarehousingEntryReturnedByHeaderId',
     method: 'post',
     data:data
   })
@@ -400,7 +400,7 @@ export function auditSalesReturned(id) {
 
 export function buildSalesReturned(data) {
   return request({
-    url: '/drp/so/salesReturned/buildOutboundOrderByHeaderId',
+    url: '/drp/so/salesReturned/buildOutboundOrderReturnedByHeaderId',
     method: 'post',
     data
   })
@@ -548,6 +548,13 @@ export function auditPresale(id) {
 export function buildPresaleVoucher(data) {
   return request({
     url: '/drp/ps/presale/buildVoucherByHeaderId',
+    method: 'post',
+    data
+  })
+}
+export function buildReturnedBill(data) {
+  return request({
+    url: '/drp/ps/presale/buildReturnedByHeaderId',
     method: 'post',
     data
   })

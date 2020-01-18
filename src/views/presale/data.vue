@@ -70,11 +70,12 @@
           <span>{{row.remarks}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="150">
+      <el-table-column label="操作" align="center" width="200">
         <template slot-scope="{row}">
           <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status==0?'编辑':'查看'}}</span>
           <span class="ctrl" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
           <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
+          <span class="ctrl" v-if="row.status==1&&row.balance>0" @click="handBuildBill(row.id)">退款</span>
           <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId)">{{row.isJeHeader==1?'查看':'生成'}}预收凭证</span>
         </template>
       </el-table-column>
@@ -96,7 +97,7 @@
 </template>
 
 <script>
-import { getPresale,delPresale,auditPresale,buildPresaleVoucher} from '@/api/store'
+import { getPresale,delPresale,auditPresale,buildPresaleVoucher,buildReturnedBill} from '@/api/store'
 import Pagination from '@/components/Pagination' 
 import staffList from '@/components/selects/staffList';
 import supplierList from '@/components/selects/supplierList';
@@ -154,8 +155,24 @@ export default {
             this.listQuery.queryParam[key] = obj[key];
         }
     },
-    changeVal(){
-      
+    handBuildBill(id){
+      this.$confirm('确定生成退款单吗？?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.buildReturnedItem(id)
+      });
+    },
+    buildReturnedItem(id){
+      buildReturnedBill(id).then(res => {
+        if(res.data.errorCode==0){
+          this.getList();
+          this.$message.success('生成退款单成功')
+        }else{
+          this.$message.error(res.data.msg)
+        }
+      })
     },
     handleCheck(id){
       this.$confirm('确定审核通过吗?', '提示', {

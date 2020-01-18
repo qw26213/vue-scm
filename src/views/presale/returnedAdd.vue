@@ -151,13 +151,15 @@
                 <el-button type="primary" @click="dialogFormVisible = false">确定</el-button>
             </div>
         </el-dialog>
+        <modalTable :modalTableVisible="modalTableVisible"></modalTable>
     </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import {savePresaleReturned,getPresaleReturnedById} from '@/api/store';
+import {savePresaleReturned,getPresaleReturnedById,getPresaleById} from '@/api/store';
 import { getMeas,getInvCatg } from '@/api/basedata';
 import {deleteEmptyProp,addNullObj,addNullObj2} from '@/utils';
+import modalTable from '@/components/modalTable/index';
 import staffList from '@/components/selects/staffList';
 import custList from '@/components/selects/custList';
 import itemList from '@/components/selects/itemList';
@@ -169,7 +171,7 @@ import { getName,getNowDate } from '@/utils/auth'
 export default {
     name: 'presaleReturnedAdd',
     components:{
-        staffList,custList,bizTypeList,itemList,invCatgList,settleTypeList,measList
+        staffList,custList,bizTypeList,itemList,invCatgList,settleTypeList,measList,modalTable
     },
     data() {
         return {
@@ -196,7 +198,8 @@ export default {
                 recorder:getName()
             },
             dialogFormVisible:false,
-            settleData:[{},{},{},{},{}]
+            settleData:[{},{},{},{},{}],
+            modalTableVisible:false
         }
     },
     computed: {
@@ -227,7 +230,22 @@ export default {
             })
         }
     },
+    mounted(){
+        this.modalTableVisible = true
+    },
     methods: {
+        initTableData(id){
+            getPresaleById(id).then(res=>{
+                for(var key in this.temp){
+                    this.temp[key] = res.data.data[key]
+                    if(key=='presaleType'){
+                        this.temp[key] = String(res.data.data[key])
+                    }
+                }
+                this.tableData = addNullObj(res.data.data.presaleLine);
+                this.settleData = addNullObj2(res.data.data.settleTypeDetail)
+            })
+        },
         initTable(val){
             this.tableData = [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}];
         },

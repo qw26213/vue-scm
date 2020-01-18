@@ -48,7 +48,7 @@
                 <el-form-item label="返利金额:" prop="rebateAmount">
                     <el-input size="mini" v-model="temp.rebateAmount" placeholder="返利金额" />
                 </el-form-item>
-                <el-form-item label="使用预收款:" prop="autoAdvr">
+                <el-form-item label="自动匹配预收款:" prop="autoAdvr" label-width="96px">
                     <el-checkbox v-model="temp.autoAdvr" false-label="0" true-label="1"></el-checkbox>
                 </el-form-item>
             </el-form>

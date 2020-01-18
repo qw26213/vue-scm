@@ -25,6 +25,11 @@
           <span>{{row.brand}}</span>
         </template>
       </el-table-column>
+      <el-table-column label="车牌号">
+        <template slot-scope="{row}">
+          <span>{{row.licensePlateNumber}}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="车长">
         <template slot-scope="{row}">
           <span>{{row.truckLength}}</span>
@@ -66,7 +71,7 @@
     </el-table>
 
     <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增车辆':'修改车辆'" :visible.sync="dialogFormVisible" width="670px">
-      <el-form ref="dataForm" :rules="rules" :model="temp" :inline="true" label-position="right" label-width="80px" style="width: 610px; margin-left:30px;">
+      <el-form ref="dataForm" :rules="rules" :model="temp" :inline="true" label-position="right" label-width="90px" style="width: 610px; margin-left:30px;">
         <el-form-item label="车辆代码" prop="truckCode">
           <el-input v-model="temp.truckCode" placeholder="车辆代码" />
         </el-form-item>
@@ -76,12 +81,17 @@
         <el-form-item label="车辆品牌" prop="brand">
           <el-input v-model="temp.brand" placeholder="车辆品牌" />
         </el-form-item>
+        <el-form-item label="车牌号" prop="licensePlateNumber">
+          <el-input v-model="temp.licensePlateNumber" placeholder="车牌号" />
+        </el-form-item>
         <el-form-item label="车长" prop="truckLength">
           <el-input v-model="temp.truckLength" placeholder="车长" />
         </el-form-item>
         <el-form-item label="吨位" prop="truckTonnage">
           <el-input v-model="temp.truckTonnage" placeholder="吨位" />
         </el-form-item>
+
+
         <el-form-item label="容积" prop="truckCapacity">
           <el-input v-model="temp.truckCapacity" placeholder="容积" />
         </el-form-item>
@@ -91,8 +101,16 @@
         <el-form-item label="电话" prop="tel">
           <el-input v-model="temp.tel" placeholder="电话" />
         </el-form-item>
+        <el-form-item label="允许负库存" prop="isNegative" style="width:275px">
+          <el-radio v-model="temp.isNegative" label="1">允许</el-radio>
+          <el-radio v-model="temp.isNegative" label="0">不允许</el-radio>
+        </el-form-item>
         <el-form-item label="备注" prop="remarks">
           <el-input v-model="temp.remarks" placeholder="备注" />
+        </el-form-item>
+        <el-form-item label="是否冷藏" prop="isRefrigerated">
+          <el-radio v-model="temp.isRefrigerated" label="1">是</el-radio>
+          <el-radio v-model="temp.isRefrigerated" label="0">否</el-radio>
         </el-form-item>
         <el-form-item label="是否可用" prop="isDisable">
           <el-radio v-model="temp.isDisable" label="0">是</el-radio>
@@ -156,7 +174,13 @@ export default {
         truckName: '',
         truckCode: '',
         truckLength:'',
+        licensePlateNumber:'',
+        brand:'',
+        isRefrigerated: '0',
+        isNegative: '1',
         truckTonnage:'',
+        manager:'',
+        tel:'',
         truckCapacity:'',
         remarks:'',
         isDisable: "0"
@@ -244,6 +268,8 @@ export default {
         this.temp[key] = ''
       }
       this.temp.isDisable = '0'
+      this.temp.isNegative = '1'
+      this.temp.isRefrigerated = '0'
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
@@ -255,6 +281,8 @@ export default {
         this.temp[key] = obj[key]
       }
       this.temp.isDisable = String(obj.isDisable)
+      this.temp.isNegative = String(obj.isNegative)
+      this.temp.isRefrigerated = String(obj.isRefrigerated)
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })

@@ -45,9 +45,6 @@
                 <el-form-item label="返利金额:" prop="rebateAmount">
                     <el-input size="mini" v-model="temp.rebateAmount" placeholder="返利金额" />
                 </el-form-item>
-                <el-form-item label="使用预收款:" prop="autoAdvr">
-                    <el-checkbox v-model="temp.autoAdvr" false-label="0" true-label="1"></el-checkbox>
-                </el-form-item>
             </el-form>
         </div>
         <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini" cell-class-name="tdCell">
@@ -198,7 +195,6 @@ export default {
                 billDate:getNowDate(),
                 billNo:'',
                 bizTypeId:'',
-                autoAdvr:'1',
                 custId:'',
                 custName:'',
                 settleCustId:'',
