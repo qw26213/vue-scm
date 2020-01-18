@@ -84,6 +84,7 @@
                     <span class="ctrl" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isOutboundOrder,row.id,row.outboundOrderHeaderId)">{{row.isOutboundOrder==1?'查看':'生成'}}出库单</span>
+                    <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId)">{{row.isJeHeader==1?'查看':'生成'}}销售凭证</span>
                 </template>
             </el-table-column>
         </el-table>
@@ -100,10 +101,22 @@
                 <el-button type="primary" @click="createBill">确定</el-button>
             </div>
         </el-dialog>
+        <el-dialog :close-on-click-modal="false" title="请选择凭证日期" :visible.sync="dialogFormVisible2" width="400px">
+          <el-form style="margin-top:30px;text-align:center;">
+            <el-form-item label="" prop="isBillDate">
+              <el-radio v-model="isBillDate" label="0" style="margin-right:10px">当前日期</el-radio>
+              <el-radio v-model="isBillDate" label="1">进货单日期</el-radio>
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer" align="center">
+              <el-button type="default" @click="dialogFormVisible2 = false">取消</el-button>
+              <el-button type="primary" @click="createVouter">确定</el-button>
+          </div>
+        </el-dialog>
     </div>
 </template>
 <script>
-import { getSales, delSales, auditSales, buildSales, getItemPrice } from '@/api/store'
+import { getSales, delSales, auditSales, buildSales, getItemPrice,buildSaleVoucherByHeaderId } from '@/api/store'
 import { parseTime } from '@/utils'
 import staffList from '@/components/selects/staffList';
 import custList from '@/components/selects/custList';
@@ -119,6 +132,7 @@ export default {
             total: 0,
             listLoading: true,
             dialogFormVisible: false,
+            dialogFormVisible2: false,
             curBillId: '',
             isBillDate: '0',
             listQuery: {
@@ -208,6 +222,26 @@ export default {
         handleCompile(id, status) {
             this.$store.dispatch('tagsView/delView', this.$route);
             this.$router.replace('/sale/modify?id=' + id + '&status=' + status)
+        },
+        handleCreateVouter(status,id1,id2){
+          if(status==1){
+            alert('查看销售凭证')
+          }else{
+            this.curBillId = id1;
+            this.dialogFormVisible2 = true;
+          }
+        },
+        createVouter(){
+          var obj = {isBillDate:this.isBillDate,id:this.curBillId}
+          buildSaleVoucherByHeaderId(obj).then(res => {
+            if(res.data.errorCode==0){
+              this.dialogFormVisible2 = false;
+              this.getList();
+              this.$message.success('生成销售凭证成功！')
+            }else{
+              this.$message.error(res.data.msg)
+            }
+          });
         },
         handleDel(id) {
             this.$confirm('你确认要删除吗?', '提示', {

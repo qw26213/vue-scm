@@ -197,8 +197,8 @@ export default {
       if(status==1){
         alert('查看采购凭证')
       }else{
-        this.curBillId = id1;
-        this.dialogFormVisible = true;
+        this.curBillId = id1
+        this.dialogFormVisible = true
       }
     },
     createVouter(){

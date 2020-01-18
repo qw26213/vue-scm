@@ -156,7 +156,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import {savePresaleReturned,getPresaleReturnedById,getPresaleById} from '@/api/store';
+import {savePresaleReturned,getPresaleReturnedById,getBillReturnedByPresaleHeaderId} from '@/api/store';
 import { getMeas,getInvCatg } from '@/api/basedata';
 import {deleteEmptyProp,addNullObj,addNullObj2} from '@/utils';
 import modalTable from '@/components/modalTable/index';
@@ -194,6 +194,7 @@ export default {
                 beginBalance:'',
                 auditDate:"",
                 auditor:"",
+                returnedSrcId: '',
                 recordDate:getNowDate()+" 00:00:00",
                 recorder:getName()
             },
@@ -235,15 +236,15 @@ export default {
     },
     methods: {
         initTableData(id){
-            getPresaleById(id).then(res=>{
+            getBillReturnedByPresaleHeaderId(id).then(res=>{
                 for(var key in this.temp){
                     this.temp[key] = res.data.data[key]
                     if(key=='presaleType'){
                         this.temp[key] = String(res.data.data[key])
                     }
                 }
-                this.tableData = addNullObj(res.data.data.presaleLine);
-                this.settleData = addNullObj2(res.data.data.settleTypeDetail)
+                this.tableData = addNullObj(res.data.data.presaleReturnedLine);
+                this.settleData = addNullObj2(res.data.data.settleTypeReturnedDetail)
             })
         },
         initTable(val){

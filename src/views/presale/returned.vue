@@ -64,12 +64,12 @@
           <span>{{row.remarks}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="150">
+      <el-table-column label="操作" align="center" width="200">
         <template slot-scope="{row}">
-          <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status==0?'编辑':'查看'}}</span>
+          <span class="ctrl" v-if="row.status==1" @click="handleCompile(row.id,row.status)">查看</span>
           <span class="ctrl" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
           <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
-          <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId)">{{row.isJeHeader==1?'查看':'生成'}}预收凭证</span>
+          <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId)">{{row.isJeHeader==1?'查看':'生成'}}预收退款凭证</span>
         </template>
       </el-table-column>
     </el-table>
@@ -171,10 +171,10 @@ export default {
     },
     handleCreateVouter(status,id1,id2){
       if(status==1){
-        alert('查看采购凭证')
+        alert('查看预收退款凭证')
       }else{
-        this.curBillId = id1;
-        this.dialogFormVisible = true;
+        this.curBillId = id1
+        this.dialogFormVisible = true
       }
     },
     createVouter(){
@@ -183,7 +183,7 @@ export default {
         if(res.data.errorCode==0){
           this.dialogFormVisible = false;
           this.getList();
-          this.$message.success('生成预收凭证成功！')
+          this.$message.success('生成预收退款凭证成功！')
         }else{
           this.$message.error(res.data.msg)
         }

@@ -302,7 +302,7 @@ export function auditOutboundOrderReturned(id) {
 
 export function buildOutboundOrderReturned(data) {
   return request({
-    url: '/drp/ic/outboundOrderReturned/buildSalesByHeaderId',
+    url: '/drp/ic/outboundOrderReturned/buildSalesReturnedByHeaderId',
     method: 'post',
     data
   })
@@ -357,6 +357,14 @@ export function buildSales(data) {
   })
 }
 
+export function buildSaleVoucherByHeaderId(data) {
+  return request({
+    url: '/drp/so/sales/buildVoucherByHeaderId',
+    method: 'post',
+    data:data
+  })
+}
+
 // 销售退货
 export function getSalesReturned(data) {
   return request({
@@ -403,6 +411,14 @@ export function buildSalesReturned(data) {
     url: '/drp/so/salesReturned/buildOutboundOrderReturnedByHeaderId',
     method: 'post',
     data
+  })
+}
+
+export function buildSaleReturnedVoucherByHeaderId(data) {
+  return request({
+    url: '/drp/so/salesReturned/buildVoucherByHeaderId',
+    method: 'post',
+    data:data
   })
 }
 
@@ -581,6 +597,14 @@ export function getPresaleReturned(data) {
 export function getPresaleReturnedById(id) {
   return request({
     url: '/drp/ps/presaleReturned/getByHeaderId',
+    method: 'post',
+    data:{id:id}
+  })
+}
+
+export function getBillReturnedByPresaleHeaderId(id) {
+  return request({
+    url: '/drp/ps/presaleReturned/getByPresaleHeaderId',
     method: 'post',
     data:{id:id}
   })

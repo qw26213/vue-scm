@@ -94,7 +94,7 @@
       </el-table-column>
     </el-table>
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
-    <el-dialog :close-on-click-modal="false" title="请选择入库单日期" :visible.sync="dialogFormVisible1" width="400px">
+    <el-dialog :close-on-click-modal="false" title="选择退货出库单日期" :visible.sync="dialogFormVisible1" width="400px">
       <el-form style="margin-top:30px;text-align:center;">
         <el-form-item label="" prop="isBillDate">
           <el-radio v-model="isBillDate" label="0" style="margin-right:10px">当前日期</el-radio>
@@ -107,7 +107,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog :close-on-click-modal="false" title="请选择凭证日期" :visible.sync="dialogFormVisible2" width="400px">
+    <el-dialog :close-on-click-modal="false" title="选择凭证日期" :visible.sync="dialogFormVisible2" width="400px">
       <el-form style="margin-top:30px;text-align:center;">
         <el-form-item label="" prop="isBillDate">
           <el-radio v-model="isBillDate" label="0" style="margin-right:10px">当前日期</el-radio>
@@ -226,7 +226,7 @@ export default {
     },
     handleCreateVouter(status,id1,id2){
       if(status==1){
-        alert('查看采购凭证')
+        alert('查看退货凭证')
       }else{
         this.curBillId = id1;
         this.dialogFormVisible2 = true;
@@ -238,7 +238,7 @@ export default {
         if(res.data.errorCode==0){
           this.dialogFormVisible2 = false;
           this.getList();
-          this.$message.success('生成采购凭证成功！')
+          this.$message.success('生成退货凭证成功！')
         }else{
           this.$message.error(res.data.msg)
         }

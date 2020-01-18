@@ -69,7 +69,7 @@
             </el-table-column>
         </el-table>
         <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
-        <el-dialog :close-on-click-modal="false" title="请选择进货单日期" :visible.sync="dialogFormVisible" width="400px">
+        <el-dialog :close-on-click-modal="false" title="选择采购退货单日期" :visible.sync="dialogFormVisible" width="400px">
           <el-form style="margin-top:30px;text-align:center;">
             <el-form-item label="" prop="isBillDate">
               <el-radio v-model="isBillDate" label="0" style="margin-right:10px">当前日期</el-radio>
@@ -84,7 +84,7 @@
     </div>
 </template>
 <script>
-import { getWarehousingReturned, saveWarehousingReturned, delWarehousingReturned, auditWarehousingReturned, buildWarehousingReturnedEntry } from '@/api/store'
+import { getWarehousingReturned, saveWarehousingReturned, delWarehousingReturned, auditWarehousingReturned, buildWarehousingEntryReturned } from '@/api/store'
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
 import staffList from '@/components/selects/staffList';
@@ -164,7 +164,7 @@ export default {
         },
         createBill(){
           var obj = {isBillDate:this.isBillDate,id:this.curBillId}
-          buildWarehousingReturnedEntry(obj).then(res => {
+          buildWarehousingEntryReturned(obj).then(res => {
             if(res.data.errorCode==0){
               this.dialogFormVisible = false;
               this.getList();

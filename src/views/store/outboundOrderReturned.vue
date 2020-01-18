@@ -84,7 +84,7 @@
             </el-table-column>
         </el-table>
         <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
-        <el-dialog :close-on-click-modal="false" title="请选择销售单日期" :visible.sync="dialogFormVisible" width="400px">
+        <el-dialog :close-on-click-modal="false" title="选择销售退货单日期" :visible.sync="dialogFormVisible" width="400px">
           <el-form style="margin-top:30px;text-align:center;">
             <el-form-item label="" prop="isBillDate">
               <el-radio v-model="isBillDate" label="0" style="margin-right:10px">当前日期</el-radio>
