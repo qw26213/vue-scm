@@ -10,16 +10,16 @@
                     <el-input size="mini" v-model="temp.billNo" placeholder="单据号" disabled />
                 </el-form-item>
                 <el-form-item label="业务类型:" prop="bizTypeId">
-                    <bizTypeList @selectChange="selectChange" :selectId="temp.bizTypeId"></bizTypeList>
+                    <bizTypeList @selectChange="selectChange" disabled="1" :selectId="temp.bizTypeId"></bizTypeList>
                 </el-form-item>
                 <el-form-item label="客户:" prop="custId">
-                    <custList @selectChange="selectChange" keyType="custId" :selectId="temp.custId" :selectName="temp.custName"></custList>
+                    <custList @selectChange="selectChange" disabled="1" keyType="custId" :selectId="temp.custId" :selectName="temp.custName"></custList>
                 </el-form-item>
                 <el-form-item label="业务员:" prop="staffId">
-                    <staffList @selectChange="selectChange" :selectId="temp.staffId"></staffList>
+                    <staffList @selectChange="selectChange" disabled="1" :selectId="temp.staffId"></staffList>
                 </el-form-item>
                 <el-form-item label="预收类型:" prop="presaleType">
-                    <el-select v-model="temp.presaleType" placeholder="预收类型" size="mini" @change="initTable">
+                    <el-select v-model="temp.presaleType" placeholder="预收类型" disabled size="mini" @change="initTable">
                       <el-option label="按钱" value="0"></el-option>
                       <el-option label="按商品" value="1"></el-option>
                       <el-option label="按品类" value="2"></el-option>
@@ -159,7 +159,7 @@ import { mapGetters } from 'vuex'
 import {savePresaleReturned,getPresaleReturnedById,getBillReturnedByPresaleHeaderId} from '@/api/store';
 import { getMeas,getInvCatg } from '@/api/basedata';
 import {deleteEmptyProp,addNullObj,addNullObj2} from '@/utils';
-import modalTable from '@/components/modalTable/index';
+import modalTable from '@/components/modalTable/presaleBill';
 import staffList from '@/components/selects/staffList';
 import custList from '@/components/selects/custList';
 import itemList from '@/components/selects/itemList';
@@ -210,7 +210,6 @@ export default {
         ])
     },
     created() {
-        this.$store.dispatch('basedata/getPresaleReturnedSettleType')
         getMeas().then(res => {
             this.measList = res.data.data
         })
@@ -232,7 +231,10 @@ export default {
         }
     },
     mounted(){
-        this.modalTableVisible = true
+        this.$store.dispatch('basedata/getPresaleReturnedSettleType')
+        if(this.status != 1){
+            this.modalTableVisible = true
+        }
     },
     methods: {
         initTableData(id){

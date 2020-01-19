@@ -30,7 +30,8 @@
                     <paymentTypeList @selectChange="selectChange" :selectId="temp.paymentTypeId"></paymentTypeList>
                 </el-form-item>
                 <el-form-item label="收款到期日:" prop="paymentDueDate">
-                    <el-date-picker :editable="false" v-model="temp.paymentDueDate" type="date" placeholder="收款到期日" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+                    <el-date-picker :editable="false" v-model="temp.paymentDueDate" type="date" placeholder="收款到期日" size="mini" :clearable="false" value-format="yyyy-MM-dd">
+                    </el-date-picker>
                 </el-form-item>
                 <el-form-item label="合计金额:" prop="itemAmount">
                     <el-input size="mini" v-model="temp.itemAmount" placeholder="合计金额" disabled />
@@ -44,6 +45,13 @@
                 </el-form-item>
                 <el-form-item label="返利金额:" prop="rebateAmount">
                     <el-input size="mini" v-model="temp.rebateAmount" placeholder="返利金额" />
+                </el-form-item>
+                <el-form-item label="退款类型:" prop="returnedType">
+                    <el-select v-model="temp.returnedType" placeholder="退款类型" size="mini">
+                        <el-option label="退款退货" value="0"></el-option>
+                        <el-option label="退换货" value="1"></el-option>
+                        <el-option label="只退款" value="2"></el-option>
+                    </el-select>
                 </el-form-item>
             </el-form>
         </div>
@@ -140,7 +148,7 @@
             </el-form>
         </div>
         <div class="tx-c" style="margin-top:15px" v-if="status!=1&&status!=2">
-          <el-button class="filter-item" type="primary" @click="save">保存</el-button>
+            <el-button class="filter-item" type="primary" @click="save">保存</el-button>
         </div>
         <el-dialog :close-on-click-modal="false" title="结算方式" :visible.sync="dialogFormVisible" width="392px">
             <el-table :data="settleData" border fit highlight-current-row style="width: 100%;" size="mini" cell-class-name="tdCell">
@@ -165,12 +173,14 @@
                 <el-button type="primary" @click="dialogFormVisible = false">确定</el-button>
             </div>
         </el-dialog>
+        <modalTable :modalTableVisible="modalTableVisible"></modalTable>
     </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import {saveSalesReturned,getSalesReturnedById,getItemPrice} from '@/api/store';
-import {deleteEmptyProp,addNullObj,addNullObj2} from '@/utils';
+import modalTable from '@/components/modalTable/saleBill';
+import { saveSalesReturned, getSalesReturnedById, getItemPrice, getSalesReturnedBySalesHeaderId } from '@/api/store';
+import { deleteEmptyProp, addNullObj, addNullObj2 } from '@/utils';
 import staffList from '@/components/selects/staffList';
 import bizTypeList from '@/components/selects/bizTypeList'
 import custList from '@/components/selects/custList';
@@ -179,62 +189,64 @@ import warehouseList from '@/components/selects/warehouseList';
 import paymentTypeList from '@/components/selects/paymentTypeList';
 import itemList from '@/components/selects/itemList';
 import settleTypeList from "@/components/selects/settleTypeList";
-import { getName,getNowDate } from '@/utils/auth'
+import { getName, getNowDate } from '@/utils/auth'
 export default {
     name: 'saleAdd',
-    components: { staffList,warehouseList,custList,truckList,bizTypeList,paymentTypeList,itemList,settleTypeList },
+    components: { staffList, warehouseList, custList, truckList, bizTypeList, paymentTypeList, itemList, settleTypeList, modalTable },
     data() {
         return {
-            id:'',
-            status:this.$route.query.status,
-            settleData:[{},{},{},{},{}],
-            dialogFormVisible:false,
-            tableData: [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}],
-            keys:["itemId","itemCode","itemName","norms","uom","subUom","exchangeRate","batchNo","productionDate","qualityName","qualityDays","qty","price","amount","taxRate","taxAmount","vatAmount","invoiceNo","isGift"],
+            id: '',
+            status: this.$route.query.status,
+            modalTableVisible: false,
+            settleData: [{}, {}, {}, {}, {}],
+            dialogFormVisible: false,
+            tableData: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
+            keys: ["itemId", "itemCode", "itemName", "norms", "uom", "subUom", "exchangeRate", "batchNo", "productionDate", "qualityName", "qualityDays", "qty", "price", "amount", "taxRate", "taxAmount", "vatAmount", "invoiceNo", "isGift"],
             temp: {
-                billDate:getNowDate(),
-                billNo:'',
-                bizTypeId:'',
-                custId:'',
-                custName:'',
-                settleCustId:'',
-                warehouseId:'',
-                warehouseName:'',
-                truckId:'',
-                truckName:'',
-                staffId:'',
-                paymentTypeId:'',
-                paymentDueDate:'',
-                currPayAmount:0,
-                itemAmount:0,
-                advPayAmount:0,
-                rebateAmount:0,
-                withoutPayAmount:0,
-                auditDate:"",
-                auditor:"",
-                recordDate:getNowDate()+' 00:00:00',
-                recorder:getName()
+                billDate: getNowDate(),
+                billNo: '',
+                bizTypeId: '',
+                custId: '',
+                custName: '',
+                settleCustId: '',
+                warehouseId: '',
+                warehouseName: '',
+                truckId: '',
+                truckName: '',
+                staffId: '',
+                paymentTypeId: '',
+                paymentDueDate: '',
+                currPayAmount: 0,
+                itemAmount: 0,
+                advPayAmount: 0,
+                rebateAmount: 0,
+                withoutPayAmount: 0,
+                auditDate: "",
+                returnedType: '0',
+                auditor: "",
+                recordDate: getNowDate() + ' 00:00:00',
+                recorder: getName()
             }
         }
     },
     computed: {
         ...mapGetters([
-          'settleTypeArr',
-          'truckList'
+            'settleTypeArr',
+            'truckList'
         ])
     },
     created() {
         this.$store.dispatch('basedata/getSalesReturnedSettleType')
-        if(this.$route.query.id){
+        if (this.$route.query.id) {
             this.id = this.$route.query.id;
-            getSalesReturnedById(this.id).then(res=>{
-                if(res.data.data){
-                    for(var key in this.temp){
+            getSalesReturnedById(this.id).then(res => {
+                if (res.data.data) {
+                    for (var key in this.temp) {
                         this.temp[key] = res.data.data[key];
                     }
                     this.temp.autoAdvr = true;
-                    for(var i=0;i<res.data.data.salesReturnedLine.length;i++){
-                        for(var j=0;j<this.keys.length;j++){
+                    for (var i = 0; i < res.data.data.salesReturnedLine.length; i++) {
+                        for (var j = 0; j < this.keys.length; j++) {
                             this.tableData[i][this.keys[j]] = res.data.data.salesReturnedLine[i][this.keys[j]]
                         }
                     }
@@ -243,28 +255,43 @@ export default {
             })
         }
     },
+    mounted() {
+        this.$store.dispatch('basedata/getPresaleReturnedSettleType')
+        if (this.status != 1) {
+            this.modalTableVisible = true
+        }
+    },
     methods: {
-        calculate(index){
+        initTableData(id) {
+            getSalesReturnedBySalesHeaderId(id).then(res => {
+                for (var key in this.temp) {
+                    this.temp[key] = res.data.data[key]
+                }
+                this.tableData = addNullObj(res.data.data.salesReturnedLine);
+                this.settleData = addNullObj2(res.data.data.settleTypeReturnedDetail)
+            })
+        },
+        calculate(index) {
             var price = this.tableData[index].price;
             var qty = this.tableData[index].qty;
-            if(qty&&price){
+            if (qty && price) {
                 var amount = parseFloat(Number(qty) * Number(price)).toFixed(2);
-                this.$set(this.tableData[index],'amount',amount)
-                this.$set(this.tableData[index],'taxAmount',0)
-                this.$set(this.tableData[index],'vatAmount',amount)
+                this.$set(this.tableData[index], 'amount', amount)
+                this.$set(this.tableData[index], 'taxAmount', 0)
+                this.$set(this.tableData[index], 'vatAmount', amount)
                 var taxRate = this.tableData[index].taxRate;
-                if(taxRate){
-                    var taxAmount = parseFloat(Number(amount)*Number(taxRate)/100).toFixed(2);
-                    var vatAmount = parseFloat(Number(amount)*(Number(taxRate)/100+1)).toFixed(2);
-                    this.$set(this.tableData[index],'taxAmount',taxAmount)
-                    this.$set(this.tableData[index],'vatAmount',vatAmount)
-                }else{
-                    this.$set(this.tableData[index],'taxRate',0)
+                if (taxRate) {
+                    var taxAmount = parseFloat(Number(amount) * Number(taxRate) / 100).toFixed(2);
+                    var vatAmount = parseFloat(Number(amount) * (Number(taxRate) / 100 + 1)).toFixed(2);
+                    this.$set(this.tableData[index], 'taxAmount', taxAmount)
+                    this.$set(this.tableData[index], 'vatAmount', vatAmount)
+                } else {
+                    this.$set(this.tableData[index], 'taxRate', 0)
                 }
                 this.calculateTotal();
             }
         },
-        calculate1(index){
+        calculate1(index) {
             var amount = 0;
             for (var i = 0; i < this.settleData.length; i++) {
                 if (this.settleData[i] && this.settleData[i].amount) {
@@ -273,11 +300,11 @@ export default {
             }
             this.temp.currPayAmount = parseFloat(amount).toFixed(2);
         },
-        calculateTotal(){
+        calculateTotal() {
             var amount = 0;
-            for(var i=0;i<this.tableData.length;i++){
-                if(this.tableData[i]&&this.tableData[i].vatAmount){
-                    amount+=Number(this.tableData[i].vatAmount);
+            for (var i = 0; i < this.tableData.length; i++) {
+                if (this.tableData[i] && this.tableData[i].vatAmount) {
+                    amount += Number(this.tableData[i].vatAmount);
                 }
             }
             this.temp.itemAmount = parseFloat(amount).toFixed(2);
@@ -285,38 +312,38 @@ export default {
         showSettleType() {
             this.dialogFormVisible = true
         },
-        settleTypeChange(obj){
+        settleTypeChange(obj) {
             for (var key in obj) {
                 this.settleData[obj.index][key] = obj[key];
             }
         },
-        selectChange(obj){
-            for(var key in obj){
-                this.temp[key]=obj[key];
+        selectChange(obj) {
+            for (var key in obj) {
+                this.temp[key] = obj[key];
             }
-            if(obj&&obj.warehouseName){
-                for(var i=0;i<this.tableData.length;i++){
-                  this.tableData[i].warehouseId = obj.warehouseId
+            if (obj && obj.warehouseName) {
+                for (var i = 0; i < this.tableData.length; i++) {
+                    this.tableData[i].warehouseId = obj.warehouseId
                 }
             }
-            if(obj&&obj.truckName){
-                for(var i=0;i<this.tableData.length;i++){
-                  this.tableData[i].truckId = obj.truckId
+            if (obj && obj.truckName) {
+                for (var i = 0; i < this.tableData.length; i++) {
+                    this.tableData[i].truckId = obj.truckId
                 }
             }
         },
-        changeVal(obj){
-            for(var key in obj){
-                this.tableData[obj.index][key]=obj[key];
+        changeVal(obj) {
+            for (var key in obj) {
+                this.tableData[obj.index][key] = obj[key];
             }
-            if(this.temp.custId){
-                getItemPrice({custId:this.temp.custId,itemId:this.tableData[obj.index].itemId}).then(res=>{
-                    if(res.data.toString()==""){
+            if (this.temp.custId) {
+                getItemPrice({ custId: this.temp.custId, itemId: this.tableData[obj.index].itemId }).then(res => {
+                    if (res.data.toString() == "") {
                         this.tableData[obj.index].price = 0
-                    }else{
-                        if(res.data.price<0){
+                    } else {
+                        if (res.data.price < 0) {
                             this.$message.error("须先设定商品价格(价格-价格设定)")
-                        }else{
+                        } else {
                             this.tableData[obj.index].price = parseFloat(res.data.price).toFixed(4)
                         }
                     }
@@ -330,13 +357,13 @@ export default {
             this.temp.settleTypeReturnedDetail = this.settleData;
             saveSalesReturned(this.temp).then(res => {
                 if (res.data.errorCode == 0) {
-                    this.$message.success(this.id==""?'新增成功':'修改成功');
+                    this.$message.success(this.id == "" ? '新增成功' : '修改成功');
                     this.$store.dispatch('tagsView/delView', this.$route);
                     this.$router.replace('/sale/returned');
                 } else {
                     this.$message.error(res.data.msg)
                 }
-            }).catch(()=>{
+            }).catch(() => {
                 this.$message.error('保存失败，请稍后重试！')
             })
         }

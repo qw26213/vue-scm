@@ -30,7 +30,8 @@
                     <paymentTypeList @selectChange="selectChange" :selectId="temp.paymentTypeId"></paymentTypeList>
                 </el-form-item>
                 <el-form-item label="收款到期日:" prop="paymentDueDate">
-                    <el-date-picker :editable="false" v-model="temp.paymentDueDate" type="date" placeholder="收款到期日" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+                    <el-date-picker :editable="false" v-model="temp.paymentDueDate" type="date" placeholder="收款到期日" size="mini" :clearable="false" value-format="yyyy-MM-dd">
+                    </el-date-picker>
                 </el-form-item>
                 <el-form-item label="合计金额:" prop="itemAmount">
                     <el-input size="mini" v-model="temp.itemAmount" placeholder="合计金额" disabled />
@@ -38,15 +39,15 @@
                 <el-form-item label="抹零金额:" prop="withoutPayAmount">
                     <el-input size="mini" v-model="temp.withoutPayAmount" placeholder="抹零金额" />
                 </el-form-item>
-                <el-form-item label="使用预收:" prop="advPayAmount">
-                    <el-input size="mini" v-model="temp.advPayAmount" placeholder="使用预收" />
-                </el-form-item>
                 <el-form-item label="现结金额:" prop="currPayAmount">
                     <el-input size="mini" v-model="temp.currPayAmount" placeholder="现结金额" style="width:72px" disabled />
                     <el-button size="mini" style="width:44px;padding:6px" @click="showSettleType">选择</el-button>
                 </el-form-item>
                 <el-form-item label="返利金额:" prop="rebateAmount">
                     <el-input size="mini" v-model="temp.rebateAmount" placeholder="返利金额" />
+                </el-form-item>
+                <el-form-item label="使用预收:" prop="advPayAmount">
+                    <el-input size="mini" v-model="temp.advPayAmount" placeholder="使用预收" disabled />
                 </el-form-item>
                 <el-form-item label="自动匹配预收款:" prop="autoAdvr" label-width="96px">
                     <el-checkbox v-model="temp.autoAdvr" false-label="0" true-label="1"></el-checkbox>

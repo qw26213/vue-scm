@@ -1,5 +1,5 @@
 <template>
-  <el-select v-model="curId" style="width:145px" filterable remote reserve-keyword :remote-method="remoteGet" size="mini" @focus="searchThis($event)" @change="changeVal" placeholder="选择客户">
+  <el-select v-model="curId" style="width:145px" filterable remote :disabled="selectDisabled" reserve-keyword :remote-method="remoteGet" size="mini" @focus="searchThis($event)" @change="changeVal" placeholder="选择客户">
     <el-option v-for="item in custList" :key="item.id" :label="item.custName" :value="item.id">
     </el-option>
   </el-select>
@@ -8,7 +8,7 @@
 import { getCust } from '@/api/basedata'
 export default {
     name: 'list',
-    props: ['selectId','selectName','keyType'],
+    props: ['selectId','selectName','keyType','disabled'],
     data(){
       return {
         listQuery: {
@@ -19,6 +19,7 @@ export default {
             custName: ''
           }
         },
+        selectDisabled:this.disabled&&this.disabled==1||false,
         curId:this.selectId,
         custList:[]
       }
