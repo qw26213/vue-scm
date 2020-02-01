@@ -39,7 +39,7 @@
                     <span>{{row.truckName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="付款方式">
+            <!-- <el-table-column label="付款方式">
                 <template slot-scope="{row}">
                     <span>{{row.paymentTypeName}}</span>
                 </template>
@@ -68,7 +68,7 @@
                 <template slot-scope="{row}">
                     <span>{{row.rebateAmount|Fixed}}</span>
                 </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column label="状态" align="center">
                 <template slot-scope="{row}">
                     <span>{{row.status==1?'已审核':row.status==2?'已生成':'待审核'}}</span>
@@ -172,6 +172,8 @@ export default {
                         this.$message.error(res.data.msg)
                     }
                 })
+            }).catch(()=>{
+                console.log('取消')
             });
         },
         handleCreateBill(status,id1,id2){

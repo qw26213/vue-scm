@@ -257,7 +257,7 @@ export default {
     },
     mounted() {
         this.$store.dispatch('basedata/getPresaleReturnedSettleType')
-        if (this.status != 1) {
+        if(!this.status){
             this.modalTableVisible = true
         }
     },

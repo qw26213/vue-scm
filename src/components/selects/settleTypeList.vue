@@ -5,7 +5,6 @@
     </el-select>
 </template>
 <script>
-import { getAllNoADVR } from '@/api/basedata'
 export default {
     name: 'settleTypeList',
     props: ['selectCode', 'selectName', 'selectArap', 'index', 'settleTypeArr'],

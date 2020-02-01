@@ -152,6 +152,8 @@ export default {
                         this.$message.error(res.data.msg)
                     }
                 })
+            }).catch(()=>{
+                console.log('取消')
             });
         },
         handleCreateBill(status,id1,id2){
@@ -168,7 +170,7 @@ export default {
             if(res.data.errorCode==0){
               this.dialogFormVisible = false;
               this.getList();
-              this.$message.success('生成进货单成功')
+              this.$message.success('生成采购退货单成功')
             }else{
               this.$message.error(res.data.msg)
             }

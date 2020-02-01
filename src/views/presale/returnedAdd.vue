@@ -3,7 +3,7 @@
         <div class="dataTable">
             <el-form :inline="true" label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
                 <el-form-item label="单据日期:" prop="billDate">
-                    <el-date-picker :editable="false" v-model="temp.billDate" type="date" placeholder="单据日期" size="mini" :clearable="false" value-format="yyyy-MM-dd">
+                    <el-date-picker :editable="false" v-model="temp.billDate" :disabled="!status" type="date" placeholder="单据日期" size="mini" :clearable="false" value-format="yyyy-MM-dd">
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="单据号:" prop="billNo">
@@ -108,6 +108,11 @@
             </el-table-column>
         </el-table>
         <div class="dataTable" style="margin-top: 10px">
+            <el-form label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
+                <el-form-item label="备 注:" prop="remarks">
+                    <el-input size="mini" v-model="temp.remarks" placeholder="备注" style="width:790px" />
+                </el-form-item>
+            </el-form>
             <el-form :inline="true" label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
                 <el-form-item label="制单日期:" prop="recordDate">
                     <el-date-picker :editable="false" v-model="temp.recordDate" type="date" placeholder="制单日期" size="mini" style="width:145px" :clearable="false" value-format="yyyy-MM-dd">
@@ -184,6 +189,7 @@ export default {
             measList:[],
             temp: {
                 billNo:'',
+                remarks:'',
                 amount:'',
                 billDate:getNowDate(),
                 custName:'',
@@ -232,7 +238,7 @@ export default {
     },
     mounted(){
         this.$store.dispatch('basedata/getPresaleReturnedSettleType')
-        if(this.status != 1){
+        if(!this.status){
             this.modalTableVisible = true
         }
     },

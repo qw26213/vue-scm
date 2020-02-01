@@ -134,6 +134,8 @@ export default {
                         this.$message.error(res.data.msg)
                     }
                 })
+            }).catch(()=>{
+                console.log('取消')
             });
         },
         handleAdd(obj) {

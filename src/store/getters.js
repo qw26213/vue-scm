@@ -12,7 +12,9 @@ const getters = {
   permission_routes: state => state.permission.routes,
   errorLogs: state => state.errorLog.logs,
   settleTypeArr: state => state.basedata.settleTypeArr,
-  truckList: state => state.basedata.truckList
+  truckList: state => state.basedata.truckList,
+  coaArr: state => state.voucher.coaArr,
+  summaryArr: state => state.voucher.summaryArr
 }
 
 export default getters

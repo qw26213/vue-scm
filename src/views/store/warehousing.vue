@@ -152,6 +152,8 @@ export default {
                         this.$message.error(res.data.msg)
                     }
                 })
+            }).catch(()=>{
+                console.log('取消')
             });
         },
         handleCreateBill(status, id1, id2) {

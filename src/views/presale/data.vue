@@ -181,6 +181,8 @@ export default {
         type: 'warning'
       }).then(() => {
         this.checkItem(id)
+      }).catch(()=>{
+          console.log('取消')
       });
     },
     checkItem(id){

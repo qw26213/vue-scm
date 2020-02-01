@@ -66,7 +66,7 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="200">
         <template slot-scope="{row}">
-          <span class="ctrl" v-if="row.status==1" @click="handleCompile(row.id,1)">查看</span>
+          <span class="ctrl" @click="handleCompile(row.id,1)">查看</span>
           <span class="ctrl" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
           <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
           <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId)">{{row.isJeHeader==1?'查看':'生成'}}预收退款凭证</span>
@@ -157,7 +157,9 @@ export default {
         type: 'warning'
       }).then(() => {
         this.checkItem(id)
-      });
+      }).catch(()=>{
+                console.log('取消')
+            });
     },
     checkItem(id){
       auditPresaleReturned(id).then(res => {

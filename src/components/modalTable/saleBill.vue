@@ -5,7 +5,7 @@
                 <el-date-picker :editable="false" v-model="listQuery.queryParam.date1" type="date" placeholder="开始日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
                 <span class="zhi">至</span>
                 <el-date-picker :editable="false" v-model="listQuery.queryParam.date2" type="date" placeholder="结束日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
-                <el-input size="mini" v-model="listQuery.billNo" placeholder="单据号" style="width: 120px;" />
+                <el-input size="mini" v-model="listQuery.queryParam.billNo" placeholder="单据号" style="width: 120px;" />
                 <custList @selectChange="selectChange" ctrType="list"></custList>
                 <el-button size="mini" type="primary" @click="getList">查询</el-button>
             </div>
@@ -52,7 +52,7 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
+            <pagination v-show="total/10>1" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
         </el-dialog>
     </div>
 </template>
@@ -74,7 +74,7 @@ export default {
             listLoading: true,
             listQuery: {
                 pageIndex: 1,
-                pageNum: 20,
+                pageNum: 10,
                 queryParam: {
                     date1: '2019-01-01',
                     date2: getNowDate(),
@@ -104,6 +104,7 @@ export default {
             getSales(this.listQuery).then(res => {
                 this.listLoading = false
                 this.tableData = res.data.data
+                this.total = res.data.totalNum
             }).catch(err => {
                 this.listLoading = false
             })
@@ -124,6 +125,7 @@ export default {
 /deep/.el-dialog .el-dialog__body {
     min-height: 240px;
     max-height: 480px;
-    padding-top: 10px !important
+    padding-top: 10px !important;
+    overflow:auto
 }
 </style>

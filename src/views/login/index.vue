@@ -47,9 +47,9 @@ export default {
         return {
             loginUrl:'',
             loginForm: {
-                orgCode: '',
-                userAccount: '',
-                password: ''
+                orgCode: '100002',
+                userAccount: 'admin',
+                password: 'xx12345'
             },
             isRemember:true,
             loginRules: {

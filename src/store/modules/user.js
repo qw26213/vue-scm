@@ -45,6 +45,7 @@ const actions = {
             var user = res.data.userInfo;
             commit('SET_NAME', user.userName)
             commit('SET_AVATAR', 'https://panjiachen.gitee.io/vue-element-admin-site/home.png')
+            sessionStorage.bookId = user.bookId
           }).catch( err => {
               console.log(err);
           });

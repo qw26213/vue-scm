@@ -13,7 +13,7 @@
                 <el-option label="已审核" value="1"></el-option>
                 <el-option label="已生成" value="2"></el-option>
             </el-select>
-            <el-select v-model="listQuery.queryParam.isOutboundOrder" placeholder="出库单状态" size="mini">
+            <el-select v-model="listQuery.queryParam.isOutboundOrderReturned" placeholder="出库单状态" size="mini">
                 <el-option label="全部" value="null"></el-option>
                 <el-option label="未生成出库单" value="0"></el-option>
                 <el-option label="已生成出库单" value="1"></el-option>
@@ -23,7 +23,7 @@
         </div>
         <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row size="mini">
             <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
-            <el-table-column label="单据日期" align="center" width="120">
+            <el-table-column label="单据日期" align="center" width="100">
                 <template slot-scope="{row}">
                     <span>{{row.billDate}}</span>
                 </template>
@@ -78,12 +78,13 @@
                     <span>{{row.status==1?'已审核':row.status==2?'已生成':'待审核'}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" width="150">
+            <el-table-column label="操作" align="left" width="260">
                 <template slot-scope="{row}">
                     <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status==0?'编辑':'查看'}}</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
-                    <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isOutboundOrder,row.id,row.outboundOrderHeaderId)">{{row.isOutboundOrder==1?'查看':'生成'}}退货入库单</span>
+                    <span class="ctrl" v-if="row.status==1&&(row.returnedType==0||row.returnedType==1)" @click="handleCreateBill(row.isOutboundOrderReturned,row.id,row.outboundOrderReturnedHeaderId)">{{row.isOutboundOrderReturned==1?'查看':'生成'}}退货入库单</span>
+                    <span class="ctrl" v-if="row.status==1&&(row.returnedType==2)" @click="handleCreateBill1(row.isOutboundOrderReturned,row.id,row.outboundOrderReturnedHeaderId)">{{row.isOutboundOrderReturned==1?'查看':'生成'}}报损单</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId)">{{row.isJeHeader==1?'查看':'生成'}}销售退货凭证</span>
                 </template>
             </el-table-column>
@@ -176,6 +177,8 @@ export default {
                 type: 'warning'
             }).then(() => {
                 this.checkItem(id)
+            }).catch(()=>{
+                console.log('取消')
             });
         },
         checkItem(id) {
@@ -201,13 +204,16 @@ export default {
                 this.dialogFormVisible = true;
             }
         },
+        handleCreateBill1(){
+            this.$message.warning('正在设计');
+        },
         createBill() {
             var obj = { isBillDate: this.isBillDate, id: this.curBillId }
             buildSalesReturned(obj).then(res => {
                 if (res.data.errorCode == 0) {
                     this.dialogFormVisible = false;
                     this.getList();
-                    this.$message.success('生成出库单成功')
+                    this.$message.success('生成退货入库单成功')
                 } else {
                     this.$message.error(res.data.msg)
                 }

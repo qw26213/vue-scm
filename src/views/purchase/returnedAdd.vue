@@ -141,6 +141,11 @@
             </div>
         </el-dialog>
         <div class="dataTable" style="margin-top: 10px">
+            <el-form label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
+                <el-form-item label="备 注:" prop="remarks">
+                    <el-input size="mini" v-model="temp.remarks" placeholder="备注" style="width:790px" />
+                </el-form-item>
+            </el-form>
             <el-form :inline="true" label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
                 <el-form-item label="制单日期:" prop="recordDate">
                     <el-date-picker :editable="false" v-model="temp.recordDate" type="date" placeholder="制单日期" size="mini" style="width:145px" :clearable="false" value-format="yyyy-MM-dd">
@@ -189,6 +194,7 @@ export default {
             keys: ["itemId", "itemCode", "itemName", "norms", "uom", "subUom", "exchangeRate", "batchNo", "productionDate", "qualityName", "qualityDays", "qty", "price", "amount", "taxRate", "taxAmount", "vatAmount", "invoiceNo", "bGift"],
             temp: {
                 billDate:getNowDate(),
+                remarks:'',
                 billNo: '',
                 bizTypeId: '',
                 supplierId: "",
