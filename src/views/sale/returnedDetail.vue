@@ -3,241 +3,186 @@
         <div class="dataTable">
             <el-form :inline="true" label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
                 <el-form-item label="单据日期:" prop="billDate">
-                    <el-date-picker :editable="false" v-model="temp.billDate" type="date" placeholder="单据日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+                    <span>{{temp.billDate}}</span>
                 </el-form-item>
                 <el-form-item label="单据号:" prop="billNo">
-                    <el-input size="mini" v-model="temp.billNo" placeholder="单据号" disabled />
+                    <span>{{temp.billNo}}</span>
                 </el-form-item>
                 <el-form-item label="业务类型:" prop="bizTypeId">
-                    <bizTypeList @selectChange="selectChange" :selectId="temp.bizTypeId"></bizTypeList>
+                    <span>{{temp.bizTypeName}}</span>
                 </el-form-item>
                 <el-form-item label="客户:" prop="custId">
-                    <custList @selectChange="selectChange" keyType="custId" :selectId="temp.custId" :selectName="temp.custName"></custList>
+                    <span>{{temp.custName}}</span>
                 </el-form-item>
-                <el-form-item label="结算客户:" prop="settleCustId">
-                    <custList @selectChange="selectChange" keyType="settleCustId" :selectId="temp.settleCustId"></custList>
+                <el-form-item label="售达客户:" prop="soldToCust">
+                    <span>{{temp.soldToCust}}</span>
                 </el-form-item>
                 <el-form-item label="仓库:" prop="warehouseId">
-                    <warehouseList @selectChange="selectChange" allowNull="1" keyType="warehouseId" :selectId="temp.warehouseId"></warehouseList>
+                    <span>{{temp.warehouseName}}</span>
                 </el-form-item>
                 <el-form-item label="车辆:" prop="truckId">
-                    <truckList @selectChange="selectChange" allowNull="1" keyType="truckId" :selectId="temp.truckId"></truckList>
+                    <span>{{temp.truckName}}</span>
                 </el-form-item>
                 <el-form-item label="业务员:" prop="staffId">
-                    <staffList @selectChange="selectChange" :selectId="temp.staffId"></staffList>
+                    <span>{{temp.staffName}}</span>
                 </el-form-item>
                 <el-form-item label="收款方式:" prop="paymentTypeId">
-                    <paymentTypeList @selectChange="selectChange" :selectId="temp.paymentTypeId"></paymentTypeList>
+                    <span>{{temp.paymentTypeName}}</span>
                 </el-form-item>
                 <el-form-item label="收款到期日:" prop="paymentDueDate">
-                    <el-date-picker :editable="false" v-model="temp.paymentDueDate" type="date" placeholder="收款到期日" size="mini" :clearable="false" value-format="yyyy-MM-dd">
-                    </el-date-picker>
+                    <span>{{temp.paymentDueDate}}</span>
                 </el-form-item>
                 <el-form-item label="合计金额:" prop="itemAmount">
-                    <el-input size="mini" v-model="temp.itemAmount" placeholder="合计金额" disabled />
+                    <span>{{temp.itemAmount}}</span>
                 </el-form-item>
                 <el-form-item label="抹零金额:" prop="withoutPayAmount">
-                    <el-input size="mini" v-model="temp.withoutPayAmount" placeholder="抹零金额" />
+                    <span>{{temp.withoutPayAmount}}</span>
                 </el-form-item>
                 <el-form-item label="现结金额:" prop="currPayAmount">
-                    <el-input size="mini" v-model="temp.currPayAmount" placeholder="现结金额" style="width:72px" disabled />
-                    <el-button size="mini" style="width:44px;padding:6px" @click="showSettleType">选择</el-button>
+                    <span>{{temp.currPayAmount}}</span>
                 </el-form-item>
                 <el-form-item label="返利金额:" prop="rebateAmount">
-                    <el-input size="mini" v-model="temp.rebateAmount" placeholder="返利金额" />
+                    <span>{{temp.rebateAmount}}</span>
                 </el-form-item>
-                <el-form-item label="是否开票:" prop="statusInvoice">
-                    <el-checkbox v-model="temp.statusInvoice" false-label="0" true-label="1"></el-checkbox>
+                <el-form-item label="使用预收:" prop="advPayAmount">
+                    <span>{{temp.advPayAmount == 1?'是':'否'}}</span>
                 </el-form-item>
-                <el-form-item label="退款类型:" prop="returnedType">
-                    <el-select v-model="temp.returnedType" placeholder="退款类型" size="mini">
-                        <el-option label="退款退货" value="0"></el-option>
-                        <el-option label="退换货" value="1"></el-option>
-                        <el-option label="只退款" value="2"></el-option>
-                    </el-select>
+                <el-form-item label="自动匹配预收款:" prop="autoAdvr" label-width="96px">
+                    <span>{{temp.autoAdvr == 1?'是':'否'}}</span>
                 </el-form-item>
             </el-form>
         </div>
         <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini" cell-class-name="tdCell">
             <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
             <el-table-column label="商品代码" width="160">
-                <template slot-scope="scope">
-                    <itemList :selectCode="scope.row.itemCode" :selectId="scope.row.itemId" :index="scope.$index" @changeVal="changeVal"></itemList>
+                <template slot-scope="{row}">
+                    <span>{{row.itemCode}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="商品名称" width="160">
                 <template slot-scope="{row}">
-                    <input type="text" class="inputCell" v-model="row.itemName" disabled>
+                    <span>{{row.itemName}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="规格">
                 <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-r" v-model="row.norms" disabled>
+                    <span>{{row.norms}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="单位" width="60">
                 <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-c" v-model="row.uom" disabled>
+                    <span>{{row.uom}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="批号">
                 <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-r" v-model="row.batchNo">
+                    <span>{{row.batchNo}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="生产日期" width="120">
                 <template slot-scope="{row}">
-                    <el-date-picker :editable="false" v-model="row.productionDate" type="date" placeholder="" size="mini" style="width:100%" :clearable="false" value-format="yyyy-MM-dd">
-                    </el-date-picker>
+                    <span>{{row.productionDat}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="保质期(天)">
                 <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-r" v-model="row.qualityDays">
+                    <span>{{row.qualityDays}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="单价(元)">
-                <template slot-scope="scope">
-                    <input type="text" class="inputCell tx-r" v-model="scope.row.price" @change="calculate(scope.$index)">
+                <template slot-scope="{row}">
+                    <span>{{row.price}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="数量">
-                <template slot-scope="scope">
-                    <input type="text" class="inputCell tx-r" v-model="scope.row.qty" @change="calculate(scope.$index)">
+                <template slot-scope="{row}">
+                    <span>{{row.qty}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="金额">
                 <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-r" v-model="row.amount" disabled>
+                    <span>{{row.amount}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="税率(%)">
-                <template slot-scope="scope">
-                    <input type="text" class="inputCell tx-r" v-model="scope.row.taxRate" @change="calculate(scope.$index)">
+                <template slot-scope="{row}">
+                    <span>{{row.taxRate}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="税额">
                 <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-r" v-model="row.taxAmount" disabled>
+                    <span>{{row.taxAmount}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="价税合计">
                 <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-r" v-model="row.vatAmount||0" disabled>
+                    <span>{{row.vatAmount}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="是否赠品" align="center">
                 <template slot-scope="{row}">
-                    <el-checkbox v-model="row.salesTypeCode" false-label="0" true-label="1"></el-checkbox>
+                    <span>{{row.salesTypeCode}}</span>
                 </template>
             </el-table-column>
         </el-table>
         <div class="dataTable" style="margin-top: 10px">
             <el-form :inline="true" label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
                 <el-form-item label="制单日期:" prop="recordDate">
-                    <el-date-picker :editable="false" v-model="temp.recordDate" type="date" placeholder="制单日期" size="mini" :clearable="false" value-format="yyyy-MM-dd">
-                    </el-date-picker>
+                    <span>{{temp.recordDate}}</span>
                 </el-form-item>
                 <el-form-item label="制单人:" prop="recorderId">
-                    <el-input size="mini" v-model="temp.recorder" placeholder="制单人" />
+                    <span>{{temp.recorderId}}</span>
                 </el-form-item>
                 <el-form-item label="审核日期:" prop="auditDate">
-                    <el-date-picker :editable="false" v-model="temp.auditDate" type="date" placeholder="审核日期" size="mini" :clearable="false" value-format="yyyy-MM-dd">
-                    </el-date-picker>
+                    <span>{{temp.auditDate}}</span>
                 </el-form-item>
                 <el-form-item label="审核人:" prop="auditorId">
-                    <el-input size="mini" v-model="temp.auditor" placeholder="审核人" />
+                    <span>{{temp.auditorId}}</span>
                 </el-form-item>
             </el-form>
         </div>
-        <div class="tx-c" style="margin-top:15px" v-if="status!=1&&status!=2">
-            <el-button class="filter-item" type="primary" @click="save">保存</el-button>
-        </div>
-        <el-dialog :close-on-click-modal="false" title="结算方式" :visible.sync="dialogFormVisible" width="392px">
-            <el-table :data="settleData" border fit highlight-current-row style="width: 100%;" size="mini" cell-class-name="tdCell">
-                <el-table-column label="名称" width="146">
-                    <template slot-scope="scope">
-                        <settleTypeList :settleTypeArr="settleTypeArr" :selectCode="scope.row.settleTypeCode" :selectArap="scope.row.arAp" :selectName="scope.row.settleTypeName" :index="scope.$index" @settleTypeChange="settleTypeChange">
-                        </settleTypeList>
-                    </template>
-                </el-table-column>
-                <el-table-column label="预付应付标志" width="120">
-                    <template slot-scope="{row}">
-                        <input type="text" class="inputCell tx-l" v-model="row.arAp" disabled>
-                    </template>
-                </el-table-column>
-                <el-table-column label="金额">
-                    <template slot-scope="scope">
-                        <input type="text" class="inputCell tx-l" v-model="scope.row.amount" @change="calculate1(scope.$index)">
-                    </template>
-                </el-table-column>
-            </el-table>
-            <div slot="footer" class="dialog-footer" align="center">
-                <el-button type="primary" @click="dialogFormVisible = false">确定</el-button>
-            </div>
-        </el-dialog>
-        <modalTable :modalTableVisible="modalTableVisible"></modalTable>
     </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
-import modalTable from '@/components/modalTable/saleBill';
+import {deleteEmptyProp,addNullObj,addNullObj2} from '@/utils';
 import { saveSalesReturned, getSalesReturnedById, getItemPrice, getSalesReturnedBySalesHeaderId } from '@/api/store';
-import { deleteEmptyProp, addNullObj, addNullObj2 } from '@/utils';
-import staffList from '@/components/selects/staffList';
-import bizTypeList from '@/components/selects/bizTypeList'
-import custList from '@/components/selects/custList';
-import truckList from '@/components/selects/truckList';
-import warehouseList from '@/components/selects/warehouseList';
-import paymentTypeList from '@/components/selects/paymentTypeList';
-import itemList from '@/components/selects/itemList';
-import settleTypeList from "@/components/selects/settleTypeList";
-import { getName, getNowDate } from '@/utils/auth'
+import { getName,getNowDate } from '@/utils/auth'
 export default {
-    name: 'saleAdd',
-    components: { staffList, warehouseList, custList, truckList, bizTypeList, paymentTypeList, itemList, settleTypeList, modalTable },
+    name: 'saleReturnedDetail',
     data() {
         return {
-            id: '',
-            status: this.$route.query.status,
-            modalTableVisible: false,
-            settleData: [{}, {}, {}, {}, {}],
-            dialogFormVisible: false,
-            tableData: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
-            keys: ["itemId", "itemCode", "itemName", "norms", "uom", "subUom", "exchangeRate", "batchNo", "productionDate", "qualityName", "qualityDays", "qty", "price", "amount", "taxRate", "taxAmount", "vatAmount", "invoiceNo", "salesTypeCode"],
+            id:'',
+            status:this.$route.query.status,
+            settleData:[{},{},{},{},{}],
+            dialogFormVisible:false,
+            tableData: [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}],
+            keys:["itemId","itemCode","itemName","norms","uom","subUom","exchangeRate","batchNo","productionDate","qualityName","qualityDays","qty","price","amount","taxRate","taxAmount","vatAmount","invoiceNo","salesTypeCode"],
             temp: {
-                billDate: getNowDate(),
-                statusInvoice: 1,
-                billNo: '',
-                bizTypeId: '',
-                custId: '',
-                custName: '',
-                settleCustId: '',
-                warehouseId: '',
-                warehouseName: '',
-                truckId: '',
-                truckName: '',
-                staffId: '',
-                paymentTypeId: '',
-                paymentDueDate: '',
-                currPayAmount: 0,
-                itemAmount: 0,
-                advPayAmount: 0,
-                rebateAmount: 0,
-                withoutPayAmount: 0,
-                auditDate: "",
-                returnedType: 0,
-                auditor: "",
-                recordDate: getNowDate() + ' 00:00:00',
-                recorder: getName()
+                billDate:getNowDate(),
+                billNo:'',
+                bizTypeId:'',
+                autoAdvr:'1',
+                custId:'',
+                custName:'',
+                soldToCust:'',
+                warehouseId:'',
+                warehouseName:'',
+                truckId:'',
+                truckName:'',
+                staffId:'',
+                paymentTypeId:'',
+                paymentDueDate:'',
+                currPayAmount:0,
+                itemAmount:0,
+                advPayAmount:0,
+                rebateAmount:0,
+                withoutPayAmount:0,
+                auditDate:"",
+                auditor:"",
+                recordDate:getNowDate()+' 00:00:00',
+                recorder:getName()
             }
         }
-    },
-    computed: {
-        ...mapGetters([
-            'settleTypeArr',
-            'truckList'
-        ])
     },
     created() {
         this.$store.dispatch('basedata/getSalesReturnedSettleType')

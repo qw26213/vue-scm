@@ -1,220 +1,326 @@
 <template>
     <div class="app-container">
-        <div class="filter-container">
-            <el-date-picker :editable="false" v-model="listQuery.queryParam.date1" type="date" placeholder="开始日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
-            <span class="zhi">至</span>
-            <el-date-picker :editable="false" v-model="listQuery.queryParam.date2" type="date" placeholder="结束日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
-            <custList @selectChange="selectChange"></custList>
-            <staffList @selectChange="selectChange" ctrType="list"></staffList>
-            <el-select v-model="listQuery.queryParam.status" placeholder="单据状态" size="mini">
-                <el-option label="全部" value="null"></el-option>
-                <el-option label="未审核" value="0"></el-option>
-                <el-option label="已审核" value="1"></el-option>
-                <el-option label="已生成" value="2"></el-option>
-            </el-select>
-            <el-select v-model="listQuery.queryParam.isJeHeader" placeholder="预收单状态" size="mini">
-                <el-option label="全部" value="null"></el-option>
-                <el-option label="未生成凭证" value="0"></el-option>
-                <el-option label="已生成凭证" value="1"></el-option>
-            </el-select>
-            <el-button size="mini" type="primary" @click="getList">查询</el-button>
-            <el-button size="mini" type="primary" @click="handleAdd">新增</el-button>
-        </div>
-        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini">
-            <el-table-column label="序号" type="index" width="50" align="center">
-            </el-table-column>
-            <el-table-column label="单据日期" align="center" width="100">
-                <template slot-scope="{row}">
-                    <span>{{row.billDate}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="单据号" width="100">
-                <template slot-scope="{row}">
-                    <span>{{row.billNo}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="客户">
-                <template slot-scope="{row}">
-                    <span>{{row.custName}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="预收类型" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.presaleReturnedType==0?'按钱':row.presaleReturnedType==1?'按商品':'按品类'}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="有效日期" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.expirationDate}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="金额" align="right">
-                <template slot-scope="{row}">
-                    <span>{{row.beginBalance|Fixed}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="状态" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.status==1?'已审核':row.status==2?'已生成':'待审核'}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="备注">
-                <template slot-scope="{row}">
-                    <span>{{row.remarks}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="操作" align="center" width="150">
-                <template slot-scope="{row}">
-                    <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status==0?'编辑':'查看'}}</span>
-                    <span class="ctrl" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
-                    <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
-                    <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId)">{{row.isJeHeader==1?'查看':'生成'}}预收凭证</span>
-                </template>
-            </el-table-column>
-        </el-table>
-        <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
-        <el-dialog :close-on-click-modal="false" title="请选择凭证日期" :visible.sync="dialogFormVisible" width="400px">
-            <el-form style="margin-top:30px;text-align:center;">
-                <el-form-item label="" prop="isBillDate">
-                    <el-radio v-model="isBillDate" label="0" style="margin-right:10px">当前日期</el-radio>
-                    <el-radio v-model="isBillDate" label="1">预收单日期</el-radio>
+        <div class="w1200 voucherHeader">
+            <el-button type="primary" size="mini" @click="dialogFormVisible1 = true">从模板生成凭证</el-button>
+            <el-button type="primary" size="mini" @click="dialogFormVisible2 = true">选择摘要</el-button>
+            <div class="voucherTit">记账凭证<span class="Period">2019年第10期</span></div>
+            <el-form :inline="true" label-position="right" label-width="80px" style="width: 100%; margin-top:0px;">
+                <el-form-item label="凭证字号" prop="billNo" style="margin-bottom:10px">
+                    <select class="catogeryName uds">
+                        <option value="0" v-for="item in catogeryList" :ke="item.id">{{item.catogeryName}}</option>
+                    </select>
+                    <span class="catogeryNumber uds">{{temp.catogeryNumber|catogeryNumberFor}}</span>
+                    <span class="btn-wrap uds">
+                        <a class="btn-up" @click="catogeryNumberAdd(1)"></a>
+                        <a class="btn-down" @click="catogeryNumberAdd(-1)"></a>
+                    </span>
+                </el-form-item>
+                <el-form-item label="日期" prop="billDate" style="margin-bottom:10px;">
+                    <el-date-picker v-model="temp.billDate" type="date" placeholder="日期" size="mini" value-format="yyyy-MM-dd" style="width:120px">
+                    </el-date-picker>
+                </el-form-item>
+                <el-form-item label="附单据" prop="expirationDate" style="float:right;margin-bottom:10px">
+                    <input type="text" class="catogeryNumber" v-model="temp.voucherAttachmentNum" style="width:40px;margin-right:6px" />
+                    <span>张</span>
                 </el-form-item>
             </el-form>
-            <div slot="footer" class="dialog-footer" align="center">
-                <el-button type="default" @click="dialogFormVisible = false">取消</el-button>
-                <el-button type="primary" @click="createVouter">确定</el-button>
-            </div>
+        </div>
+        <table class="voucher table table-condensed w1200" style="border-left:none;">
+            <thead>
+                <tr>
+                    <th width="18" class="tablectrl thstyle"></th>
+                    <th class="thstyle">摘要</th>
+                    <th class="thstyle">会计科目</th>
+                    <th width="109" class="thstyle">数量</th>
+                    <th width="122" class="thstyle">币别</th>
+                    <th width="220" class="p0">
+                        <b class="money_tit">借方金额</b>
+                        <div class="money_unit"><i v-for="(it,index) in numberArr" :key="index">{{it}}</i></div>
+                    </th>
+                    <th width="220" class="p0">
+                        <b class="money_tit">贷方金额</b>
+                        <div class="money_unit"><i v-for="(it,index) in numberArr" :key="index">{{it}}</i></div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="voucher_tbody">
+                <tr v-for="(row,index) in tableData">
+                    <td class="p0 tablectrl">
+                        <a title="增加分录" class="glyicon_plus" @click="addRow()"></a>
+                        <a title="删除分录" class="glyicon_remove" @click="delRow(index)"></a>
+                    </td>
+                    <td class="p0 urel">
+                        <summaryList :dataList="summaryArr" :index="index" @changeVal="changeVal" :val="row.summary"></summaryList>
+                    </td>
+                    <td class="p0 urel">
+                        <coaList :dataList="coaArr" :selectId="row.itemId" :index="index" @changeVal="changeVal" :val="row.coaCode + row.dispName"></coaList>
+                    </td>
+                    <td class="p0 urel">
+                        <div class="number f12 ptb05">
+                        </div>
+                    </td>
+                    <td class="p0 urel">
+                        <div class="currency f12 ptb05">
+                        </div>
+                    </td>
+                    <td class="urel p0">
+                        <div class="money_bg">
+                            <i v-for="(item,index) in row.creditMoney" v-if="row.creditMoney>0" :key="index">{{item}}</i>
+                        </div>
+                        <input type="text" autocomplete="off" class="input_bg" v-model="row.creditMoney" maxlength="12" @input="inputChange($event)">
+                    </td>
+                    <td class="urel p0">
+                        <div class="money_bg">
+                            <i v-for="(item,index) in row.debiteMoney" v-if="row.debiteMoney>0" :key="index">{{item}}</i>
+                        </div>
+                        <input type="text" autocomplete="off" class="input_bg" v-model="row.debiteMoney" maxlength="12" @input="inputChange($event)">
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr class="foot h42">
+                    <td class="p0"></td>
+                    <td colspan="4" class="thstyle tx-l totalNumber">合计:{{totalZh}}</td>
+                    <td class="col_debite p0 urel ovh">
+                        <input type="hidden" v-model="totalMoney1" />
+                        <div class="money_bg h42">
+                            <i class="lh42" v-for="(item,index) in totalMoney1" v-if="totalMoney1>0" :key="index">{{item}}</i>
+                        </div>
+                    </td>
+                    <td class="col_credit p0 urel ovh">
+                        <input type="hidden" v-model="totalMoney2" />
+                        <div class="money_bg h42">
+                            <i class="lh42" v-for="(item,index) in totalMoney2" v-if="totalMoney2>0" :key="index">{{item}}</i>
+                        </div>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+        <div class="tx-c w1200" style="margin-top:15px">
+            <el-button class="filter-item" type="primary" @click="saveTemplet">保存为凭证模板</el-button>
+            <el-button class="filter-item" type="default" @click="saveVoucher">保存并新增凭证</el-button>
+        </div>
+        <el-dialog :close-on-click-modal="false" title="选择凭证模板" :visible.sync="dialogFormVisible1" width="540px">
+            <el-table :data="templetData" border fit highlight-current-row style="width: 100%;" size="mini" cell-class-name="trCell">
+                <el-table-column label="模板类型" width="140" align="center">
+                    <template slot-scope="{row}">
+                        <span v-for="item in templetTypeList" v-if="item.id==row.templetType" :key="item.id">{{item.templetTypeName}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="模板名称" width="150" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.templetName}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="模板编码" width="120" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.templetCode}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" align="center">
+                    <template slot-scope="{row}">
+                        <el-button class="filter-item" type="primary" size="mini" @click="selectTemplet(row.id)">选择</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <pagination v-show="total1>10" :total="total1" :page.sync="listQuery1.pageIndex" :limit.sync="listQuery1.pageNum" @pagination="getTempletList" />
+        </el-dialog>
+        <el-dialog :close-on-click-modal="false" title="常用摘要" :visible.sync="dialogFormVisible2" width="410px">
+            <el-table :data="summaryArr" border fit highlight-current-row style="width: 100%;" size="mini" cell-class-name="trCell">
+                <el-table-column label="助记码" width="120" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.mnemonicCode}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="名称" width="150" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.summary}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" align="center">
+                    <template slot-scope="{row}">
+                        <el-button class="filter-item" type="primary" size="mini" @click="save(row.id)">选择</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
         </el-dialog>
     </div>
 </template>
 <script>
-import { getPresaleReturned, delPresaleReturned, auditPresaleReturned, buildPresaleReturnedVoucher } from '@/api/store'
+import { mapGetters } from 'vuex'
+import { getGlPeriodByCenterDate, getTempletHeader, getGlPeriodByPeriodCode, getMaxVoucherSeq, getTempletTypeList,getTempletById,getVoucherById, voucherSave, templetSave, getCatogery } from '@/api/voucher'
+import { getNowDate, deleteEmptyProp, addNullObj, addNullObj2, convertCurrency, validateVal } from '@/utils'
 import Pagination from '@/components/Pagination'
-import staffList from '@/components/selects/staffList';
-import supplierList from '@/components/selects/supplierList';
-import custList from '@/components/selects/custList';
-import { getNowDate } from '@/utils/auth'
+import coaList from '@/components/voucher/coaList'
+import summaryList from '@/components/voucher/summaryList'
 export default {
-    name: 'presaleReturnedData',
-    components: { Pagination, staffList, custList, supplierList },
+    name: 'closePeriod',
+    components: { coaList, summaryList, Pagination },
     data() {
         return {
-            tableKey: 0,
-            tableData: [],
-            total: 0,
-            isBillDate: '0',
-            dialogFormVisible: false,
-            listLoading: true,
-            curBillId: '',
-            listQuery: {
+            selectCatogery:'',
+            catogeryList:[],
+            total1:0,
+            total2:0,
+            numberArr: ['亿', '千', '百', '十', '万', '千', '百', '十', '元', '角', '分'],
+            totalZh: '',
+            list: [],
+            temp: {
+                catogeryNumber: 1,
+                billDate:getNowDate(),
+                voucherAttachmentNum:0,
+            },
+            tableData: [{}, {}, {}, {}],
+            dialogFormVisible1: false,
+            dialogFormVisible2: false,
+            templetData: [],
+            totalMoney1:0,
+            totalMoney2:0,
+            listQuery1: {
                 pageIndex: 1,
-                pageNum: 20,
-                queryParam: {
-                    date1: getNowDate(),
-                    date2: getNowDate(),
-                    billNo: "",
-                    staffId: '',
-                    custId: '',
-                    status: '',
-                    isJeHeader: ''
-                }
+                pageNum: 10,
+                queryParam: {}
             }
         }
     },
     filters: {
-        Fixed: function (num) {
-            if (!num) { return '0.00' }
-            return parseFloat(num).toFixed(2);
+        catogeryNumberFor: function (num) {
+            return num < 10 ? '00' + num : num < 100 ? '0' + num : num;
         }
     },
+    computed: {
+        ...mapGetters([
+            'coaArr',
+            'summaryArr',
+            'auxiliaryArr',
+            'templetTypeList'
+        ])
+    },
     created() {
-        this.getList();
+        this.$store.dispatch('voucher/getCoaList')
+        this.$store.dispatch('voucher/getSummaryList')
+        this.$store.dispatch('voucher/getTempletType')
+        this.$store.dispatch('voucher/getAuxiliaryTypeList')
+        this.getTempletList()
+        getCatogery().then(res=>{
+            this.catogeryList = res.data
+        })
     },
     methods: {
-        getList() {
-            this.listLoading = true
-            getPresaleReturned(this.listQuery).then(res => {
-                this.listLoading = false
-                this.tableData = res.data.data
-            }).catch(err => {
-                this.listLoading = false
+        addRow(){
+            this.tableData.push({})
+        },
+        delRow(index){
+            if(this.tableData.length<=2){
+                this.$message.warning('至少要保留两条分录！');return
+            }
+            this.tableData.splice(index,1)
+        },
+        saveVoucher(){
+            if(this.tableData.length<=2){
+                this.$message.warning('至少两条分录！');return
+            }
+            let obj = {
+                bookId: sessionStorage.uuid,
+                catogeryId: this.selectCatogery,
+                catogeryName: '记',
+                catogeryTitle: "记账凭证",
+                // jzCode: jzCode,
+                // joinJeHeaderId:joinJeHeaderId,
+                periodCode: this.temp.billDate,
+                periodId: curPeriodValue,
+                periodName: '2020年02期',
+                saveType: saveTypeValue,
+                totalCreditMoney: this.total1,
+                totalDebiteMoney: this.total2,
+                voucherAttachmentNum: this.temp.voucherAttachmentNum,
+                voucherDate: this.temp.billDate,
+                voucherSeq: this.temp.catogeryNumber,
+                // voucherId: voucherId,
+                // jeHeaderId: voucherId,
+                voucherTable: this.tableData
+            }
+            voucherSave(obj).then(res=>{
+                if(res.data.success){
+                    this.$message.success("凭证模板保存成功")
+                }else{
+                    this.$message.error(res.data.msg)
+                }
             })
         },
-        selectChange(obj) {
-            for (var key in obj) {
-                this.listQuery.queryParam[key] = obj[key];
+        saveTemplet(){
+            let obj = {
+
             }
+            templetSave(obj).then(res=>{
+                if(res.data.success){
+                    this.$message.success("凭证模板保存成功")
+                }else{
+                    this.$message.error(res.data.msg)
+                }
+            })
+        },
+        inputChange(event){
+            this.clearNoNum(event.currentTarget);
+            this.totalMoney1 = this.calculate1();
+            this.totalMoney2 = this.calculate2();
+            this.totalZh = this.totalMoney1 == this.totalMoney2 ? convertCurrency(this.totalMoney1) : ''
+        },
+        clearNoNum(obj) {
+            // if (obj.value != '' && obj.value.substr(0, 1) == '=') {
+            //     obj.value = 0
+            //     valueBalance(obj);return;
+            // }
+            validateVal(obj)
+        },
+        calculate1(){
+            var amount = 0;
+            for (var i = 0; i < this.tableData.length; i++) {
+                if (this.tableData[i] && this.tableData[i].creditMoney) {
+                    amount += Number(this.tableData[i].creditMoney);
+                }
+            }
+            return String(amount)
+        },
+        calculate2(){
+            var amount = 0;
+            for (var i = 0; i < this.tableData.length; i++) {
+                if (this.tableData[i] && this.tableData[i].debiteMoney) {
+                    amount += Number(this.tableData[i].debiteMoney);
+                }
+            }
+            return String(amount)
+        },
+        selectTemplet(id){
+            this.dialogFormVisible1 = false
+            getTempletById(id).then(res => {
+                this.tableData = res.data.data.lineList
+
+            })
+        },
+        catogeryNumberAdd(num) {
+            this.catogeryNumber = this.catogeryNumber + num == 0 ? this.catogeryNumber : this.catogeryNumber + num
+        },
+        getTempletList() {
+            getTempletHeader(this.listQuery1).then(res => {
+                this.templetData = res.data.data
+                this.total1 = res.data.totalNum
+            }).catch(err => {
+
+            })
+        },
+        saveCoa() {
+            
+        },
+        saveSummary(){
+
         },
         changeVal() {
 
-        },
-        handleCheck(id) {
-            this.$confirm('确定审核通过吗?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                this.checkItem(id)
-            });
-        },
-        checkItem(id) {
-            auditPresaleReturned(id).then(res => {
-                if (res.data.errorCode == 0) {
-                    this.getList();
-                    this.$message.success('审核成功')
-                } else {
-                    this.$message.error(res.data.msg)
-                }
-            })
-        },
-        handleCreateVouter(status, id1, id2) {
-            if (status == 1) {
-                alert('查看采购凭证')
-            } else {
-                this.curBillId = id1;
-                this.dialogFormVisible = true;
-            }
-        },
-        createVouter() {
-            var obj = { isBillDate: this.isBillDate, id: this.curBillId }
-            buildPresaleReturnedVoucher(obj).then(res => {
-                if (res.data.errorCode == 0) {
-                    this.dialogFormVisible = false;
-                    this.getList();
-                    this.$message.success('生成预收凭证成功！')
-                } else {
-                    this.$message.error(res.data.msg)
-                }
-            });
-        },
-        handleAdd(obj) {
-            this.$store.dispatch('tagsView/delView', this.$route);
-            this.$router.push('/presaleReturned/add')
-        },
-        handleCompile(id, status) {
-            this.$store.dispatch('tagsView/delView', this.$route);
-            this.$router.push('/presaleReturned/modify?id=' + id + '&status=' + status)
-        },
-        handleDel(id) {
-            this.$confirm('确定删除吗?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                this.delItem(id)
-            });
-        },
-        delItem(id) {
-            delPresaleReturned(id).then(res => {
-                if (res.data.errorCode == 0) {
-                    this.getList();
-                    this.dialogFormVisible = false
-                    this.$message.success('删除成功')
-                } else {
-                    this.$message.error(res.data.msg)
-                }
-            })
         }
     }
 }
 </script>
+<style lang="scss" scoped>
+@import './voucher.scss';
+</style>

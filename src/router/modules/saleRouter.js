@@ -32,6 +32,14 @@ const saleRouter = {
             title: '编辑销售单'
         }
     }, {
+        path: 'detail',
+        component: () => import('@/views/sale/detail'),
+        name: 'saleDetail',
+        hidden: true,
+        meta: {
+            title: '查看销售单'
+        }
+    }, {
         path: 'saleList',
         component: () => import('@/views/sale/list'),
         name: 'saleList',
@@ -41,14 +49,14 @@ const saleRouter = {
     }, {
         path: 'returned',
         component: () => import('@/views/sale/returned'),
-        name: 'returned',
+        name: 'saleReturned',
         meta: {
             title: '销售退货'
         }
     }, {
         path: 'returnedAdd',
         component: () => import('@/views/sale/returnedAdd'),
-        name: 'returnedAdd',
+        name: 'saleReturnedAdd',
         hidden:true,
         meta: {
             title: '新增销售退货'
@@ -56,10 +64,18 @@ const saleRouter = {
     }, {
         path: 'returnedModify',
         component: () => import('@/views/sale/returnedAdd'),
-        name: 'returnedModify',
+        name: 'saleReturnedModify',
         hidden:true,
         meta: {
             title: '编辑销售退货'
+        }
+    }, {
+        path: 'returnedDetail',
+        component: () => import('@/views/sale/returnedDetail'),
+        name: 'saleReturnedDetail',
+        hidden:true,
+        meta: {
+            title: '查看销售退货'
         }
     }, {
         path: 'saleInvoice',

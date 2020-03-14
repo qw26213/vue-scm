@@ -80,7 +80,8 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="150">
                 <template slot-scope="{row}">
-                    <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status==0?'编辑':'查看'}}</span>
+                    <span class="ctrl" v-if="row.status==0" @click="handleCompile(row.id)">编辑</span>
+                    <span class="ctrl" v-if="row.status==1" @click="handleScan(row.id)">查看</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isOutboundOrder,row.id,row.outboundOrderHeaderId)">{{row.isOutboundOrder==1?'查看':'生成'}}出库单</span>
@@ -221,9 +222,12 @@ export default {
             this.$store.dispatch('tagsView/delView', this.$route);
             this.$router.replace('/sale/add')
         },
-        handleCompile(id, status) {
+        handleCompile(id) {
             this.$store.dispatch('tagsView/delView', this.$route);
-            this.$router.replace('/sale/modify?id=' + id + '&status=' + status)
+            this.$router.push('/sale/modify?id=' + id)
+        },
+        handleScan(id) {
+            this.$router.push('/sale/detail?id=' + id)
         },
         handleCreateVouter(status,id1,id2){
           if(status==1){

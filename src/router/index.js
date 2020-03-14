@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 if (process.env.NODE_ENV === 'development') {
-  Vue.use(VueRouter)
+    Vue.use(VueRouter)
 }
 import Layout from '@/layout'
 import saleRouter from './modules/saleRouter'
@@ -17,6 +17,7 @@ import accountRouter from './modules/accountRouter'
 import reportRouter from './modules/reportRouter'
 import hrRouter from './modules/hrRouter'
 import visitRouter from './modules/visitRouter'
+import userRouter from './modules/userRouter'
 
 export const constantRoutes = [{
     path: '/redirect',
@@ -55,11 +56,11 @@ export const constantRoutes = [{
 }]
 
 export const asyncRoutes = [
-    purchaseRouter, 
-    saleRouter, 
+    purchaseRouter,
+    saleRouter,
     arapRouter,
     presaleRouter,
-    storeRouter, 
+    storeRouter,
     priceRouter,
     visitRouter,
     accountRouter,
@@ -67,7 +68,12 @@ export const asyncRoutes = [
     hrRouter,
     grossprofitRouter,
     setRouter,
-    { path: '*', redirect: '/404', hidden: true }
+    userRouter, 
+    {
+        path: '*',
+        edirect: '/404',
+        hidden: true
+    }
 ]
 
 const createRouter = () => new VueRouter({

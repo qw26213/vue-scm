@@ -20,7 +20,7 @@
           <span>{{row.salesTypeName}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="价格比">
+      <el-table-column label="正常销售">
         <template slot-scope="{row}">
           <span>{{row.priceRatio}}</span>
         </template>
@@ -58,8 +58,9 @@
         <el-form-item label="销售类型名称" prop="salesTypeName">
           <el-input v-model="temp.salesTypeName" placeholder="销售类型名称" />
         </el-form-item>
-        <el-form-item label="价格比" prop="priceRatio">
-          <el-input v-model="temp.priceRatio" placeholder="价格比" />
+        <el-form-item label="正常销售" prop="priceRatio">
+          <el-radio v-model="temp.priceRatio" label="1">是</el-radio>
+          <el-radio v-model="temp.priceRatio" label="0">否</el-radio>
         </el-form-item>
         <el-form-item label="对应科目代码" prop="coaCode">
           <el-input v-model="temp.coaCode" placeholder="对应科目代码" />
@@ -103,7 +104,7 @@ export default {
       temp: {
         salesTypeName: '',
         salesTypeCode: '',
-        priceRatio:'',
+        priceRatio:'0',
         coaCode:"",
         remarks:'',
         isDisable: "0"
@@ -138,7 +139,7 @@ export default {
       this.temp.id = ''
       this.temp.salesTypeName = ''
       this.temp.salesTypeCode = ''
-      this.temp.priceRatio = ''
+      this.temp.priceRatio = '0'
       this.temp.coaCode = ''
       this.temp.remarks = ''
       this.temp.isDisable = '0'
@@ -152,7 +153,7 @@ export default {
       this.temp.id = obj.id
       this.temp.salesTypeName = obj.salesTypeName
       this.temp.salesTypeCode = obj.salesTypeCode
-      this.temp.priceRatio = obj.priceRatio
+      this.temp.priceRatio = String(obj.priceRatio)
       this.temp.coaCode = obj.coaCode
       this.temp.remarks = obj.remarks
       this.temp.isDisable = String(obj.isDisable)

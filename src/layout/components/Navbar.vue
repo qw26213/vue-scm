@@ -16,6 +16,9 @@
         </div>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>
+            <span @click="$router.push('/user')">账户信息</span>
+          </el-dropdown-item>
+          <el-dropdown-item divided>
             <span @click="handlePwd">修改密码</span>
           </el-dropdown-item>
           <el-dropdown-item divided>
@@ -25,21 +28,21 @@
       </el-dropdown>
     </div>
 
-    <el-dialog title="修改密码" :visible.sync="dialogFormVisible" width="500px">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="110px">
-        <el-form-item label="原密码" prop="oldpassword">
-          <el-input type="password" v-model="temp.oldpassword" placeholder="原密码" />
+    <el-dialog title="修改密码" :visible.sync="dialogFormVisible" width="400px">
+      <el-form ref="dataForm" :rules="rules" :model="pswForm" label-position="left" label-width="96px">
+        <el-form-item label="原密码" prop="oldPsw">
+          <el-input type="password" v-model="pswForm.oldPsw" placeholder="原密码" />
         </el-form-item>
         <el-form-item label="新密码" prop="password">
-          <el-input type="password" v-model="temp.password" placeholder="新密码" />
+          <el-input type="password" v-model="pswForm.password" placeholder="新密码" />
         </el-form-item>
-        <el-form-item label="确认新密码" prop="repassword">
-          <el-input type="password" v-model="temp.repassword" placeholder="确认新密码" />
+        <el-form-item label="确认新密码" prop="againPassword">
+          <el-input type="password" v-model="pswForm.againPassword" placeholder="确认新密码" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer" align="center">
         <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button type="primary" @click="save">确定</el-button>
+        <el-button type="primary" @click="savePsw">确定</el-button>
       </div>
     </el-dialog>
 
@@ -47,7 +50,7 @@
 </template>
 
 <script>
-import { updatePassword } from '@/api/user'
+import { updatePSW } from '@/api/user'
 import userImg from '@/assets/user.png'
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
@@ -62,16 +65,17 @@ export default {
   data(){
     return {
       avatar:userImg,
-      temp: {
-        oldpassword: "",
-        password: '',
-        repassword: ''
-      },
       dialogFormVisible: false,
+      id: '',
+      pswForm: {
+        oldPsw: '',
+        password: '',
+        againPassword: ''
+      },
       rules: {
-        oldpassword: [{ required: true, message: '原密码不能为空', trigger: 'change' }],
-        password: [{ required: true, message: '密码不能为空', trigger: 'change' }],
-        repassword: [{ required: true, message: ' 密码不能为空', trigger: 'change' }]
+        oldPsw: [{ required: true, message: '原密码不能为空', trigger: 'change' }],
+        password: [{ required: true, message: '新密码不能为空', trigger: 'change' }],
+        againPassword: [{ required: true, message: ' 确认新密码不能为空', trigger: 'change' }]
       },
     }
   },
@@ -90,34 +94,29 @@ export default {
     ])
   },
   methods: {
-    save(){
+    savePsw(){
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          if(this.temp.password!=this.temp.repassword){
-              this.$message.error('新密码两次输入不一致')
+          if(this.pswForm.password!=this.pswForm.againPassword) {
+              this.$message.warning('新密码两次输入不一致')
               return
           }
-          var obj = {
-            oldPassword:this.temp.oldpassword,
-            newPassword:this.temp.password
-          }
-          updatePassword(obj).then(res => {
-            if(res.data.error==0){
+          this.pswForm.id = this.id
+          updatePSW(this.pswForm).then(res => {
+            if(res.data.errorCode == 0) {
               this.dialogFormVisible = false
-              this.$store.commit('SET_TOKEN', res.data.data)
-              setToken(res.data.data)
               this.$message.success('密码修改成功')
             }else
-              this.$message.error(res.data.message)
+              this.$message.error(res.data.msg)
           })
         }
       });
     },
     handlePwd(){
       this.dialogFormVisible = true
-      this.temp.oldpassword = "";
-      this.temp.password = "";
-      this.temp.repassword = "";
+      this.temp.oldPsw = ""
+      this.temp.password = ""
+      this.temp.againPassword = ""
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })

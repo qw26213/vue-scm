@@ -243,9 +243,12 @@ export default {
             this.$store.dispatch('tagsView/delView', this.$route);
             this.$router.replace('/sale/returnedAdd')
         },
-        handleCompile(id, status) {
+        handleCompile(id) {
             this.$store.dispatch('tagsView/delView', this.$route);
-            this.$router.replace('/sale/returnedModify?id=' + id + '&status=' + status)
+            this.$router.push('/sale/returnedModify?id=' + id)
+        },
+        handleScan(id) {
+            this.$router.push('/sale/returnedDetail?id=' + id)
         },
         handleDel(id) {
             this.$confirm('你确认要删除吗?', '提示', {

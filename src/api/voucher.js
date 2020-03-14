@@ -8,6 +8,14 @@ export function getCoas() {
     })
 }
 
+export function getAllUnion() {
+    return request({
+        url: '/drp/gl/summary/getAllUnion',
+        method: 'post',
+        data: { bookId: sessionStorage.bookId }
+    })
+}
+
 export function getSummarys() {
     return request({
         url: '/drp/gl/summary/datatables',
@@ -23,6 +31,15 @@ export function getAuxiliaryType(data) {
         data: { bookId: sessionStorage.bookId }
     })
 }
+// 获取凭证模板类型
+export function getTempletTypeList(data) {
+    return request({
+        url: '/drp/gl/templetType/list',
+        method: 'post',
+        data
+    })
+}
+
 // 获取凭证模板
 export function getTempletHeader(data) {
     return request({
@@ -48,10 +65,144 @@ export function getGlPeriodByPeriodCode(data) {
     })
 }
 
-export function getMaxVoucherSeq() {
+export function getMaxVoucherSeq(data) {
     return request({
         url: '/drp/gl/voucher/getMaxVoucherSeq',
         method: 'post',
         data
+    })
+}
+
+export function getVoucher(data){
+  return request({
+    url:'/drp/gl/voucher/datatables',
+    method: 'post',
+    data
+  })
+}
+
+export function getVoucherById(data){
+  return request({
+    url:'/drp/gl/voucher/getById',
+    method: 'post',
+    data
+  })
+}
+// 整理凭证号
+export function trimJeSeqByMap(data){
+  return request({
+    url:'/drp/gl/voucher/trimJeSeqByMap',
+    method: 'post',
+    data
+  })
+}
+
+export function printList(data){
+  return request({
+    url:'/drp/gl/voucher/printList',
+    method: 'post',
+    data
+  })
+}
+
+export function delVoucher(data){
+  return request({
+    url:'/drp/gl/voucher/deleteById',
+    method: 'post',
+    data
+  })
+}
+
+export function getVoucherAuditList(data){
+  return request({
+    url:'/drp/gl/voucher/getVoucherAuditList',
+    method: 'post',
+    data
+  })
+}
+export function unAudit(data){
+  return request({
+    url:'/drp/gl/voucherAduit/unaudit',
+    method: 'post',
+    data
+  })
+}
+
+export function voucherAduit(data){
+  return request({
+    url:'/drp/gl/voucherAduit/save',
+    method: 'post',
+    data
+  })
+}
+
+export function voucherSave(data){
+  return request({
+    url:'/drp/gl/voucher/save',
+    method: 'post',
+    data
+  })
+}
+
+export function getTempletById(id){
+  return request({
+    url:'/drp/gl/templet/customGetTempletById/'+id,
+    method: 'post'
+  })
+}
+
+export function addSummary(data){
+  return request({
+    url:'/drp/gl/summary/save',
+    method: 'post',
+    data
+  })
+}
+
+export function delSummary(id){
+  return request({
+    url:'/drp/gl/summary/deleteById',
+    method: 'post',
+    data:{id: id}
+  })
+}
+
+export function initSummaryTables(data){
+  return request({
+    url:'/drp/gl/summary/datatables',
+    method: 'post',
+    data
+  })
+}
+
+export function coaSave(data){
+  return request({
+    url:'/drp/gl/coa/save',
+    method: 'post',
+    data
+  })
+}
+
+export function templetSave(data){
+  return request({
+    url:'/drp/gl/templet/save',
+    method: 'post',
+    data
+  })
+}
+
+export function voucherModify(data){
+  return request({
+    url:'/drp/gl/voucher/modify',
+    method: 'post',
+    data
+  })
+}
+
+export function getCatogery(){
+    return request({
+        url:'/drp/gl/catogery/list',
+        method:'post',
+        data: { bookId: sessionStorage.bookId }
     })
 }

@@ -37,3 +37,35 @@ export function forgotPSWSave(data){
     data
   })
 }
+
+export function home1TopN(data){
+  return request({
+    url: '/drp/gp/grossprofit/home1TopN',
+    method: 'post',
+    data
+  })
+}
+
+export function home2TopN(data){
+  return request({
+    url: '/drp/gp/grossprofit/home2TopN',
+    method: 'post',
+    data
+  })
+}
+
+export function home3TopN(data){
+  return request({
+    url: '/drp/gp/grossprofit/home3TopN',
+    method: 'post',
+    data
+  })
+}
+
+export function home4TopN(data){
+  return request({
+    url: '/drp/gp/grossprofit/home4TopN',
+    method: 'post',
+    data
+  })
+}

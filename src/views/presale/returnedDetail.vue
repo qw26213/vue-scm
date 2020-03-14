@@ -3,41 +3,34 @@
         <div class="dataTable">
             <el-form :inline="true" label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
                 <el-form-item label="单据日期:" prop="billDate">
-                    <el-date-picker :editable="false" v-model="temp.billDate" type="date" placeholder="单据日期" size="mini" :clearable="false" value-format="yyyy-MM-dd">
+                    <el-date-picker :editable="false" v-model="temp.billDate" :disabled="!status" type="date" placeholder="单据日期" size="mini" :clearable="false" value-format="yyyy-MM-dd">
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="单据号:" prop="billNo">
                     <el-input size="mini" v-model="temp.billNo" placeholder="单据号" disabled />
                 </el-form-item>
                 <el-form-item label="业务类型:" prop="bizTypeId">
-                    <bizTypeList @selectChange="selectChange" :selectId="temp.bizTypeId"></bizTypeList>
+                    <bizTypeList @selectChange="selectChange" disabled="1" :selectId="temp.bizTypeId"></bizTypeList>
                 </el-form-item>
                 <el-form-item label="客户:" prop="custId">
-                    <custList @selectChange="selectChange" keyType="custId" :selectId="temp.custId" :selectName="temp.custName"></custList>
+                    <custList @selectChange="selectChange" disabled="1" keyType="custId" :selectId="temp.custId" :selectName="temp.custName"></custList>
                 </el-form-item>
                 <el-form-item label="业务员:" prop="staffId">
-                    <staffList @selectChange="selectChange" :selectId="temp.staffId"></staffList>
+                    <staffList @selectChange="selectChange" disabled="1" :selectId="temp.staffId"></staffList>
                 </el-form-item>
                 <el-form-item label="预收类型:" prop="presaleType">
-                    <el-select v-model="temp.presaleType" placeholder="预收类型" size="mini" @change="initTable">
-                        <el-option label="按钱" value="0"></el-option>
-                        <el-option label="按商品" value="1"></el-option>
-                        <el-option label="按品类" value="2"></el-option>
+                    <el-select v-model="temp.presaleType" placeholder="预收类型" disabled size="mini" @change="initTable">
+                      <el-option label="按钱" value="0"></el-option>
+                      <el-option label="按商品" value="1"></el-option>
+                      <el-option label="按品类" value="2"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="有效日期:" prop="expirationDate">
-                    <el-date-picker :editable="false" v-model="temp.expirationDate" :disabled="temp.presaleType==0" type="date" placeholder="有效日期" size="mini" :clearable="false" value-format="yyyy-MM-dd">
-                    </el-date-picker>
-                </el-form-item>
-                <el-form-item label="预收合计:" prop="amount">
-                    <el-input size="mini" v-model="temp.amount" placeholder="预收合计" disabled />
+                <el-form-item label="合计金额:" prop="amount">
+                    <el-input size="mini" v-model="temp.amount" placeholder="合计金额" disabled/>
                 </el-form-item>
                 <el-form-item label="现结金额:" prop="beginBalance">
                     <el-input size="mini" v-model="temp.beginBalance" placeholder="现结金额" style="width:72px" disabled />
                     <el-button size="mini" style="width:44px;padding:6px" @click="showSettleType">选择</el-button>
-                </el-form-item>
-                <el-form-item label="余额:" prop="balance" v-if="status==1">
-                    <el-input size="mini" v-model="temp.balance" placeholder="余额" />
                 </el-form-item>
             </el-form>
         </div>
@@ -108,16 +101,6 @@
                     <input type="text" class="inputCell tx-r" v-model="row.beginBalance" disabled>
                 </template>
             </el-table-column>
-            <el-table-column label="余量">
-                <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-r" v-model="row.balanceQty" v-if="temp.presaleType=='2'||temp.presaleType=='1'&&status==1">
-                </template>
-            </el-table-column>
-            <el-table-column label="余额">
-                <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-r" v-model="row.balance" v-if="temp.presaleType=='2'||temp.presaleType=='1'&&status==1">
-                </template>
-            </el-table-column>
             <el-table-column label="备注">
                 <template slot-scope="{row}">
                     <input type="text" class="inputCell tx-r" v-model="row.remarks" :disabled="temp.presaleType==0">
@@ -125,6 +108,11 @@
             </el-table-column>
         </el-table>
         <div class="dataTable" style="margin-top: 10px">
+            <el-form label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
+                <el-form-item label="备 注:" prop="remarks">
+                    <el-input size="mini" v-model="temp.remarks" placeholder="备注" style="width:790px" />
+                </el-form-item>
+            </el-form>
             <el-form :inline="true" label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
                 <el-form-item label="制单日期:" prop="recordDate">
                     <el-date-picker :editable="false" v-model="temp.recordDate" type="date" placeholder="制单日期" size="mini" style="width:145px" :clearable="false" value-format="yyyy-MM-dd">
@@ -143,13 +131,13 @@
             </el-form>
         </div>
         <div class="tx-c" style="margin-top:15px" v-if="status!=1&&status!=2">
-            <el-button class="filter-item" type="primary" @click="save">保存</el-button>
+          <el-button class="filter-item" type="primary" @click="save">保存</el-button>
         </div>
         <el-dialog :close-on-click-modal="false" title="结算方式" :visible.sync="dialogFormVisible" width="392px">
             <el-table :data="settleData" border fit highlight-current-row style="width: 100%;" size="mini" cell-class-name="tdCell">
                 <el-table-column label="名称" width="146">
                     <template slot-scope="scope">
-                        <settleTypeList :selectCode="scope.row.settleTypeCode" :selectArap="scope.row.arAp" :selectName="scope.row.settleTypeName" :index="scope.$index" @settleTypeChange="settleTypeChange">
+                        <settleTypeList :settleTypeArr="settleTypeArr" :selectCode="scope.row.settleTypeCode" :selectArap="scope.row.arAp" :selectName="scope.row.settleTypeName" :index="scope.$index" @settleTypeChange="settleTypeChange">
                         </settleTypeList>
                     </template>
                 </el-table-column>
@@ -168,12 +156,15 @@
                 <el-button type="primary" @click="dialogFormVisible = false">确定</el-button>
             </div>
         </el-dialog>
+        <modalTable :modalTableVisible="modalTableVisible"></modalTable>
     </div>
 </template>
 <script>
-import { savePresale, getPresaleById } from '@/api/store';
-import { getMeas, getInvCatg } from '@/api/basedata';
-import { deleteEmptyProp, addNullObj, addNullObj2 } from '@/utils';
+import { mapGetters } from 'vuex'
+import {savePresaleReturned,getPresaleReturnedById,getBillReturnedByPresaleHeaderId} from '@/api/store';
+import { getMeas,getInvCatg } from '@/api/basedata';
+import {deleteEmptyProp,addNullObj,addNullObj2} from '@/utils';
+import modalTable from '@/components/modalTable/presaleBill';
 import staffList from '@/components/selects/staffList';
 import custList from '@/components/selects/custList';
 import itemList from '@/components/selects/itemList';
@@ -181,47 +172,48 @@ import bizTypeList from '@/components/selects/bizTypeList';
 import invCatgList from '@/components/selects/invCatgList';
 import settleTypeList from '@/components/selects/settleTypeList';
 import measList from '@/components/selects/measList';
-import { getName, getNowDate } from '@/utils/auth'
+import { getName,getNowDate } from '@/utils/auth'
 export default {
-    name: 'presaleAdd',
-    components: {
-        staffList,
-        custList,
-        bizTypeList,
-        itemList,
-        invCatgList,
-        settleTypeList,
-        measList
+    name: 'presaleReturnedDetail',
+    components:{
+        staffList,custList,bizTypeList,itemList,invCatgList,settleTypeList,measList,modalTable
     },
     data() {
         return {
-            id: '',
-            isDisabled: false,
-            status: this.$route.query.status,
-            tableData: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
-            keys: ['invCatgName', 'invCatgid', "itemId", "itemCode", "itemName", "norms", "uom", "subUom", "exchangeRate", "beginBalanceQty", "price", "taxRate", "taxAmount", "vatAmount", "remarks", "salesTypeCode", 'measId'],
-            invCatgList: [],
-            measList: [],
+            id:'',
+            isDisabled:false,
+            status:this.$route.query.status,
+            tableData: [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}],
+            keys:['invCatgName','invCatgid',"itemId","itemCode","itemName","norms","uom","subUom","exchangeRate","beginBalanceQty","price","taxRate","taxAmount","vatAmount","remarks","salesTypeCode",'measId'],
+            invCatgList:[],
+            measList:[],
             temp: {
-                billNo: '',
-                amount: '',
-                expirationDate: '',
-                billDate: getNowDate(),
-                custName: '',
-                presaleType: '1',
-                staffId: '',
-                custId: '',
-                bizTypeId: '',
-                beginBalance: '',
-                auditDate: "",
-                auditor: "",
-                balance: 0,
-                recordDate: getNowDate() + " 00:00:00",
-                recorder: getName()
+                billNo:'',
+                remarks:'',
+                amount:'',
+                billDate:getNowDate(),
+                custName:'',
+                presaleType:'1',
+                staffId:'',
+                custId:'',
+                bizTypeId:'',
+                beginBalance:'',
+                auditDate:"",
+                auditor:"",
+                returnedSrcId: '',
+                recordDate:getNowDate()+" 00:00:00",
+                recorder:getName()
             },
-            dialogFormVisible: false,
-            settleData: [{}, {}, {}, {}, {}]
+            dialogFormVisible:false,
+            settleData:[{},{},{},{},{}],
+            modalTableVisible:false
         }
+    },
+    computed: {
+        ...mapGetters([
+          'settleTypeArr',
+          'truckList'
+        ])
     },
     created() {
         getMeas().then(res => {
@@ -230,47 +222,65 @@ export default {
         getInvCatg().then(res => {
             this.invCatgList = res.data.data
         })
-        if (this.$route.query.id) {
+        if(this.$route.query.id){
             this.id = this.$route.query.id;
-            getPresaleById(this.id).then(res => {
-                for (var key in this.temp) {
+            getPresaleReturnedById(this.id).then(res=>{
+                for(var key in this.temp){
                     this.temp[key] = res.data.data[key]
-                    if (key == 'presaleType') {
+                    if(key=='presaleType'){
                         this.temp[key] = String(res.data.data[key])
                     }
                 }
-                this.tableData = addNullObj(res.data.data.presaleLine);
-                this.settleData = addNullObj2(res.data.data.settleTypeDetail)
+                this.tableData = addNullObj(res.data.data.presaleReturnedLine);
+                this.settleData = addNullObj2(res.data.data.settleTypeReturnedDetail)
             })
         }
     },
+    mounted(){
+        this.$store.dispatch('basedata/getPresaleReturnedSettleType')
+        if(!this.status){
+            this.modalTableVisible = true
+        }
+    },
     methods: {
-        initTable(val) {
-            this.tableData = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
+        initTableData(id){
+            getBillReturnedByPresaleHeaderId(id).then(res=>{
+                for(var key in this.temp){
+                    this.temp[key] = res.data.data[key]
+                    if(key=='presaleType'){
+                        this.temp[key] = String(res.data.data[key])
+                    }
+                }
+                this.tableData = addNullObj(res.data.data.presaleReturnedLine);
+                this.settleData = addNullObj2(res.data.data.settleTypeReturnedDetail)
+            })
+        },
+        initTable(val){
+            this.tableData = [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}];
         },
         showSettleType() {
             this.dialogFormVisible = true
         },
-        settleTypeChange(obj) {
+        settleTypeChange(obj){
             for (var key in obj) {
                 this.settleData[obj.index][key] = obj[key];
             }
         },
-        changeVal1(obj) {
-            for (var key in obj) {
-                this.tableData[obj.index][key] = obj[key];
+        changeVal1(obj){
+            for(var key in obj){
+                this.tableData[obj.index][key]=obj[key];
             }
         },
-        calculate(index) {
+        calculate(index){
             var qty = this.tableData[index].beginBalanceQty;
             var price = this.tableData[index].price;
-            if (qty && price) {
-                var beginBalance = parseFloat(Number(qty) * Number(price)).toFixed(2);
-                this.$set(this.tableData[index], 'beginBalance', beginBalance)
+            if(qty&&price){
+                var beginBalance = parseFloat(Number(qty)*Number(price)).toFixed(2);
+                this.$set(this.tableData[index],'beginBalance',beginBalance)
                 this.calculateTotal();
             }
         },
-        calculate1() {
+        calculate1(){
             var amount = 0;
             for (var i = 0; i < this.settleData.length; i++) {
                 if (this.settleData[i] && this.settleData[i].amount) {
@@ -279,41 +289,41 @@ export default {
             }
             this.temp.beginBalance = parseFloat(amount).toFixed(2);
         },
-        calculateTotal() {
+        calculateTotal(){
             var amount = 0;
-            for (var i = 0; i < this.tableData.length; i++) {
-                if (this.tableData[i] && this.tableData[i].beginBalance) {
-                    amount += Number(this.tableData[i].beginBalance);
+            for(var i=0;i<this.tableData.length;i++){
+                if(this.tableData[i]&&this.tableData[i].beginBalance){
+                    amount+=Number(this.tableData[i].beginBalance);
                 }
             }
             this.temp.amount = parseFloat(amount).toFixed(2);
         },
-        selectChange(obj) {
-            for (var key in obj) {
-                this.temp[key] = obj[key];
+        selectChange(obj){
+            for(var key in obj){
+                this.temp[key]=obj[key];
             }
         },
-        changeVal(obj) {
-            for (var key in obj) {
-                this.tableData[obj.index][key] = obj[key];
+        changeVal(obj){
+            for(var key in obj){
+                this.tableData[obj.index][key]=obj[key];
             }
-            if (obj.index + 1 == this.tableData.length) {
+            if(obj.index+1==this.tableData.length){
                 this.tableData.push({});
             }
         },
         save() {
             this.temp.id = this.id;
-            this.temp.presaleLine = deleteEmptyProp(this.tableData);
-            this.temp.settleTypeDetail = this.settleData;
-            savePresale(this.temp).then(res => {
+            this.temp.presaleReturnedLine = deleteEmptyProp(this.tableData);
+            this.temp.settleTypeReturnedDetail = this.settleData;
+            savePresaleReturned(this.temp).then(res => {
                 if (res.data.errorCode == 0) {
-                    this.$message.success(this.temp.id == "" ? '新增成功' : '修改成功');
+                    this.$message.success(this.temp.id==""?'新增成功':'修改成功');
                     this.$store.dispatch('tagsView/delView', this.$route);
-                    this.$router.replace('/presale/data');
+                    this.$router.replace('/presale/returned');
                 } else {
                     this.$message.error(res.data.msg)
                 }
-            }).catch(() => {
+            }).catch(()=>{
                 this.$message.error('保存失败，请稍后重试！')
             })
         }

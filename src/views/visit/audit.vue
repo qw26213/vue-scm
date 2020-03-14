@@ -186,7 +186,7 @@ export default {
             isDisabled: false,
             status: this.$route.query.status,
             tableData: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
-            keys: ['invCatgName', 'invCatgid', "itemId", "itemCode", "itemName", "norms", "uom", "subUom", "exchangeRate", "beginBalanceQty", "price", "taxRate", "taxAmount", "vatAmount", "remarks", "isGift", 'measId'],
+            keys: ['invCatgName', 'invCatgid', "itemId", "itemCode", "itemName", "norms", "uom", "subUom", "exchangeRate", "beginBalanceQty", "price", "taxRate", "taxAmount", "vatAmount", "remarks", "salesTypeCode", 'measId'],
             invCatgList: [],
             measList: [],
             temp: {

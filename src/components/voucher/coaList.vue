@@ -6,10 +6,9 @@
 </template>
 <!--  filterable remote reserve-keyword :remote-method="remoteGet" -->
 <script>
-import { getAllNoADVR } from '@/api/basedata'
 export default {
     name: 'coaList',
-    props: ['selectId', 'index', 'dataList'],
+    props: ['selectId', 'index', 'dataList', 'val'],
     data() {
         return {
             curName: '',
@@ -18,8 +17,13 @@ export default {
             coaList: this.dataList
         }
     },
-    mounted(){
-      console.log(this.coaList.length)
+    watch:{
+        dataList() {
+            this.coaList = this.dataList
+        },
+        val(){
+            this.curId = this.val
+        }
     },
     methods: {
         changeVal(val) {

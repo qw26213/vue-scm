@@ -1,9 +1,10 @@
-import { getSummarys, getCoas, getAuxiliaryType } from '@/api/voucher'
+import { getSummarys, getAllUnion, getCoas, getAuxiliaryType, getTempletTypeList } from '@/api/voucher'
 
 const state = {
     coaArr: [],
     summaryArr: [],
-    auxiliaryArr: []
+    auxiliaryArr: [],
+    templetTypeList:[]
 }
 
 const mutations = {
@@ -12,6 +13,9 @@ const mutations = {
     },
     SET_SUMMARY: (state, data) => {
         state.summaryArr = data
+    },
+    SET_TEMPLETTYPE: (state, data) => {
+        state.templetTypeList = data
     },
     SET_AUXILIARY: (state, data) => {
         state.auxiliaryArr = data
@@ -25,8 +29,13 @@ const actions = {
         })
     },
     getSummaryList({ commit }, data) {
-        getSummarys().then(res => {
+        getAllUnion().then(res => {
             commit('SET_SUMMARY', res.data.data)
+        })
+    },
+    getTempletType({ commit }, data) {
+        getTempletTypeList().then(res => {
+            commit('SET_TEMPLETTYPE', res.data)
         })
     },
     getAuxiliaryTypeList({ commit }, data) {

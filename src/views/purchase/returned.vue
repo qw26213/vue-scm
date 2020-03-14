@@ -84,7 +84,8 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="240">
                 <template slot-scope="{row}">
-                    <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status==0?'编辑':'查看'}}</span>
+                    <span class="ctrl" v-if="row.status==0" @click="handleCompile(row.id)">编辑</span>
+                    <span class="ctrl" v-if="row.status==1" @click="handleScan(row.id)">查看</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isWarehousingEntryReturned,row.id,row.warehousingEntryReturnedHeaderId)">{{row.isWarehousingEntryReturned==1?'查看':'生成'}}退货出库单</span>
@@ -128,7 +129,7 @@ import warehouseList from '@/components/selects/warehouseList';
 import { getNowDate } from '@/utils/auth'
 import Pagination from '@/components/Pagination';
 export default {
-    name: 'returned',
+    name: 'purseReturned',
     components: { staffList, warehouseList, supplierList, Pagination },
     data() {
         return {
@@ -246,9 +247,12 @@ export default {
             this.$store.dispatch('tagsView/delView', this.$route);
             this.$router.push('/purchase/returnedAdd')
         },
-        handleCompile(id, status) {
+        handleCompile(id) {
             this.$store.dispatch('tagsView/delView', this.$route);
-            this.$router.push('/purchase/returnedModify?id=' + id + '&status=' + status)
+            this.$router.push('/purchase/returnedModify?id=' + id)
+        },
+        handleScan(id) {
+            this.$router.push('/purchase/returnedDetail?id=' + id)
         },
         handleDel(id) {
             this.$confirm('确定删除吗?', '提示', {

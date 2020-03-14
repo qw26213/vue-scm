@@ -84,7 +84,8 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="240">
                 <template slot-scope="{row}">
-                    <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status==0?'编辑':'查看'}}</span>
+                    <span class="ctrl" v-if="row.status==0" @click="handleCompile(row.id)">编辑</span>
+                    <span class="ctrl" v-if="row.status==1" @click="handleScan(row.id)">查看</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isWarehousingEntry,row.id,row.warehousingEntryHeaderId)">{{row.isWarehousingEntry==1?'查看':'生成'}}入库单</span>
@@ -248,9 +249,12 @@ export default {
             this.$store.dispatch('tagsView/delView', this.$route);
             this.$router.push('/purchase/add')
         },
-        handleCompile(id, status) {
+        handleCompile(id) {
             this.$store.dispatch('tagsView/delView', this.$route);
-            this.$router.push('/purchase/modify?id=' + id + '&status=' + status)
+            this.$router.push('/purchase/modify?id=' + id)
+        },
+        handleScan(id) {
+            this.$router.push('/purchase/detail?id=' + id)
         },
         handleDel(id) {
             this.$confirm('确定删除吗?', '提示', {

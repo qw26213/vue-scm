@@ -229,7 +229,7 @@ export default {
       this.getList()
     },
     handleDel(id){
-      this.$confirm('你确认要删除吗?', '提示', {
+      this.$confirm('确认要删除吗?', '提示', {
         confirmButtonText: '确定',closeOnClickModal:false,
         cancelButtonText: '取消',
         type: 'warning'

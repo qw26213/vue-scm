@@ -7,7 +7,7 @@
       <el-button size="mini" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
     </div>
 
-    <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini">
+    <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-CASHent-row style="width: 100%;" size="mini">
       <el-table-column label="序号" type="index" width="50" align="center">
       </el-table-column>
       <el-table-column label="结算方式代码">
@@ -77,7 +77,7 @@
         </el-form-item>
         <el-form-item label="收付标志" prop="arAp">
           <el-radio v-model="temp.arAp" style="margin-right:10px" label="">无</el-radio>
-          <el-radio v-model="temp.arAp" style="margin-right:10px" label="CURR">现金</el-radio>
+          <el-radio v-model="temp.arAp" style="margin-right:10px" label="CASH">现金</el-radio>
           <el-radio v-model="temp.arAp" style="margin-right:10px" label="BANK">银行存款</el-radio>
           <el-radio v-model="temp.arAp" style="margin-right:10px" label="CC">信用卡</el-radio>
           <el-radio v-model="temp.arAp" style="margin-right:10px" label="ALIPAY">支付宝</el-radio>
@@ -124,7 +124,7 @@ export default {
   filters: {
       format: function(str) {
           if (str=='AR') { return '应收(赊销)' }
-          else if (str=='CURR') { return '现金' }
+          else if (str=='CASH') { return '现金' }
           else if (str=='BANK') { return '银行存款' }
           else if (str=='ALIPAY') { return '支付宝' }
           else if (str=='WECHATPAY') { return '微信支付' }

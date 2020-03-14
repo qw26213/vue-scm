@@ -113,7 +113,7 @@
             </el-table-column>
             <el-table-column label="是否赠品" align="center">
                 <template slot-scope="{row}">
-                    <el-checkbox v-model="row.isGift" false-label="0" true-label="1"></el-checkbox>
+                    <el-checkbox v-model="row.salesTypeCode" false-label="0" true-label="1"></el-checkbox>
                 </template>
             </el-table-column>
         </el-table>
@@ -182,7 +182,7 @@ import bizTypeList from "@/components/selects/bizTypeList";
 import settleTypeList from "@/components/selects/settleTypeList";
 import { getName,getNowDate } from '@/utils/auth'
 export default {
-    name: 'purchaseAdd1',
+    name: 'purchaseAdd',
     components: { staffList, warehouseList, supplierList, bizTypeList, paymentTypeList, itemList,settleTypeList },
     data() {
         return {

@@ -26,39 +26,39 @@
     </div>
 </template>
 <script>
-import {loginCheck,getIndexInfo} from '@/api/user'
+import { loginCheck, getIndexInfo } from '@/api/user'
 export default {
     name: 'login',
     data() {
         const validateOrcode = (rule, value, callback) => {
-            if (value.length < 6) {
-                callback(new Error('企业代码至少6位'));
-            } else {
-                callback()
-            }
+          if (value.length < 6) {
+            callback(new Error('企业代码至少6位'))
+          } else {
+            callback()
+          }
         }
         const validatePassword = (rule, value, callback) => {
-            if (value.length < 6) {
-                callback(new Error('密码至少6位'));
-            } else {
-                callback()
-            }
+          if (value.length < 6) {
+            callback(new Error('密码至少6位'))
+          } else {
+            callback()
+          }
         }
         return {
-            loginUrl:'',
-            loginForm: {
-                orgCode: '100002',
-                userAccount: 'admin',
-                password: 'xx12345'
-            },
-            isRemember:true,
-            loginRules: {
-                orgCode: [{ required: true, trigger: 'blur', validator: validateOrcode }],
-                userAccount: [{ required: true,message:'账号不能为空', trigger: 'blur'}],
-                password: [{ required: true, trigger: 'blur', validator: validatePassword }]
-            },
-            loading: false,
-            redirect: this.$route.query.redirect
+          loginUrl:'',
+          loginForm: {
+            orgCode: '',
+            userAccount: '',
+            password: ''
+          },
+          isRemember:true,
+          loginRules: {
+            orgCode: [{ required: true, trigger: 'blur', validator: validateOrcode }],
+            userAccount: [{ required: true,message:'账号不能为空', trigger: 'blur'}],
+            password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+          },
+          loading: false,
+          redirect: this.$route.query.redirect
         }
     },
     created(){

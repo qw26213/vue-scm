@@ -1,0 +1,469 @@
+<template>
+    <div class="homeMain">
+        <el-row :gutter="40" class="panel-group">
+            <el-col :xs="12" :sm="12" :lg="12" class="card-panel-col">
+                <el-card class="box-card">
+                    <div slot="header" class="clearfix">
+                        <span style="display:inline-block;line-height:28px">企业信息</span>
+                        <el-button v-if="userInfo.isAdmin == 1" type="primary" style="float: right;" size="mini" @click="showCompile">编辑</el-button>
+                        <el-button v-if="userInfo.isAdmin == 1" type="danger" style="float: right;margin-right:10px" size="mini" @click="closeCurAccount">注销企业</el-button>
+                    </div>
+                    <div class="listItem"><label>企业代码:</label>{{managementInfo.orgCode}}</div>
+                    <div class="listItem"><label>企业名称:</label>{{managementInfo.orgName}}</div>
+                    <div class="listItem"><label>所属行业:</label>{{managementInfo.industryName}}</div>
+                    <div class="listItem"><label>所属区域:</label>{{managementInfo.areaName}}</div>
+                    <div class="listItem"><label>纳税类型:</label>{{managementInfo.taxFilingCategoryName}}</div>
+                    <div class="listItem"><label>纳税识别号:</label>{{managementInfo.taxRegistrationCertificateNo}}</div>
+                    <div class="listItem"><label>业务有效期:</label>{{managementInfo.bizExpirationDate}}</div>
+                    <div class="listItem"><label>账套名称:</label>{{managementInfo.bookName}}</div>
+                    <div class="listItem"><label>审核级次:</label>{{managementInfo.auditLevel}}</div>
+                </el-card>
+            </el-col>
+            <el-col :xs="12" :sm="12" :lg="12" class="card-panel-col">
+                <el-card class="box-card">
+                    <div slot="header" class="clearfix">
+                        <span style="display:inline-block;line-height:28px">操作员信息</span>
+                        <el-button v-if="userInfo.isAdmin == 1" type="danger" style="float: right;" size="mini" @click="resetBookInfo">清除账套</el-button>
+                    </div>
+                    <div class="listItem"><label>企业代码:</label>{{userInfo.orgCode}}</div>
+                    <div class="listItem"><label>用户账号:</label>{{userInfo.userAccount}}</div>
+                    <div class="listItem"><label>用户姓名:</label>{{userInfo.userName}}</div>
+                    <div class="listItem"><label>审核人签名:</label>{{userInfo.sign2}}</div>
+                    <div class="listItem"><label>手机号:</label>{{userInfo.mobile}}</div>
+                    <div class="listItem"><label>邮箱:</label>{{userInfo.mail}}</div>
+                    <div class="listItem"><label>管理员:</label>{{userInfo.isAdmin}}</div>
+                    <div class="listItem"><label>角色:</label>{{userInfo.roleName}}</div>
+                    <div class="listItem"><label>审核级次:</label>{{userInfo.auditLevel}}</div>
+                </el-card>
+            </el-col>
+            <el-col :xs="24" :sm="24" :lg="24" class="card-panel-col">
+                <el-card class="box-card">
+                    <div slot="header" class="clearfix">
+                        <span style="display:inline-block;line-height:28px">操作员列表</span>
+                        <el-button v-if="userInfo.isAdmin == 1" type="primary" style="float: right;" size="mini" @click="handleAdd">新增操作员</el-button>
+                    </div>
+                    <el-table :data="tableData" border fit resize>
+                        <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
+                        <el-table-column label="企业代码" min-width="60" align="center">
+                            <template slot-scope="{row}">
+                                <span>{{row.orgCode}}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="用户账号" min-width="60" align="center">
+                            <template slot-scope="{row}">
+                                <span>{{row.userAccount}}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="用户姓名" min-width="60" align="center">
+                            <template slot-scope="{row}">
+                                <span>{{row.userName}}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="管理员" min-width="60" align="center">
+                            <template slot-scope="{row}">
+                                <span>{{row.isAdmin == 1 ? '是' : '否'}}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="状态" min-width="60" align="center">
+                            <template slot-scope="{row}">
+                                <span>{{row.status==0?'正常':row.status==5?'受限':'禁用'}}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="操作" min-width="100" align="center">
+                            <template slot-scope="{row}">
+                                <el-button type="default" size="mini" @click="handleCompile(row)">编辑</el-button>
+                                <el-button type="primary" size="mini" @click="resetPsw(row)">重置密码</el-button>
+                                <el-button type="danger" size="mini" @click="killUser(row.id)">强制下线</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </el-card>
+            </el-col>
+        </el-row>
+        <el-dialog :close-on-click-modal="false" title="修改企业信息" :visible.sync="dialogFormVisible1" width="440px">
+            <el-form ref="dataForm" :rules="rules1" :model="temp1" label-position="left" label-width="100px" style="width: 360px; margin-left:20px;">
+                <el-form-item label="企业代码" prop="orgCode">
+                    <el-input v-model="temp1.orgCode" placeholder="企业代码" />
+                </el-form-item>
+                <el-form-item label="企业名称" prop="orgName">
+                    <el-input v-model="temp1.orgName" placeholder="企业名称" />
+                </el-form-item>
+                <el-form-item label="企业所在地" prop="areaId">
+                    <el-select v-model="temp1.areaId" style="width:260px">
+                        <el-option v-for="item in areaList" :key="item.areaCode" :label="item.areaName" :value="item.id"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="行业类别" prop="industryId">
+                    <el-select v-model="temp1.industryId" style="width:260px">
+                        <el-option v-for="item in industryList" :key="item.id" :label="item.industryName" :value="item.id"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="纳税类型" prop="taxFilingCategoryId">
+                    <el-select v-model="temp1.taxFilingCategoryId" style="width:260px">
+                        <el-option v-for="item in taxfillingcategoryList" :key="item.id" :label="item.taxFilingCategoryName" :value="item.taxFilingCategoryCode"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="纳税人识别号" prop="taxRegistrationCertificateNo">
+                    <el-input v-model="temp1.taxRegistrationCertificateNo" placeholder="纳税人识别号" />
+                </el-form-item>
+                <el-form-item label="详细地址" prop="invoiceAddr">
+                    <el-input v-model="temp1.invoiceAddr" placeholder="详细地址" />
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer" align="center">
+                <el-button @click="dialogFormVisible1 = false">取消</el-button>
+                <el-button type="primary" @click="saveManageInfo()">确定</el-button>
+            </div>
+        </el-dialog>
+        <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增操作员':'编辑操作员'" :visible.sync="dialogFormVisible2" width="660px">
+            <el-form ref="dataForm1" :rules="rules2" inline :model="temp2" label-position="left" label-width="90px" style="width: 620px; margin-left:20px;">
+                <el-form-item label="用户账号" prop="userAccount" style="margin-right:20px">
+                    <el-input v-model="temp2.userAccount" placeholder="用户账号" />
+                </el-form-item>
+                <el-form-item label="用户姓名" prop="userName">
+                    <el-input v-model="temp2.userName" placeholder="用户姓名" />
+                </el-form-item>
+                <el-form-item label="审核人签名" prop="sign2" style="margin-right:20px">
+                    <el-input v-model="temp2.sign2" placeholder="用户姓名" />
+                </el-form-item>
+                <el-form-item label="手机号" prop="mobile">
+                    <el-input v-model="temp2.mobile" placeholder="手机号" />
+                </el-form-item>
+                <el-form-item label="邮箱" prop="mail" style="margin-right:20px">
+                    <el-input v-model="temp2.mail" placeholder="邮箱" />
+                </el-form-item>
+                <el-form-item label="角色" prop="roleId">
+                    <el-select v-model="temp2.roleId" style="width:185px">
+                      <el-option value="888888" label="审核会计"></el-option>
+                      <el-option value="888887" label="制单会计"></el-option>
+                      <el-option value="888889" label="企业出纳"></el-option>
+                      <el-option value="888890" label="企业老板"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="密码" prop="password" style="margin-right:20px">
+                    <el-input type="password" v-model="temp2.password" placeholder="密码" />
+                </el-form-item>
+                <el-form-item label="确认密码" prop="againPassword">
+                    <el-input type="password" v-model="temp2.againPassword" placeholder="确认密码" />
+                </el-form-item>
+                <el-form-item label="状态" prop="status" style="margin-right:20px">
+                    <el-select v-model="temp2.status" style="width:185px">
+                      <el-option value="0" label="正常"></el-option>
+                      <el-option value="5" label="受限"></el-option>
+                      <el-option value="9" label="禁用"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="审核级次">
+                    <el-select v-model="temp2.auditLevel1" style="width:80px">
+                      <el-option v-for="item in [1,2,3,4]" :key="item" :value="item" :label="item"></el-option>
+                    </el-select>
+                    <label for="">至</label>
+                    <el-select v-model="temp2.auditLevel2" style="width:80px">
+                      <el-option v-for="item in [1,2,3,4]" :key="item" :value="item" :label="item"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="管理员" prop="isAdmin">
+                    <el-switch v-model="temp2.isAdmin" inactive-value="0" active-value="1"></el-switch>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer" align="center">
+                <el-button @click="dialogFormVisible2 = false">取消</el-button>
+                <el-button type="primary" @click="saveUser()">确定</el-button>
+            </div>
+        </el-dialog>
+        <el-dialog title="重置密码" :visible.sync="dialogFormVisible3" width="400px">
+          <el-form ref="dataForm3" :rules="rules3" :model="pswForm" label-position="left" label-width="96px">
+            <el-form-item label="原密码" prop="oldPsw">
+              <el-input type="password" v-model="pswForm.oldPsw" placeholder="原密码" />
+            </el-form-item>
+            <el-form-item label="新密码" prop="password">
+              <el-input type="password" v-model="pswForm.password" placeholder="新密码" />
+            </el-form-item>
+            <el-form-item label="确认新密码" prop="againPassword">
+              <el-input type="password" v-model="pswForm.againPassword" placeholder="确认新密码" />
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer" align="center">
+            <el-button @click="dialogFormVisible3 = false">取消</el-button>
+            <el-button type="primary" @click="savePsw">确定</el-button>
+          </div>
+        </el-dialog>
+    </div>
+</template>
+<script>
+import CountTo from 'vue-count-to'
+import { getmanagementInfo, getMapById, getcmemlist, registerLoadArea, registerLoadIndustry, registerLoadTaxfilingcategory, updateInfo, closeAccount, resetBook, saveUser, updatePSW } from '@/api/user'
+import { getNowDate } from '@/utils/index'
+export default {
+    components: { CountTo },
+    data() {
+        return {
+            dialogFormVisible1: false,
+            dialogFormVisible2: false,
+            dialogFormVisible3: false,
+            dialogStatus: 'create',
+            managementInfo: {},
+            userInfo: {},
+            temp1: {},
+            rules1: {
+                orgName: [{ required: true, message: '企业全称不能为空', trigger: 'change' }],
+                areaId: [{ required: true, message: '请选择企业所在地', trigger: 'change' }],
+                industryId: [{ required: true, message: '请选择行业类别', trigger: 'change' }],
+                taxFilingCategoryId: [{ required: true, message: '请选择纳税类型', trigger: 'change' }]
+            },
+            rules2: {
+                password: [{ required: true, message: '密码不能为空', trigger: 'change' }],
+                againPassword: [{ required: true, message: '确认密码不能为空', trigger: 'change' }],
+                userName: [{ required: true, message: '用户名不能为空', trigger: 'change' }],
+                mobile: [{ required: true, message: '手机号不能为空', trigger: 'change' }],
+                mail: [{ required: true, message: '邮箱不能为空', trigger: 'change' }]
+            },
+            pswForm: {
+              id: '',
+              oldPsw: '',
+              password: '',
+              againPassword: ''
+            },
+            rules3: {
+              oldPsw: [{ required: true, message: '原密码不能为空', trigger: 'change' }],
+              password: [{ required: true, message: '新密码不能为空', trigger: 'change' }],
+              againPassword: [{ required: true, message: ' 确认新密码不能为空', trigger: 'change' }]
+            },
+            temp2: {
+              id: '',
+              userAccount: '',
+              userName: '',
+              sign2: '',
+              mobile: '',
+              mail: '',
+              roleId: '',
+              password: '',
+              againPassword: '',
+              roleId: '',
+              auditLevel1: 1,
+              auditLevel2: 1,
+              isAdmin: '0'
+            },
+            userList: {},
+            tableData: [],
+            industryList: [],
+            taxfillingcategoryList: [],
+            areaList: []
+        }
+    },
+    mounted() {
+        this.getData1()
+        this.getData2()
+        this.getData3()
+        registerLoadArea().then(res => {
+            this.areaList = res.data
+        })
+        registerLoadIndustry().then(res => {
+            this.industryList = res.data
+        })
+        registerLoadTaxfilingcategory().then(res => {
+            this.taxfillingcategoryList = res.data
+        })
+    },
+    methods: {
+        closeCurAccount() {
+            this.$confirm('该操作将清除所有的企业数据，请确认！', '警告', {
+                confirmButtonText: '确定',
+                closeOnClickModal: false,
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                this.$confirm('该操作将清除所有的企业数据，请再确认一次！', '警告', {
+                    confirmButtonText: '确定',
+                    closeOnClickModal: false,
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    closeAccount().then(res => {
+                        if (res.data.errorCode == 0) {
+                            this.$message.success('注销企业成功')
+                            this.$router.replace('/login')
+                        } else {
+                            this.$message.warning(res.data.msg)
+                        }
+                    })
+                })
+            })
+        },
+        resetBookInfo() {
+            this.$confirm("该操作将清除所有的账套数据，请确认！", '警告', {
+                confirmButtonText: '确定',
+                closeOnClickModal: false,
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                this.$confirm("该操作将清除所有的账套数据，请再确认一次！", '警告', {
+                    confirmButtonText: '确定',
+                    closeOnClickModal: false,
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    closeAccount({}).then(res => {
+                        if (res.data.errorCode == 0) {
+                            this.$message.success('清除账套成功')
+                            this.$router.replace('/login')
+                        } else {
+                            this.$message.warning(res.data.msg)
+                        }
+                    })
+                })
+            })
+        },
+        killUser(id) {
+            this.$confirm("该用户将被踢下线(如果该用户没被禁用,还可重新登录)!", '警告', {
+                confirmButtonText: '确定',
+                closeOnClickModal: false,
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                closeAccount(id).then(res => {
+                    if (res.data.errorCode == 0) {
+                        this.$message.success('强制下线成功')
+                        this.$router.replace('/login')
+                    } else {
+                        this.$message.warning(res.data.msg)
+                    }
+                })
+            })
+        },
+        saveManageInfo() {
+            this.$refs.dataForm.validate(valid => {
+                if (valid) {
+                    updateInfo(this.temp1).then(res => {
+                        this.$message.success("修改企业信息成功")
+                        this.dialogFormVisible1 = false
+                    })
+                }
+            })
+        },
+        showCompile() {
+            this.dialogFormVisible1 = true
+            this.temp1 = this.managementInfo
+        },
+        handleCompile(row) {
+          for(var key in this.temp2){
+            this.temp2[key] = row[key]
+          }
+          this.temp2.isAdmin = String(row.isAdmin)
+          this.temp2.roleId = String(row.roleId||'')
+          this.temp2.againPassword = String(row.password)
+          this.temp2.status = String(row.status)
+          this.dialogFormVisible2 = true
+          this.dialogStatus = 'update'
+        },
+        handleAdd() {
+          for(var key in this.temp2){
+            this.temp2[key] = ''
+          }
+          this.temp2.isAdmin = '0'
+          this.temp2.auditLevel1 = 1
+          this.temp2.auditLevel2 = 1
+          this.dialogFormVisible2 = true
+          this.dialogStatus = 'create'
+        },
+        resetPsw(row) {
+          this.dialogFormVisible3 = true
+          for(var key in this.pswForm){
+            this.pswForm[key] = ''
+          }
+          this.pswForm.id = row.id
+        },
+        savePsw(){
+          this.$refs['dataForm3'].validate((valid) => {
+            if (valid) {
+              if(this.pswForm.password!=this.pswForm.againPassword) {
+                  this.$message.warning('新密码两次输入不一致')
+                  return
+              }
+              this.pswForm.id = this.id
+              updatePSW(this.pswForm).then(res => {
+                if(res.data.errorCode == 0) {
+                  this.dialogFormVisible = false
+                  this.$message.success('密码重置成功')
+                }else
+                  this.$message.error(res.data.msg)
+              })
+            }
+          });
+        },
+        saveUser() {
+            this.$refs.dataForm1.validate(valid => {
+                if (valid) {
+                    if(this.temp2.password != this.temp2.againPassword) {
+                      this.$message.warning('请确保两次密码输入一致');return
+                    }
+                    saveUser(this.temp2).then(res => {
+                        this.$message.success((this.dialogStatus=='create'?'新增':'修改') + '操作人成功')
+                        this.getData3()
+                        this.dialogFormVisible2 = false
+                    })
+                }
+            })
+        },
+        getData1() {
+            getmanagementInfo().then(res => {
+                if (res.data.errorCode == 0) {
+                    this.managementInfo = res.data.data[0] || {}
+                }
+            })
+        },
+        getData2() {
+            var obj = {
+                id: null
+            }
+            getMapById(obj).then(res => {
+                if (res.data.errorCode == 0) {
+                    this.userInfo = res.data.data[0] || {}
+                }
+            })
+        },
+        getData3() {
+            getcmemlist().then(res => {
+                this.tableData = res.data.data || []
+            })
+        }
+    }
+}
+</script>
+<style lang="scss" scoped>
+.homeMain {
+    padding: 30px 30px 0;
+    background-color: rgb(240, 242, 245);
+    position: relative;
+}
+
+.panel-group {
+    .card-panel-col {
+        margin-bottom: 32px;
+    }
+}
+/deep/.el-card__header {
+    padding: 10px 15px
+}
+/deep/.el-card__body{padding:10px 20px 15px;}
+</style>
+<style scoped>
+.listItem {
+    height: 36px;
+    line-height: 36px;
+    border-bottom: 1px #eee solid;
+    font-size: 14px;
+    color: #333
+}
+
+.listItem:last-child {
+    border-bottom: none
+}
+
+.listItem label {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 3px;
+    width: 80px;
+}
+</style>

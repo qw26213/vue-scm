@@ -65,6 +65,16 @@
           <span>{{row.overdraftBalance|Fixed}}</span>
         </template>
       </el-table-column>
+      <el-table-column label="统一社会信用代码或纳税人识别号" align="right" width="100">
+        <template slot-scope="{row}">
+          <span>{{row.taxRegistrationCertificateNo}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="是否开票" width="80" align="center">
+        <template slot-scope="{row}">
+          <span>{{row.isInvoice==1?'是':'否'}}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="是否可用" width="80" align="center">
         <template slot-scope="{row}">
           <span>{{row.isDisable==0?'是':'否'}}</span>
@@ -113,6 +123,16 @@
         <el-form-item label="透支额度" prop="creditLimit">
           <el-input v-model="temp.creditLimit" placeholder="透支额度" />
         </el-form-item>
+      <el-form-item label="统一社会信用代码或纳税人识别号" prop="taxRegistrationCertificateNo">
+        <template slot-scope="{row}">
+          <span>{{row.taxRegistrationCertificateNo}}</span>
+        </template>
+      </el-form-item>
+      <el-form-item label="是否开票" prop="isInvoice">
+        <template slot-scope="{row}">
+          <span>{{row.isInvoice==1?'是':'否'}}</span>
+        </template>
+      </el-form-item>
         <el-form-item label="拜访周期(天)" prop="visitCycle">
           <el-input v-model="temp.visitCycle" placeholder="拜访周期" />
         </el-form-item>
@@ -207,6 +227,8 @@ export default {
         custTypeId:'',
         priceGroupId:'',
         custTypeName:'',
+        isInvoice:'0',
+        taxRegistrationCertificateNo:'',
         remarks:'',
         isDisable: "0"
       },
@@ -273,6 +295,7 @@ export default {
         this.temp[key] = ''
       }
       this.temp.isDisable = '0'
+      this.temp.isInvoice = '0'
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
@@ -284,6 +307,7 @@ export default {
         this.temp[key] = obj[key]
       }
       this.temp.id = obj.id
+      this.temp.isInvoice = String(obj.isInvoice)
       this.temp.isDisable = String(obj.isDisable)
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()

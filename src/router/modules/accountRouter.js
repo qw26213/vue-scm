@@ -111,6 +111,14 @@ const accountRouter = {
                 title: '新增凭证'
             }
         }, {
+            path: 'modify',
+            component: () => import('@/views/voucher/add'),
+            name: 'voucherAdd',
+            hidden:true,
+            meta: {
+                title: '修改凭证'
+            }
+        }, {
             path: 'data',
             component: () => import('@/views/voucher/data'),
             name: 'voucherData',
