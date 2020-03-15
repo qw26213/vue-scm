@@ -185,6 +185,13 @@ const setRouter = {
         meta: {
             title: '建账'
         }
+    }, {
+        path: 'rebuildBalance',
+        component: () => import('@/views/set/else/rebuildBalance'),
+        name: 'rebuildBalance',
+        meta: {
+            title: '重建余额表'
+        }
     }]
 }
 

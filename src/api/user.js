@@ -182,3 +182,11 @@ export function getCoaHierarchy(data){
         data
     })
 }
+
+export function reBalance(data){
+    return request({
+        url: '/drp/cm/rebalance/reBalance',
+        method: 'post',
+        data
+    })
+}
