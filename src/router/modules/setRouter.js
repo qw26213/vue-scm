@@ -213,7 +213,22 @@ const setRouter = {
         meta: {
             title: '科目设置'
         }
+    }, {
+        path: 'voucherModal',
+        component: () => import('@/views/set/else/voucherModal'),
+        name: 'voucherModal',
+        meta: {
+            title: '凭证模板'
+        }
     }]
+    // , {
+    //     path: 'auxiliaryType',
+    //     component: () => import('@/views/set/else/auxiliaryType'),
+    //     name: 'auxiliaryType',
+    //     meta: {
+    //         title: '辅助核算'
+    //     }
+    // }]
 }
 
 export default setRouter;

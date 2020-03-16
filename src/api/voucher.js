@@ -31,6 +31,7 @@ export function getAuxiliaryType(data) {
         data: { bookId: sessionStorage.bookId }
     })
 }
+
 // 获取凭证模板类型
 export function getTempletTypeList(data) {
     return request({
@@ -44,6 +45,22 @@ export function getTempletTypeList(data) {
 export function getTempletHeader(data) {
     return request({
         url: '/drp/gl/templetHeader/page',
+        method: 'post',
+        data
+    })
+}
+
+export function synVoucherData(data){
+    return request({
+        url: '/drp/gl/templet/synData',
+        method: 'post',
+        data
+    })
+}
+
+export function delTempletHeader(id) {
+    return request({
+        url: '/drp/gl/templetHeader/deleteById/'+id,
         method: 'post',
         data
     })
