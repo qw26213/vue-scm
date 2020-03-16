@@ -176,7 +176,7 @@ export function addBook(data) {
     })
 }
 
-export function getCurrencyList(data){
+export function getCurrencyList(data) {
     return request({
         url: '/drp/dim/currency/getSelectList',
         method: 'post',
@@ -184,7 +184,7 @@ export function getCurrencyList(data){
     })
 }
 
-export function getCoaHierarchy(data){
+export function getCoaHierarchy(data) {
     return request({
         url: '/drp/std/coaHierarchy/getAll',
         method: 'post',
@@ -192,7 +192,7 @@ export function getCoaHierarchy(data){
     })
 }
 
-export function reBalance(data){
+export function reBalance(data) {
     return request({
         url: '/drp/cm/rebalance/reBalance',
         method: 'post',
@@ -201,7 +201,7 @@ export function reBalance(data){
 }
 
 // 会计期间
-export function getPeriodList(data){
+export function getPeriodList(data) {
     return request({
         url: '/drp/gl/period/getSelectList',
         method: 'post',
@@ -210,9 +210,35 @@ export function getPeriodList(data){
 }
 
 // 同步数据
-export function synbasedata(data){
+export function synbasedata(data) {
     return request({
         url: '/drp/cm/synbasedata/synbasedata',
+        method: 'post',
+        data
+    })
+}
+// 期初余额
+export function getBalance(data) {
+    return request({
+        url: '/drp/gl/balance/getListForSetBegin',
+        method: 'post',
+        data
+    })
+}
+
+// 科目分类
+export function coaClassification(data) {
+    return request({
+        url: '/drp/std/coaClassification/select',
+        method: 'post',
+        data
+    })
+}
+
+// 科目列表
+export function getCoaDatatables(data) {
+    return request({
+        url: '/drp/gl/coa/datatables',
         method: 'post',
         data
     })

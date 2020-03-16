@@ -125,8 +125,8 @@ export default {
         getData(type) {
             this.listQuery.isAutoCommit = type
             reBalance(this.listQuery).then(res => {
-                if (res.data.data != null) {
-                    this.tableData1 = res.data.data || []
+                if (res.data.errorCode == 0) {
+                    this.tableData = res.data.data || []
                 }
             })
         }
