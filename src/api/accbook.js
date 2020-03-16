@@ -77,6 +77,7 @@ export function getVoucherTable(data) {
     data
   })
 }
+
 export function getCatogery() {
   return request({
     url: '/drp/gl/catogery/list',

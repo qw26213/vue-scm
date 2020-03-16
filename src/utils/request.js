@@ -1,8 +1,7 @@
 import axios from 'axios'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
-import context from '@/main'
-
+import { MessageBox, message } from 'element-ui'
 // axios 配置
 axios.defaults.timeout = 60000;
 axios.defaults.baseURL = process.env.VUE_APP_BASE_API;
@@ -32,7 +31,8 @@ axios.interceptors.response.use(
       // }
     }
     //判断超时原因 路由跳转页面
-    return Promise.reject(error.data);
+    MessageBox.error(error)
+    // return Promise.reject(error.data);
   });
 
 export default axios;

@@ -122,6 +122,15 @@ export function closeAccount(data) {
     })
 }
 
+// 修改纳税类型
+export function updateTaxFilingCategory(data) {
+    return request({
+        url: '/drp/cm/management/updateTaxFilingCategory',
+        method: 'post',
+        data
+    })
+}
+
 // 注销企业
 export function killUser(data) {
     return request({
@@ -186,6 +195,24 @@ export function getCoaHierarchy(data){
 export function reBalance(data){
     return request({
         url: '/drp/cm/rebalance/reBalance',
+        method: 'post',
+        data
+    })
+}
+
+// 会计期间
+export function getPeriodList(data){
+    return request({
+        url: '/drp/gl/period/getSelectList',
+        method: 'post',
+        data
+    })
+}
+
+// 同步数据
+export function synbasedata(data){
+    return request({
+        url: '/drp/cm/synbasedata/synbasedata',
         method: 'post',
         data
     })

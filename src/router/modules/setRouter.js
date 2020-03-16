@@ -192,6 +192,27 @@ const setRouter = {
         meta: {
             title: '重建余额表'
         }
+    }, {
+        path: 'synBasedata',
+        component: () => import('@/views/set/else/synBasedata'),
+        name: 'synBasedata',
+        meta: {
+            title: '基础数据同步'
+        }
+    }, {
+        path: 'balance',
+        component: () => import('@/views/set/else/balance'),
+        name: 'balanceset',
+        meta: {
+            title: '期初余额'
+        }
+    }, {
+        path: 'coaList',
+        component: () => import('@/views/set/else/coaList'),
+        name: 'coaList',
+        meta: {
+            title: '科目设置'
+        }
     }]
 }
 

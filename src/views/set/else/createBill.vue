@@ -15,7 +15,7 @@
                     <div class="listItem"><label>所属区域:</label>{{managementInfo.areaName}}</div>
                     <div class="listItem">
                         <label>纳税类型:</label>{{managementInfo.taxFilingCategoryName}}
-                        <el-button type="default" style="margin-left:20px" size="mini" @click="handleCompile">设置</el-button>
+                        <el-button type="default" style="margin-left:20px" size="mini" @click="handleTransfer">转为{{managementInfo.coahierarchyId==2?'小规模纳税人':'一般纳税人'}}</el-button>
                     </div>
                     <div class="listItem"><label>业务有效期:</label>{{managementInfo.bizExpirationDate}}</div>
                     <div class="listItem"><label>账簿名称:</label>{{managementInfo.bookName}}</div>
@@ -77,11 +77,11 @@
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item>
-                    <label for="">城市建设维护税</label>                    
+                    <label for="">城市建设维护税</label>
                     <span class="spanItem2">{{temp.isAutoJtfjs7}}</span>
-                    <label for="">教育附加</label>                    
+                    <label for="">教育附加</label>
                     <span class="spanItem2">{{temp.isAutoJtfjs3}}</span>
-                    <label for="">地方教育附加</label>                    
+                    <label for="">地方教育附加</label>
                     <span class="spanItem2">{{temp.isAutoJtfjs2}}</span>
                 </el-form-item>
                 <el-form-item>
@@ -116,7 +116,7 @@
     </div>
 </template>
 <script>
-import { getmanagementInfo, getMapById, registerLoadTaxfilingcategory, addBook, saveBook, resetAccount, getCurrencyList, getCoaHierarchy } from '@/api/user'
+import { getmanagementInfo, getMapById, registerLoadTaxfilingcategory, addBook, saveBook, resetAccount, getCurrencyList, getCoaHierarchy, updateTaxFilingCategory } from '@/api/user'
 import { getNowDate } from '@/utils/index'
 export default {
     data() {
@@ -160,6 +160,19 @@ export default {
         })
     },
     methods: {
+        handleTransfer() {
+            const obj = {
+                categoryId: this.managementInfo.coahierarchyId == 2 ? 1 : 2
+            }
+            updateTaxFilingCategory(obj).then(res => {
+                if (res.data.errorCode == 0) {
+                    this.$message.success("修改纳税类型成功")
+                    this.getData()
+                } else {
+                    this.$message.warning(res.data.msg)
+                }
+            })
+        },
         resetAcc() {
             this.$confirm('账套的所有初始数据,包括科目,科目余额表等将全部被重置,确定要重置这个账套吗?', '警告', {
                 confirmButtonText: '确定',
@@ -255,9 +268,29 @@ export default {
     font-size: 14px;
     color: #333
 }
-.spanItem1{width: 20px;line-height: 28px;display: inline-block;text-align: center;}
-.spanItem2{width: 60px;line-height: 28px;display: inline-block;text-align: center;}
-.inputItem{width: 36px;line-height: 28px;text-align: center;border:1px solid #DCDFE6;border-radius: 4px;}
+
+.spanItem1 {
+    width: 20px;
+    line-height: 28px;
+    display: inline-block;
+    text-align: center;
+}
+
+.spanItem2 {
+    width: 60px;
+    line-height: 28px;
+    display: inline-block;
+    text-align: center;
+}
+
+.inputItem {
+    width: 36px;
+    line-height: 28px;
+    text-align: center;
+    border: 1px solid #DCDFE6;
+    border-radius: 4px;
+}
+
 .listItem:last-child {
     border-bottom: none
 }
