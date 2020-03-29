@@ -20,6 +20,7 @@ export default {
     watch:{
         dataList() {
             this.coaList = this.dataList
+            this.curId = this.val
         },
         val(){
             this.curId = this.val

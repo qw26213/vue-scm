@@ -221,7 +221,6 @@ export default {
         }
     },
     created() {
-        this.$store.dispatch('voucher/getCoaList')
         this.$store.dispatch('voucher/getTempletType')
         this.$store.dispatch('voucher/getAuxiliaryTypeList')
         this.getTempletList()
@@ -231,6 +230,7 @@ export default {
         if(this.$route.query.id){
             getVoucherById({id:this.$route.query.id}).then(res => {
                 this.$store.dispatch('voucher/getSummaryList')
+                this.$store.dispatch('voucher/getCoaList')
                 this.billHeader = res.data.data.header
                 this.tableData = res.data.data.lineList
                 var totalMoney = 0
@@ -243,6 +243,7 @@ export default {
             })
         } else {
             this.$store.dispatch('voucher/getSummaryList')
+            this.$store.dispatch('voucher/getCoaList')
         }
     },
     methods: {
