@@ -10,7 +10,7 @@
                     <span>{{row.coaCode}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="科目名称" min-width="100">
+            <el-table-column label="科目名称" min-width="100" show-overflow-tooltip>
                 <template slot-scope="{row}">
                     <span>{{row.showCoaName}}</span>
                     <el-button v-if="row.isAuxiliary == 1" type="primary" size="mini" @click="showSuplyConfig(row)" style="margin-left:10px">设置</el-button>

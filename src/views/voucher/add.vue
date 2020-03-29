@@ -9,18 +9,18 @@
                     <select class="catogeryName uds">
                         <option value="0" v-for="item in catogeryList" :ke="item.id">{{item.catogeryName}}</option>
                     </select>
-                    <span class="catogeryNumber uds">{{temp.catogeryNumber|catogeryNumberFor}}</span>
+                    <span class="catogeryNumber uds">{{billHeader.jeSeq | numberFormat}}</span>
                     <span class="btn-wrap uds">
                         <a class="btn-up" @click="catogeryNumberAdd(1)"></a>
                         <a class="btn-down" @click="catogeryNumberAdd(-1)"></a>
                     </span>
                 </el-form-item>
                 <el-form-item label="日期" prop="billDate" style="margin-bottom:10px;">
-                    <el-date-picker v-model="temp.billDate" type="date" placeholder="日期" size="mini" value-format="yyyy-MM-dd" style="width:120px">
+                    <el-date-picker v-model="billHeader.billDate" type="date" placeholder="日期" size="mini" value-format="yyyy-MM-dd" style="width:120px">
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="附单据" prop="expirationDate" style="float:right;margin-bottom:10px">
-                    <input type="text" class="catogeryNumber" v-model="temp.voucherAttachmentNum" style="width:40px;margin-right:6px" />
+                    <input type="text" class="catogeryNumber" v-model="billHeader.voucherAttachmentNum" style="width:40px;margin-right:6px" />
                     <span>张</span>
                 </el-form-item>
             </el-form>
@@ -65,13 +65,13 @@
                     </td>
                     <td class="urel p0">
                         <div class="money_bg">
-                            <i v-for="(item,index) in row.accountedCr" v-if="row.accountedCr>0" :key="index">{{item}}</i>
+                            <i v-if="row.accountedCr>0" v-for="(item,index) in String(row.accountedCr)" :key="index">{{item}}</i>
                         </div>
                         <input type="text" autocomplete="off" class="input_bg" v-model="row.accountedCr" maxlength="12" @input="inputChange($event)">
                     </td>
                     <td class="urel p0">
                         <div class="money_bg">
-                            <i v-for="(item,index) in row.accountedDr" v-if="row.accountedDr>0" :key="index">{{item}}</i>
+                            <i v-if="row.accountedDr>0" v-for="(item,index) in String(row.accountedDr)" :key="index">{{item}}</i>
                         </div>
                         <input type="text" autocomplete="off" class="input_bg" v-model="row.accountedDr" maxlength="12" @input="inputChange($event)">
                     </td>
@@ -84,13 +84,13 @@
                     <td class="col_debite p0 urel ovh">
                         <input type="hidden" v-model="totalMoney1" />
                         <div class="money_bg h42">
-                            <i class="lh42" v-for="(item,index) in totalMoney1" v-if="totalMoney1>0" :key="index">{{item}}</i>
+                            <i class="lh42" v-for="(item,index) in String(totalMoney1)" v-if="totalMoney1>0" :key="index">{{item}}</i>
                         </div>
                     </td>
                     <td class="col_credit p0 urel ovh">
                         <input type="hidden" v-model="totalMoney2" />
                         <div class="money_bg h42">
-                            <i class="lh42" v-for="(item,index) in totalMoney2" v-if="totalMoney2>0" :key="index">{{item}}</i>
+                            <i class="lh42" v-for="(item,index) in String(totalMoney2)" v-if="totalMoney2>0" :key="index">{{item}}</i>
                         </div>
                     </td>
                 </tr>
@@ -170,7 +170,7 @@ export default {
             numberArr: ['亿', '千', '百', '十', '万', '千', '百', '十', '元', '角', '分'],
             totalZh: '',
             list: [],
-            temp: {
+            billHeader: {
                 catogeryNumber: 1,
                 billDate:getNowDate(),
                 voucherAttachmentNum:0,
@@ -200,7 +200,7 @@ export default {
         }
     },
     filters: {
-        catogeryNumberFor: function (num) {
+        numberFormat: function (num) {
             return num < 10 ? '00' + num : num < 100 ? '0' + num : num;
         }
     },
@@ -222,7 +222,6 @@ export default {
     },
     created() {
         this.$store.dispatch('voucher/getCoaList')
-        this.$store.dispatch('voucher/getSummaryList')
         this.$store.dispatch('voucher/getTempletType')
         this.$store.dispatch('voucher/getAuxiliaryTypeList')
         this.getTempletList()
@@ -231,8 +230,19 @@ export default {
         })
         if(this.$route.query.id){
             getVoucherById({id:this.$route.query.id}).then(res => {
+                this.$store.dispatch('voucher/getSummaryList')
+                this.billHeader = res.data.data.header
                 this.tableData = res.data.data.lineList
+                var totalMoney = 0
+                for(var i=0;i<this.tableData.length;i++){
+                    totalMoney += Number(this.tableData[i].accountedDr);
+                }
+                this.totalMoney1 = totalMoney
+                this.totalMoney2 = totalMoney
+                this.totalZh = this.totalMoney1 == this.totalMoney2 ? convertCurrency(this.totalMoney1) : ''
             })
+        } else {
+            this.$store.dispatch('voucher/getSummaryList')
         }
     },
     methods: {

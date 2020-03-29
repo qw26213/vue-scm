@@ -33,7 +33,7 @@
             </el-table-column>
             <el-table-column label="科目名称" min-width="200">
                 <template slot-scope="{row}">
-                    <p clss="pCell" v-for="(item,index) in row.lineList" :key="index">{{item.longName}}</p>
+                    <p clss="pCell" style="width:max-content;min-width:100%" v-for="(item,index) in row.lineList" :key="index">{{item.longName}}</p>
                 </template>
             </el-table-column>
             <el-table-column label="借方金额" align="right">

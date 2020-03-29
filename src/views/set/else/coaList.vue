@@ -12,7 +12,7 @@
                     <span>{{row.coaCode}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="科目名称" min-width="100">
+            <el-table-column label="科目名称" min-width="100" show-overflow-tooltip>
                 <template slot-scope="{row}">
                     <span v-html="row.pageCoaName"></span>
                 </template>
