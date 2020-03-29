@@ -37,7 +37,7 @@
                     </el-table>
                 </el-card>
             </el-col>
-            <el-col :xs="12" :sm="12" :lg="12" class="card-panel-col">
+            <el-col :xs="12" :sm="12" :lg="12" class="card-panel-col" style="padding-left:0">
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
                         <span style="display:inline-block;line-height:28px">日毛利排行--品类</span>
@@ -128,7 +128,7 @@
                     </el-table>
                 </el-card>
             </el-col>
-            <el-col :xs="12" :sm="12" :lg="12" class="card-panel-col">
+            <el-col :xs="12" :sm="12" :lg="12" class="card-panel-col" style="padding-left:0">
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
                         <span style="display:inline-block;line-height:28px">日毛利排行--网点</span>
@@ -257,7 +257,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .homeMain {
-    padding: 30px 30px 0;
+    padding: 30px 30px 10px;
     background-color: rgb(240, 242, 245);
     position: relative;
     height:100%
@@ -265,7 +265,7 @@ export default {
 
 .panel-group {
     .card-panel-col {
-        margin-bottom: 32px;
+        margin-bottom: 20px;
     }
 }
 /deep/.el-table__empty-text{padding:80px}

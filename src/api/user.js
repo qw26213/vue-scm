@@ -226,6 +226,15 @@ export function getBalance(data) {
     })
 }
 
+// 保存期初余额
+export function updateListForSetBegin(data) {
+    return request({
+        url: '/drp/gl/balance/updateListForSetBegin',
+        method: 'post',
+        data
+    })
+}
+
 // 科目分类
 export function coaClassification(data) {
     return request({
@@ -241,5 +250,37 @@ export function getCoaDatatables(data) {
         url: '/drp/gl/coa/datatables',
         method: 'post',
         data
+    })
+}
+
+
+export function updateDisabledCoa(data) {
+    return request({
+        url: '/drp/gl/coa/updateIsDisableById/',
+        method: 'post',
+        data
+    })
+}
+
+export function delCoa(id) {
+    return request({
+        url: '/drp/gl/coa/deleteById/',
+        method: 'post',
+        data: {id: id}
+    })
+}
+
+export function saveCoa(data) {
+    return request({
+        url: '/drp/gl/coa/save/',
+        method: 'post',
+        data
+    })
+}
+
+export function updateDispName(uuid) {
+    return request({
+        url: '/drp/gl/coa/updateDispName/' + uuid,
+        method: 'post'
     })
 }
