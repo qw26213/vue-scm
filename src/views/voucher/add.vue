@@ -260,7 +260,7 @@ export default {
             var obj = {
                 mnemonicCode: this.temp2.mnemonicCode,
                 summary: this.temp2.summary,
-                bookId: sessionStorage.uuid
+                bookId: sessionStorage.bookId
             }
             if (this.temp2.mnemonicCode == "" || this.temp2.summary == "") {
                 this.$message.warning('摘要编码和名称都不能为空！')
@@ -310,7 +310,7 @@ export default {
             }
             const curPeriodValue = ''
             const obj = {
-                bookId: sessionStorage.uuid,
+                bookId: sessionStorage.bookId,
                 catogeryId: this.selectCatogery,
                 catogeryName: '记',
                 catogeryTitle: "记账凭证",

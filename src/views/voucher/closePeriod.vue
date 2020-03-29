@@ -221,7 +221,7 @@ export default {
                 this.$message.warning('至少两条分录！');return
             }
             let obj = {
-                bookId: sessionStorage.uuid,
+                bookId: sessionStorage.bookId,
                 catogeryId: this.selectCatogery,
                 catogeryName: '记',
                 catogeryTitle: "记账凭证",

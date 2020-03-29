@@ -264,9 +264,39 @@ export function updateDisabledCoa(data) {
 
 export function delCoa(id) {
     return request({
-        url: '/drp/gl/coa/deleteById/',
+        url: '/drp/gl/coa/deleteById',
         method: 'post',
         data: {id: id}
+    })
+}
+
+export function getCoaCodeUsedByIdNoSysTemplet(id){
+    return request({
+        url: '/drp/gl/coa/getCoaCodeUsedByIdNoSysTemplet/'+id,
+        method: 'post'
+    })
+}
+
+export function getChildrenCountByParentId(parentId){
+    return request({
+        url: '/drp/gl/coa/deleteById',
+        method: 'post',
+        data: {id: parentId}
+    })
+}
+
+export function getCoaCodeUsedById(id){
+    return request({
+        url: '/drp/gl/coa/getCoaCodeUsedById/'+id,
+        method: 'post'
+    })
+}
+
+export function getChildCountById(parentId){
+    return request({
+        url: '/drp/gl/coa/getChildCountById/'+id,
+        method: 'post',
+        data: {id: parentId}
     })
 }
 
@@ -278,9 +308,9 @@ export function saveCoa(data) {
     })
 }
 
-export function updateDispName(uuid) {
+export function updateDispName(bookId) {
     return request({
-        url: '/drp/gl/coa/updateDispName/' + uuid,
+        url: '/drp/gl/coa/updateDispName/' + bookId,
         method: 'post'
     })
 }
