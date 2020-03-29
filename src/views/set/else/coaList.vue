@@ -62,13 +62,13 @@
                     <el-input v-model="temp.coaClassId" placeholder="简称" />
                 </el-form-item>
                 <el-form-item label="科目代码" prop="coaCode">
-                    <el-input v-model="temp.coaCode" placeholder="科目代码" />
+                    <el-input v-model="temp.coaCode" placeholder="科目代码" :disabled="dialogStatus=='update'" />
                 </el-form-item>
                 <el-form-item label="科目名称" prop="coaName" min-width="220">
-                    <el-input v-model="temp.coaName" placeholder="科目名称" />
+                    <el-input v-model="temp.coaName" placeholder="科目名称" :disabled="dialogStatus=='update'" />
                 </el-form-item>
                 <el-form-item label="上级科目" prop="parentId">
-                    <el-input v-model="temp.parentId" placeholder="上级科目" disabled />
+                    <el-input v-for="item in coaArr" v-if="temp.parentId == item.id" v-model="item.coaName" placeholder="上级科目" disabled />
                 </el-form-item>
                 <el-form-item label="借贷方向" prop="crDr" style="width:265px">
                     <el-radio v-model="temp.crDr" :label="1">借</el-radio>
@@ -105,11 +105,29 @@
     </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 import { getCoaDatatables, coaClassification, delCoa, updateDisabledCoa, saveCoa, updateDispName } from '@/api/user'
+import { getCoaCodeUsedByIdNoSysTemplet, getChildrenCountByParentId, getCoaCodeUsedById, getChildCountById } from '@/api/user'
 export default {
     data() {
         return {
             temp: {
+                id: '',
+                coaClassId: '',
+                coaCode: '',
+                coaName: '',
+                parentId: '',
+                crDr: 1,
+                isCurrency: 0,
+                isDisable: 0,
+                isAuxiliary: 0,
+                isQuantity: 0,
+                isDisableChildren: 0,
+                cashFlowFlag: 0,
+                crDr: 1,
+                auxiliary: ''
+            },
+            resetTemp: {
                 id: '',
                 coaClassId: '',
                 coaCode: '',
@@ -136,21 +154,42 @@ export default {
             tableData: [],
         }
     },
+    computed: {
+        ...mapGetters([
+            'coaArr'
+        ])
+    },
     mounted() {
+        this.$store.dispatch('voucher/getCoaList')
         this.getCoaClass()
     },
     methods: {
         handleCompile(row) {
+            for (var key in this.temp) {
+                this.temp[key] = this.resetTemp[key]
+            }
             this.dialogStatus = 'update'
             this.dialogFormVisible = true
             for (var key in this.temp) {
                 this.temp[key] = row[key]
             }
-            console.log(this.temp)
         },
-        handleAdd() {
-            this.dialogStatus = 'create'
-            this.dialogFormVisible = true
+        handleAdd(row) {
+            getCoaCodeUsedByIdNoSysTemplet(row.id).then(res => {
+                if (res.data.body == 1) {
+                    this.$confirm("本科目已被使用，增加第一个下级科目时，系统将把上述信息更新至新增的下级科目中,是否继续？", '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        this.dialogStatus = 'create'
+                        this.dialogFormVisible = true
+                    })
+                } else {
+                    this.dialogStatus = 'create'
+                    this.dialogFormVisible = true
+                }
+            })
         },
         handleModify() {
             this.temp.id = ''

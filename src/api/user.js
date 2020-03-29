@@ -279,7 +279,7 @@ export function getCoaCodeUsedByIdNoSysTemplet(id){
 
 export function getChildrenCountByParentId(parentId){
     return request({
-        url: '/drp/gl/coa/deleteById',
+        url: '/drp/gl/coa/getChildrenCountByParentId',
         method: 'post',
         data: {id: parentId}
     })
