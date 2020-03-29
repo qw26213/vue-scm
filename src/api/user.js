@@ -284,3 +284,41 @@ export function updateDispName(uuid) {
         method: 'post'
     })
 }
+
+export function getProj(){
+    return request({
+        url: '/drp/bd/proj/list',
+        method: 'post'
+    })
+}
+export function getItem(){
+    return request({
+        url: '/drp/bd/item/list',
+        method: 'post'
+    })
+}
+export function getDept(){
+    return request({
+        url: '/drp/bd/dept/list',
+        method: 'post'
+    })
+}
+export function getCust(){
+    return request({
+        url: '/drp/bd/cust/list',
+        method: 'post'
+    })
+}
+export function getSupplier(){
+    return request({
+        url: '/drp/bd/supplier/list',
+        method: 'post'
+    })
+}
+
+export function getStaff(){
+    return request({
+        url: '/drp/bd/staff/list',
+        method: 'post'
+    })
+}

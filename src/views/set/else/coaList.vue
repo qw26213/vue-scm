@@ -78,11 +78,11 @@
                     <el-radio v-model="temp.cashFlowFlag" label="0">是</el-radio>
                     <el-radio v-model="temp.cashFlowFlag" label="1">否</el-radio>
                 </el-form-item>
-                <el-form-item label="">
+                <el-form-item label="" style="width:610px">
                     <el-checkbox v-model="temp.isCurrency" false-label="0" true-label="1">币种核算</el-checkbox>
                     <el-checkbox v-model="temp.isAuxiliary" false-label="0" true-label="1">辅助核算</el-checkbox>
                     <el-checkbox v-model="temp.isQuantity" false-label="0" true-label="1">数量核算</el-checkbox>
-                    <el-input v-model="temp.uom" placeholder="计量单位" style="width:120px" />
+                    <el-input v-if="temp.isQuantity==1" v-model="temp.uom" placeholder="计量单位" style="width:120px" />
                 </el-form-item>
                 <el-form-item label="">
                     <el-checkbox v-model="temp.isDisable" :false-label="0" :true-label="1">是否禁用</el-checkbox>
