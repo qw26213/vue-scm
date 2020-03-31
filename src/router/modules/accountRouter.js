@@ -123,14 +123,14 @@ const accountRouter = {
             component: () => import('@/views/voucher/data'),
             name: 'voucherData',
             meta: {
-                title: '凭证管理'
+                title: '查询凭证'
             }
         }, {
             path: 'audit',
             component: () => import('@/views/voucher/audit'),
             name: 'voucherAudit',
             meta: {
-                title: '凭证审核'
+                title: '审核凭证'
             }
         }, {
             path: 'table',

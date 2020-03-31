@@ -2,14 +2,18 @@
     <div class="app-container">
         <div class="filter-container">
             <label class="label">会计期间</label>
-            <el-date-picker :editable="false" v-model="listQuery.periodCode1" type="month" placeholder="开始月份" size="mini" :clearable="false" value-format="yyyy-MM"></el-date-picker>
+            <el-select v-model="listQuery.periodCode1" placeholder="开始期间" size="mini">
+                <el-option v-for="item in periodList" :key="item.id" :label="item.text" :value="item.id"></el-option>
+            </el-select>
             <span class="zhi">至</span>
-            <el-date-picker :editable="false" v-model="listQuery.periodCode2" type="month" placeholder="结束月份" size="mini" :clearable="false" value-format="yyyy-MM"></el-date-picker>
-            <label class="label">凭证字</label>
+            <el-select v-model="listQuery.periodCode2" placeholder="结束期间" size="mini">
+                <el-option v-for="item in periodList" :key="item.id" :label="item.text" :value="item.id"></el-option>
+            </el-select>
+            <label class="label ml10">凭证字</label>
             <el-select v-model="listQuery.jeCatogeryId" placeholder="凭证字" size="mini">
                 <el-option v-for="item in catogeryList" :label="item.catogeryName" :value="item.id" :key="item.id"></el-option>
             </el-select>
-            <label class="label">科目级次</label>
+            <label class="label ml10">科目级次</label>
             <el-select v-model="listQuery.coaLevel1" placeholder="科目级次" size="mini">
                 <el-option v-for="item in [1,2,3,4,5,6,7,8]" :label="item" :value="item" :key="item"></el-option>
             </el-select>
@@ -60,17 +64,24 @@
 </template>
 <script>
 import { getVoucherTable, getCatogery} from '@/api/accbook'
+import { getPeriodList } from '@/api/user'
 import { getNowMonth } from '@/utils/index'
 export default {
     name: 'totalAccount',
+    filters:{
+        Fixed:function(str){
+            return parseFloat(str).toFixed(2)
+        }
+    },
     data() {
         return {
+            periodList: [],
             tableKey: 0,
             tableData: [],
             catogeryList:[],
             listLoading: true,
             listQuery: {
-                periodCode1: '2019-01',
+                periodCode1: '2020-01',
                 periodCode2: getNowMonth(),
                 jeCatogeryId: '',
                 coaLevel1: 1,
@@ -78,15 +89,13 @@ export default {
             }
         }
     },
-    filters:{
-        Fixed:function(str){
-            return parseFloat(str).toFixed(2)
-        }
-    },
     created() {
+        getPeriodList().then(res => {
+            this.periodList = res.data.data
+        })
         getCatogery().then(res => {
           this.catogeryList = res.data;
-          this.listQuery.jeCatogeryId = res.data[1].id
+          this.listQuery.jeCatogeryId = res.data[0].id
           this.getList()
         })
     },
@@ -105,10 +114,10 @@ export default {
 </script>
 <style scoped>
 .label {
-    text-align: right;
     font-size: 14px;
     color: #606266;
     line-height: 40px;
-    padding: 0 12px 0 0;
+    padding: 0 5px 0 0;
 }
+.ml10{margin-left: 10px}
 </style>

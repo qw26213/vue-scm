@@ -365,6 +365,40 @@ export function buildSaleVoucherByHeaderId(data) {
     })
 }
 
+// 销售配送
+// export function getSales(data) {
+//     return request({
+//         url: '/drp/so/sales/getResPageData',
+//         method: 'post',
+//         data
+//     })
+// }
+
+// export function getSalesById(id) {
+//     return request({
+//         url: '/drp/so/sales/getByHeaderId',
+//         method: 'post',
+//         data: { id: id }
+//     })
+// }
+
+// export function saveSales(data) {
+//     return request({
+//         url: '/drp/so/sales/save',
+//         method: 'post',
+//         data
+//     })
+// }
+
+// export function delSales(id) {
+//     return request({
+//         url: '/drp/so/sales/deleteByHeaderId',
+//         method: 'post',
+//         data: { id: id }
+//     })
+// }
+
+
 // 销售退货
 export function getSalesReturned(data) {
     return request({

@@ -1,9 +1,22 @@
 <template>
     <div class="app-container">
         <div class="filter-container">
-            <el-date-picker :editable="false" v-model="listQuery.queryParam.date1" type="month" placeholder="开始月份" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+            <el-select v-model="listQuery.queryParam.date1" placeholder="开始期间" size="mini">
+                <el-option v-for="item in periodList" :key="item.id" :label="item.text" :value="item.id"></el-option>
+            </el-select>
             <span class="zhi">至</span>
-            <el-date-picker :editable="false" v-model="listQuery.queryParam.date2" type="month" placeholder="结束月份" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+            <el-select v-model="listQuery.queryParam.date2" placeholder="结束期间" size="mini">
+                <el-option v-for="item in periodList" :key="item.id" :label="item.text" :value="item.id"></el-option>
+            </el-select>
+            <el-select v-model="listQuery.queryParam.startCoa" placeholder="开始科目" size="mini">
+                <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode"></el-option>
+            </el-select>
+            <span class="zhi">至</span>
+            <el-select v-model="listQuery.queryParam.endCoa" placeholder="结束科目" size="mini">
+                <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode"></el-option>
+            </el-select>
+            <el-input size="mini" v-model="listQuery.queryParam.voucherSeq" placeholder="凭证号" style="width: 120px;" />
+            <el-input size="mini" v-model="listQuery.queryParam.summary" placeholder="摘要" style="width: 120px;" />
             <el-select v-model="listQuery.queryParam.jeStatus" placeholder="状态" size="mini">
                 <el-option label="全部状态" value=""></el-option>
                 <el-option label="制单完成" value="0"></el-option>
@@ -74,14 +87,29 @@
     </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
+import { getPeriodList } from '@/api/user'
 import { getVoucherAuditList, voucherAduit, unAudit } from '@/api/voucher'
 import Pagination from '@/components/Pagination'
 import { getNowMonth } from '@/utils/index'
 export default {
     name: 'presaleData',
     components: { Pagination },
+    filters: {
+        jeStatusFor: function (status) {
+            return status == 0 ? "制单完成" : status == -1 ? "退回" : status == 5 ? '审核通过' : status == 1 ? "一审通过" : status == 2 ? "二审通过" : status == 3 ? "三审通过" : '无';
+        },
+        Fixed: function (num) {
+            if (!num) { return '0.00' }
+            return parseFloat(num).toFixed(2);
+        },
+        catogeryNumberFor: function (num) {
+            return num < 10 ? '00' + num : num < 100 ? '0' + num : num;
+        }
+    },
     data() {
         return {
+            periodList: [],
             tableKey: 0,
             tableData: [],
             voucherIdArr:[],
@@ -96,24 +124,25 @@ export default {
                 queryParam: {
                     date1: getNowMonth(),
                     date2: getNowMonth(),
+                    startCoa: '',
+                    endCoa: '',
                     jeStatus: '',
+                    voucherSeq: '',
+                    summary: ''
                 }
             }
         }
     },
-    filters: {
-        jeStatusFor: function (status) {
-            return status == 0 ? "制单完成" : status == -1 ? "退回" : status == 5 ? '审核通过' : status == 1 ? "一审通过" : status == 2 ? "二审通过" : status == 3 ? "三审通过" : '无';
-        },
-        Fixed: function (num) {
-            if (!num) { return '0.00' }
-            return parseFloat(num).toFixed(2);
-        },
-        catogeryNumberFor: function (num) {
-            return num < 10 ? '00' + num : num < 100 ? '0' + num : num;
-        }
+    computed: {
+        ...mapGetters([
+            'coaArr'
+        ])
     },
     created() {
+        this.$store.dispatch('voucher/getCoaList')
+        getPeriodList().then(res => {
+            this.periodList = res.data.data
+        })
         this.getList();
     },
     methods: {

@@ -1,10 +1,10 @@
 <template>
     <div class="app-container">
-        <div class="filter-container1" style="margin-bottom:20px">
-            <el-radio-group v-model="coaClassCode" @change="getData">
+        <div class="filter-container1" style="margin-bottom:15px">
+            <el-radio-group v-model="coaClassCode" @change="getData" size="mini">
                 <el-radio-button v-for="(item,index) in coaClassList" :key="index" :label="item.coaClassCode">{{item.coaClassName}}</el-radio-button>
             </el-radio-group>
-            <el-button type="primary" style="float:right" @click="updateDispNameByUuid()">校正名称</el-button>
+            <el-button type="primary" size="mini" style="float:right" @click="updateDispNameByUuid()">校正名称</el-button>
         </div>
         <el-table :data="tableData" border fit resize empty-text="无同步数据" style="width: 100%;" size="mini">
             <el-table-column label="科目编码">

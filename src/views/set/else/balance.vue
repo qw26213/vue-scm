@@ -234,6 +234,9 @@ export default {
         showSuplyConfig(row) {
             this.dialogFormVisible2 = true
             this.temp = row
+            this.$nextTick(() => {
+                this.$refs['dataForm'].clearValidate()
+            })
         },
         getPeriod() {
             getPeriodList().then(res => {
