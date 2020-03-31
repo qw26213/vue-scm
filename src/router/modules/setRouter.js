@@ -116,6 +116,13 @@ const setRouter = {
             name: 'baseProj',
             meta: { title: '项目' }
         }, {
+            path: 'coaList',
+            component: () => import('@/views/set/coaList'),
+            name: 'coaList',
+            meta: {
+                title: '科目'
+            }
+        }, {
             path: 'invCurrency',
             component: () => import('@/views/set/currency'),
             name: 'baseInvCurrency',
@@ -130,6 +137,11 @@ const setRouter = {
             component: () => import('@/views/set/templetType'),
             name: 'baseInvTempletType',
             meta: { title: '凭证模板类型' }
+        }, {
+            path: 'voucherModal',
+            component: () => import('@/views/set/voucherModal'),
+            name: 'voucherModal',
+            meta: { title: '凭证模板' }
         }]
     }, {
         path: 'user',
@@ -179,56 +191,13 @@ const setRouter = {
             meta: { title: '科目分类' }
         }]
     }, {
-        path: 'createBill',
-        component: () => import('@/views/set/else/createBill'),
-        name: 'createBill',
-        meta: {
-            title: '建账'
-        }
-    }, {
-        path: 'rebuildBalance',
-        component: () => import('@/views/set/else/rebuildBalance'),
-        name: 'rebuildBalance',
-        meta: {
-            title: '重建余额表'
-        }
-    }, {
-        path: 'synBasedata',
-        component: () => import('@/views/set/else/synBasedata'),
-        name: 'synBasedata',
-        meta: {
-            title: '基础数据同步'
-        }
-    }, {
         path: 'balance',
         component: () => import('@/views/set/else/balance'),
         name: 'balanceset',
         meta: {
             title: '期初余额'
         }
-    }, {
-        path: 'coaList',
-        component: () => import('@/views/set/else/coaList'),
-        name: 'coaList',
-        meta: {
-            title: '科目设置'
-        }
-    }, {
-        path: 'voucherModal',
-        component: () => import('@/views/set/else/voucherModal'),
-        name: 'voucherModal',
-        meta: {
-            title: '凭证模板'
-        }
     }]
-    // , {
-    //     path: 'auxiliaryType',
-    //     component: () => import('@/views/set/else/auxiliaryType'),
-    //     name: 'auxiliaryType',
-    //     meta: {
-    //         title: '辅助核算'
-    //     }
-    // }]
 }
 
 export default setRouter;

@@ -31,7 +31,7 @@
                     <p clss="pCell" v-for="(item,index) in row.lineList" :key="index">{{item.summary}}</p>
                 </template>
             </el-table-column>
-            <el-table-column label="科目名称" min-width="200">
+            <el-table-column label="科目名称" min-width="240">
                 <template slot-scope="{row}">
                     <p clss="pCell" style="width:max-content;min-width:100%" v-for="(item,index) in row.lineList" :key="index">{{item.longName}}</p>
                 </template>
@@ -65,7 +65,7 @@
                 <template slot-scope="{row}">
                     <span class="ctrl" @click="insertVoucher(row)">插入</span>
                     <span class="ctrl" @click="handleCompile(row.id)">编辑</span>
-                    <span class="ctrl" @click="handleDel(row)">删除</span>
+                    <span v-if="row.status==0" class="ctrl" @click="handleDel(row)">删除</span>
                 </template>
             </el-table-column>
         </el-table>
@@ -73,7 +73,7 @@
     </div>
 </template>
 <script>
-import { getVoucher, getVoucherById, delVoucher,printList } from '@/api/voucher'
+import { getVoucher, getVoucherById, delVoucher, printList, trimJeSeqByMap } from '@/api/voucher'
 import Pagination from '@/components/Pagination'
 import { getNowMonth } from '@/utils/index'
 export default {

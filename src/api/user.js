@@ -281,7 +281,7 @@ export function getChildrenCountByParentId(parentId){
     return request({
         url: '/drp/gl/coa/getChildrenCountByParentId',
         method: 'post',
-        data: {id: parentId}
+        data: {parentId: parentId}
     })
 }
 
@@ -302,7 +302,7 @@ export function getChildCountById(parentId){
 
 export function saveCoa(data) {
     return request({
-        url: '/drp/gl/coa/save/',
+        url: '/drp/gl/coa/save',
         method: 'post',
         data
     })
@@ -321,24 +321,28 @@ export function getProj(){
         method: 'post'
     })
 }
+
 export function getItem(){
     return request({
         url: '/drp/bd/item/list',
         method: 'post'
     })
 }
+
 export function getDept(){
     return request({
         url: '/drp/bd/dept/list',
         method: 'post'
     })
 }
+
 export function getCust(){
     return request({
         url: '/drp/bd/cust/list',
         method: 'post'
     })
 }
+
 export function getSupplier(){
     return request({
         url: '/drp/bd/supplier/list',

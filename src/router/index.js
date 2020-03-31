@@ -17,6 +17,8 @@ import accountRouter from './modules/accountRouter'
 import reportRouter from './modules/reportRouter'
 import hrRouter from './modules/hrRouter'
 import visitRouter from './modules/visitRouter'
+import maintainRouter from './modules/maintainRouter'
+import initRouter from './modules/initRouter'
 import userRouter from './modules/userRouter'
 
 export const constantRoutes = [{
@@ -68,6 +70,8 @@ export const asyncRoutes = [
     hrRouter,
     grossprofitRouter,
     setRouter,
+    initRouter,
+    maintainRouter,
     userRouter, 
     {
         path: '*',

@@ -1,0 +1,72 @@
+<template>
+    <div class="app-container">
+        <el-table :data="tableData" border fit resize empty-text="无同步数据" style="width: 100%;" size="mini">
+            <el-table-column label="科目编码">
+                <template slot-scope="{row}">
+                    <span>{{row.coaCode}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="科目名称" min-width="100" align="center">
+                <template slot-scope="{row}">
+                    <span>{{row.coaName}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="方向" min-width="80" align="center">
+                <template slot-scope="{row}">
+                    <span>{{row.crDrStr}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="操作类型" min-width="80">
+                <template slot-scope="{row}">
+                    <span>{{row.unchageableFlag == 1 ? '新增' : '编辑'}}</span>
+                </template>
+            </el-table-column>
+        </el-table>
+    </div>
+</template>
+<script>
+import { synbasedata } from '@/api/user'
+export default {
+    data() {
+        return {
+            listQuery: {
+                coahierarchyId: '',
+                period: '1',
+                coa: '1',
+                coaN: '1',
+                coaCrdr: '1',
+                templet: '1'
+            },
+            periodList: [],
+            tableData: [],
+        }
+    },
+    mounted() {
+
+    },
+    methods: {
+        getData(type) {
+            this.listQuery.isAutoCommit = type
+            synbasedata(this.listQuery).then(res => {
+                if (res.data.errorCode == 0) {
+                    this.$message.success('同步数据完成！')
+                } else {
+                    this.$message.warning(res.data.msg)
+                }
+            })
+        }
+    }
+}
+</script>
+<style scoped>
+.label {
+    font-size: 14px;
+    margin-right: 5px;
+    color: #333;
+    margin-left: 10px
+}
+
+.label:first-child {
+    margin-left: 0
+}
+</style>

@@ -3,20 +3,20 @@
         <div class="filter-container1" style="margin-bottom:20px">
             <label class="label">会计期间</label>
             <el-select v-model="listQuery.periodCode1" style="width:120px" size="mini">
-              <el-option v-for="item in periodList" :key="item.id" :label="item.text" :value="item.id"></el-option>
+                <el-option v-for="item in periodList" :key="item.id" :label="item.text" :value="item.id"></el-option>
             </el-select>
             <label class="label">发生额</label>
-            <el-select v-model="listQuery.isOnlyAdjustNet1" style="min-width:200px;width:200px" size="mini">
-              <el-option label="只本期" value="1"></el-option>
-              <el-option label="从本期开始" value="2"></el-option>
-            <!-- </el-select>
+            <el-radio-group v-model="listQuery.isOnlyAdjustNet">
+                <el-radio label="1" style="margin-right:10px">只本期</el-radio>
+                <el-radio label="2" style="margin-right:10px">从本期开始</el-radio>
+            </el-radio-group>
             <label class="label">期初余额</label>
-            <el-select v-model="listQuery.isOnlyAdjustNet" style="min-width:200px;width:200px" size="mini"> -->
-              <el-option label="从下期至最小未结账期" value="3"></el-option>
-              <el-option label="从下期至最大未结账期" value="4"></el-option>
-              <el-option label="校正发生额结转期末余额至下期" value="5"></el-option>
-            </el-select>
-            <el-button size="mini" type="primary" @click="getData('0')">只检查</el-button>
+            <el-radio-group v-model="listQuery.isOnlyAdjustNet">
+                <el-radio label="3" style="margin-right:10px">从下期至最小未结账期</el-radio>
+                <el-radio label="4" style="margin-right:10px">从下期至最大未结账期</el-radio>
+                <el-radio label="5">校正发生额结转期末余额至下期</el-radio>
+            </el-radio-group>
+            <el-button size="mini" type="primary" style="margin-left:15px" @click="getData('0')">只检查</el-button>
             <el-button size="mini" type="primary" @click="getData('1')">检查校正</el-button>
         </div>
         <el-table :data="tableData" border fit resize empty-text="无错误信息" style="width: 100%;" size="mini">
@@ -98,8 +98,8 @@ export default {
     data() {
         return {
             listQuery: {
-              periodCode1:'',
-              isOnlyAdjustNet:'1'
+                periodCode1: '',
+                isOnlyAdjustNet: '1'
             },
             periodList: [],
             tableData: [],
@@ -116,11 +116,11 @@ export default {
     },
     methods: {
         getPeriod() {
-          getPeriodList().then(res => {
-            this.periodList = res.data.data
-            this.listQuery.periodCode1 = res.data.data[0].id
-            this.getData('0')
-          })
+            getPeriodList().then(res => {
+                this.periodList = res.data.data
+                this.listQuery.periodCode1 = res.data.data[0].id
+                this.getData('0')
+            })
         },
         getData(type) {
             this.listQuery.isAutoCommit = type
@@ -134,6 +134,14 @@ export default {
 }
 </script>
 <style scoped>
-  .label{font-size: 14px;margin-right: 5px;color: #333;margin-left: 10px}
-  .label:first-child{margin-left: 0}
+.label {
+    font-size: 14px;
+    margin-right: 5px;
+    color: #333;
+    margin-left: 10px
+}
+
+.label:first-child {
+    margin-left: 0
+}
 </style>

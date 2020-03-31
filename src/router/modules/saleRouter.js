@@ -78,6 +78,13 @@ const saleRouter = {
             title: '查看销售退货'
         }
     }, {
+        path: 'saleDeliver',
+        component: () => import('@/views/sale/deliver'),
+        name: 'saleDeliver',
+        meta: {
+            title: '销售配送'
+        }
+    }, {
         path: 'saleInvoice',
         component: () => import('@/views/sale/invoice'),
         name: 'saleInvoice',

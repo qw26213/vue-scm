@@ -59,24 +59,24 @@
         <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增下级科目':'修改科目'" :visible.sync="dialogFormVisible" width="600px">
             <el-form ref="dataForm" :rules="rules" :model="temp" :inline="true" label-position="right" label-width="78px" style="width: 580px; margin-left:10px;">
                 <el-form-item label="科目类别" prop="coaClassId">
-                    <el-input v-model="temp.coaClassId" placeholder="简称" />
+                    <el-input v-model="temp.coaClassName" placeholder="科目类别" disabled />
                 </el-form-item>
                 <el-form-item label="科目代码" prop="coaCode">
-                    <el-input v-model="temp.coaCode" placeholder="科目代码" :disabled="dialogStatus=='update'" />
+                    <el-input v-model="temp.coaCode" placeholder="科目代码" :disabled="dialogStatus=='update'&&temp.leaf==0 && temp.unchageableFlag==0" />
                 </el-form-item>
                 <el-form-item label="科目名称" prop="coaName" min-width="220">
-                    <el-input v-model="temp.coaName" placeholder="科目名称" :disabled="dialogStatus=='update'" />
+                    <el-input v-model="temp.coaName" placeholder="科目名称" :disabled="dialogStatus=='update'&&temp.leaf==0 && temp.unchageableFlag==0" />
                 </el-form-item>
                 <el-form-item label="上级科目" prop="parentId">
-                    <el-input v-for="item in coaArr" v-if="temp.parentId == item.id" v-model="item.coaName" placeholder="上级科目" disabled />
+                    <el-input v-for="item in coaArr" :key="item.id" v-if="temp.parentId == item.id" v-model="item.coaName" placeholder="上级科目" disabled />
                 </el-form-item>
                 <el-form-item label="借贷方向" prop="crDr" style="width:265px">
                     <el-radio v-model="temp.crDr" :label="1">借</el-radio>
                     <el-radio v-model="temp.crDr" :label="-1">贷</el-radio>
                 </el-form-item>
                 <el-form-item label="是否现金" prop="cashFlowFlag" style="width:265px">
-                    <el-radio v-model="temp.cashFlowFlag" label="0">是</el-radio>
-                    <el-radio v-model="temp.cashFlowFlag" label="1">否</el-radio>
+                    <el-radio v-model="temp.cashFlowFlag" :label="0">是</el-radio>
+                    <el-radio v-model="temp.cashFlowFlag" :label="1">否</el-radio>
                 </el-form-item>
                 <el-form-item label="" style="width:600px">
                     <el-checkbox v-model="temp.isCurrency" :false-label="0" :true-label="1">币种核算</el-checkbox>
@@ -114,6 +114,7 @@ export default {
             temp: {
                 id: '',
                 coaClassId: '',
+                coaClassName: '',
                 coaCode: '',
                 coaName: '',
                 parentId: '',
@@ -125,11 +126,14 @@ export default {
                 isDisableChildren: 0,
                 cashFlowFlag: 0,
                 crDr: 1,
-                auxiliary: ''
+                auxiliary: '',
+                unchageableFlag: 0,
+                leaf: 0
             },
             resetTemp: {
                 id: '',
                 coaClassId: '',
+                coaClassName: '',
                 coaCode: '',
                 coaName: '',
                 parentId: '',
@@ -141,7 +145,9 @@ export default {
                 isDisableChildren: 0,
                 cashFlowFlag: 0,
                 crDr: 1,
-                auxiliary: ''
+                auxiliary: '',
+                unchageableFlag: 0,
+                leaf: 0
             },
             rules: {
                 coaName: [{ required: true, message: '不能为空', trigger: 'change' }],
@@ -173,10 +179,19 @@ export default {
             for (var key in this.temp) {
                 this.temp[key] = row[key]
             }
+            this.$nextTick(() => {
+                this.$refs['dataForm'].clearValidate()
+            })
         },
         handleAdd(row) {
+            for (var key in this.temp) {
+                this.temp[key] = this.resetTemp[key]
+            }
+            this.temp.coaClassName = row.coaClassName
+            this.temp.coaClassId = row.coaClassId
+            this.temp.parentId = row.parentId
             getCoaCodeUsedByIdNoSysTemplet(row.id).then(res => {
-                if (res.data.body == 1) {
+                if (res.data.data == 1) {
                     this.$confirm("本科目已被使用，增加第一个下级科目时，系统将把上述信息更新至新增的下级科目中,是否继续？", '提示', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
@@ -189,13 +204,16 @@ export default {
                     this.dialogStatus = 'create'
                     this.dialogFormVisible = true
                 }
+                this.$nextTick(() => {
+                    this.$refs['dataForm'].clearValidate()
+                })
             })
         },
         handleModify() {
-            this.temp.id = ''
             this.save()
         },
         handleCreate() {
+            this.temp.id = ''
             this.save()
         },
         updateDispNameByUuid() {
@@ -226,13 +244,17 @@ export default {
             })
         },
         save() {
-            var obj = this.temp
-            saveCoa(obj).then(res => {
-                if (res.data.errorCode == 0) {
-                    this.getData();
-                    this.$message.success(this.dialogStatus == 'create' ? '新增下级科目成功' : '修改科目成功')
-                } else {
-                    this.$message.warning(res.data.msg)
+            this.$refs['dataForm'].validate((valid) => {
+                if (valid) {
+                    var obj = this.temp
+                    saveCoa(obj).then(res => {
+                        if (res.data.errorCode == 0) {
+                            this.getData();
+                            this.$message.success(this.dialogStatus == 'create' ? '新增下级科目成功' : '修改科目成功')
+                        } else {
+                            this.$message.warning(res.data.msg)
+                        }
+                    })
                 }
             })
         },
@@ -270,7 +292,7 @@ export default {
         },
         handleDel(row) {
             getCoaCodeUsedByIdNoSysTemplet(row.id).then(res => {
-                if (res.data.body == 1) {
+                if (res.data.data == 1) {
                     getChildrenCountByParentId(row.parentId).then(resp => {
                         if (resp.data.body > 1) {
                             this.$message.warning('此科目在余额表/凭证/模板中使用，不可删除！', { icon: 5 });
@@ -288,7 +310,7 @@ export default {
                     })
                 } else {
                     getCoaCodeUsedById(row.id).then(resp => {
-                        if (resp.data.body == 1) {
+                        if (resp.data.data == 1) {
                             getChildCountById(row.parentId).then(rep => {
                                 if (res.body > 1) {
                                     layer.msg('此科目在余额表/凭证/模板中使用，不可删除！', { icon: 5 });
