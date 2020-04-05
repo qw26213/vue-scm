@@ -3,7 +3,6 @@
   <div class="leftTree">
       <el-tree :data="treeData" :props="defaultProps" @node-click="handleNodeClick" default-expand-all></el-tree>
   </div>
-
   <div class="app-container tableDiv">
     <div class="filter-container">
       <el-input size="small" v-model="listQuery.staffName" placeholder="员工名称" style="width: 200px;" class="filter-item" />
@@ -11,7 +10,6 @@
       <el-button size="mini" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
       <el-button size="mini" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
     </div>
-
     <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini">
       <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
       <el-table-column label="员工代码">
@@ -24,14 +22,24 @@
           <span>{{row.staffName}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="信用额度" align="right">
+      <el-table-column label="信用额度" align="right"min-width="100">
         <template slot-scope="{row}">
           <span>{{row.creditLimit|Fixed}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="已透支额度" align="right">
+      <el-table-column label="已透支额度" align="right"min-width="110">
         <template slot-scope="{row}">
           <span>{{row.overdraftBalance|Fixed}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="销售改价类型" min-width="110" align="center">
+        <template slot-scope="{row}">
+          <span>{{row.salePriceType == 1 ? '允许' : '不允许'}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="退货改价类型" min-width="110" align="center">
+        <template slot-scope="{row}">
+          <span>{{row.returnPriceType == 1 ? '允许' : '不允许'}}</span>
         </template>
       </el-table-column>
       <el-table-column label="备注">
@@ -55,7 +63,6 @@
       </el-table-column>
     </el-table>
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
-
     <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增员工':'修改员工'" :visible.sync="dialogFormVisible" width="500px">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="80px" style="width: 300px; margin-left:50px;">
         <el-form-item label="员工代码" prop="staffCode">
@@ -64,12 +71,44 @@
         <el-form-item label="员工名称" prop="staffName">
           <el-input v-model="temp.staffName" placeholder="员工名称" />
         </el-form-item>
+        <el-form-item label="销售改价类型" prop="salePriceType">
+          <el-radio v-model="temp.salePriceType" :label="0">允许</el-radio>
+          <el-radio v-model="temp.salePriceType" :label="1">不允许</el-radio>
+        </el-form-item>
+        <el-form-item label="退货改价类型" prop="returnPriceType">
+          <el-radio v-model="temp.returnPriceType" :label="0">允许</el-radio>
+          <el-radio v-model="temp.returnPriceType" :label="1">不允许</el-radio>
+        </el-form-item>
+        <el-form-item label="品牌权限" prop="isBrand">
+          <el-radio v-model="temp.isBrand" :label="0">允许</el-radio>
+          <el-radio v-model="temp.isBrand" :label="1">不允许</el-radio>
+        </el-form-item>
+        <el-form-item label="仓库权限" prop="isWarehouse">
+          <el-radio v-model="temp.isWarehouse" :label="0">允许</el-radio>
+          <el-radio v-model="temp.isWarehouse" :label="1">不允许</el-radio>
+        </el-form-item>
+        <el-form-item label="车辆权限" prop="isIruck">
+          <el-radio v-model="temp.isIruck" :label="0">允许</el-radio>
+          <el-radio v-model="temp.isIruck" :label="1">不允许</el-radio>
+        </el-form-item>
+        <el-form-item label="商品权限" prop="isItem">
+          <el-radio v-model="temp.isItem" :label="0">允许</el-radio>
+          <el-radio v-model="temp.isItem" :label="1">不允许</el-radio>
+        </el-form-item>
+        <el-form-item label="线路权限" prop="isRoute">
+          <el-radio v-model="temp.isRoute" :label="0">允许</el-radio>
+          <el-radio v-model="temp.isRoute" :label="1">不允许</el-radio>
+        </el-form-item>
+        <el-form-item label="客户权限" prop="isCust">
+          <el-radio v-model="temp.isCust" :label="0">允许</el-radio>
+          <el-radio v-model="temp.isCust" :label="1">不允许</el-radio>
+        </el-form-item>
         <el-form-item label="备注" prop="remarks">
           <el-input v-model="temp.remarks" placeholder="备注" />
         </el-form-item>
         <el-form-item label="是否可用" prop="isDisable">
-          <el-radio v-model="temp.isDisable" label="0">是</el-radio>
-          <el-radio v-model="temp.isDisable" label="1">否</el-radio>
+          <el-radio v-model="temp.isDisable" :label="0">是</el-radio>
+          <el-radio v-model="temp.isDisable" :label="1">否</el-radio>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer" align="center">
@@ -80,10 +119,8 @@
   </div>
 </div>
 </template>
-
 <script>
 import { getStaff,saveStaff,delStaff,getDeptTree,updateStaffDisabled,updateCreditLimitById,updateOverdraftBalanceById,getAllByDeptId } from '@/api/basedata'
-
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' 
 export default {
@@ -114,7 +151,30 @@ export default {
         staffName: '',
         remarks:'',
         staffCode: '',
-        isDisable: "0"
+        salePriceType: 0,
+        returnPriceType: 0,
+        isCust: 0,
+        isRoute: 0,
+        isItem: 0,
+        isBrand: 0,
+        isWarehouse: 0,
+        isItem: 0,
+        isDisable: 0
+      },
+      resetTemp: {
+        id:'',
+        staffName: '',
+        remarks:'',
+        staffCode: '',
+        salePriceType: 0,
+        returnPriceType: 0,
+        isCust: 0,
+        isRoute: 0,
+        isItem: 0,
+        isBrand: 0,
+        isWarehouse: 0,
+        isItem: 0,
+        isDisable: 0
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -219,11 +279,9 @@ export default {
       }
       this.dialogFormVisible = true
       this.dialogStatus = 'create'
-      this.temp.id = ''
       for(var key in this.temp){
-        this.temp[key] = ''
+        this.temp[key] = this.resetTemp[key]
       }
-      this.temp.isDisable = '0'
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
@@ -234,7 +292,6 @@ export default {
       for(var key in this.temp){
         this.temp[key] = obj[key]
       }
-      this.temp.isDisable = String(obj.isDisable)
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })

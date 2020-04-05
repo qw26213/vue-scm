@@ -46,6 +46,7 @@ const actions = {
             commit('SET_NAME', user.userName)
             commit('SET_AVATAR', 'https://panjiachen.gitee.io/vue-element-admin-site/home.png')
             sessionStorage.bookId = user.bookId
+            sessionStorage.taxFilingCategoryCode = user.taxFilingCategoryCode
           }).catch( err => {
               console.log(err);
           });

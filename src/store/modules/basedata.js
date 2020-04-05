@@ -1,8 +1,9 @@
 import { queryPurchaseSettleType, queryPurchaseReturnedSettleType, querySalesSettleType, querySalesReturnedSettleType, queryPresaleSettleType, queryPresaleReturnedSettleType } from '@/api/store'
-
+import { getSalesType } from '@/api/basedata'
 const state = {
   settleTypeArr: [],
-  truckList: []
+  truckList: [],
+  salesTypeArr: []
 }
 
 const mutations = {
@@ -23,6 +24,9 @@ const mutations = {
   },
   SET_SETTLETYPE6: (state, data) => {
     state.settleTypeArr = data
+  },
+  SET_SETTLETYPE7: (state, data) => {
+    state.salesTypeArr = data
   },
 }
 
@@ -61,6 +65,12 @@ const actions = {
     // if(state.settleTypeArr.length>0){return}
     queryPresaleReturnedSettleType().then(res => {
       commit('SET_SETTLETYPE6', res.data.data)
+    })
+  },
+  getSalesTypeArr({ commit }, data) {
+    // if(state.settleTypeArr.length>0){return}
+    getSalesType().then(res => {
+      commit('SET_SETTLETYPE7', res.data.data)
     })
   }
 }

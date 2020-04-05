@@ -16,7 +16,8 @@ const getters = {
   coaArr: state => state.voucher.coaArr,
   summaryArr: state => state.voucher.summaryArr,
   templetTypeList: state => state.voucher.templetTypeList,
-  auxiliaryArr: state => state.voucher.auxiliaryArr
+  auxiliaryArr: state => state.voucher.auxiliaryArr,
+  salesTypeArr: state => state.basedata.salesTypeArr
 }
 
 export default getters

@@ -80,7 +80,8 @@
             </el-table-column>
             <el-table-column label="操作" align="left" width="260">
                 <template slot-scope="{row}">
-                    <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status==0?'编辑':'查看'}}</span>
+                    <span class="ctrl" v-if="row.status==0" @click="handleCompile(row.id)">编辑</span>
+                    <span class="ctrl" v-if="row.status==1" @click="handleScan(row.id)">查看</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
                     <span class="ctrl" v-if="row.status==1&&(row.returnedType==0||row.returnedType==1)" @click="handleCreateBill(row.isOutboundOrderReturned,row.id,row.outboundOrderReturnedHeaderId)">{{row.isOutboundOrderReturned==1?'查看':'生成'}}退货入库单</span>
@@ -90,7 +91,7 @@
             </el-table-column>
         </el-table>
         <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
-        <el-dialog :close-on-click-modal="false" title="选择销售退货单日期" :visible.sync="dialogFormVisible" width="400px">
+        <el-dialog :close-on-click-modal="false" title="选择销售退货单日期" :visible.sync="dialogFormVisible1" width="400px">
             <el-form style="margin-top:30px;text-align:center;">
                 <el-form-item label="" prop="isBillDate">
                     <el-radio v-model="isBillDate" label="0" style="margin-right:10px">当前日期</el-radio>
@@ -98,7 +99,7 @@
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer" align="center">
-                <el-button type="default" @click="dialogFormVisible = false">取消</el-button>
+                <el-button type="default" @click="dialogFormVisible1 = false">取消</el-button>
                 <el-button type="primary" @click="createBill">确定</el-button>
             </div>
         </el-dialog>
@@ -132,7 +133,7 @@ export default {
             tableData: [],
             total: 0,
             listLoading: true,
-            dialogFormVisible: false,
+            dialogFormVisible1: false,
             dialogFormVisible2: false,
             curBillId: '',
             isBillDate: '0',
@@ -201,7 +202,7 @@ export default {
                 this.$router.push('/store/outboundOrderReturnedModify?id=' + id2 + '&status=' + status)
             } else {
                 this.curBillId = id1;
-                this.dialogFormVisible = true;
+                this.dialogFormVisible1 = true;
             }
         },
         handleCreateBill1(){
@@ -211,7 +212,7 @@ export default {
             var obj = { isBillDate: this.isBillDate, id: this.curBillId }
             buildSalesReturned(obj).then(res => {
                 if (res.data.errorCode == 0) {
-                    this.dialogFormVisible = false;
+                    this.dialogFormVisible1 = false;
                     this.getList();
                     this.$message.success('生成退货入库单成功')
                 } else {
@@ -221,7 +222,7 @@ export default {
         },
         handleCreateVouter(status,id1,id2){
           if(status==1){
-            alert('查看销售退货凭证')
+            this.$router.push('/voucher/add?id=' + id)
           }else{
             this.curBillId = id1;
             this.dialogFormVisible2 = true;
@@ -240,11 +241,11 @@ export default {
           });
         },
         handleAdd() {
-            this.$store.dispatch('tagsView/delView', this.$route);
+            this.$store.dispatch('tagsView/delView', this.$route)
             this.$router.replace('/sale/returnedAdd')
         },
         handleCompile(id) {
-            this.$store.dispatch('tagsView/delView', this.$route);
+            this.$store.dispatch('tagsView/delView', this.$route)
             this.$router.push('/sale/returnedModify?id=' + id)
         },
         handleScan(id) {
@@ -263,7 +264,7 @@ export default {
             delSalesReturned(id).then(res => {
                 if (res.data.errorCode == 0) {
                     this.getList();
-                    this.dialogFormVisible = false
+                    this.dialogFormVisible1 = false
                     this.$message.success('删除成功')
                 } else {
                     this.$message.error(res.data.msg)

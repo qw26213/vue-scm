@@ -142,9 +142,9 @@
                     </el-form-item>
                     <el-form-item label="计价方式" prop="priceModeCode" style="margin-right:20px">
                         <el-select v-model="temp.priceModeCode" style="width:185px" class="filter-item" disabled>
-                            <el-option label="移动平均" value="0"></el-option>
-                            <el-option label="个别计价" value="1"></el-option>
-                            <el-option label="先进先出" value="2"></el-option>
+                            <el-option :label="移动平均" value="0"></el-option>
+                            <el-option :label="个别计价" value="1"></el-option>
+                            <el-option :label="先进先出" value="2"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="商品产地" prop="prodArea">
@@ -155,13 +155,9 @@
                     </el-form-item>
                     <el-form-item label="商品属性" prop="attr">
                         <el-radio-group v-model="temp.attr">
-                            <el-radio label="0" style="margin-right:10px">库存商品</el-radio>
-                            <el-radio label="1">负单价商品</el-radio>
+                            <el-radio :label="0" style="margin-right:10px">库存商品</el-radio>
+                            <el-radio :label="1">负单价商品</el-radio>
                         </el-radio-group>
-                    </el-form-item>
-                    <el-form-item label="销售用计量单位" style="width:295px;margin-right:20px" prop="measSale">
-                        <el-radio v-model="temp.measSale" label="1" style="margin-right:10px">主单位</el-radio>
-                        <el-radio v-model="temp.measSale" label="0">辅助单位</el-radio>
                     </el-form-item>
                     <el-form-item label="打印用计量单位" prop="measPrint">
                         <el-radio v-model="temp.measPrint" label="1" style="margin-right:10px">主单位</el-radio>
@@ -169,40 +165,56 @@
                     </el-form-item>
                     <el-form-item label="销售改价类型" prop="salePriceType">
                         <el-radio-group v-model="temp.salePriceType">
-                            <el-radio label="0" style="margin-right:10px">完全禁止</el-radio>
-                            <el-radio label="1" style="margin-right:10px">完全可以</el-radio>
-                            <el-radio label="2">按业务员</el-radio>
+                            <el-radio :label="0" style="margin-right:10px">完全禁止</el-radio>
+                            <el-radio :label="1" style="margin-right:10px">完全可以</el-radio>
+                            <el-radio :label="2">按业务员</el-radio>
                         </el-radio-group>
                     </el-form-item>
-                    <el-form-item label="退货改价类型" prop="returnPriceType">
-                        <el-radio-group v-model="temp.returnPriceType">
-                            <el-radio label="0" style="margin-right:10px">完全禁止</el-radio>
-                            <el-radio label="1" style="margin-right:10px">完全可以</el-radio>
-                            <el-radio label="2">按业务员</el-radio>
+                    <el-form-item label="显示用计量单位" prop="measSale">
+                        <el-select v-model="temp.measSale" style="width:185px" class="filter-item">
+                            <el-option label="主单位" value="0"></el-option>
+                            <el-option label="辅单位" value="1"></el-option>
+                            <el-option label="主+辅单位" value="2"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="主计量数量精度" prop="scale">
+                        <el-select v-model="temp.scale" style="width:185px" class="filter-item">
+                            <el-option v-for="item in [0,1,2,3,4]" :key="item" :label="item" :value="item"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="主计量数量精度" prop="subScale">
+                        <el-select v-model="temp.subScale" style="width:185px" class="filter-item">
+                            <el-option v-for="item in [0,1,2,3,4]" :key="item" :label="item" :value="item"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="是否可拆箱" prop="isIndivisible">
+                        <el-radio-group v-model="temp.isIndivisible">
+                            <el-radio :label="0" style="margin-right:10px">不可以</el-radio>
+                            <el-radio :label="1" style="margin-right:10px">可以</el-radio>
                         </el-radio-group>
                     </el-form-item>
                     <el-form-item label="" style="width:155px"></el-form-item>
                     <el-form-item label="" prop="isBatch">
-                        <el-checkbox v-model="temp.isBatch" false-label="0" true-label="1" style="margin-right:10px">序列号管理</el-checkbox>
+                        <el-checkbox v-model="temp.isBatch" :false-label="0" :true-label="1" style="margin-right:10px">序列号管理</el-checkbox>
                     </el-form-item>
                     <el-form-item label="" prop="negativeType">
-                        <el-checkbox v-model="temp.negativeType" false-label="0" true-label="1" style="margin-right:10px">允许负库存</el-checkbox>
+                        <el-checkbox v-model="temp.negativeType" :false-label="0" :true-label="1" style="margin-right:10px">允许负库存</el-checkbox>
                     </el-form-item>
                     <el-form-item label="" prop="isRefrigerated">
-                        <el-checkbox v-model="temp.isRefrigerated" false-label="0" true-label="1" style="margin-right:10px">低温</el-checkbox>
+                        <el-checkbox v-model="temp.isRefrigerated" :false-label="0" :true-label="1" style="margin-right:10px">低温</el-checkbox>
                     </el-form-item>
                     <el-form-item label="" prop="isQuality">
-                        <el-checkbox v-model="temp.isQuality" false-label="0" true-label="1" style="margin-right:10px">保质期管理</el-checkbox>
+                        <el-checkbox v-model="temp.isQuality" :false-label="0" :true-label="1" style="margin-right:10px">保质期管理</el-checkbox>
                     </el-form-item>
                     <el-form-item label="" prop="isSale">
-                        <el-checkbox v-model="temp.isSale" false-label="0" true-label="1" style="margin-right:10px">在售</el-checkbox>
+                        <el-checkbox v-model="temp.isSale" :false-label="0" :true-label="1" style="margin-right:10px">在售</el-checkbox>
                     </el-form-item>
                     <el-form-item label="备注" prop="remarks" style="margin-right:20px">
-                      <el-input v-model="temp.remarks" placeholder="备注" />
+                        <el-input v-model="temp.remarks" placeholder="备注" />
                     </el-form-item>
                     <el-form-item label="是否可用" prop="isDisable">
-                        <el-radio v-model="temp.isDisable" label="0" style="margin-right:10px">是</el-radio>
-                        <el-radio v-model="temp.isDisable" label="1">否</el-radio>
+                        <el-radio v-model="temp.isDisable" :label="0" style="margin-right:10px">是</el-radio>
+                        <el-radio v-model="temp.isDisable" :label="1">否</el-radio>
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer" align="center">
@@ -214,7 +226,7 @@
     </div>
 </template>
 <script>
-import { getMeas,getItem, saveItem, delItem, getItemTree, updateItemDisabled, getItemChildrenByParentId, getAllByInvCatgId, getBrand } from '@/api/basedata'
+import { getMeas, getItem, saveItem, delItem, getItemTree, updateItemDisabled, getItemChildrenByParentId, getAllByInvCatgId, getBrand } from '@/api/basedata'
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
 export default {
@@ -223,7 +235,7 @@ export default {
     data() {
         return {
             treeData: [],
-            measList:[],
+            measList: [],
             defaultProps: {
                 children: 'children',
                 label: 'invCatgName'
@@ -243,33 +255,70 @@ export default {
                 }
             },
             temp: {
-                id:'',
-                invCatgId:'',
+                id: '',
+                invCatgId: '',
                 itemName: '',
                 itemCode: '',
                 measId: '',
                 subMeasId: '',
                 norms: '',
-                attr: '0',
-                price0:'',
-                measSale:'',
-                measPrint:'',
-                lowestPrice:'',
+                attr: 0,
+                price0: '',
+                measSale: '',
+                measPrint: '',
+                lowestPrice: '',
                 exchangeRate: '',
-                salePriceType:'',
-                returnPriceType:'',
+                salePriceType: '',
+                returnPriceType: '',
                 prodArea: '',
-                priceModeCode:'0',
+                priceModeCode: 0,
                 brandId: '',
                 qualityDays: '',
-                isBatch: '0',
+                isBatch: 0,
                 taxRate: '',
-                isRefrigerated: '0',
-                negativeType: '1',
-                isQuality: '0',
-                isSale: '1',
-                remarks:'',
-                isDisable: "0"
+                isRefrigerated: 0,
+                negativeType: 1,
+                isQuality: 0,
+                isSale: 1,
+                remarks: '',
+                scale: 4,
+                isIndivisible: 0,
+                subScale: 0,
+                measSale: 2,
+                isDisable: 0
+            },
+            resetTemp: {
+                id: '',
+                invCatgId: '',
+                itemName: '',
+                itemCode: '',
+                measId: '',
+                subMeasId: '',
+                norms: '',
+                attr: 0,
+                price0: '',
+                measSale: '',
+                measPrint: '',
+                lowestPrice: '',
+                exchangeRate: '',
+                salePriceType: '',
+                returnPriceType: '',
+                prodArea: '',
+                priceModeCode: 0,
+                brandId: '',
+                qualityDays: '',
+                isBatch: 0,
+                taxRate: '',
+                isRefrigerated: 0,
+                negativeType: 1,
+                isQuality: 0,
+                isSale: 1,
+                remarks: '',
+                scale: 4,
+                isIndivisible: 0,
+                subScale: 0,
+                measSale: 2,
+                isDisable: 0
             },
             dialogFormVisible: false,
             dialogStatus: '',
@@ -283,22 +332,22 @@ export default {
         }
     },
     filters: {
-      formatWay: function(str) {
-          if(str==0) { 
-            return "移动平均"
-          }else if(str=1){
-            return "个别计价"
-          }else if(str==2){
-            return "先进先出"
-          }else{
-            return '无'
-          }
-      }
+        formatWay: function (str) {
+            if (str == 0) {
+                return "移动平均"
+            } else if (str = 1) {
+                return "个别计价"
+            } else if (str == 2) {
+                return "先进先出"
+            } else {
+                return '无'
+            }
+        }
     },
     created() {
         this.getList()
         getMeas({}).then(res => {
-          this.measList= res.data.data
+            this.measList = res.data.data
         })
     },
     methods: {
@@ -332,21 +381,8 @@ export default {
             this.dialogFormVisible = true
             this.dialogStatus = 'create'
             for (var key in this.temp) {
-                this.temp[key] = ''
+                this.temp[key] = this.resetTemp[key]
             }
-            this.temp.attr = '0';
-            this.temp.isRefrigerated = '0';
-            this.temp.priceModeCode = '0';
-            this.temp.negativeType = '1';
-            this.temp.measSale = '1';
-            this.temp.measPrint = '1';
-            this.temp.negativeType = '1';
-            this.temp.salePriceType = '1';
-            this.temp.returnPriceType = '2';
-            this.temp.isQuality = '0';
-            this.temp.isSale = '1';
-            this.temp.isBatch = '0';
-            this.temp.isDisable = '0';
             this.$nextTick(() => {
                 this.$refs['dataForm'].clearValidate()
             })
@@ -357,18 +393,6 @@ export default {
             for (var key in this.temp) {
                 this.temp[key] = obj[key]
             }
-            this.temp.attr = String(obj.attr)
-            this.temp.isRefrigerated = String(obj.isRefrigerated)
-            this.temp.priceModeCode = String(obj.priceModeCode)
-            this.temp.negativeType = String(obj.negativeType)
-            this.temp.measSale = String(obj.measSale)
-            this.temp.measPrint = String(obj.measPrint)
-            this.temp.salePriceType = String(obj.salePriceType)
-            this.temp.returnPriceType = String(obj.returnPriceType)
-            this.temp.isQuality = String(obj.isQuality)
-            this.temp.isSale = String(obj.isSale)
-            this.temp.isBatch = String(obj.isBatch)
-            this.temp.isDisable = String(obj.isDisable)
             this.$nextTick(() => {
                 this.$refs['dataForm'].clearValidate()
             })
@@ -379,7 +403,8 @@ export default {
         },
         handleDel(id) {
             this.$confirm('确定删除？', '提示', {
-                confirmButtonText: '确定',closeOnClickModal:false,
+                confirmButtonText: '确定',
+                closeOnClickModal: false,
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
@@ -388,7 +413,8 @@ export default {
         },
         updateStatus(data) {
             this.$confirm('确定' + (data.isDisable == 1 ? '解禁？' : '禁用？'), '提示', {
-                confirmButtonText: '确定',closeOnClickModal:false,
+                confirmButtonText: '确定',
+                closeOnClickModal: false,
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {

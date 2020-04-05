@@ -14,8 +14,8 @@
                 <el-form-item label="客户:" prop="custId">
                     <custList @selectChange="selectChange" keyType="custId" :selectId="temp.custId" :selectName="temp.custName"></custList>
                 </el-form-item>
-                <el-form-item label="售达客户:" prop="soldToCust">
-                    <custList @selectChange="selectChange" keyType="soldToCust" :selectId="temp.soldToCust"></custList>
+                <el-form-item label="售达客户:" prop="settleCustId">
+                    <custList @selectChange="selectChange" keyType="settleCustId" :selectId="temp.settleCustId"></custList>
                 </el-form-item>
                 <el-form-item label="仓库:" prop="warehouseId">
                     <warehouseList @selectChange="selectChange" keyType="warehouseId" allowNull="1" :selectId="temp.warehouseId"></warehouseList>
@@ -36,21 +36,26 @@
                 <el-form-item label="合计金额:" prop="itemAmount">
                     <el-input size="mini" v-model="temp.itemAmount" placeholder="合计金额" disabled />
                 </el-form-item>
-                <el-form-item label="抹零金额:" prop="withoutPayAmount">
+                <!-- <el-form-item label="抹零金额:" prop="withoutPayAmount">
                     <el-input size="mini" v-model="temp.withoutPayAmount" placeholder="抹零金额" />
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item label="现结金额:" prop="currPayAmount">
                     <el-input size="mini" v-model="temp.currPayAmount" placeholder="现结金额" style="width:72px" disabled />
                     <el-button size="mini" style="width:44px;padding:6px" @click="showSettleType">选择</el-button>
                 </el-form-item>
-                <el-form-item label="返利金额:" prop="rebateAmount">
-                    <el-input size="mini" v-model="temp.rebateAmount" placeholder="返利金额" />
+                <el-form-item label="销售费用:" prop="expensesAmount">
+                    <el-input size="mini" v-model="temp.expensesAmount" placeholder="销售费用" disabled />
                 </el-form-item>
                 <el-form-item label="使用预收:" prop="advPayAmount">
                     <el-input size="mini" v-model="temp.advPayAmount" placeholder="使用预收" disabled />
                 </el-form-item>
-                <el-form-item label="是否开票:" prop="statusInvoice">
-                    <el-checkbox v-model="temp.statusInvoice" false-label="0" true-label="1"></el-checkbox>
+                <el-form-item label="发票:" prop="statusInvoice">
+                <!-- 与当前客户的isInvoice有关系 -->
+                    <el-select v-model="temp.statusInvoice" size="mini">
+                        <el-option label="不开票" :value="0"></el-option>
+                        <el-option label="待开票" :value="1"></el-option>
+                        <el-option label="已开发票" :value="9"></el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="自动匹配预收款:" prop="autoAdvr" label-width="96px">
                     <el-checkbox v-model="temp.autoAdvr" false-label="0" true-label="1"></el-checkbox>
@@ -97,7 +102,7 @@
             </el-table-column>
             <el-table-column label="单价(元)">
                 <template slot-scope="scope">
-                    <input type="text" class="inputCell tx-r" v-model="scope.row.price" @change="calculate(scope.$index)">
+                    <input type="text" class="inputCell tx-r" v-model="scope.row.vatPrice" @change="calculate(scope.$index)">
                 </template>
             </el-table-column>
             <el-table-column label="数量">
@@ -125,9 +130,9 @@
                     <input type="text" class="inputCell tx-r" v-model="row.vatAmount||0" disabled>
                 </template>
             </el-table-column>
-            <el-table-column label="是否赠品" align="center">
+            <el-table-column label="销售方式" align="center">
                 <template slot-scope="{row}">
-                    <el-checkbox v-model="row.salesTypeCode" false-label="0" true-label="1"></el-checkbox>
+                    <salesTypeList :selectId="row.salesTypeCode"></salesTypeList>
                 </template>
             </el-table-column>
         </el-table>
@@ -179,20 +184,21 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import {saveSales,getSalesById,getItemPrice} from '@/api/store';
-import {deleteEmptyProp,addNullObj,addNullObj2} from '@/utils';
-import staffList from '@/components/selects/staffList';
+import {saveSales,getSalesById,getItemPrice} from '@/api/store'
+import {deleteEmptyProp,addNullObj,addNullObj2} from '@/utils'
+import staffList from '@/components/selects/staffList'
 import bizTypeList from '@/components/selects/bizTypeList'
-import custList from '@/components/selects/custList';
-import truckList from '@/components/selects/truckList';
-import warehouseList from '@/components/selects/warehouseList';
-import paymentTypeList from '@/components/selects/paymentTypeList';
-import itemList from '@/components/selects/itemList';
-import settleTypeList from "@/components/selects/settleTypeList";
+import custList from '@/components/selects/custList'
+import truckList from '@/components/selects/truckList'
+import warehouseList from '@/components/selects/warehouseList'
+import paymentTypeList from '@/components/selects/paymentTypeList'
+import itemList from '@/components/selects/itemList'
+import settleTypeList from "@/components/selects/settleTypeList"
+import salesTypeList from "@/components/selects/salesTypeList"
 import { getName,getNowDate } from '@/utils/auth'
 export default {
     name: 'saleAdd',
-    components: { staffList,warehouseList,custList,truckList,bizTypeList,paymentTypeList,itemList,settleTypeList },
+    components: { staffList,warehouseList,custList,truckList,bizTypeList,paymentTypeList,itemList,settleTypeList,salesTypeList },
     data() {
         return {
             id:'',
@@ -200,7 +206,7 @@ export default {
             settleData:[{},{},{},{},{}],
             dialogFormVisible:false,
             tableData: [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}],
-            keys:["itemId","itemCode","itemName","norms","uom","subUom","exchangeRate","batchNo","productionDate","qualityName","qualityDays","qty","price","amount","taxRate","taxAmount","vatAmount","invoiceNo","salesTypeCode"],
+            keys:["itemId","itemCode","itemName","norms","uom","subUom","exchangeRate","batchNo","productionDate","qualityName","qualityDays","qty","vatPrice","amount","taxRate","taxAmount","vatAmount","invoiceNo","salesTypeCode"],
             temp: {
                 billDate:getNowDate(),
                 billNo:'',
@@ -208,7 +214,7 @@ export default {
                 autoAdvr:'1',
                 custId:'',
                 custName:'',
-                soldToCust:'',
+                settleCustId:'',
                 warehouseId:'',
                 warehouseName:'',
                 truckId:'',
@@ -236,6 +242,7 @@ export default {
         ])
     },
     created() {
+        this.$store.dispatch('basedata/getSalesTypeArr')
         this.$store.dispatch('basedata/getSalesSettleType')
         if(this.$route.query.id){
             this.id = this.$route.query.id;
@@ -257,7 +264,7 @@ export default {
     },
     methods: {
         calculate(index){
-            var price = this.tableData[index].price;
+            var price = this.tableData[index].vatPrice;
             var qty = this.tableData[index].qty;
             if(qty&&price){
                 var amount = parseFloat(Number(qty) * Number(price)).toFixed(2);

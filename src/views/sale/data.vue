@@ -63,6 +63,11 @@
                     <span>{{row.currPayAmount|Fixed}}</span>
                 </template>
             </el-table-column>
+            <el-table-column label="销售费用" align="right">
+                <template slot-scope="{row}">
+                    <span>{{row.expensesAmount|Fixed}}</span>
+                </template>
+            </el-table-column>
             <el-table-column label="价税合计" align="right">
                 <template slot-scope="{row}">
                     <span>{{row.itemAmount|Fixed}}</span>
@@ -90,15 +95,15 @@
             </el-table-column>
         </el-table>
         <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
-        <el-dialog :close-on-click-modal="false" title="请选择出库单日期" :visible.sync="dialogFormVisible" width="400px">
+        <el-dialog :close-on-click-modal="false" title="请选择出库单日期" :visible.sync="dialogFormVisible1" width="400px">
             <el-form style="margin-top:30px;text-align:center;">
                 <el-form-item label="" prop="isBillDate">
                     <el-radio v-model="isBillDate" label="0" style="margin-right:10px">当前日期</el-radio>
-                    <el-radio v-model="isBillDate" label="1">预收单日期</el-radio>
+                    <el-radio v-model="isBillDate" label="1">销售单日期</el-radio>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer" align="center">
-                <el-button type="default" @click="dialogFormVisible = false">取消</el-button>
+                <el-button type="default" @click="dialogFormVisible1 = false">取消</el-button>
                 <el-button type="primary" @click="createBill">确定</el-button>
             </div>
         </el-dialog>
@@ -132,7 +137,7 @@ export default {
             tableData: [],
             total: 0,
             listLoading: true,
-            dialogFormVisible: false,
+            dialogFormVisible1: false,
             dialogFormVisible2: false,
             curBillId: '',
             isBillDate: '0',
@@ -201,14 +206,14 @@ export default {
                 this.$router.push('/store/outboundOrderModify?id=' + id2 + '&status=' + status)
             } else {
                 this.curBillId = id1;
-                this.dialogFormVisible = true;
+                this.dialogFormVisible1 = true;
             }
         },
         createBill() {
             var obj = { isBillDate: this.isBillDate, id: this.curBillId }
             buildSales(obj).then(res => {
                 if (res.data.errorCode == 0) {
-                    this.dialogFormVisible = false;
+                    this.dialogFormVisible1 = false;
                     this.getList();
                     this.$message.success('生成出库单成功')
                 } else {
@@ -262,7 +267,7 @@ export default {
             delSales(id).then(res => {
                 if (res.data.errorCode == 0) {
                     this.getList();
-                    this.dialogFormVisible = false
+                    this.dialogFormVisible1 = false
                     this.$message.success('删除成功')
                 } else {
                     this.$message.error(res.data.msg)

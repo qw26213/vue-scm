@@ -14,8 +14,8 @@
                 <el-form-item label="客户:" prop="custId">
                     <custList @selectChange="selectChange" keyType="custId" :selectId="temp.custId" :selectName="temp.custName"></custList>
                 </el-form-item>
-                <el-form-item label="结算客户:" prop="settleCustId">
-                    <custList @selectChange="selectChange" keyType="settleCustId" :selectId="temp.settleCustId"></custList>
+                <el-form-item label="售达客户:" prop="soldToCustId">
+                    <custList @selectChange="selectChange" keyType="soldToCustId" :selectId="temp.soldToCustId"></custList>
                 </el-form-item>
                 <el-form-item label="仓库:" prop="warehouseId">
                     <warehouseList @selectChange="selectChange" allowNull="1" keyType="warehouseId" :selectId="temp.warehouseId"></warehouseList>
@@ -47,19 +47,28 @@
                     <el-input size="mini" v-model="temp.rebateAmount" placeholder="返利金额" />
                 </el-form-item>
                 <el-form-item label="是否开票:" prop="statusInvoice">
-                    <el-checkbox v-model="temp.statusInvoice" false-label="0" true-label="1"></el-checkbox>
+                    <el-select v-model="temp.statusInvoice" size="mini">
+                        <el-option label="不开票" :value="0"></el-option>
+                        <el-option label="待开票" :value="1"></el-option>
+                        <el-option label="已开发票" :value="9"></el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="退款类型:" prop="returnedType">
                     <el-select v-model="temp.returnedType" placeholder="退款类型" size="mini">
-                        <el-option label="退款退货" value="0"></el-option>
-                        <el-option label="退换货" value="1"></el-option>
-                        <el-option label="只退款" value="2"></el-option>
+                        <el-option label="退款退货" :value="0"></el-option>
+                        <el-option label="退换货" :value="1"></el-option>
+                        <el-option label="只退款" :value="2"></el-option>
                     </el-select>
                 </el-form-item>
             </el-form>
         </div>
         <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini" cell-class-name="tdCell">
             <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
+            <el-table-column label="销售方式" align="center">
+                <template slot-scope="{row}">
+                    <salesTypeList :selectId="row.salesTypeCode"></salesTypeList>
+                </template>
+            </el-table-column>
             <el-table-column label="商品代码" width="160">
                 <template slot-scope="scope">
                     <itemList :selectCode="scope.row.itemCode" :selectId="scope.row.itemId" :index="scope.$index" @changeVal="changeVal"></itemList>
@@ -98,7 +107,7 @@
             </el-table-column>
             <el-table-column label="单价(元)">
                 <template slot-scope="scope">
-                    <input type="text" class="inputCell tx-r" v-model="scope.row.price" @change="calculate(scope.$index)">
+                    <input type="text" class="inputCell tx-r" v-model="scope.row.vatPrice" @change="calculate(scope.$index)">
                 </template>
             </el-table-column>
             <el-table-column label="数量">
@@ -124,11 +133,6 @@
             <el-table-column label="价税合计">
                 <template slot-scope="{row}">
                     <input type="text" class="inputCell tx-r" v-model="row.vatAmount||0" disabled>
-                </template>
-            </el-table-column>
-            <el-table-column label="是否赠品" align="center">
-                <template slot-scope="{row}">
-                    <el-checkbox v-model="row.salesTypeCode" false-label="0" true-label="1"></el-checkbox>
                 </template>
             </el-table-column>
         </el-table>
@@ -192,10 +196,11 @@ import warehouseList from '@/components/selects/warehouseList';
 import paymentTypeList from '@/components/selects/paymentTypeList';
 import itemList from '@/components/selects/itemList';
 import settleTypeList from "@/components/selects/settleTypeList";
+import salesTypeList from "@/components/selects/salesTypeList"
 import { getName, getNowDate } from '@/utils/auth'
 export default {
     name: 'saleAdd',
-    components: { staffList, warehouseList, custList, truckList, bizTypeList, paymentTypeList, itemList, settleTypeList, modalTable },
+    components: { staffList, warehouseList, custList, truckList, bizTypeList, paymentTypeList, itemList, settleTypeList, modalTable, salesTypeList },
     data() {
         return {
             id: '',
@@ -204,7 +209,7 @@ export default {
             settleData: [{}, {}, {}, {}, {}],
             dialogFormVisible: false,
             tableData: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
-            keys: ["itemId", "itemCode", "itemName", "norms", "uom", "subUom", "exchangeRate", "batchNo", "productionDate", "qualityName", "qualityDays", "qty", "price", "amount", "taxRate", "taxAmount", "vatAmount", "invoiceNo", "salesTypeCode"],
+            keys: ["itemId", "itemCode", "itemName", "norms", "uom", "subUom", "exchangeRate", "batchNo", "productionDate", "qualityName", "qualityDays", "qty", "vatPrice", "amount", "taxRate", "taxAmount", "vatAmount", "invoiceNo", "salesTypeCode"],
             temp: {
                 billDate: getNowDate(),
                 statusInvoice: 1,
@@ -212,7 +217,7 @@ export default {
                 bizTypeId: '',
                 custId: '',
                 custName: '',
-                settleCustId: '',
+                soldToCustId: '',
                 warehouseId: '',
                 warehouseName: '',
                 truckId: '',
@@ -242,7 +247,7 @@ export default {
     created() {
         this.$store.dispatch('basedata/getSalesReturnedSettleType')
         if (this.$route.query.id) {
-            this.id = this.$route.query.id;
+            this.id = this.$route.query.id
             getSalesReturnedById(this.id).then(res => {
                 if (res.data.data) {
                     for (var key in this.temp) {

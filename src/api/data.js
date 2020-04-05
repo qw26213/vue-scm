@@ -19,15 +19,6 @@ export function getList(data) {
           ]
 }
 
-export function getIndexInfo(data) {
-  return request({
-    url: '/getIndexInfo',
-    method: 'post',
-    transformRequest: fromData,
-    data
-  })
-}
-
 export function logout() {
   return request({
     url: '/logout',

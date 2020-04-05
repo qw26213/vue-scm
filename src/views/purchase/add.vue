@@ -98,7 +98,8 @@
             </el-table-column>
             <el-table-column label="税率(%)">
                 <template slot-scope="scope">
-                    <input type="text" class="inputCell tx-r" v-model="scope.row.taxRate" @change="calculate(scope.$index)">
+                    <input v-if="sessionStorage.taxFilingCategoryCode==0" type="text" class="inputCell tx-r" value="0" disabled>
+                    <input v-else type="text" class="inputCell tx-r" v-model="scope.row.taxRate" @change="calculate(scope.$index)">
                 </template>
             </el-table-column>
             <el-table-column label="税额">

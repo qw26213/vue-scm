@@ -24,14 +24,13 @@ axios.interceptors.response.use(
   },
   error => {
     if (error.response) {
-      console.log("后台报错")
-      // switch (error.response.status) {
-      //   case 401:
-      //     console.log('response.status: 401');
-      // }
+      switch (error.response.status) {
+        case 401:
+          MessageBox.error('请登录!'); break;
+        default:
+          MessageBox.error(error || "error")
+      }
     }
-    //判断超时原因 路由跳转页面
-    MessageBox.error(error)
     // return Promise.reject(error.data);
   });
 
