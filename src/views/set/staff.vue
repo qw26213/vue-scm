@@ -34,12 +34,12 @@
       </el-table-column>
       <el-table-column label="销售改价类型" min-width="110" align="center">
         <template slot-scope="{row}">
-          <span>{{row.salePriceType == 1 ? '允许' : '不允许'}}</span>
+          <span>{{row.salePriceType == 1 ? '控制' : '不控制'}}</span>
         </template>
       </el-table-column>
       <el-table-column label="退货改价类型" min-width="110" align="center">
         <template slot-scope="{row}">
-          <span>{{row.returnPriceType == 1 ? '允许' : '不允许'}}</span>
+          <span>{{row.returnPriceType == 1 ? '控制' : '不控制'}}</span>
         </template>
       </el-table-column>
       <el-table-column label="备注">
@@ -72,36 +72,36 @@
           <el-input v-model="temp.staffName" placeholder="员工名称" />
         </el-form-item>
         <el-form-item label="销售改价类型" prop="salePriceType">
-          <el-radio v-model="temp.salePriceType" :label="0">允许</el-radio>
-          <el-radio v-model="temp.salePriceType" :label="1">不允许</el-radio>
+          <el-radio v-model="temp.salePriceType" :label="0">控制</el-radio>
+          <el-radio v-model="temp.salePriceType" :label="1">不控制</el-radio>
         </el-form-item>
         <el-form-item label="退货改价类型" prop="returnPriceType">
-          <el-radio v-model="temp.returnPriceType" :label="0">允许</el-radio>
-          <el-radio v-model="temp.returnPriceType" :label="1">不允许</el-radio>
+          <el-radio v-model="temp.returnPriceType" :label="0">控制</el-radio>
+          <el-radio v-model="temp.returnPriceType" :label="1">不控制</el-radio>
         </el-form-item>
         <el-form-item label="品牌权限" prop="isBrand">
-          <el-radio v-model="temp.isBrand" :label="0">允许</el-radio>
-          <el-radio v-model="temp.isBrand" :label="1">不允许</el-radio>
+          <el-radio v-model="temp.isBrand" :label="0">控制</el-radio>
+          <el-radio v-model="temp.isBrand" :label="1">不控制</el-radio>
         </el-form-item>
         <el-form-item label="仓库权限" prop="isWarehouse">
-          <el-radio v-model="temp.isWarehouse" :label="0">允许</el-radio>
-          <el-radio v-model="temp.isWarehouse" :label="1">不允许</el-radio>
+          <el-radio v-model="temp.isWarehouse" :label="0">控制</el-radio>
+          <el-radio v-model="temp.isWarehouse" :label="1">不控制</el-radio>
         </el-form-item>
-        <el-form-item label="车辆权限" prop="isIruck">
-          <el-radio v-model="temp.isIruck" :label="0">允许</el-radio>
-          <el-radio v-model="temp.isIruck" :label="1">不允许</el-radio>
+        <el-form-item label="车辆权限" prop="isTruck">
+          <el-radio v-model="temp.isTruck" :label="0">控制</el-radio>
+          <el-radio v-model="temp.isTruck" :label="1">不控制</el-radio>
         </el-form-item>
         <el-form-item label="商品权限" prop="isItem">
-          <el-radio v-model="temp.isItem" :label="0">允许</el-radio>
-          <el-radio v-model="temp.isItem" :label="1">不允许</el-radio>
+          <el-radio v-model="temp.isItem" :label="0">控制</el-radio>
+          <el-radio v-model="temp.isItem" :label="1">不控制</el-radio>
         </el-form-item>
         <el-form-item label="线路权限" prop="isRoute">
-          <el-radio v-model="temp.isRoute" :label="0">允许</el-radio>
-          <el-radio v-model="temp.isRoute" :label="1">不允许</el-radio>
+          <el-radio v-model="temp.isRoute" :label="0">控制</el-radio>
+          <el-radio v-model="temp.isRoute" :label="1">不控制</el-radio>
         </el-form-item>
         <el-form-item label="客户权限" prop="isCust">
-          <el-radio v-model="temp.isCust" :label="0">允许</el-radio>
-          <el-radio v-model="temp.isCust" :label="1">不允许</el-radio>
+          <el-radio v-model="temp.isCust" :label="0">控制</el-radio>
+          <el-radio v-model="temp.isCust" :label="1">不控制</el-radio>
         </el-form-item>
         <el-form-item label="备注" prop="remarks">
           <el-input v-model="temp.remarks" placeholder="备注" />
@@ -155,6 +155,7 @@ export default {
         returnPriceType: 0,
         isCust: 0,
         isRoute: 0,
+        isTruck: 0,
         isItem: 0,
         isBrand: 0,
         isWarehouse: 0,
@@ -170,6 +171,7 @@ export default {
         returnPriceType: 0,
         isCust: 0,
         isRoute: 0,
+        isTruck: 0,
         isItem: 0,
         isBrand: 0,
         isWarehouse: 0,

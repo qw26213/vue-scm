@@ -218,7 +218,7 @@ export default {
     updateWarehouse(){
       var obj = {
         warehouseId:this.handleObj.id,
-        custIdList:this.selectIdArr
+        userIdList:this.selectIdArr
       }
       updateWarehouseIdByUserIdList(obj).then(res => {
         if(res.data.errorCode==0){

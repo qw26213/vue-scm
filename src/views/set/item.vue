@@ -28,6 +28,11 @@
                         <span>{{row.norms}}</span>
                     </template>
                 </el-table-column>
+                <el-table-column label="特性">
+                    <template slot-scope="{row}">
+                        <span>{{row.def1==0?'库存商品':'负单价商品'}}</span>
+                    </template>
+                </el-table-column>
                 <el-table-column label="品牌">
                     <template slot-scope="{row}">
                         <span>{{row.brandName}}</span>
@@ -36,11 +41,6 @@
                 <el-table-column label="产地">
                     <template slot-scope="{row}">
                         <span>{{row.prodArea}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column label="商品属性">
-                    <template slot-scope="{row}">
-                        <span>{{row.attr==0?'库存商品':'负单价商品'}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="保质期(天)" align="right">
@@ -66,11 +66,6 @@
                 <el-table-column label="税率" width="90" align="right">
                     <template slot-scope="{row}">
                         <span>{{row.taxRate}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column label="计价方式" width="90" align="center">
-                    <template slot-scope="{row}">
-                        <span>{{row.priceModeCode|formatWay}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="序列号管理" width="90" align="center">
@@ -134,17 +129,17 @@
                             <el-option v-for="item in brandList" :key="item.id" :label="item.brandName" :value="item.id"></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="建议最低价" prop="price0" style="margin-right:20px">
-                        <el-input v-model="temp.price0" placeholder="建议最低价" />
+                    <el-form-item label="建议销售价" prop="price0" style="margin-right:20px">
+                        <el-input v-model="temp.price0" placeholder="建议销售价" />
                     </el-form-item>
                     <el-form-item label="销售最低价" prop="lowestPrice">
                         <el-input v-model="temp.lowestPrice" placeholder="销售最低价" />
                     </el-form-item>
                     <el-form-item label="计价方式" prop="priceModeCode" style="margin-right:20px">
                         <el-select v-model="temp.priceModeCode" style="width:185px" class="filter-item" disabled>
-                            <el-option :label="移动平均" value="0"></el-option>
-                            <el-option :label="个别计价" value="1"></el-option>
-                            <el-option :label="先进先出" value="2"></el-option>
+                            <el-option label="移动平均" :value="0"></el-option>
+                            <el-option label="个别计价" :value="1"></el-option>
+                            <el-option label="先进先出" :value="2"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="商品产地" prop="prodArea">
@@ -153,6 +148,9 @@
                     <el-form-item label="保质期(天)" prop="qualityDays" style="margin-right:20px">
                         <el-input v-model="temp.qualityDays" placeholder="保质期" />
                     </el-form-item>
+                    <el-form-item label="特性" prop="def1" style="margin-right:20px">
+                        <el-input v-model="temp.def1" placeholder="如口味" />
+                    </el-form-item>
                     <el-form-item label="商品属性" prop="attr">
                         <el-radio-group v-model="temp.attr">
                             <el-radio :label="0" style="margin-right:10px">库存商品</el-radio>
@@ -160,8 +158,8 @@
                         </el-radio-group>
                     </el-form-item>
                     <el-form-item label="打印用计量单位" prop="measPrint">
-                        <el-radio v-model="temp.measPrint" label="1" style="margin-right:10px">主单位</el-radio>
-                        <el-radio v-model="temp.measPrint" label="0">辅助单位</el-radio>
+                        <el-radio v-model="temp.measPrint" :label="1" style="margin-right:10px">主单位</el-radio>
+                        <el-radio v-model="temp.measPrint" :label="0">辅助单位</el-radio>
                     </el-form-item>
                     <el-form-item label="销售改价类型" prop="salePriceType">
                         <el-radio-group v-model="temp.salePriceType">
@@ -172,9 +170,9 @@
                     </el-form-item>
                     <el-form-item label="显示用计量单位" prop="measSale">
                         <el-select v-model="temp.measSale" style="width:185px" class="filter-item">
-                            <el-option label="主单位" value="0"></el-option>
-                            <el-option label="辅单位" value="1"></el-option>
-                            <el-option label="主+辅单位" value="2"></el-option>
+                            <el-option label="主单位" :value="0"></el-option>
+                            <el-option label="辅单位" :value="1"></el-option>
+                            <el-option label="主+辅单位" :value="2"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="主计量数量精度" prop="scale">
@@ -182,7 +180,7 @@
                             <el-option v-for="item in [0,1,2,3,4]" :key="item" :label="item" :value="item"></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="主计量数量精度" prop="subScale">
+                    <el-form-item label="辅计量数量精度" prop="subScale">
                         <el-select v-model="temp.subScale" style="width:185px" class="filter-item">
                             <el-option v-for="item in [0,1,2,3,4]" :key="item" :label="item" :value="item"></el-option>
                         </el-select>
@@ -263,9 +261,9 @@ export default {
                 subMeasId: '',
                 norms: '',
                 attr: 0,
+                def1: '',
                 price0: '',
-                measSale: '',
-                measPrint: '',
+                measPrint: 1,
                 lowestPrice: '',
                 exchangeRate: '',
                 salePriceType: '',
@@ -296,9 +294,9 @@ export default {
                 subMeasId: '',
                 norms: '',
                 attr: 0,
+                def1: '',
                 price0: '',
-                measSale: '',
-                measPrint: '',
+                measPrint: 1,
                 lowestPrice: '',
                 exchangeRate: '',
                 salePriceType: '',

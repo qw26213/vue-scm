@@ -30,7 +30,7 @@
           <span>{{row.licensePlateNumber}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="车长">
+      <el-table-column label="长度">
         <template slot-scope="{row}">
           <span>{{row.truckLength}}</span>
         </template>
@@ -84,8 +84,8 @@
         <el-form-item label="车牌号" prop="licensePlateNumber">
           <el-input v-model="temp.licensePlateNumber" placeholder="车牌号" />
         </el-form-item>
-        <el-form-item label="车长" prop="truckLength">
-          <el-input v-model="temp.truckLength" placeholder="车长" />
+        <el-form-item label="长度" prop="truckLength">
+          <el-input v-model="temp.truckLength" placeholder="长度" />
         </el-form-item>
         <el-form-item label="吨位" prop="truckTonnage">
           <el-input v-model="temp.truckTonnage" placeholder="吨位" />
@@ -192,7 +192,7 @@ export default {
         truckName: [{ required: true, message: '车辆名称不能为空', trigger: 'change' }],
         truckCode: [{ required: true, message: '车辆代码不能为空', trigger: 'change' }],
         brand: [{ required: false, message: '车辆品牌不能为空', trigger: 'change' }],
-        truckLength: [{ required: false, message: '车长不能为空', trigger: 'change' }],
+        truckLength: [{ required: false, message: '长度不能为空', trigger: 'change' }],
         truckTonnage: [{ required: false, message: '吨位不能为空', trigger: 'change' }],
         truckCapacity: [{ required: false, message: '容积不能为空', trigger: 'change' }],
         manager: [{ required: false, message: '负责人不能为空', trigger: 'change' }],

@@ -154,9 +154,9 @@ const setRouter = {
             name: 'userList',
             meta: { title: '用户' }
         }, {
-            path: 'userGroup',
-            component: () => import('@/views/set/user/group'),
-            name: 'userGroup',
+            path: 'userRole',
+            component: () => import('@/views/set/user/role'),
+            name: 'userRole',
             meta: { title: '用户组' }
         }, {
             path: 'userFunc',

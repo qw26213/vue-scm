@@ -21,23 +21,24 @@
                     <span>{{ row.userName }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="管理员">
+            <el-table-column label="管理员" align="center">
                 <template slot-scope="{row}">
                     <span>{{ row.isAdmin==1?'是':'否' }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="状态">
+            <el-table-column label="状态" align="center">
                 <template slot-scope="{row}">
                     <span>{{ row.status==0?"正常":(row.status==5?'受限':'其它') }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" width="360">
+            <el-table-column label="操作" align="center" width="440">
                 <template slot-scope="{row}">
-                    <!-- <el-button type="primary" size="mini" @click="handleCompile(row)">编辑</el-button> -->
                     <el-button type="primary" size="mini" @click="handleAssign(row,1)">分配仓库</el-button>
                     <el-button type="default" size="mini" @click="handleAssign(row,2)">分配车辆</el-button>
                     <el-button type="primary" size="mini" @click="handleAssign(row,3)">分配线路</el-button>
                     <el-button type="default" size="mini" @click="handleAssign(row,4)">分配品牌</el-button>
+                    <el-button type="info" size="mini" @click="handleCompile(row)">编辑</el-button>
+                    <el-button type="danger" size="mini" @click="handleDel(row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -65,19 +66,23 @@
                     <el-input v-model="temp.againPassword" placeholder="确认密码" />
                 </el-form-item>
                 <el-form-item label="管理员" prop="isAdmin">
-                    <el-radio v-model="temp.isAdmin" label="1">是</el-radio>
-                    <el-radio v-model="temp.isAdmin" label="0">否</el-radio>
+                    <el-radio v-model="temp.isAdmin" :label="1">是</el-radio>
+                    <el-radio v-model="temp.isAdmin" :label="0">否</el-radio>
                 </el-form-item>
                 <el-form-item label="角色" prop="roleId">
-                    <el-radio v-model="temp.roleId" label="888888">审核会计</el-radio>
-                    <el-radio v-model="temp.roleId" label="888887">制单会计</el-radio>
-                    <el-radio v-model="temp.roleId" label="888889">企业出纳</el-radio>
-                    <el-radio v-model="temp.roleId" label="888890">企业老板</el-radio>
+                    <el-select v-model="temp.roleId" style="width:185px" class="filter-item">
+                        <el-option label="审核会计" value="888888"></el-option>
+                        <el-option label="制单会计" value="888887"></el-option>
+                        <el-option label="企业出纳" value="888889"></el-option>
+                        <el-option label="企业老板" value="888890"></el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="状态" prop="status">
-                    <el-radio v-model="temp.status" label="0">正常</el-radio>
-                    <el-radio v-model="temp.status" label="5">受限</el-radio>
-                    <el-radio v-model="temp.status" label="9">禁用</el-radio>
+                    <el-select v-model="temp.status" style="width:185px" class="filter-item">
+                        <el-option label="正常" :value="0"></el-option>
+                        <el-option label="受限" :value="5"></el-option>
+                        <el-option label="禁用" :value="9"></el-option>
+                    </el-select>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer" align="center">
@@ -110,7 +115,7 @@
     </div>
 </template>
 <script>
-import { getUserList, saveUser } from '@/api/basedata'
+import { getUserList, saveUser, delUser } from '@/api/user'
 import { getWarehouse,getTruck,getRoute,getBrand } from '@/api/basedata'
 import { getWarehouseListByUserId, updateUserIdByWarehouseIdList, getTruckListByUserId, updateUserIdByTruckIdList } from '@/api/basedata'
 import { getRouteListByUserId, updateUserIdByRouteIdList, getBrandListByUserId, updateUserIdByBrandIdList } from '@/api/basedata'
@@ -144,11 +149,28 @@ export default {
                 mobile: "",
                 orgType: "",
                 password: "",
-                roleId: "",
+                roleId: "888888",
                 sign2: "",
-                status: "",
+                status: 0,
                 userAccount: "",
-                userName: ""
+                userName: "",
+                isAdmin: 0
+            },
+            resetTemp: {
+                againPassword: "",
+                auditLevel1: "",
+                auditLevel2: "",
+                id: "",
+                mail: "",
+                mobile: "",
+                orgType: "",
+                password: "",
+                roleId: "888888",
+                sign2: "",
+                status: 0,
+                userAccount: "",
+                userName: "",
+                isAdmin: 0
             },
             dialogFormVisible: false,
             dialogFormVisible1: false,
@@ -324,11 +346,8 @@ export default {
             this.dialogFormVisible = true
             this.dialogStatus = 'create'
             for (var key in this.temp) {
-                this.temp[key] = ''
+                this.temp[key] = this.resetTemp[key]
             }
-            this.temp.isAdmin = '0'
-            this.temp.roleId = '888888'
-            this.temp.status = '0'
             this.$nextTick(() => {
                 this.$refs['dataForm'].clearValidate()
             })
@@ -339,10 +358,6 @@ export default {
             for (var key in this.temp) {
                 this.temp[key] = obj[key]
             }
-            this.temp.againPassword = obj.password
-            this.temp.isAdmin = String(obj.isAdmin)
-            this.temp.roleId = String(obj.roleId)
-            this.temp.status = String(obj.status)
             this.$nextTick(() => {
                 this.$refs['dataForm'].clearValidate()
             })
@@ -380,6 +395,22 @@ export default {
                     })
                 }
             })
+        },
+        handleDel(id){
+          this.$confirm('确定删除该用户？', '提示', {
+            confirmButtonText: '确定',
+            closeOnClickModal:false,
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            delUser({id:id}).then(res => {
+                if(res.data.errorCode == 0 ) {
+                    this.$message.success('删除用户成功！')
+                } else {
+                    this.$message.warning(res.data.message)
+                }
+            })
+          })
         }
     }
 }

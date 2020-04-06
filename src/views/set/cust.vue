@@ -164,8 +164,8 @@
                     <el-input v-model="temp.remarks" placeholder="备注" />
                 </el-form-item>
                 <el-form-item label="是否开票" prop="isInvoice">
-                    <el-radio v-model="temp.isInvoice" :label="0">是</el-radio>
-                    <el-radio v-model="temp.isInvoice" :label="1">否</el-radio>
+                    <el-radio v-model="temp.isInvoice" :label="1">是</el-radio>
+                    <el-radio v-model="temp.isInvoice" :label="0">否</el-radio>
                 </el-form-item>
                 <el-form-item label="统一社会信用代码或纳税人识别号" prop="taxRegistrationCertificateNo" label-width="234px">
                     <el-input v-model="temp.taxRegistrationCertificateNo" placeholder="统一社会信用代码或纳税人识别号" style="width:370px" />
@@ -229,7 +229,24 @@ export default {
                 isInvoice: 0,
                 taxRegistrationCertificateNo: '',
                 remarks: '',
-                isDisable: "0"
+                isDisable: 0
+            },
+            resetTemp: {
+                custName: '',
+                addr: '',
+                custCode: '',
+                creditLimit: '',
+                visitCycle: '',
+                mnemonicCode: '',
+                channelTypeId: '',
+                channelTypeName: '',
+                custTypeId: '',
+                priceGroupId: '',
+                custTypeName: '',
+                isInvoice: 0,
+                taxRegistrationCertificateNo: '',
+                remarks: '',
+                isDisable: 0
             },
             dialogFormVisible: false,
             dialogStatus: '',
@@ -291,10 +308,8 @@ export default {
             this.dialogFormVisible = true
             this.dialogStatus = 'create'
             for (var key in this.temp) {
-                this.temp[key] = ''
+                this.temp[key] = this.resetTemp[key]
             }
-            this.temp.isDisable = 0
-            this.temp.isInvoice = 0
             this.$nextTick(() => {
                 this.$refs['dataForm'].clearValidate()
             })
@@ -305,9 +320,6 @@ export default {
             for (var key in this.temp) {
                 this.temp[key] = obj[key]
             }
-            this.temp.id = obj.id
-            this.temp.isInvoice = obj.isInvoice
-            this.temp.isDisable = obj.isDisable
             this.$nextTick(() => {
                 this.$refs['dataForm'].clearValidate()
             })

@@ -32,8 +32,8 @@
       </el-table-column>
       <el-table-column label="操作" align="left" width="350">
         <template slot-scope="{row}">
-          <el-button type="primary" size="mini" @click="handleAssign(row)">分配业务员</el-button>
-          <el-button type="primary" size="mini" @click="handleAssign1(row)">分配客户</el-button>
+          <el-button type="primary" size="mini" @click="handleAssign1(row)">分配用户</el-button>
+          <el-button type="primary" size="mini" @click="handleAssign2(row)">分配客户</el-button>
           <el-button type="default" size="mini" @click="handleCompile(row)">编辑</el-button>
           <el-button type="danger" size="mini" @click="handleDel(row.id)">删除</el-button>
           <el-button type="warning" size="mini" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
@@ -54,8 +54,8 @@
           <el-input v-model="temp.remarks" placeholder="备注" />
         </el-form-item>
         <el-form-item label="是否可用" prop="isDisable">
-          <el-radio v-model="temp.isDisable" label="0">是</el-radio>
-          <el-radio v-model="temp.isDisable" label="1">否</el-radio>
+          <el-radio v-model="temp.isDisable" :label="0">是</el-radio>
+          <el-radio v-model="temp.isDisable" :label="1">否</el-radio>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer" align="center">
@@ -144,7 +144,7 @@ export default {
         routeName: '',
         routeCode: '',
         remarks:'',
-        isDisable: "0"
+        isDisable: 0
       },
       dialogFormVisible: false,
       dialogFormVisible1: false,
@@ -202,7 +202,7 @@ export default {
       }
       this.selectIdArr1 = arr;
     },
-    handleAssign(row){
+    handleAssign1(row){
       this.dialogFormVisible1 = true
       this.handleObj = row;
       getUserListByRouteId({ routeId: row.id }).then(res => {
@@ -215,7 +215,7 @@ export default {
         })
       })
     },
-    handleAssign1(row){
+    handleAssign2(row){
       this.dialogFormVisible2 = true
       this.handleObj = row;
       getCustListByRouteId({ routeId: row.id }).then(res => {
@@ -271,8 +271,7 @@ export default {
       this.temp.id = ''
       this.temp.routeName = ''
       this.temp.routeCode = ''
-      this.temp.parentCode = ''
-      this.temp.isDisable = ''
+      this.temp.isDisable = 0
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
@@ -283,8 +282,7 @@ export default {
       this.temp.id = obj.id
       this.temp.routeName = obj.routeName
       this.temp.routeCode = obj.routeCode
-      this.temp.parentCode = obj.parentCode
-      this.temp.isDisable = String(obj.isDisable)
+      this.temp.isDisable = obj.isDisable
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })

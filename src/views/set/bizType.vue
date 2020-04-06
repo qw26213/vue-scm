@@ -4,7 +4,6 @@
       <el-input size="small" v-model="listQuery.bizTypeName" placeholder="业务类型名称" style="width: 200px;" class="filter-item" />
       <el-input size="small" v-model="listQuery.bizTypeCode" placeholder="业务类型代码" style="width: 200px;" class="filter-item" />
       <el-button size="mini" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
-      <el-button size="mini" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
     </div>
 
     <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini">
@@ -30,13 +29,13 @@
           <span>{{row.isDisable==0?'是':'否'}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="230">
+      <!-- <el-table-column label="操作" align="center" width="230">
         <template slot-scope="{row}">
           <el-button type="primary" size="mini" @click="handleCompile(row)">编辑</el-button>
           <el-button type="danger" size="mini" @click="handleDel(row.id)">删除</el-button>
           <el-button type="warning" size="mini" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 

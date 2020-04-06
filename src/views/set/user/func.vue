@@ -6,29 +6,28 @@
     <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;">
       <el-table-column label="序号" type="index" width="100" align="center">
       </el-table-column>
-      <el-table-column label="权限组">
+      <el-table-column label="权限代码">
         <template slot-scope="{row}">
-          <span>{{ row.name }}</span>
+          <span>{{ row.funcCode }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="所属用户数">
+      <el-table-column label="权限名称">
         <template slot-scope="{row}">
-          <span>{{ row.userCount==null?0:row.userCount }}</span>
+          <span>{{ row.funcName }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="{row}">
-          <el-button type="primary" size="mini" @click="toModify(row)">编辑</el-button>
+          <el-button type="primary" size="mini" @click="toModify(row)">查看</el-button>
         </template>
       </el-table-column>
     </el-table>
-
   </div>
 </template>
 <script>
-import { getPermiss,getRoles,addRole,updateRole } from '@/api/user'
+import { getFuncs } from '@/api/user'
 export default {
-  name: 'rightSet',
+  name: 'FuncList',
   data() {
     return {
       tableKey: 0,
@@ -90,8 +89,8 @@ export default {
     },
     async getData(){
       this.listLoading = true
-      const { data } = await getRoles();
-      this.tableData = data.data
+      const { data } = await getFuncs();
+      this.tableData = data
       this.listLoading = false
     }
   }

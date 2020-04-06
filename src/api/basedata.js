@@ -1073,9 +1073,18 @@ export function getUserList() {
     method: 'post'
   })
 }
+
 export function saveUser(data) {
   return request({
     url: '/drp/sys/user/save',
+    method: 'post',
+    data
+  })
+}
+
+export function delUser(data) {
+  return request({
+    url: '/drp/sys/user/deleteById',
     method: 'post',
     data
   })

@@ -67,8 +67,8 @@
           <el-input v-model="temp.exchangerate" placeholder="汇率" />
         </el-form-item>
         <el-form-item label="是否可用" prop="isDisable">
-          <el-radio v-model="temp.isDisable" label="0">是</el-radio>
-          <el-radio v-model="temp.isDisable" label="1">否</el-radio>
+          <el-radio v-model="temp.isDisable" :label="0">是</el-radio>
+          <el-radio v-model="temp.isDisable" :label="1">否</el-radio>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer" align="center">
@@ -99,8 +99,17 @@ export default {
         currencyName: '',
         currencyCode: '',
         uom:'',
+        symbol: '',
         exchangerate:'',
-        isDisable: "0"
+        isDisable: 0
+      },
+      resetTemp: {
+        currencyName: '',
+        currencyCode: '',
+        uom:'',
+        symbol: '',
+        exchangerate:'',
+        isDisable: 0
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -130,12 +139,9 @@ export default {
     handleAdd(obj) {
       this.dialogFormVisible = true
       this.dialogStatus = 'create'
-      this.temp.id = ''
-      this.temp.currencyName = ''
-      this.temp.currencyCode = ''
-      this.temp.uom = ''
-      this.temp.exchangerate = ''
-      this.temp.isDisable = '0'
+      for(var key in this.temp){
+        this.temp[key] = this.resetTemp[key]
+      }
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
@@ -143,12 +149,9 @@ export default {
     handleCompile(obj) {
       this.dialogFormVisible = true
       this.dialogStatus = 'update'
-      this.temp.id = obj.id
-      this.temp.currencyName = obj.currencyName
-      this.temp.currencyCode = obj.currencyCode
-      this.temp.uom = obj.uom
-      this.temp.exchangerate = obj.exchangerate
-      this.temp.isDisable = String(obj.isDisable)
+      for(var key in this.temp){
+        this.temp[key] = obj[key]
+      }
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })

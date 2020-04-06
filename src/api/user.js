@@ -19,11 +19,73 @@ export function getIndexInfo(data) {
     })
 }
 
+export function getUserList() {
+  return request({
+    url: '/drp/sys/user/cmemlist',
+    method: 'post'
+  })
+}
+
+export function saveUser(data) {
+  return request({
+    url: '/drp/sys/user/save',
+    method: 'post',
+    data
+  })
+}
+
+export function delUser(data) {
+  return request({
+    url: '/drp/sys/user/deleteById',
+    method: 'post',
+    data
+  })
+}
+
 export function getRoles(data) {
     return request({
         url: '/drp/getFuncListS',
         method: 'post',
-        transformRequest: fromData,
+        data
+    })
+}
+
+export function getFuncs(data) {
+    return request({
+        url: '/drp/sys/func/treeData',
+        method: 'post',
+        data
+    })
+}
+
+export function getFuncByRoleId(data) {
+    return request({
+        url: '/drp/sys/roleFunc/getFuncByRoleId',
+        method: 'post',
+        data
+    })
+}
+
+export function getRole(data) {
+    return request({
+        url: '/drp/sys/role/list',
+        method: 'post',
+        data
+    })
+}
+
+export function saveRole(data) {
+    return request({
+        url: '/drp/sys/role/save',
+        method: 'post',
+        data
+    })
+}
+
+export function delRole(data) {
+    return request({
+        url: '/drp/sys/role/deleteById',
+        method: 'post',
         data
     })
 }
@@ -64,23 +126,6 @@ export function updateInfo(data) {
 export function getMapById(data) {
     return request({
         url: '/drp/sys/user/getMapById',
-        method: 'post',
-        data
-    })
-}
-
-// 操作员列表
-export function getcmemlist(data) {
-    return request({
-        url: '/drp/sys/user/cmemlist',
-        method: 'post',
-        data
-    })
-}
-
-export function saveUser(data) {
-    return request({
-        url: '/drp/sys/user/save',
         method: 'post',
         data
     })
