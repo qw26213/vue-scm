@@ -30,7 +30,7 @@
                 </el-table-column>
                 <el-table-column label="特性">
                     <template slot-scope="{row}">
-                        <span>{{row.def1==0?'库存商品':'负单价商品'}}</span>
+                        <span>{{row.def1}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="品牌">
@@ -423,7 +423,7 @@ export default {
             var obj = { id: data.id, isDisable: data.isDisable == 1 ? 0 : 1 }
             updateItemDisabled(obj).then(res => {
                 if (res.data.errorCode == 0) {
-                    this.getList();
+                    this.getList()
                     this.$message.success(data.isDisable == 1 ? '解禁' : '禁用' + '成功')
                 } else {
                     this.$message.error(res.data.msg)
@@ -435,7 +435,7 @@ export default {
                 if (valid) {
                     saveItem(this.temp).then(res => {
                         if (res.data.errorCode == 0) {
-                            this.getList();
+                            this.getList()
                             this.dialogFormVisible = false
                             this.$message.success('修改成功')
                         } else {

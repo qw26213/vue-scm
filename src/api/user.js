@@ -298,6 +298,14 @@ export function getCoaDatatables(data) {
     })
 }
 
+// 科目列表
+export function getGlCoaCode(data) {
+    return request({
+        url: '/drp/gl/coa/getGlCoaCode',
+        method: 'post',
+        data
+    })
+}
 
 export function updateDisabledCoa(data) {
     return request({

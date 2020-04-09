@@ -34,12 +34,12 @@
       </el-table-column>
       <el-table-column label="销售改价类型" min-width="110" align="center">
         <template slot-scope="{row}">
-          <span>{{row.salePriceType == 1 ? '控制' : '不控制'}}</span>
+          <span>{{row.salePriceType == 1 ? '允许' : '不允许'}}</span>
         </template>
       </el-table-column>
       <el-table-column label="退货改价类型" min-width="110" align="center">
         <template slot-scope="{row}">
-          <span>{{row.returnPriceType == 1 ? '控制' : '不控制'}}</span>
+          <span>{{row.returnPriceType == 1 ? '允许' : '不允许'}}</span>
         </template>
       </el-table-column>
       <el-table-column label="备注">
@@ -72,12 +72,12 @@
           <el-input v-model="temp.staffName" placeholder="员工名称" />
         </el-form-item>
         <el-form-item label="销售改价类型" prop="salePriceType">
-          <el-radio v-model="temp.salePriceType" :label="0">控制</el-radio>
-          <el-radio v-model="temp.salePriceType" :label="1">不控制</el-radio>
+          <el-radio v-model="temp.salePriceType" :label="1">允许</el-radio>
+          <el-radio v-model="temp.salePriceType" :label="0">不允许</el-radio>
         </el-form-item>
         <el-form-item label="退货改价类型" prop="returnPriceType">
-          <el-radio v-model="temp.returnPriceType" :label="0">控制</el-radio>
-          <el-radio v-model="temp.returnPriceType" :label="1">不控制</el-radio>
+          <el-radio v-model="temp.returnPriceType" :label="1">允许</el-radio>
+          <el-radio v-model="temp.returnPriceType" :label="0">不允许</el-radio>
         </el-form-item>
         <el-form-item label="品牌权限" prop="isBrand">
           <el-radio v-model="temp.isBrand" :label="0">控制</el-radio>

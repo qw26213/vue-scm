@@ -96,6 +96,7 @@ export default {
         currencyName: ''
       },
       temp: {
+        id: '',
         currencyName: '',
         currencyCode: '',
         uom:'',
@@ -104,6 +105,7 @@ export default {
         isDisable: 0
       },
       resetTemp: {
+        id: '',
         currencyName: '',
         currencyCode: '',
         uom:'',

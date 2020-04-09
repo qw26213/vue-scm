@@ -99,14 +99,14 @@
             </el-form>
             <div slot="footer" class="dialog-footer" align="center">
                 <el-button @click="dialogFormVisible = false">取消</el-button>
-                <el-button type="primary" @click="dialogStatus == 'create'?handleCreate():handleModify()">确定</el-button>
+                <el-button type="primary" @click="save()">确定</el-button>
             </div>
         </el-dialog>
     </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import { getCoaDatatables, coaClassification, delCoa, updateDisabledCoa, saveCoa, updateDispName } from '@/api/user'
+import { getCoaDatatables, coaClassification, delCoa, updateDisabledCoa, saveCoa, updateDispName, getGlCoaCode } from '@/api/user'
 import { getCoaCodeUsedByIdNoSysTemplet, getChildrenCountByParentId, getCoaCodeUsedById, getChildCountById } from '@/api/user'
 export default {
     data() {
@@ -176,20 +176,11 @@ export default {
             }
             this.dialogStatus = 'update'
             this.dialogFormVisible = true
-            for (var key in this.temp) {
-                this.temp[key] = row[key]
-            }
             this.$nextTick(() => {
                 this.$refs['dataForm'].clearValidate()
             })
         },
         handleAdd(row) {
-            for (var key in this.temp) {
-                this.temp[key] = this.resetTemp[key]
-            }
-            this.temp.coaClassName = row.coaClassName
-            this.temp.coaClassId = row.coaClassId
-            this.temp.parentId = row.parentId
             getCoaCodeUsedByIdNoSysTemplet(row.id).then(res => {
                 if (res.data.data == 1) {
                     this.$confirm("本科目已被使用，增加第一个下级科目时，系统将把上述信息更新至新增的下级科目中,是否继续？", '提示', {
@@ -197,24 +188,33 @@ export default {
                         cancelButtonText: '取消',
                         type: 'warning'
                     }).then(() => {
-                        this.dialogStatus = 'create'
-                        this.dialogFormVisible = true
+                        this.initAddFrom(row)
                     })
                 } else {
-                    this.dialogStatus = 'create'
-                    this.dialogFormVisible = true
+                    this.initAddFrom(row)
                 }
                 this.$nextTick(() => {
                     this.$refs['dataForm'].clearValidate()
                 })
             })
         },
-        handleModify() {
-            this.save()
-        },
-        handleCreate() {
-            this.temp.id = ''
-            this.save()
+        initAddFrom(row){
+            for (var key in this.temp) {
+                this.temp[key] = this.resetTemp[key]
+            }
+            this.temp.coaClassName = row.coaClassName
+            this.temp.coaClassId = row.coaClassId
+            this.temp.parentId = row.id
+            this.dialogStatus = 'create'
+            this.dialogFormVisible = true
+            var obj = {
+                coaCode: row.coaCode,
+                coaLevel: row.coaLevel,
+                coaStartCode: row.coaStartCode
+            }
+            getGlCoaCode(obj).then(res => {
+                this.temp.coaCode = res.data.data
+            })
         },
         updateDispNameByUuid() {
             var id = sessionStorage.bookId
@@ -250,6 +250,7 @@ export default {
                     saveCoa(obj).then(res => {
                         if (res.data.errorCode == 0) {
                             this.getData();
+                            this.dialogFormVisible = false
                             this.$message.success(this.dialogStatus == 'create' ? '新增下级科目成功' : '修改科目成功')
                         } else {
                             this.$message.warning(res.data.msg)

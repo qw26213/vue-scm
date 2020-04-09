@@ -16,13 +16,13 @@
                     <div class="listItem"><label>纳税识别号:</label>{{managementInfo.taxRegistrationCertificateNo}}</div>
                     <div class="listItem"><label>业务有效期:</label>{{managementInfo.bizExpirationDate}}</div>
                     <div class="listItem"><label>账套名称:</label>{{managementInfo.bookName}}</div>
-                    <div class="listItem"><label>审核级次:</label>{{managementInfo.auditLevel}}</div>
+                    <!-- <div class="listItem"><label>审核级次:</label>{{managementInfo.auditLevel}}</div> -->
                 </el-card>
             </el-col>
             <el-col :xs="12" :sm="12" :lg="12" class="card-panel-col">
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
-                        <span style="display:inline-block;line-height:28px">操作员信息</span>
+                        <span style="display:inline-block;line-height:28px">用户信息</span>
                         <el-button v-if="userInfo.isAdmin == 1" type="danger" style="float: right;" size="mini" @click="resetBookInfo">清除账套</el-button>
                     </div>
                     <div class="listItem"><label>企业代码:</label>{{userInfo.orgCode}}</div>
@@ -33,14 +33,14 @@
                     <div class="listItem"><label>邮箱:</label>{{userInfo.mail}}</div>
                     <div class="listItem"><label>管理员:</label>{{userInfo.isAdmin}}</div>
                     <div class="listItem"><label>角色:</label>{{userInfo.roleName}}</div>
-                    <div class="listItem"><label>审核级次:</label>{{userInfo.auditLevel}}</div>
+                    <!-- <div class="listItem"><label>审核级次:</label>{{userInfo.auditLevel}}</div> -->
                 </el-card>
             </el-col>
             <el-col :xs="24" :sm="24" :lg="24" class="card-panel-col">
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
-                        <span style="display:inline-block;line-height:28px">操作员列表</span>
-                        <el-button v-if="userInfo.isAdmin == 1" type="primary" style="float: right;" size="mini" @click="handleAdd">新增操作员</el-button>
+                        <span style="display:inline-block;line-height:28px">用户列表</span>
+                        <el-button v-if="userInfo.isAdmin == 1" type="primary" style="float: right;" size="mini" @click="handleAdd">新增用户</el-button>
                     </div>
                     <el-table :data="tableData" border fit resize>
                         <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
@@ -115,7 +115,7 @@
                 <el-button type="primary" @click="saveManageInfo()">确定</el-button>
             </div>
         </el-dialog>
-        <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增操作员':'编辑操作员'" :visible.sync="dialogFormVisible2" width="660px">
+        <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增用户':'编辑用户'" :visible.sync="dialogFormVisible2" width="660px">
             <el-form ref="dataForm1" :rules="rules2" inline :model="temp2" label-position="left" label-width="90px" style="width: 620px; margin-left:20px;">
                 <el-form-item label="用户账号" prop="userAccount" style="margin-right:20px">
                     <el-input v-model="temp2.userAccount" placeholder="用户账号" />
@@ -146,24 +146,22 @@
                 <el-form-item label="确认密码" prop="againPassword">
                     <el-input type="password" v-model="temp2.againPassword" placeholder="确认密码" />
                 </el-form-item>
-                <el-form-item label="状态" prop="status" style="margin-right:20px">
+                <el-form-item label="员工" prop="staffName" style="margin-right:20px">
+                    <el-input v-model="temp2.staffName" placeholder="员工" />
+                </el-form-item>
+                <el-form-item label="状态" prop="status">
                     <el-select v-model="temp2.status" style="width:185px">
-                      <el-option value="0" label="正常"></el-option>
-                      <el-option value="5" label="受限"></el-option>
-                      <el-option value="9" label="禁用"></el-option>
+                      <el-option :value="0" label="正常"></el-option>
+                      <el-option :value="5" label="受限"></el-option>
+                      <el-option :value="9" label="禁用"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="审核级次">
-                    <el-select v-model="temp2.auditLevel1" style="width:80px">
-                      <el-option v-for="item in [1,2,3,4]" :key="item" :value="item" :label="item"></el-option>
-                    </el-select>
-                    <label for="">至</label>
-                    <el-select v-model="temp2.auditLevel2" style="width:80px">
-                      <el-option v-for="item in [1,2,3,4]" :key="item" :value="item" :label="item"></el-option>
-                    </el-select>
+                <el-form-item label="单据查询权限" prop="queryType" label-width="145px" style="margin-right:20px">
+                    <el-radio v-model="temp2.queryType" :label="0">自己</el-radio>
+                    <el-radio v-model="temp2.queryType" :label="1">全部</el-radio>
                 </el-form-item>
                 <el-form-item label="管理员" prop="isAdmin">
-                    <el-switch v-model="temp2.isAdmin" inactive-value="0" active-value="1"></el-switch>
+                    <el-checkbox v-model="temp2.isAdmin" :false-lable="0" :true-label="1"></el-checkbox>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer" align="center">
@@ -239,10 +237,10 @@ export default {
               roleId: '',
               password: '',
               againPassword: '',
-              roleId: '',
-              auditLevel1: 1,
-              auditLevel2: 1,
-              isAdmin: '0'
+              isAdmin: 0,
+              queryType: 0,
+              staffName: '',
+              status: 0
             },
             userList: {},
             tableData: [],
@@ -349,10 +347,8 @@ export default {
           for(var key in this.temp2){
             this.temp2[key] = row[key]
           }
-          this.temp2.isAdmin = String(row.isAdmin)
           this.temp2.roleId = String(row.roleId||'')
           this.temp2.againPassword = String(row.password)
-          this.temp2.status = String(row.status)
           this.dialogFormVisible2 = true
           this.dialogStatus = 'update'
         },
@@ -360,7 +356,7 @@ export default {
           for(var key in this.temp2){
             this.temp2[key] = ''
           }
-          this.temp2.isAdmin = '0'
+          this.temp2.isAdmin = 0
           this.temp2.auditLevel1 = 1
           this.temp2.auditLevel2 = 1
           this.dialogFormVisible2 = true

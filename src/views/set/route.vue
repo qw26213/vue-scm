@@ -91,7 +91,7 @@
     <el-dialog :close-on-click-modal="false" title="分配客户" :visible.sync="dialogFormVisible2" :show-close="false" ::close-on-click-modal="false" width="500px">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="110px" style="width: 460px;">
         <div class="curTit">当前线路：{{handleObj.routeName}}({{handleObj.routeCode}})</div>
-        <el-table ref="checkTable1" :data="custList" border fit highlight-current-row style="width: 100%;" size="mini" @select="handleSelectionChange1" @select-all="selectAll1">
+        <el-table ref="checkTable1" :data="custList" border fit highlight-current-row style="width: 100%;" size="mini" @select="handleSelectionChange1" @select-all="selectAll2">
           <el-table-column type="selection" width="50" align="center" :reserve-selection="true"></el-table-column>
           <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
           <el-table-column label="客户代码">
@@ -130,8 +130,8 @@ export default {
       userList:[],
       handleObj:{},
       custList:[],
-      selectIdArr:[],
       selectIdArr1:[],
+      selectIdArr2:[],
       total: 0,
       listLoading: true,
       listQuery: {
@@ -179,35 +179,35 @@ export default {
       for(var i=0;i<selection.length;i++){
         arr.push(selection[i].id)
       }
-      this.selectIdArr = arr;
+      this.selectIdArr1 = arr;
     },
     handleSelectionChange(selection) {
       var arr = [];
       for (var i = 0; i < selection.length; i++) {
           arr.push(selection[i].id)
       }
-      this.selectIdArr = arr;
+      this.selectIdArr1 = arr;
     },
-    selectAll1(selection){
+    selectAll2(selection){
       var arr = [];
       for(var i=0;i<selection.length;i++){
         arr.push(selection[i].id)
       }
-      this.selectIdArr1 = arr;
+      this.selectIdArr2 = arr;
     },
     handleSelectionChange1(selection,row) {
       var arr = [];
       for (var i = 0; i < selection.length; i++) {
           arr.push(selection[i].id)
       }
-      this.selectIdArr1 = arr;
+      this.selectIdArr2 = arr;
     },
     handleAssign1(row){
       this.dialogFormVisible1 = true
       this.handleObj = row;
       getUserListByRouteId({ routeId: row.id }).then(res => {
-        this.selectIdArr = getStrByData(res.data);
-        var selectIds = this.selectIdArr.join(',');
+        this.selectIdArr1 = getStrByData(res.data);
+        var selectIds = this.selectIdArr1.join(',');
         this.userList.forEach(row => {
           if(selectIds.indexOf(row.id) >= 0){
             this.$refs.checkTable.toggleRowSelection(row,true);
@@ -219,8 +219,8 @@ export default {
       this.dialogFormVisible2 = true
       this.handleObj = row;
       getCustListByRouteId({ routeId: row.id }).then(res => {
-        this.selectIdArr1 = getStrByData(res.data);
-        var selectIds = this.selectIdArr1.join(',');
+        this.selectIdArr2 = getStrByData(res.data);
+        var selectIds = this.selectIdArr2.join(',');
         this.custList.forEach(row => {
           if(selectIds.indexOf(row.id) >= 0){
             this.$refs.checkTable1.toggleRowSelection(row,true);
@@ -231,7 +231,7 @@ export default {
     updateRoute1(){
       var obj = {
         routeId:this.handleObj.id,
-        userIdList:this.selectIdArr
+        userIdList:this.selectIdArr1
       }
       updateRouteIdByUserIdList(obj).then(res => {
         if(res.data.errorCode==0){
@@ -245,7 +245,7 @@ export default {
     updateRoute2(){
       var obj = {
         routeId:this.handleObj.id,
-        custIdList:this.selectIdArr1
+        custIdList:this.selectIdArr2
       }
       updateRouteIdByCustIdList(obj).then(res => {
         if(res.data.errorCode==0){
