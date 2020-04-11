@@ -11,12 +11,12 @@
                     <div class="listItem"><label>企业代码:</label>{{managementInfo.orgCode}}</div>
                     <div class="listItem"><label>企业名称:</label>{{managementInfo.orgName}}</div>
                     <div class="listItem"><label>所属行业:</label>{{managementInfo.industryName}}</div>
-                    <div class="listItem"><label>所属区域:</label>{{managementInfo.areaName}}</div>
+                    <div class="listItem"><label>企业所在地:</label>{{managementInfo.areaName}}</div>
+                    <div class="listItem"><label>详细地址:</label>{{managementInfo.invoiceAddr}}</div>
                     <div class="listItem"><label>纳税类型:</label>{{managementInfo.taxFilingCategoryName}}</div>
                     <div class="listItem"><label>纳税识别号:</label>{{managementInfo.taxRegistrationCertificateNo}}</div>
                     <div class="listItem"><label>业务有效期:</label>{{managementInfo.bizExpirationDate}}</div>
                     <div class="listItem"><label>账套名称:</label>{{managementInfo.bookName}}</div>
-                    <!-- <div class="listItem"><label>审核级次:</label>{{managementInfo.auditLevel}}</div> -->
                 </el-card>
             </el-col>
             <el-col :xs="12" :sm="12" :lg="12" class="card-panel-col">
@@ -31,9 +31,9 @@
                     <div class="listItem"><label>审核人签名:</label>{{userInfo.sign2}}</div>
                     <div class="listItem"><label>手机号:</label>{{userInfo.mobile}}</div>
                     <div class="listItem"><label>邮箱:</label>{{userInfo.mail}}</div>
-                    <div class="listItem"><label>管理员:</label>{{userInfo.isAdmin}}</div>
+                    <div class="listItem"><label>管理员:</label>{{userInfo.isAdmin == 1?'是':'否'}}</div>
+                    <div class="listItem"><label style="width:100px">单据查询权限:</label>{{userInfo.queryType == 0?'自己':'全部'}}</div>
                     <div class="listItem"><label>角色:</label>{{userInfo.roleName}}</div>
-                    <!-- <div class="listItem"><label>审核级次:</label>{{userInfo.auditLevel}}</div> -->
                 </el-card>
             </el-col>
             <el-col :xs="24" :sm="24" :lg="24" class="card-panel-col">
@@ -69,11 +69,11 @@
                                 <span>{{row.status==0?'正常':row.status==5?'受限':'禁用'}}</span>
                             </template>
                         </el-table-column>
-                        <el-table-column label="操作" min-width="100" align="center">
+                        <el-table-column label="操作" min-width="80" align="center">
                             <template slot-scope="{row}">
                                 <el-button type="default" size="mini" @click="handleCompile(row)">编辑</el-button>
-                                <el-button type="primary" size="mini" @click="resetPsw(row)">重置密码</el-button>
-                                <el-button type="danger" size="mini" @click="killUser(row.id)">强制下线</el-button>
+                                <el-button v-if="userInfo.isAdmin == 1 && userInfo.id != row.id" type="primary" size="mini" @click="resetPsw(row)">重置密码</el-button>
+                                <el-button v-if="userInfo.isAdmin == 1 && userInfo.id != row.id" type="danger" size="mini" @click="killUser(row.id)">强制下线</el-button>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -93,6 +93,9 @@
                         <el-option v-for="item in areaList" :key="item.areaCode" :label="item.areaName" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
+                <el-form-item label="详细地址" prop="invoiceAddr">
+                    <el-input v-model="temp1.invoiceAddr" placeholder="详细地址" />
+                </el-form-item>
                 <el-form-item label="行业类别" prop="industryId">
                     <el-select v-model="temp1.industryId" style="width:260px">
                         <el-option v-for="item in industryList" :key="item.id" :label="item.industryName" :value="item.id"></el-option>
@@ -105,9 +108,6 @@
                 </el-form-item>
                 <el-form-item label="纳税人识别号" prop="taxRegistrationCertificateNo">
                     <el-input v-model="temp1.taxRegistrationCertificateNo" placeholder="纳税人识别号" />
-                </el-form-item>
-                <el-form-item label="详细地址" prop="invoiceAddr">
-                    <el-input v-model="temp1.invoiceAddr" placeholder="详细地址" />
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer" align="center">
@@ -134,33 +134,35 @@
                 </el-form-item>
                 <el-form-item label="角色" prop="roleId">
                     <el-select v-model="temp2.roleId" style="width:185px">
-                      <el-option value="888888" label="审核会计"></el-option>
-                      <el-option value="888887" label="制单会计"></el-option>
-                      <el-option value="888889" label="企业出纳"></el-option>
-                      <el-option value="888890" label="企业老板"></el-option>
+                        <el-option value="888888" label="审核会计"></el-option>
+                        <el-option value="888887" label="制单会计"></el-option>
+                        <el-option value="888889" label="企业出纳"></el-option>
+                        <el-option value="888890" label="企业老板"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="密码" prop="password" style="margin-right:20px">
+                <el-form-item v-if="dialogStatus=='create'" label="密码" prop="password" style="margin-right:20px">
                     <el-input type="password" v-model="temp2.password" placeholder="密码" />
                 </el-form-item>
-                <el-form-item label="确认密码" prop="againPassword">
+                <el-form-item v-if="dialogStatus=='create'" label="确认密码" prop="againPassword">
                     <el-input type="password" v-model="temp2.againPassword" placeholder="确认密码" />
                 </el-form-item>
-                <el-form-item label="员工" prop="staffName" style="margin-right:20px">
-                    <el-input v-model="temp2.staffName" placeholder="员工" />
+                <el-form-item label="员工" prop="staffId" style="margin-right:20px">
+                    <el-select v-model="temp2.staffId" style="width:185px">
+                        <el-option v-for="item in staffList" :value="item.id" :label="item.staffName"></el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="状态" prop="status">
                     <el-select v-model="temp2.status" style="width:185px">
-                      <el-option :value="0" label="正常"></el-option>
-                      <el-option :value="5" label="受限"></el-option>
-                      <el-option :value="9" label="禁用"></el-option>
+                        <el-option :value="0" label="正常"></el-option>
+                        <el-option :value="5" label="受限"></el-option>
+                        <el-option :value="9" label="禁用"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="单据查询权限" prop="queryType" label-width="145px" style="margin-right:20px">
+                <el-form-item label="单据查询权限" prop="queryType" label-width="110px" style="margin-right:20px">
                     <el-radio v-model="temp2.queryType" :label="0">自己</el-radio>
                     <el-radio v-model="temp2.queryType" :label="1">全部</el-radio>
                 </el-form-item>
-                <el-form-item label="管理员" prop="isAdmin">
+                <el-form-item label="管理员" prop="isAdmin" style="margin-left:40px">
                     <el-checkbox v-model="temp2.isAdmin" :false-lable="0" :true-label="1"></el-checkbox>
                 </el-form-item>
             </el-form>
@@ -170,27 +172,28 @@
             </div>
         </el-dialog>
         <el-dialog title="重置密码" :visible.sync="dialogFormVisible3" width="400px">
-          <el-form ref="dataForm3" :rules="rules3" :model="pswForm" label-position="left" label-width="96px">
-            <el-form-item label="原密码" prop="oldPsw">
-              <el-input type="password" v-model="pswForm.oldPsw" placeholder="原密码" />
-            </el-form-item>
-            <el-form-item label="新密码" prop="password">
-              <el-input type="password" v-model="pswForm.password" placeholder="新密码" />
-            </el-form-item>
-            <el-form-item label="确认新密码" prop="againPassword">
-              <el-input type="password" v-model="pswForm.againPassword" placeholder="确认新密码" />
-            </el-form-item>
-          </el-form>
-          <div slot="footer" class="dialog-footer" align="center">
-            <el-button @click="dialogFormVisible3 = false">取消</el-button>
-            <el-button type="primary" @click="savePsw">确定</el-button>
-          </div>
+            <el-form ref="dataForm3" :rules="rules3" :model="pswForm" label-position="left" label-width="96px">
+                <!-- <el-form-item label="原密码" prop="oldPsw">
+                    <el-input type="password" v-model="pswForm.oldPsw" placeholder="原密码" />
+                </el-form-item> -->
+                <el-form-item label="新密码" prop="password">
+                    <el-input type="password" v-model="pswForm.password" placeholder="新密码" />
+                </el-form-item>
+                <el-form-item label="确认新密码" prop="againPassword">
+                    <el-input type="password" v-model="pswForm.againPassword" placeholder="确认新密码" />
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer" align="center">
+                <el-button @click="dialogFormVisible3 = false">取消</el-button>
+                <el-button type="primary" @click="savePsw">确定</el-button>
+            </div>
         </el-dialog>
     </div>
 </template>
 <script>
 import CountTo from 'vue-count-to'
-import { getmanagementInfo, getMapById, getcmemlist, registerLoadArea, registerLoadIndustry, registerLoadTaxfilingcategory, updateInfo, closeAccount, resetBook, saveUser, updatePSW } from '@/api/user'
+import { getmanagementInfo, getMapById, getUserList, registerLoadArea, registerLoadIndustry, registerLoadTaxfilingcategory, updateInfo, closeAccount, resetBook, saveUser, updatePSW } from '@/api/user'
+import { getStaff } from '@/api/basedata'
 import { getNowDate } from '@/utils/index'
 export default {
     components: { CountTo },
@@ -201,6 +204,7 @@ export default {
             dialogFormVisible3: false,
             dialogStatus: 'create',
             managementInfo: {},
+            staffList: [],
             userInfo: {},
             temp1: {},
             rules1: {
@@ -212,35 +216,51 @@ export default {
             rules2: {
                 password: [{ required: true, message: '密码不能为空', trigger: 'change' }],
                 againPassword: [{ required: true, message: '确认密码不能为空', trigger: 'change' }],
+                userAccount: [{ required: true, message: '用户账号不能为空', trigger: 'change' }],
                 userName: [{ required: true, message: '用户名不能为空', trigger: 'change' }],
                 mobile: [{ required: true, message: '手机号不能为空', trigger: 'change' }],
                 mail: [{ required: true, message: '邮箱不能为空', trigger: 'change' }]
             },
             pswForm: {
-              id: '',
-              oldPsw: '',
-              password: '',
-              againPassword: ''
+                id: '',
+                oldPsw: '',
+                password: '',
+                againPassword: ''
             },
             rules3: {
-              oldPsw: [{ required: true, message: '原密码不能为空', trigger: 'change' }],
-              password: [{ required: true, message: '新密码不能为空', trigger: 'change' }],
-              againPassword: [{ required: true, message: ' 确认新密码不能为空', trigger: 'change' }]
+                oldPsw: [{ required: true, message: '原密码不能为空', trigger: 'change' }],
+                password: [{ required: true, message: '新密码不能为空', trigger: 'change' }],
+                againPassword: [{ required: true, message: ' 确认新密码不能为空', trigger: 'change' }]
             },
             temp2: {
-              id: '',
-              userAccount: '',
-              userName: '',
-              sign2: '',
-              mobile: '',
-              mail: '',
-              roleId: '',
-              password: '',
-              againPassword: '',
-              isAdmin: 0,
-              queryType: 0,
-              staffName: '',
-              status: 0
+                id: '',
+                userAccount: '',
+                userName: '',
+                sign2: '',
+                mobile: '',
+                mail: '',
+                roleId: '',
+                password: '',
+                againPassword: '',
+                isAdmin: 0,
+                queryType: 0,
+                staffId: '',
+                status: 0
+            },
+            resetTemp2: {
+                id: '',
+                userAccount: '',
+                userName: '',
+                sign2: '',
+                mobile: '',
+                mail: '',
+                roleId: '',
+                password: '',
+                againPassword: '',
+                isAdmin: 0,
+                queryType: 0,
+                staffId: '',
+                status: 0
             },
             userList: {},
             tableData: [],
@@ -261,6 +281,9 @@ export default {
         })
         registerLoadTaxfilingcategory().then(res => {
             this.taxfillingcategoryList = res.data
+        })
+        getStaff().then(res => {
+            this.staffList = res.data.data
         })
     },
     methods: {
@@ -344,57 +367,58 @@ export default {
             this.temp1 = this.managementInfo
         },
         handleCompile(row) {
-          for(var key in this.temp2){
-            this.temp2[key] = row[key]
-          }
-          this.temp2.roleId = String(row.roleId||'')
-          this.temp2.againPassword = String(row.password)
-          this.dialogFormVisible2 = true
-          this.dialogStatus = 'update'
+            for (var key in this.temp2) {
+                this.temp2[key] = row[key]
+            }
+            this.dialogFormVisible2 = true
+            this.dialogStatus = 'update'
+            this.$nextTick(() => {
+                this.$refs['dataForm1'].clearValidate()
+            })
         },
         handleAdd() {
-          for(var key in this.temp2){
-            this.temp2[key] = ''
-          }
-          this.temp2.isAdmin = 0
-          this.temp2.auditLevel1 = 1
-          this.temp2.auditLevel2 = 1
-          this.dialogFormVisible2 = true
-          this.dialogStatus = 'create'
+            for (var key in this.temp2) {
+                this.temp2[key] = this.resetTemp2[key]
+            }
+            this.dialogFormVisible2 = true
+            this.dialogStatus = 'create'
+            this.$nextTick(() => {
+                this.$refs['dataForm1'].clearValidate()
+            })
         },
         resetPsw(row) {
-          this.dialogFormVisible3 = true
-          for(var key in this.pswForm){
-            this.pswForm[key] = ''
-          }
-          this.pswForm.id = row.id
-        },
-        savePsw(){
-          this.$refs['dataForm3'].validate((valid) => {
-            if (valid) {
-              if(this.pswForm.password!=this.pswForm.againPassword) {
-                  this.$message.warning('新密码两次输入不一致')
-                  return
-              }
-              this.pswForm.id = this.id
-              updatePSW(this.pswForm).then(res => {
-                if(res.data.errorCode == 0) {
-                  this.dialogFormVisible = false
-                  this.$message.success('密码重置成功')
-                }else
-                  this.$message.error(res.data.msg)
-              })
+            this.dialogFormVisible3 = true
+            for (var key in this.pswForm) {
+                this.pswForm[key] = ''
             }
-          });
+            this.pswForm.id = row.id
+        },
+        savePsw() {
+            this.$refs['dataForm3'].validate((valid) => {
+                if (valid) {
+                    // if (this.pswForm.password != this.pswForm.againPassword) {
+                    //     this.$message.warning('新密码两次输入不一致')
+                    //     return
+                    // }
+                    updatePSW(this.pswForm).then(res => {
+                        if (res.data.errorCode == 0) {
+                            this.dialogFormVisible = false
+                            this.$message.success('密码重置成功')
+                        } else
+                            this.$message.error(res.data.msg)
+                    })
+                }
+            });
         },
         saveUser() {
             this.$refs.dataForm1.validate(valid => {
                 if (valid) {
-                    if(this.temp2.password != this.temp2.againPassword) {
-                      this.$message.warning('请确保两次密码输入一致');return
+                    if (this.temp2.password != this.temp2.againPassword) {
+                        this.$message.warning('请确保两次密码输入一致');
+                        return
                     }
                     saveUser(this.temp2).then(res => {
-                        this.$message.success((this.dialogStatus=='create'?'新增':'修改') + '操作人成功')
+                        this.$message.success((this.dialogStatus == 'create' ? '新增' : '修改') + '操作人成功')
                         this.getData3()
                         this.dialogFormVisible2 = false
                     })
@@ -419,7 +443,7 @@ export default {
             })
         },
         getData3() {
-            getcmemlist().then(res => {
+            getUserList().then(res => {
                 this.tableData = res.data.data || []
             })
         }
@@ -438,10 +462,14 @@ export default {
         margin-bottom: 32px;
     }
 }
+
 /deep/.el-card__header {
     padding: 10px 15px
 }
-/deep/.el-card__body{padding:10px 20px 15px;}
+
+/deep/.el-card__body {
+    padding: 10px 20px 15px;
+}
 </style>
 <style scoped>
 .listItem {

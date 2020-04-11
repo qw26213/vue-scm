@@ -29,8 +29,8 @@
             <el-table-column label="操作" align="center" width="200">
                 <template slot-scope="{row}">
                     <el-button type="primary" size="mini" @click="showFunc(row.id)">查看权限</el-button>
-                    <el-button type="default" size="mini" @click="handleCompile(row)">编辑</el-button>
-                    <el-button type="danger" size="mini" @click="handleDel(row.id)">删除</el-button>
+                    <el-button type="default" size="mini" :disabled="row.isSystem==1" @click="handleCompile(row)">编辑</el-button>
+                    <el-button type="danger" size="mini" :disabled="row.isSystem==1" @click="handleDel(row.id)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -146,10 +146,10 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                delRole(id).then(res => {
+                delRole({id:id}).then(res => {
                     if (res.data.errorCode == 0) {
                         this.getList();
-                        this.$message.success('删除成功')
+                        this.$message.success('删除角色成功')
                     } else {
                         this.$message.error(res.data.msg)
                     }

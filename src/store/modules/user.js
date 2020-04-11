@@ -1,4 +1,4 @@
-import { loginCheck, getIndexInfo, getRoles, logout } from '@/api/user'
+import { loginCheck, getIndexInfo, getRoles, toLogout } from '@/api/user'
 import { getToken, setToken, removeToken, setName, getName } from '@/utils/auth'
 import { fetchRoles } from '@/utils/index'
 import router, { resetRouter } from '@/router'
@@ -83,14 +83,17 @@ const actions = {
     // user logout
     logout({ commit, state }) {
         return new Promise((resolve, reject) => {
-            commit('SET_TOKEN', '')
-            commit('SET_ROLES', [])
-            removeToken()
-            resetRouter()
-            resolve()
+            toLogout().then(res => {
+                removeToken()
+                commit('SET_TOKEN', '')
+                commit('SET_ROLES', [])
+                sessionStorage.clear()
+                resolve()
+            }).catch(error => {
+                reject(error)
+            })
         })
     },
-
     // remove token
     resetToken({ commit }) {
         return new Promise(resolve => {

@@ -5,8 +5,8 @@
         </div>
         <div class="app-container">
             <div class="filter-container">
-                <el-input size="small" v-model="listQuery.queryParam.itemName" placeholder="商品名称" style="width: 200px;" class="filter-item" />
-                <el-input size="small" v-model="listQuery.queryParam.itemCode" placeholder="商品代码" style="width: 200px;" class="filter-item" />
+                <el-input size="small" v-model="listQuery.queryParam.itemName" placeholder="商品代码/名称" style="width: 200px;" class="filter-item" />
+                <!-- <el-input size="small" v-model="listQuery.queryParam.itemCode" placeholder="商品代码" style="width: 200px;" class="filter-item" /> -->
                 <el-button size="mini" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
                 <el-button size="mini" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
             </div>
@@ -161,11 +161,18 @@
                         <el-radio v-model="temp.measPrint" :label="1" style="margin-right:10px">主单位</el-radio>
                         <el-radio v-model="temp.measPrint" :label="0">辅助单位</el-radio>
                     </el-form-item>
-                    <el-form-item label="销售改价类型" prop="salePriceType">
+                    <el-form-item label="销售改价" prop="salePriceType">
                         <el-radio-group v-model="temp.salePriceType">
                             <el-radio :label="0" style="margin-right:10px">完全禁止</el-radio>
-                            <el-radio :label="1" style="margin-right:10px">完全可以</el-radio>
-                            <el-radio :label="2">按业务员</el-radio>
+                            <el-radio :label="1" style="margin-right:10px">按业务员</el-radio>
+                            <el-radio :label="2">完全可以</el-radio>
+                        </el-radio-group>
+                    </el-form-item>
+                    <el-form-item label="退货改价" prop="returnPriceType">
+                        <el-radio-group v-model="temp.returnPriceType">
+                            <el-radio :label="0" style="margin-right:10px">完全禁止</el-radio>
+                            <el-radio :label="1" style="margin-right:10px">按业务员</el-radio>
+                            <el-radio :label="2">完全可以</el-radio>
                         </el-radio-group>
                     </el-form-item>
                     <el-form-item label="显示用计量单位" prop="measSale">
@@ -248,7 +255,6 @@ export default {
                 pageIndex: 1,
                 pageNum: 20,
                 queryParam: {
-                    itemCode: '',
                     itemName: ''
                 }
             },
@@ -266,7 +272,8 @@ export default {
                 measPrint: 1,
                 lowestPrice: '',
                 exchangeRate: '',
-                salePriceType: '',
+                salePriceType: 1,
+                returnPriceType: 1,
                 returnPriceType: '',
                 prodArea: '',
                 priceModeCode: 0,
@@ -299,7 +306,8 @@ export default {
                 measPrint: 1,
                 lowestPrice: '',
                 exchangeRate: '',
-                salePriceType: '',
+                salePriceType: 1,
+                returnPriceType: 1,
                 returnPriceType: '',
                 prodArea: '',
                 priceModeCode: 0,

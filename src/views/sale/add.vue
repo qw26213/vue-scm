@@ -52,12 +52,12 @@
                 <el-form-item label="发票:" prop="statusInvoice">
                 <!-- 与当前客户的isInvoice有关系 -->
                     <el-select v-model="temp.statusInvoice" size="mini">
-                        <el-option label="不开票" :value="0"></el-option>
-                        <el-option label="待开票" :value="1"></el-option>
+                        <el-option label="不开发票" :value="0"></el-option>
+                        <el-option label="待开发票" :value="1"></el-option>
                         <el-option label="已开发票" :value="9"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="自动匹配预收款:" prop="autoAdvr" label-width="96px">
+                <el-form-item label="自动匹配预收款:" prop="autoAdvr" label-width="120px">
                     <el-checkbox v-model="temp.autoAdvr" false-label="0" true-label="1"></el-checkbox>
                 </el-form-item>
             </el-form>

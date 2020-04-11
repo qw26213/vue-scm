@@ -1,8 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input size="small" v-model="listQuery.templetTypeName" placeholder="凭证模板类型名称" style="width: 200px;" class="filter-item" />
-      <el-input size="small" v-model="listQuery.templetTypeCode" placeholder="凭证模板类型代码" style="width: 200px;" class="filter-item" />
+      <el-input size="small" v-model="listQuery.templetTypeName" placeholder="凭证模板类型代码/名称" style="width: 200px;" class="filter-item" />
       <el-button size="mini" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
       <el-button size="mini" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
     </div>
@@ -35,8 +34,8 @@
     </el-table>
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
-    <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增凭证模板类型':'修改凭证模板类型'" :visible.sync="dialogFormVisible" width="500px">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="150px" style="width: 400px; margin-left:20px;">
+    <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增凭证模板类型':'修改凭证模板类型'" :visible.sync="dialogFormVisible" width="460px">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="140px" style="width: 400px; margin-left:10px;">
         <el-form-item label="凭证模板类型代码" prop="templetTypeCode">
           <el-input v-model="temp.templetTypeCode" placeholder="凭证模板类型代码" />
         </el-form-item>
@@ -44,8 +43,8 @@
           <el-input v-model="temp.templetTypeName" placeholder="凭证模板类型名称" />
         </el-form-item>
         <el-form-item label="是否可用" prop="isDisable">
-          <el-radio v-model="temp.isDisable" label="0">是</el-radio>
-          <el-radio v-model="temp.isDisable" label="1">否</el-radio>
+          <el-radio v-model="temp.isDisable" :label="0">是</el-radio>
+          <el-radio v-model="temp.isDisable" :label="1">否</el-radio>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer" align="center">
@@ -72,13 +71,13 @@ export default {
       listLoading: true,
       listQuery: {
         page: 1,
-        templetTypeCode: '',
         templetTypeName: ''
       },
       temp: {
+        id: '',
         templetTypeName: '',
         templetTypeCode: '',
-        isDisable: "0"
+        isDisable: 0
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -108,10 +107,7 @@ export default {
       this.temp.id = ''
       this.temp.templetTypeName = ''
       this.temp.templetTypeCode = ''
-      this.temp.templetTypeLength = ''
-      this.temp.templetTypeTonnage = ''
-      this.temp.templetTypeCapacity = ''
-      this.temp.isDisable = '0'
+      this.temp.isDisable = 0
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
@@ -122,10 +118,7 @@ export default {
       this.temp.id = obj.id
       this.temp.templetTypeName = obj.templetTypeName
       this.temp.templetTypeCode = obj.templetTypeCode
-      this.temp.templetTypeLength = obj.templetTypeLength
-      this.temp.templetTypeTonnage = obj.templetTypeTonnage
-      this.temp.templetTypeCapacity = obj.templetTypeCapacity
-      this.temp.isDisable = String(obj.isDisable)
+      this.temp.isDisable = obj.isDisable
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })

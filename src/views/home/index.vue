@@ -210,8 +210,8 @@ export default {
             jeDate: this.date1
           }
           home1TopN(obj).then(res => {
-            if(res.data.body != null) {
-              this.tableData1 = res.data.body | []
+            if(res.data.data != null) {
+              this.tableData1 = res.data.data | []
             }
           })
         },
@@ -223,8 +223,8 @@ export default {
             jeDate: this.date2
           }
           home2TopN(obj).then(res => {
-            if(res.data.body != null) {
-              this.tableData2 = res.data.body | []
+            if(res.data.data != null) {
+              this.tableData2 = res.data.data | []
             }
           })
         },
@@ -235,8 +235,8 @@ export default {
             jeDate: this.date3
           }
           home3TopN(obj).then(res => {
-            if(res.data.body != null) {
-              this.tableData3 = res.data.body | []
+            if(res.data.data != null) {
+              this.tableData3 = res.data.data | []
             }
           })
         },
@@ -247,8 +247,8 @@ export default {
             jeDate: this.date4
           }
           home4TopN(obj).then(res => {
-            if(res.data.body != null) {
-              this.tableData4 = res.data.body | []
+            if(res.data.data != null) {
+              this.tableData4 = res.data.data | []
             }
           })
         }

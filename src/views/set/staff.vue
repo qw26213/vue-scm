@@ -5,8 +5,7 @@
   </div>
   <div class="app-container tableDiv">
     <div class="filter-container">
-      <el-input size="small" v-model="listQuery.staffName" placeholder="员工名称" style="width: 200px;" class="filter-item" />
-      <el-input size="small" v-model="listQuery.staffCode" placeholder="员工代码" style="width: 200px;" class="filter-item" />
+      <el-input size="small" v-model="listQuery.staffName" placeholder="员工代码/名称" style="width: 200px;" class="filter-item" />
       <el-button size="mini" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
       <el-button size="mini" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
     </div>
@@ -32,12 +31,12 @@
           <span>{{row.overdraftBalance|Fixed}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="销售改价类型" min-width="110" align="center">
+      <el-table-column label="销售改价" min-width="110" align="center">
         <template slot-scope="{row}">
           <span>{{row.salePriceType == 1 ? '允许' : '不允许'}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="退货改价类型" min-width="110" align="center">
+      <el-table-column label="退货改价" min-width="110" align="center">
         <template slot-scope="{row}">
           <span>{{row.returnPriceType == 1 ? '允许' : '不允许'}}</span>
         </template>
@@ -63,19 +62,19 @@
       </el-table-column>
     </el-table>
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
-    <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增员工':'修改员工'" :visible.sync="dialogFormVisible" width="500px">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="80px" style="width: 300px; margin-left:50px;">
+    <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增员工':'修改员工'" :visible.sync="dialogFormVisible" width="600px">
+      <el-form ref="dataForm" :rules="rules" :model="temp" inline label-position="right" label-width="80px" style="width: 580px; margin-left:10px;">
         <el-form-item label="员工代码" prop="staffCode">
           <el-input v-model="temp.staffCode" placeholder="员工代码" />
         </el-form-item>
         <el-form-item label="员工名称" prop="staffName">
           <el-input v-model="temp.staffName" placeholder="员工名称" />
         </el-form-item>
-        <el-form-item label="销售改价类型" prop="salePriceType">
+        <el-form-item label="销售改价" prop="salePriceType">
           <el-radio v-model="temp.salePriceType" :label="1">允许</el-radio>
           <el-radio v-model="temp.salePriceType" :label="0">不允许</el-radio>
         </el-form-item>
-        <el-form-item label="退货改价类型" prop="returnPriceType">
+        <el-form-item label="退货改价" prop="returnPriceType" style="margin-left:40px">
           <el-radio v-model="temp.returnPriceType" :label="1">允许</el-radio>
           <el-radio v-model="temp.returnPriceType" :label="0">不允许</el-radio>
         </el-form-item>
@@ -83,7 +82,7 @@
           <el-radio v-model="temp.isBrand" :label="0">控制</el-radio>
           <el-radio v-model="temp.isBrand" :label="1">不控制</el-radio>
         </el-form-item>
-        <el-form-item label="仓库权限" prop="isWarehouse">
+        <el-form-item label="仓库权限" prop="isWarehouse" style="margin-left:40px">
           <el-radio v-model="temp.isWarehouse" :label="0">控制</el-radio>
           <el-radio v-model="temp.isWarehouse" :label="1">不控制</el-radio>
         </el-form-item>
@@ -91,7 +90,7 @@
           <el-radio v-model="temp.isTruck" :label="0">控制</el-radio>
           <el-radio v-model="temp.isTruck" :label="1">不控制</el-radio>
         </el-form-item>
-        <el-form-item label="商品权限" prop="isItem">
+        <el-form-item label="商品权限" prop="isItem" style="margin-left:40px">
           <el-radio v-model="temp.isItem" :label="0">控制</el-radio>
           <el-radio v-model="temp.isItem" :label="1">不控制</el-radio>
         </el-form-item>
@@ -99,7 +98,7 @@
           <el-radio v-model="temp.isRoute" :label="0">控制</el-radio>
           <el-radio v-model="temp.isRoute" :label="1">不控制</el-radio>
         </el-form-item>
-        <el-form-item label="客户权限" prop="isCust">
+        <el-form-item label="客户权限" prop="isCust" style="margin-left:40px">
           <el-radio v-model="temp.isCust" :label="0">控制</el-radio>
           <el-radio v-model="temp.isCust" :label="1">不控制</el-radio>
         </el-form-item>
@@ -141,7 +140,6 @@ export default {
       listLoading: true,
       listQuery: {
         page: 1,
-        staffCode: '',
         deptId:'',
         staffName: ''
       },
@@ -151,8 +149,8 @@ export default {
         staffName: '',
         remarks:'',
         staffCode: '',
-        salePriceType: 0,
-        returnPriceType: 0,
+        salePriceType: 1,
+        returnPriceType: 1,
         isCust: 0,
         isRoute: 0,
         isTruck: 0,
@@ -167,8 +165,8 @@ export default {
         staffName: '',
         remarks:'',
         staffCode: '',
-        salePriceType: 0,
-        returnPriceType: 0,
+        salePriceType: 1,
+        returnPriceType: 1,
         isCust: 0,
         isRoute: 0,
         isTruck: 0,

@@ -1,8 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input size="small" v-model="listQuery.routeName" placeholder="线路名称" style="width: 200px;" class="filter-item" />
-      <el-input size="small" v-model="listQuery.routeCode" placeholder="线路代码" style="width: 200px;" class="filter-item" />
+      <el-input size="small" v-model="listQuery.routeName" placeholder="线路代码/名称" style="width: 200px;" class="filter-item" />
       <el-button size="mini" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
       <el-button size="mini" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
     </div>
@@ -67,7 +66,7 @@
     <el-dialog :close-on-click-modal="false" title="分配业务员" :visible.sync="dialogFormVisible1" :show-close="false" ::close-on-click-modal="false" width="500px">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="110px" style="width: 460px;">
         <div class="curTit">当前线路：{{handleObj.routeName}}({{handleObj.routeCode}})</div>
-        <el-table ref="checkTable" :data="userList" border fit highlight-current-row style="width: 100%;" size="mini" @select-change="handleSelectionChange" @select-all="selectAll">
+        <el-table ref="checkTable" :data="userList" border fit highlight-current-row style="width: 100%;" size="mini" @select-change="handleSelectionChange1" @select-all="selectAll1">
           <el-table-column type="selection" width="50" align="center" :reserve-selection="true"></el-table-column>
           <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
           <el-table-column label="用户账号">
@@ -91,7 +90,7 @@
     <el-dialog :close-on-click-modal="false" title="分配客户" :visible.sync="dialogFormVisible2" :show-close="false" ::close-on-click-modal="false" width="500px">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="110px" style="width: 460px;">
         <div class="curTit">当前线路：{{handleObj.routeName}}({{handleObj.routeCode}})</div>
-        <el-table ref="checkTable1" :data="custList" border fit highlight-current-row style="width: 100%;" size="mini" @select="handleSelectionChange1" @select-all="selectAll2">
+        <el-table ref="checkTable1" :data="custList" border fit highlight-current-row style="width: 100%;" size="mini" @select="handleSelectionChange2" @select-all="selectAll2">
           <el-table-column type="selection" width="50" align="center" :reserve-selection="true"></el-table-column>
           <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
           <el-table-column label="客户代码">
@@ -142,7 +141,6 @@ export default {
       showReviewer: false,
       temp: {
         routeName: '',
-        routeCode: '',
         remarks:'',
         isDisable: 0
       },
@@ -174,14 +172,14 @@ export default {
       this.dialogFormVisible2 = false;
       this.$refs.checkTable1.clearSelection()
     },
-    selectAll(selection){
+    selectAll1(selection){
       var arr = [];
       for(var i=0;i<selection.length;i++){
         arr.push(selection[i].id)
       }
       this.selectIdArr1 = arr;
     },
-    handleSelectionChange(selection) {
+    handleSelectionChange1(selection) {
       var arr = [];
       for (var i = 0; i < selection.length; i++) {
           arr.push(selection[i].id)
@@ -195,7 +193,7 @@ export default {
       }
       this.selectIdArr2 = arr;
     },
-    handleSelectionChange1(selection,row) {
+    handleSelectionChange2(selection,row) {
       var arr = [];
       for (var i = 0; i < selection.length; i++) {
           arr.push(selection[i].id)

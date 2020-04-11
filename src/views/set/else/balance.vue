@@ -10,7 +10,7 @@
                     <span>{{row.coaCode}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="科目名称" min-width="100" show-overflow-tooltip>
+            <el-table-column label="科目名称" min-width="100" style="padding-right:100px;">
                 <template slot-scope="scope">
                     <span>{{scope.row.showCoaName}}</span>
                     <el-button v-if="scope.row.leaf == 1 && scope.row.type ==1 && scope.row.isAuxiliary == 1" type="primary" size="mini" @click="showSuplyConfig(scope.$index)" style="margin-left:10px">设置</el-button>
@@ -64,7 +64,8 @@
                 <el-table-column align="center" label="项目">
                     <template slot-scope="{row}">
                         <span>金额</span>
-                    </template> </el-table-column>
+                    </template> 
+                </el-table-column>
                 <el-table-column align="center" label="期初借方">
                     <template slot-scope="{row}">
                         <span>{{row.sumBalanceDr}}</span>

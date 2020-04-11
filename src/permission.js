@@ -52,11 +52,10 @@ router.beforeEach(async(to, from, next) => {
       }
     }
   } else {
-    console.log('path==='+to.path)
     if (to.path === '/register'||to.path === '/forgetPsd') {
       next()
       NProgress.done()
-    }else{
+    } else {
         /* has no token*/
       if (whiteList.indexOf(to.path) !== -1) {
         // in the free login whitelist, go directly

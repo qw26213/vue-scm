@@ -90,9 +90,9 @@ export function delRole(data) {
     })
 }
 
-export function logout() {
+export function toLogout() {
     return request({
-        url: '/logout',
+        url: '/drp/logout',
         method: 'post'
     })
 }
@@ -342,14 +342,6 @@ export function getCoaCodeUsedById(id){
     return request({
         url: '/drp/gl/coa/getCoaCodeUsedById/'+id,
         method: 'post'
-    })
-}
-
-export function getChildCountById(parentId){
-    return request({
-        url: '/drp/gl/coa/getChildCountById/'+id,
-        method: 'post',
-        data: {id: parentId}
     })
 }
 

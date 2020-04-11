@@ -75,14 +75,14 @@
                     <el-radio v-model="temp.crDr" :label="-1">贷</el-radio>
                 </el-form-item>
                 <el-form-item label="是否现金" prop="cashFlowFlag" style="width:265px">
-                    <el-radio v-model="temp.cashFlowFlag" :label="0">是</el-radio>
-                    <el-radio v-model="temp.cashFlowFlag" :label="1">否</el-radio>
+                    <el-radio v-model="temp.cashFlowFlag" :label="1">是</el-radio>
+                    <el-radio v-model="temp.cashFlowFlag" :label="0">否</el-radio>
                 </el-form-item>
                 <el-form-item label="" style="width:600px">
-                    <el-checkbox v-model="temp.isCurrency" :false-label="0" :true-label="1">币种核算</el-checkbox>
-                    <el-checkbox v-model="temp.isAuxiliary" :false-label="0" :true-label="1">辅助核算(至多选6项)</el-checkbox>
-                    <el-checkbox v-model="temp.isQuantity" :false-label="0" :true-label="1">数量核算</el-checkbox>
-                    <el-input v-if="temp.isQuantity==1" v-model="temp.uom" placeholder="计量单位" style="width:120px" />
+                    <el-checkbox v-model="temp.isCurrency" :disabled="isForceAddChild==1" :false-label="0" :true-label="1">币种核算</el-checkbox>
+                    <el-checkbox v-model="temp.isAuxiliary" :disabled="isForceAddChild==1" :false-label="0" :true-label="1">辅助核算(至多选6项)</el-checkbox>
+                    <el-checkbox v-model="temp.isQuantity" :disabled="isForceAddChild==1" :false-label="0" :true-label="1">数量核算</el-checkbox>
+                    <el-input v-if="temp.isQuantity==1" :disabled="isForceAddChild==1" v-model="temp.uom" placeholder="计量单位" style="width:120px" />
                 </el-form-item>
                 <el-form-item v-if="temp.isAuxiliary==1" style="width:600px">
                     <el-checkbox :checked="temp.auxiliary&&temp.auxiliary.charAt(0)==1" v-model="temp.auxiliaryName_0" :false-label="0" :true-label="1">供应商</el-checkbox>
@@ -123,6 +123,7 @@ export default {
                 isDisable: 0,
                 isAuxiliary: 0,
                 isQuantity: 0,
+                uom: '',
                 isDisableChildren: 0,
                 cashFlowFlag: 0,
                 crDr: 1,
@@ -142,6 +143,7 @@ export default {
                 isDisable: 0,
                 isAuxiliary: 0,
                 isQuantity: 0,
+                uom: '',
                 isDisableChildren: 0,
                 cashFlowFlag: 0,
                 crDr: 1,
@@ -153,6 +155,7 @@ export default {
                 coaName: [{ required: true, message: '不能为空', trigger: 'change' }],
                 coaCode: [{ required: true, message: '不能为空', trigger: 'change' }]
             },
+            isForceAddChild: 0,
             dialogStatus: 'update',
             dialogFormVisible: false,
             coaClassCode: '',
@@ -172,7 +175,7 @@ export default {
     methods: {
         handleCompile(row) {
             for (var key in this.temp) {
-                this.temp[key] = this.resetTemp[key]
+                this.temp[key] = row[key]
             }
             this.dialogStatus = 'update'
             this.dialogFormVisible = true
@@ -188,25 +191,32 @@ export default {
                         cancelButtonText: '取消',
                         type: 'warning'
                     }).then(() => {
+                        this.isForceAddChild = 1
+                        console.log(this.isForceAddChild)
                         this.initAddFrom(row)
                     })
                 } else {
-                    this.initAddFrom(row)
+                    getCoaCodeUsedById(row.id).then(resp => {
+                        this.isForceAddChild = resp.data.data
+                        this.initAddFrom(row)
+                    })
                 }
-                this.$nextTick(() => {
-                    this.$refs['dataForm'].clearValidate()
-                })
             })
         },
-        initAddFrom(row){
+        initAddFrom(row) {
             for (var key in this.temp) {
                 this.temp[key] = this.resetTemp[key]
             }
             this.temp.coaClassName = row.coaClassName
             this.temp.coaClassId = row.coaClassId
             this.temp.parentId = row.id
+            this.temp.cashFlowFlag = row.cashFlowFlag
+            this.temp.crDr = row.crDr
             this.dialogStatus = 'create'
             this.dialogFormVisible = true
+            this.$nextTick(() => {
+                this.$refs['dataForm'].clearValidate()
+            })
             var obj = {
                 coaCode: row.coaCode,
                 coaLevel: row.coaLevel,
@@ -296,7 +306,7 @@ export default {
                 if (res.data.data == 1) {
                     getChildrenCountByParentId(row.parentId).then(resp => {
                         if (resp.data.body > 1) {
-                            this.$message.warning('此科目在余额表/凭证/模板中使用，不可删除！', { icon: 5 });
+                            this.$message.warning('此科目在余额表/凭证/模板中使用，不可删除！');
                         } else {
                             this.$confirm('此科目在余额表/凭证/模板中使用，删除后，数据将自动回滚至上级科目，是否继续？', '提示', {
                                 confirmButtonText: '确定',
@@ -312,11 +322,11 @@ export default {
                 } else {
                     getCoaCodeUsedById(row.id).then(resp => {
                         if (resp.data.data == 1) {
-                            getChildCountById(row.parentId).then(rep => {
+                            getChildrenCountByParentId(row.parentId).then(rep => {
                                 if (res.body > 1) {
-                                    layer.msg('此科目在余额表/凭证/模板中使用，不可删除！', { icon: 5 });
+                                    this.$message.warning('此科目在余额表/凭证/模板中使用，不可删除！')
                                 } else {
-                                    layer.confirm('此科目在余额表/凭证/模板中使用，删除后，数据将自动回滚至上级科目，是否继续？', '提示', {
+                                    this.$confirm('此科目在余额表/凭证/模板中使用，删除后，数据将自动回滚至上级科目，是否继续？', '提示', {
                                         confirmButtonText: '确定',
                                         cancelButtonText: '取消',
                                         type: 'warning'
@@ -326,6 +336,16 @@ export default {
                                         console.log(err)
                                     })
                                 }
+                            })
+                        } else {
+                            this.confirm('确定要删除这个科目吗？', '提示', {
+                                confirmButtonText: '确定',
+                                cancelButtonText: '取消',
+                                type: 'warning'
+                            }).then(() => {
+                                this.delCourse(row.id);
+                            }).catch(err => {
+                                console.log(err)
                             })
                         }
                     })
