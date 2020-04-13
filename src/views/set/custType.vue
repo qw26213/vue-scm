@@ -1,7 +1,7 @@
 <template>
     <div class="main">
         <div class="leftTree">
-            <el-tree :data="treeData" :props="defaultProps" @node-click="handleNodeClick" default-expand-all></el-tree>
+            <el-tree :data="treeData" :props="defaultProps" @node-click="handleNodeClick" default-expand-all :expand-on-click-node="false" accordion></el-tree>
         </div>
         <div class="app-container">
             <div class="filter-container">
@@ -200,7 +200,7 @@ export default {
         },
         getList() {
             this.listLoading = true
-            getCustTypeTreeDataByParentId({ parentId: "", includeRoot: 1 }).then(res => {
+            getCustTypeTreeDataByParentId({ parentId: this.parentId, includeRoot: 1 }).then(res => {
                 this.listLoading = false
                 res.data.data.map(item => {
                     if (!item.id){

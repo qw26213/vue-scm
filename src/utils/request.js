@@ -32,7 +32,7 @@ axios.interceptors.response.use(
                         callback: () => {
                           context.push('/login')
                         }
-                    });
+                    })
                     break;
                 default:
                     Message.error(error.message || "error")

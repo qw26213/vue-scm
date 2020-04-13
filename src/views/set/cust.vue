@@ -63,7 +63,7 @@
                     <span>{{row.overdraftBalance|Fixed}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="统一社会信用代码或纳税人识别号" align="right" width="100">
+            <el-table-column label="纳税人识别号" align="right" width="110">
                 <template slot-scope="{row}">
                     <span>{{row.taxRegistrationCertificateNo}}</span>
                 </template>
@@ -167,7 +167,7 @@
                 <el-form-item label="备注" prop="remarks">
                     <el-input v-model="temp.remarks" placeholder="备注" />
                 </el-form-item>
-                <el-form-item label="统一社会信用代码或纳税人识别号" prop="taxRegistrationCertificateNo" label-width="234px">
+                <el-form-item label="纳税人识别号" prop="taxRegistrationCertificateNo" label-width="234px">
                     <el-input v-model="temp.taxRegistrationCertificateNo" placeholder="统一社会信用代码或纳税人识别号" style="width:340px" />
                 </el-form-item>
                 <el-form-item label="是否开票" prop="isInvoice">
@@ -221,6 +221,7 @@ export default {
                 }
             },
             temp: {
+                id: '',
                 custName: '',
                 addr: '',
                 custCode: '',
@@ -238,6 +239,7 @@ export default {
                 isDisable: 0
             },
             resetTemp: {
+                id: '',
                 custName: '',
                 addr: '',
                 custCode: '',
@@ -265,7 +267,7 @@ export default {
         }
     },
     mounted() {
-        // this.getList();
+        this.getList();
         this.getTree();
     },
     filters: {

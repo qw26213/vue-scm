@@ -67,14 +67,14 @@
                     </el-form-item>
                     <el-form-item label="改价类型" prop="modifiedType">
                         <el-select v-model="temp.modifiedType" placeholder="修改类型" style="width:240px">
-                            <el-option label="不可修改" value="0"></el-option>
-                            <el-option label="可修改" value="1"></el-option>
-                            <el-option label="按商品" value="2"></el-option>
+                            <el-option label="不可修改" :value="0"></el-option>
+                            <el-option label="可修改" :value="1"></el-option>
+                            <el-option label="按商品" :value="2"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="是否有效" prop="isDisable">
-                        <el-radio v-model="temp.isDisable" label="0">是</el-radio>
-                        <el-radio v-model="temp.isDisable" label="1">否</el-radio>
+                        <el-radio v-model="temp.isDisable" :label="0">是</el-radio>
+                        <el-radio v-model="temp.isDisable" :label="1">否</el-radio>
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer" align="center">
@@ -109,16 +109,16 @@
                     <el-table-column label="修改类型" align="center">
                         <template slot-scope="{row}">
                             <el-select v-model="row.modifiedType" placeholder="修改类型">
-                                <el-option label="可修改" value="1"></el-option>
-                                <el-option label="不可修改" value="0"></el-option>
-                                <el-option label="按商品" value="2"></el-option>
+                                <el-option label="可修改" :value="1"></el-option>
+                                <el-option label="不可修改" :value="0"></el-option>
+                                <el-option label="按商品" :value="2"></el-option>
                             </el-select>
                         </template>
                     </el-table-column>
                     <el-table-column label="是否生效" width="120" align="center">
                         <template slot-scope="{row}">
-                            <el-radio v-model="row.isDisable" label="0" style="margin-right:10px">是</el-radio>
-                            <el-radio v-model="row.isDisable" label="1">否</el-radio>
+                            <el-radio v-model="row.isDisable" :label="0" style="margin-right:10px">是</el-radio>
+                            <el-radio v-model="row.isDisable" :label="1">否</el-radio>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -132,7 +132,7 @@
 </template>
 <script>
 import { getPrice, savePrice, delPrice, updatePriceDisabled, getItem, updatePriceByItemIdPriceGroupIdList, updateLastPriceByItemIdPriceGroupId, updatePriceByItemIdPriceGroupId } from '@/api/basedata'
-import { parseTime } from '@/utils'
+import { parseTime, deepClone } from '@/utils/index'
 export default {
     name: 'priceIndex',
     filters: {
@@ -174,8 +174,8 @@ export default {
                 price: '',
                 id: "",
                 priceGroupId: '',
-                modifiedType: '1',
-                isDisable: '0',
+                modifiedType: 1,
+                isDisable: 0,
                 itemId: '',
                 effectiveDate: new Date()
             },
@@ -213,12 +213,6 @@ export default {
                 }
             })
         },
-        arrCopy(arr) {
-            var newArr = arr.map(function (value) {
-                return value;
-            });
-            return newArr
-        },
         handleAnyModify() {
             this.dialogFormVisible2 = true;
             for (var i = 0; i < this.tableList.length; i++) {
@@ -238,21 +232,21 @@ export default {
             }
         },
         rowClick(row, column, event) {
-            this.getIndex = row.index;
-            this.listQuery.itemId = row.id;
-            this.getList();
+            this.getIndex = row.index
+            this.listQuery.itemId = row.id
+            this.getList()
         },
         getList() {
             this.listLoading = true
             getPrice(this.listQuery).then(res => {
                 this.listLoading = false
                 for (var i = 0; i < res.data.data.length; i++) {
-                    res.data.data[i].modifiedType = String(res.data.data[i].modifiedType)
-                    res.data.data[i].isDisable = String(res.data.data[i].isDisable)
+                    res.data.data[i].modifiedType = res.data.data[i].modifiedType
+                    res.data.data[i].isDisable = res.data.data[i].isDisable
                     res.data.data[i].price = parseFloat(res.data.data[i].price).toFixed(4)
                 }
-                this.tableData = this.arrCopy(res.data.data);
-                this.tableList = this.arrCopy(res.data.data);
+                this.tableData = res.data.data
+                this.tableList = deepClone(res.data.data)
             })
         },
         handleCompile(obj) {

@@ -164,7 +164,7 @@
 <script>
 import { getBalance, getPeriodList, updateListForSetBegin } from '@/api/user'
 import { getProj, getDept, getStaff, getSupplier, getCust, getItem } from '@/api/user'
-import { getNowDate } from '@/utils/index'
+import { getNowDate, deepClone } from '@/utils/index'
 var userInfo = JSON.parse(sessionStorage.userInfo)
 var hexCas = [ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' ]
 export default {
@@ -256,6 +256,7 @@ export default {
         },
         removeRow(index) {
             this.tableData.splice(index, 1)
+            this.saveData(2)
         },
         getBalanceObj() {
             var obj = {
@@ -294,22 +295,22 @@ export default {
         showSuplyConfig(index) {
             this.dialogFormVisible2 = true
             this.curShowIndex = index
-            this.temp = this.auxiliaryData[index]
+            this.temp = this.tableData[index]
             this.$nextTick(() => {
                 this.$refs['dataForm'].clearValidate()
             })
         },
         saveAuxiliaryConfig() {
-            var auxiliaryData = this.auxiliaryData
             var editIndex = this.curShowIndex
-            var auxiliary = auxiliaryData[editIndex].auxiliary;
+            var curObj = this.auxiliaryData[editIndex]
+            var auxiliary = curObj.auxiliary
             if (auxiliary != null && auxiliary.length > 0) {
-                var auxiliaryCode = "";
-                var auxiliaryName = "";
-                var auxiliaries = auxiliary.split("");
+                var auxiliaryCode = ""
+                var auxiliaryName = ""
+                var auxiliaries = auxiliary.split("")
                 var AuxiliaryType = ['supplier', 'cust', 'dept', 'staff', 'item', 'proj']
                 for (var i = 0; i < auxiliaries.length; i++) {
-                    if (auxiliaries[i] != null && auxiliaries[i] == "1") {
+                    if (auxiliaries[i] != null && auxiliaries[i] == 1) {
                         // 显示对应的辅助核算项 1-26
                         var auxiliaryType = AuxiliaryType[i]
                         /* 获取当前辅助核算项的值 */
@@ -318,19 +319,20 @@ export default {
                         var modelCode = this.$refs[auxiliaryType+'Select'].selected.key
                         auxiliaryCode += "_" + hexCas[AuxiliaryType.indexOf(auxiliaryType)] + modelCode
                         auxiliaryName += "_" + selectText
-                        auxiliaryData[editIndex][auxiliaryType] = selectId
-                        auxiliaryData[editIndex][auxiliaryType + "Id"] = selectId
+                        curObj[auxiliaryType] = selectId
+                        curObj[auxiliaryType + "Id"] = selectId
                     }
                 }
-                auxiliaryData[editIndex].coaCobinationCode = auxiliaryCode.substring(1);
-                auxiliaryData[editIndex].coaCobinationName = auxiliaryName.substring(1);
-                auxiliaryData[editIndex].showCoaCode = auxiliaryData[editIndex].coaCode + '_' + auxiliaryData[editIndex].coaCobinationCode;
-                auxiliaryData[editIndex].showCoaName = auxiliaryData[editIndex].coaName + '_' + auxiliaryData[editIndex].coaCobinationName;
+                curObj.coaCobinationCode = auxiliaryCode.substring(1)
+                curObj.coaCobinationName = auxiliaryName.substring(1)
+                curObj.showCoaCode = curObj.coaCode + '_' + curObj.coaCobinationCode
+                curObj.showCoaName = curObj.coaName + '_' + curObj.coaCobinationName
             }
-            this.auxiliaryData[editIndex].leaf = '1';
-            this.auxiliaryData[editIndex].type = '0';
-            this.auxiliaryData[editIndex].isAuxiliary = '1'
-            this.tableData.splice(this.curShowIndex + 1, 0, this.auxiliaryData[editIndex])
+            curObj.leaf = 1
+            curObj.type = 0
+            curObj.isAuxiliary = 1
+            this.tableData.splice(this.curShowIndex + 1, 0, curObj)
+            this.dialogFormVisible2 = false
             this.$refs['dataForm'].validate((valid) => {
                 if (valid) {
                     this.saveData(1)
@@ -363,17 +365,10 @@ export default {
                     if (type == 0) {
                         this.$message.warning(info + "期初余额保存失败!")
                     }
-                    if (type == 1) {
-                        this.$message.warning(res.msg)
+                    if (type == 1 || type == 2) {
+                        this.$message.warning(res.data.msg)
                     }
-                    if (type == 2) {
-                        this.$message.warning(res.msg)
-                    }
-                    this.getData()
                 }
-            }).catch(err => {
-                this.dialogFormVisible2 = false
-                this.$message.error("系统失败!")
             })
         },
         getData() {
@@ -390,12 +385,7 @@ export default {
             getBalance(obj).then(res => {
                 this.listLoading = false
                 this.tableData = res.data || []
-                var arr = []
-                for (var i = 0; i < this.tableData.length; i++) {
-                    var item = this.tableData[i]
-                    arr.push(item)
-                }
-                this.auxiliaryData = arr
+                this.auxiliaryData = deepClone(this.tableData)
             }).catch(err => {
                 this.listLoading = false
             })

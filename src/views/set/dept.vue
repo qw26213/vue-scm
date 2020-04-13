@@ -2,7 +2,7 @@
 
 <div class="main">
   <div class="leftTree">
-      <el-tree :data="treeData" :props="defaultProps" @node-click="handleNodeClick" default-expand-all></el-tree>
+      <el-tree :data="treeData" :props="defaultProps" @node-click="handleNodeClick" default-expand-all :expand-on-click-node="false" accordion></el-tree>
   </div>
 
   <div class="app-container tableDiv">    

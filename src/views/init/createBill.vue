@@ -214,21 +214,6 @@ export default {
             this.dialogFormVisible = true
             this.dialogStatus = 'create'
         },
-        saveUser() {
-            this.$refs.dataForm1.validate(valid => {
-                if (valid) {
-                    if (this.temp.password != this.temp.againPassword) {
-                        this.$message.warning('请确保两次密码输入一致');
-                        return
-                    }
-                    saveUser(this.temp).then(res => {
-                        this.$message.success((this.dialogStatus == 'create' ? '新增' : '修改') + '操作人成功')
-                        this.getData3()
-                        this.dialogFormVisible2 = false
-                    })
-                }
-            })
-        },
         getData() {
             getmanagementInfo().then(res => {
                 if (res.data.errorCode == 0) {

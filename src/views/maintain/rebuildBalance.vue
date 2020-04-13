@@ -19,7 +19,7 @@
             <el-button size="mini" type="primary" style="margin-left:15px" @click="getData('0')">只检查</el-button>
             <el-button size="mini" type="primary" @click="getData('1')">检查校正</el-button>
         </div>
-        <el-table :data="tableData" border fit resize empty-text="无错误信息" style="width: 100%;" size="mini">
+        <el-table :data="tableData" border fit resize empty-text="无错误数据" style="width: 100%;" size="mini">
             <el-table-column label="科目编码">
                 <template slot-scope="{row}">
                     <span>{{row.coaCode}}</span>

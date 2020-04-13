@@ -9,18 +9,18 @@ const priceRouter = {
             icon: 'price'
         },
         children: [{
-            path: 'priceGroup',
-            component: () => import('@/views/price/group'),
-            name: 'priceGroup',
-            meta: {
-                title: '价格组'
-            }
-        }, {
-            path: 'priceIndex',
+            path: 'index',
             component: () => import('@/views/price/index'),
             name: 'priceIndex',
             meta: {
                 title: '价格设定'
+            }
+        }, {
+            path: 'group',
+            component: () => import('@/views/price/group'),
+            name: 'priceGroup',
+            meta: {
+                title: '价格组'
             }
         }]
     }
