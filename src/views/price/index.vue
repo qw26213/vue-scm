@@ -41,7 +41,7 @@
                 </el-table-column>
                 <el-table-column label="生效时间" width="140" align="center">
                     <template slot-scope="{row}">
-                        <span>{{row.effectiveDate}}</span>
+                        <span>{{row.effectiveDate | parseDate}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="生效" align="center">
@@ -57,24 +57,24 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <el-dialog :close-on-click-modal="false" title="修改售价" :visible.sync="dialogFormVisible" width="420px">
-                <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="90px" style="width: 320px; margin-left:30px;">
+            <el-dialog :close-on-click-modal="false" title="修改售价" :visible.sync="dialogFormVisible" width="390px">
+                <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="80px" style="width: 320px; margin-left:10px;">
                     <el-form-item label="售价(元)" prop="price">
                         <el-input v-model="temp.price" placeholder="售价" />
                     </el-form-item>
                     <el-form-item label="生效时间" prop="effectiveDate">
-                        <el-date-picker v-model="temp.effectiveDate" type="date" style="width:182px" placeholder="生效时间" value-format="yyyy-MM-dd"></el-date-picker>
+                        <el-date-picker v-model="temp.effectiveDate" type="date" style="width:240px" placeholder="生效时间" value-format="yyyy-MM-dd"></el-date-picker>
                     </el-form-item>
-                    <el-form-item label="修改类型" prop="modifiedType">
-                        <el-select v-model="temp.modifiedType" placeholder="修改类型">
+                    <el-form-item label="改价类型" prop="modifiedType">
+                        <el-select v-model="temp.modifiedType" placeholder="修改类型" style="width:240px">
                             <el-option label="不可修改" value="0"></el-option>
                             <el-option label="可修改" value="1"></el-option>
                             <el-option label="按商品" value="2"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="是否有效" prop="isDisable">
-                      <el-radio v-model="temp.isDisable" label="0">是</el-radio>
-                      <el-radio v-model="temp.isDisable" label="1">否</el-radio>
+                        <el-radio v-model="temp.isDisable" label="0">是</el-radio>
+                        <el-radio v-model="temp.isDisable" label="1">否</el-radio>
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer" align="center">
@@ -131,9 +131,19 @@
     </div>
 </template>
 <script>
-import { getPrice, savePrice, delPrice, updatePriceDisabled, getItem, updatePriceByItemIdPriceGroupIdList, updateLastPriceByItemIdPriceGroupId,updatePriceByItemIdPriceGroupId } from '@/api/basedata'
+import { getPrice, savePrice, delPrice, updatePriceDisabled, getItem, updatePriceByItemIdPriceGroupIdList, updateLastPriceByItemIdPriceGroupId, updatePriceByItemIdPriceGroupId } from '@/api/basedata'
+import { parseTime } from '@/utils'
 export default {
     name: 'priceIndex',
+    filters: {
+        parseDate(val) {
+            return val ? parseTime(val) : '未设定'
+        },
+        Fixed(num) {
+            if (!num) { return '0.0000' }
+            return parseFloat(num).toFixed(4);
+        }
+    },
     data() {
         const validateNum = (rule, value, callback) => {
             if (value == 0) {
@@ -162,11 +172,11 @@ export default {
             },
             temp: {
                 price: '',
-                id:"",
-                priceGroupId:'',
-                modifiedType:'1',
-                isDisable:'0',
-                itemId:'',
+                id: "",
+                priceGroupId: '',
+                modifiedType: '1',
+                isDisable: '0',
+                itemId: '',
                 effectiveDate: new Date()
             },
             temp1: {
@@ -177,18 +187,12 @@ export default {
             dialogFormVisible2: false,
             dialogStatus: '',
             rules: {
-                price: [{ required: true, trigger: 'change',validator: validateNum }],
+                price: [{ required: true, trigger: 'change', validator: validateNum }],
                 effectiveDate: [{ required: false, message: '生效时间不能为空', trigger: 'change' }],
             },
             rules1: {
                 lastPrice: [{ required: true, message: '最新价格不能为空', trigger: 'change' }]
             }
-        }
-    },
-    filters: {
-        Fixed: function(num) {
-            if (!num) { return '0.0000' }
-            return parseFloat(num).toFixed(4);
         }
     },
     created() {
@@ -210,15 +214,15 @@ export default {
             })
         },
         arrCopy(arr) {
-            var newArr = arr.map(function(value){
-                 return value;
+            var newArr = arr.map(function (value) {
+                return value;
             });
             return newArr
         },
         handleAnyModify() {
             this.dialogFormVisible2 = true;
             for (var i = 0; i < this.tableList.length; i++) {
-                if(this.tableList[i].effectiveDate==null){
+                if (this.tableList[i].effectiveDate == null) {
                     this.tableList[i].effectiveDate = new Date()
                 }
             }
@@ -263,7 +267,8 @@ export default {
         },
         updateStatus(data) {
             this.$confirm('确定' + (data.isDisable == 1 ? '解禁？' : '禁用？'), '提示', {
-                confirmButtonText: '确定',closeOnClickModal:false,
+                confirmButtonText: '确定',
+                closeOnClickModal: false,
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
@@ -287,7 +292,8 @@ export default {
         },
         handleDel(id) {
             this.$confirm('确认要删除吗?', '提示', {
-                confirmButtonText: '确定',closeOnClickModal:false,
+                confirmButtonText: '确定',
+                closeOnClickModal: false,
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
@@ -355,5 +361,4 @@ export default {
 .tableDiv {
     width: 100%;
 }
-
 </style>

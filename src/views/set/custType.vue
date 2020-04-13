@@ -5,7 +5,7 @@
         </div>
         <div class="app-container">
             <div class="filter-container">
-              <el-button size="mini" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
+                <el-button size="mini" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
             </div>
             <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini" row-key="id">
                 <el-table-column label="序号" type="index" width="100" align="center"></el-table-column>
@@ -50,8 +50,8 @@
                         <el-input v-model="temp.remarks" placeholder="备注" />
                     </el-form-item>
                     <el-form-item label="是否可用" prop="isDisable">
-                        <el-radio v-model="temp.isDisable" label="0">是</el-radio>
-                        <el-radio v-model="temp.isDisable" label="1">否</el-radio>
+                        <el-radio v-model="temp.isDisable" :label="0">是</el-radio>
+                        <el-radio v-model="temp.isDisable" :label="1">否</el-radio>
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer" align="center">
@@ -106,10 +106,19 @@ export default {
             listLoading: true,
             parentId: '',
             temp: {
+                id: '',
                 custTypeName: '',
                 custTypeCode: '',
                 remarks: '',
-                isDisable: "0",
+                isDisable: 0,
+                parentId: ""
+            },
+            resetTemp: {
+                id: '',
+                custTypeName: '',
+                custTypeCode: '',
+                remarks: '',
+                isDisable: 0,
                 parentId: ""
             },
             dialogFormVisible: false,
@@ -191,8 +200,13 @@ export default {
         },
         getList() {
             this.listLoading = true
-            getCustTypeTreeDataByParentId().then(res => {
+            getCustTypeTreeDataByParentId({ parentId: "", includeRoot: 1 }).then(res => {
                 this.listLoading = false
+                res.data.data.map(item => {
+                    if (!item.id){
+                        item.id = '1111111'
+                    }
+                })
                 this.tableData = res.data.data
             }).catch(err => {
                 this.listLoading = false
@@ -205,10 +219,9 @@ export default {
             }
             this.dialogFormVisible = true
             this.dialogStatus = 'create'
-            this.temp.id = ''
-            this.temp.custTypeName = ''
-            this.temp.custTypeCode = ''
-            this.temp.isDisable = '0'
+            for (var key in this.temp){
+                this.temp[key] = this.resetTemp[key]
+            }
             this.$nextTick(() => {
                 this.$refs['dataForm'].clearValidate()
             })
@@ -216,10 +229,9 @@ export default {
         handleCompile(obj) {
             this.dialogFormVisible = true
             this.dialogStatus = 'update'
-            this.temp.id = obj.id
-            this.temp.custTypeName = obj.custTypeName
-            this.temp.custTypeCode = obj.custTypeCode
-            this.temp.isDisable = String(obj.isDisable)
+            for (var key in this.temp){
+                this.temp[key] = this.resetTemp[key]
+            }
             this.$nextTick(() => {
                 this.$refs['dataForm'].clearValidate()
             })

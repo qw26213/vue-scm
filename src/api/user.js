@@ -298,7 +298,6 @@ export function getCoaDatatables(data) {
     })
 }
 
-// 科目列表
 export function getGlCoaCode(data) {
     return request({
         url: '/drp/gl/coa/getGlCoaCode',
@@ -312,6 +311,14 @@ export function updateDisabledCoa(data) {
         url: '/drp/gl/coa/updateIsDisableById/',
         method: 'post',
         data
+    })
+}
+
+export function getMsgBeforeDelete(id) {
+    return request({
+        url: '/drp/gl/coa/getMsgBeforeDelete',
+        method: 'post',
+        data: {id: id}
     })
 }
 

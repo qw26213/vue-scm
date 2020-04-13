@@ -1,8 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input size="small" v-model="listQuery.bizTypeName" placeholder="业务类型名称" style="width: 200px;" class="filter-item" />
-      <el-input size="small" v-model="listQuery.bizTypeCode" placeholder="业务类型代码" style="width: 200px;" class="filter-item" />
+      <el-input size="small" v-model="listQuery.bizTypeName" placeholder="业务类型代码/名称" style="width: 200px;" class="filter-item" />
       <el-button size="mini" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
     </div>
 
@@ -79,7 +78,6 @@ export default {
       listLoading: true,
       listQuery: {
         page: 1,
-        bizTypeCode: '',
         bizTypeName: ''
       },
       temp: {

@@ -23,7 +23,7 @@
             </el-table-column>
             <el-table-column label="是否启用" align="center">
                 <template slot-scope="{row}">
-                    <span>{{row.isDisable==1?'否':'是'}}</span>
+                    <span>{{row.isDisable?'否':'是'}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="操作" align="center" width="200">
@@ -34,8 +34,8 @@
                 </template>
             </el-table-column>
         </el-table>
-        <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增角色':'修改角色'" :visible.sync="dialogFormVisible1" width="500px">
-            <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="110px" style="width: 300px; margin-left:50px;">
+        <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增角色':'修改角色'" :visible.sync="dialogFormVisible1" width="380px">
+            <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="80px" style="width: 320px; margin-left:10px;">
                 <el-form-item label="角色代码" prop="roleCode">
                     <el-input v-model="temp.roleCode" placeholder="角色代码" />
                 </el-form-item>
@@ -49,7 +49,7 @@
             </el-form>
             <div slot="footer" class="dialog-footer" align="center">
                 <el-button @click="dialogFormVisible1 = false">取消</el-button>
-                <el-button type="primary" @click="dialogStatus == 'create'?handleCreate():handleModify()">确定</el-button>
+                <el-button type="primary" @click="save()">确定</el-button>
             </div>
         </el-dialog>
         <el-dialog :close-on-click-modal="false" title="" :visible.sync="dialogFormVisible2" width="500px">

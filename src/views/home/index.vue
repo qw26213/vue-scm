@@ -1,6 +1,6 @@
 <template>
     <div class="homeMain">
-        <el-row :gutter="40" class="panel-group">
+        <el-row :gutter="30" class="panel-group">
             <el-col :xs="12" :sm="12" :lg="12" class="card-panel-col">
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
@@ -9,7 +9,7 @@
                     </div>
                     <el-table :data="tableData1" border fit resize>
                       <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
-                      <el-table-column label="日期" min-width="120" align="center">
+                      <el-table-column label="日期" min-width="80" align="center">
                           <template slot-scope="{row}">
                               <span>{{row.jeDate}}</span>
                           </template>
@@ -54,7 +54,7 @@
                     </div>
                     <el-table :data="tableData2" border fit resize>
                       <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
-                      <el-table-column label="代码" min-width="120" align="center">
+                      <el-table-column label="代码" min-width="80" align="center">
                           <template slot-scope="{row}">
                               <span>{{row.invCatgCode}}</span>
                           </template>
@@ -95,7 +95,7 @@
                     </div>
                     <el-table :data="tableData3" border fit resize>
                       <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
-                      <el-table-column label="代码" min-width="120" align="center">
+                      <el-table-column label="代码" min-width="80" align="center">
                           <template slot-scope="{row}">
                               <span>{{row.invCatgCode}}</span>
                           </template>
@@ -136,7 +136,7 @@
                     </div>
                     <el-table :data="tableData1" border fit resize>
                       <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
-                      <el-table-column label="代码" min-width="120" align="center">
+                      <el-table-column label="代码" min-width="80" align="center">
                           <template slot-scope="{row}">
                               <span>{{row.invCatgCode}}</span>
                           </template>
@@ -257,7 +257,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .homeMain {
-    padding: 30px 30px 10px;
+    padding: 20px 20px 10px;
+    min-width: 1220px;
     background-color: rgb(240, 242, 245);
     position: relative;
     height:100%

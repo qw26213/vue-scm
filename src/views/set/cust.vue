@@ -88,8 +88,8 @@
             </el-table-column>
         </el-table>
         <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
-        <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增客户':'修改客户'" :visible.sync="dialogFormVisible" width="660px">
-            <el-form ref="dataForm" :rules="rules" :model="temp" :inline="true" label-position="right" label-width="110px" style="width: 630px; margin-left:10px;">
+        <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增客户':'修改客户'" :visible.sync="dialogFormVisible" width="635px">
+            <el-form ref="dataForm" :rules="rules" :model="temp" :inline="true" label-position="right" label-width="95px" style="width: 600px; margin-left:10px;">
                 <el-form-item label="客户代码" prop="custCode">
                     <el-input v-model="temp.custCode" placeholder="客户代码" />
                 </el-form-item>
@@ -112,16 +112,21 @@
                     <el-input v-model="temp.email" placeholder="邮箱" />
                 </el-form-item>
                 <el-form-item label="开户行" prop="bankName">
-                    <el-input v-model="temp.bankName" placeholder="邮箱" />
+                    <el-input v-model="temp.bankName" placeholder="开户行" />
                 </el-form-item>
                 <el-form-item label="账号" prop="bankAccount">
-                    <el-input v-model="temp.bankAccount" placeholder="邮箱" />
-                </el-form-item>
-                <el-form-item label="地址" prop="addr">
-                    <el-input v-model="temp.addr" placeholder="地址" />
+                    <el-input v-model="temp.bankAccount" placeholder="账号" />
                 </el-form-item>
                 <el-form-item label="微信号" prop="wechat">
                     <el-input v-model="temp.wechat" placeholder="微信号" />
+                </el-form-item>
+                <el-form-item label="省市区" prop="addr">
+                    <el-input v-model="temp.province" placeholder="省" style="width:60px" />
+                    <el-input v-model="temp.city" placeholder="市" style="width:60px" />
+                    <el-input v-model="temp.district" placeholder="县" style="width:60px" />
+                </el-form-item>
+                <el-form-item label="地址" prop="addr">
+                    <el-input v-model="temp.addr" placeholder="地址" />
                 </el-form-item>
                 <el-form-item label="透支额度" prop="creditLimit">
                     <el-input v-model="temp.creditLimit" placeholder="透支额度" />
@@ -162,12 +167,12 @@
                 <el-form-item label="备注" prop="remarks">
                     <el-input v-model="temp.remarks" placeholder="备注" />
                 </el-form-item>
+                <el-form-item label="统一社会信用代码或纳税人识别号" prop="taxRegistrationCertificateNo" label-width="234px">
+                    <el-input v-model="temp.taxRegistrationCertificateNo" placeholder="统一社会信用代码或纳税人识别号" style="width:340px" />
+                </el-form-item>
                 <el-form-item label="是否开票" prop="isInvoice">
                     <el-radio v-model="temp.isInvoice" :label="1">是</el-radio>
                     <el-radio v-model="temp.isInvoice" :label="0">否</el-radio>
-                </el-form-item>
-                <el-form-item label="统一社会信用代码或纳税人识别号" prop="taxRegistrationCertificateNo" label-width="234px">
-                    <el-input v-model="temp.taxRegistrationCertificateNo" placeholder="统一社会信用代码或纳税人识别号" style="width:370px" />
                 </el-form-item>
                 <el-form-item label="是否可用" prop="isDisable" align="center" width="80">
                     <el-radio v-model="temp.isDisable" :label="0">是</el-radio>
@@ -184,12 +189,14 @@
 <script>
 import { getCust, saveCust, delCust, updateCustDisabled, updateOverdraftBalanceById1, getChannelTree, getCustTypeTree, getPriceGroup } from '@/api/basedata';
 import Pagination from '@/components/Pagination';
+import Areas from "@/components/areas";
 export default {
     name: 'baseCust',
-    components: { Pagination },
+    components: { Pagination, Areas },
     data() {
         return {
             tableKey: 0,
+            addressCode:{},
             tableData: [],
             treeData1: [],
             treeData2: [],
@@ -222,7 +229,7 @@ export default {
                 mnemonicCode: '',
                 channelTypeId: '',
                 channelTypeName: '',
-                custTypeId: '',
+                custTypeId: '',province:'',city:'',district:'',
                 priceGroupId: '',
                 custTypeName: '',
                 isInvoice: 0,
@@ -239,7 +246,7 @@ export default {
                 mnemonicCode: '',
                 channelTypeId: '',
                 channelTypeName: '',
-                custTypeId: '',
+                custTypeId: '',province:'',city:'',district:'',
                 priceGroupId: '',
                 custTypeName: '',
                 isInvoice: 0,
@@ -258,7 +265,7 @@ export default {
         }
     },
     mounted() {
-        this.getList();
+        // this.getList();
         this.getTree();
     },
     filters: {
@@ -268,6 +275,11 @@ export default {
         }
     },
     methods: {
+        areaData(data){
+            this.temp.province = data.split("-")[0]
+            this.temp.city = data.split("-")[1]
+            this.temp.area = data.split("-")[2]
+        },
         handleNodeClick1(e) {
             if (e.leaf == 1) {
                 document.getElementById("dropTit1").click();
@@ -278,7 +290,6 @@ export default {
         handleNodeClick2(e) {
             if (e.leaf == 1) {
                 document.getElementById("dropTit2").click();
-                console.log(e)
                 this.temp.custTypeName = e.custTypeName;
                 this.temp.custTypeId = e.id;
             }
@@ -427,3 +438,6 @@ export default {
     }
 }
 </script>
+<style lang="scss" scoped>
+/deep/.el-form-item{margin-bottom: 16px}
+</style>

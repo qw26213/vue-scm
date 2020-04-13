@@ -1,6 +1,6 @@
 <template>
     <div class="homeMain">
-        <el-row :gutter="40" class="panel-group">
+        <el-row :gutter="20" class="panel-group">
             <el-col :xs="12" :sm="12" :lg="12" class="card-panel-col">
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
@@ -33,7 +33,7 @@
                     <div class="listItem"><label>邮箱:</label>{{userInfo.mail}}</div>
                     <div class="listItem"><label>管理员:</label>{{userInfo.isAdmin == 1?'是':'否'}}</div>
                     <div class="listItem"><label style="width:100px">单据查询权限:</label>{{userInfo.queryType == 0?'自己':'全部'}}</div>
-                    <div class="listItem"><label>角色:</label>{{userInfo.roleName}}</div>
+                    <!-- <div class="listItem"><label>角色:</label>{{userInfo.roleName}}</div> -->
                 </el-card>
             </el-col>
             <el-col :xs="24" :sm="24" :lg="24" class="card-panel-col">
@@ -116,28 +116,35 @@
             </div>
         </el-dialog>
         <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增用户':'编辑用户'" :visible.sync="dialogFormVisible2" width="660px">
-            <el-form ref="dataForm1" :rules="rules2" inline :model="temp2" label-position="left" label-width="90px" style="width: 620px; margin-left:20px;">
+            <el-form ref="dataForm1" :rules="rules2" inline :model="temp2" label-position="right" label-width="85px" style="width: 620px; margin-left:20px;">
                 <el-form-item label="用户账号" prop="userAccount" style="margin-right:20px">
                     <el-input v-model="temp2.userAccount" placeholder="用户账号" />
                 </el-form-item>
                 <el-form-item label="用户姓名" prop="userName">
                     <el-input v-model="temp2.userName" placeholder="用户姓名" />
                 </el-form-item>
+                <el-form-item label="手机号" prop="mobile" style="margin-right:20px">
+                    <el-input v-model="temp2.mobile" placeholder="手机号" />
+                </el-form-item>
+                <el-form-item label="邮箱" prop="mail">
+                    <el-input v-model="temp2.mail" placeholder="邮箱" />
+                </el-form-item>
                 <el-form-item label="审核人签名" prop="sign2" style="margin-right:20px">
                     <el-input v-model="temp2.sign2" placeholder="用户姓名" />
                 </el-form-item>
-                <el-form-item label="手机号" prop="mobile">
-                    <el-input v-model="temp2.mobile" placeholder="手机号" />
-                </el-form-item>
-                <el-form-item label="邮箱" prop="mail" style="margin-right:20px">
-                    <el-input v-model="temp2.mail" placeholder="邮箱" />
-                </el-form-item>
-                <el-form-item label="角色" prop="roleId">
-                    <el-select v-model="temp2.roleId" style="width:185px">
+                <!-- <el-form-item label="角色" prop="roleId">
+                    <el-select v-model="temp2.roleId" style="width:185px" :disabled="userInfo.isAdmin == 0">
                         <el-option value="888888" label="审核会计"></el-option>
                         <el-option value="888887" label="制单会计"></el-option>
                         <el-option value="888889" label="企业出纳"></el-option>
                         <el-option value="888890" label="企业老板"></el-option>
+                    </el-select>
+                </el-form-item> -->
+                <el-form-item label="状态" prop="status">
+                    <el-select v-model="temp2.status" style="width:185px" :disabled="userInfo.isAdmin == 0">
+                        <el-option :value="0" label="正常"></el-option>
+                        <el-option :value="5" label="受限"></el-option>
+                        <el-option :value="9" label="禁用"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item v-if="dialogStatus=='create'" label="密码" prop="password" style="margin-right:20px">
@@ -147,28 +154,22 @@
                     <el-input type="password" v-model="temp2.againPassword" placeholder="确认密码" />
                 </el-form-item>
                 <el-form-item label="员工" prop="staffId" style="margin-right:20px">
-                    <el-select v-model="temp2.staffId" style="width:185px">
+                    <el-select v-model="temp2.staffId" style="width:185px" :disabled="userInfo.isAdmin == 0">
                         <el-option v-for="item in staffList" :value="item.id" :label="item.staffName"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="状态" prop="status">
-                    <el-select v-model="temp2.status" style="width:185px">
-                        <el-option :value="0" label="正常"></el-option>
-                        <el-option :value="5" label="受限"></el-option>
-                        <el-option :value="9" label="禁用"></el-option>
-                    </el-select>
+                <el-form-item label="单据查询权限" prop="queryType" label-width="100px" style="margin-right:20px">
+                    <el-radio v-model="temp2.queryType" :label="0" :disabled="userInfo.isAdmin == 0">自己</el-radio>
+                    <el-radio v-model="temp2.queryType" :label="1" :disabled="userInfo.isAdmin == 0">全部</el-radio>
                 </el-form-item>
-                <el-form-item label="单据查询权限" prop="queryType" label-width="110px" style="margin-right:20px">
-                    <el-radio v-model="temp2.queryType" :label="0">自己</el-radio>
-                    <el-radio v-model="temp2.queryType" :label="1">全部</el-radio>
-                </el-form-item>
-                <el-form-item label="管理员" prop="isAdmin" style="margin-left:40px">
-                    <el-checkbox v-model="temp2.isAdmin" :false-lable="0" :true-label="1"></el-checkbox>
+                <el-form-item label="管理员" prop="isAdmin">
+                    <el-radio v-model="temp2.isAdmin" :label="1" :disabled="userInfo.isAdmin == 0">是</el-radio>
+                    <el-radio v-model="temp2.isAdmin" :label="0" :disabled="userInfo.isAdmin == 0">否</el-radio>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer" align="center">
                 <el-button @click="dialogFormVisible2 = false">取消</el-button>
-                <el-button type="primary" @click="saveUser()">确定</el-button>
+                <el-button type="primary" @click="handleSave()">确定</el-button>
             </div>
         </el-dialog>
         <el-dialog title="重置密码" :visible.sync="dialogFormVisible3" width="400px">
@@ -357,6 +358,7 @@ export default {
                 if (valid) {
                     updateInfo(this.temp1).then(res => {
                         this.$message.success("修改企业信息成功")
+                        this.getData1()
                         this.dialogFormVisible1 = false
                     })
                 }
@@ -410,15 +412,15 @@ export default {
                 }
             });
         },
-        saveUser() {
+        handleSave() {
             this.$refs.dataForm1.validate(valid => {
                 if (valid) {
-                    if (this.temp2.password != this.temp2.againPassword) {
+                    if (this.dialogStatus == 'create' && this.temp2.password != this.temp2.againPassword) {
                         this.$message.warning('请确保两次密码输入一致');
                         return
                     }
                     saveUser(this.temp2).then(res => {
-                        this.$message.success((this.dialogStatus == 'create' ? '新增' : '修改') + '操作人成功')
+                        this.$message.success((this.dialogStatus == 'create' ? '新增' : '修改') + '成功')
                         this.getData3()
                         this.dialogFormVisible2 = false
                     })

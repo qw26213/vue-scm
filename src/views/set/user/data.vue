@@ -33,14 +33,15 @@
                     <span>{{ row.status==0?"正常":(row.status==5?'受限':'其它') }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" width="500">
+            <el-table-column label="操作" align="center" width="580">
                 <template slot-scope="{row}">
+                    <el-button type="default" size="mini" @click="handleAssign(row,0)">分配客户</el-button>
                     <el-button type="primary" size="mini" @click="handleAssign(row,1)">分配仓库</el-button>
                     <el-button type="info" size="mini" @click="handleAssign(row,2)">分配车辆</el-button>
                     <el-button type="default" size="mini" @click="handleAssign(row,3)">分配线路</el-button>
                     <el-button type="primary" size="mini" @click="handleAssign(row,4)">分配品牌</el-button>
-                    <el-button type="info" size="mini" @click="handleAssign(row,4)">分配产品</el-button>
-                    <el-button type="default" size="mini" @click="handleAssign(row,2)">分配角色</el-button>
+                    <el-button type="info" size="mini" @click="handleAssign(row,5)">分配商品</el-button>
+                    <el-button type="default" size="mini" @click="handleAssign(row,6)">分配角色</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -79,6 +80,8 @@ export default {
     name: 'userList',
     data() {
         return {
+            assignTypeArr: ['客户', '仓库', '车辆', '线路', '品牌', '商品', '角色'],
+            dialogTypeArr: ['cust', 'warehouse', 'truck', 'route', 'brand', 'item', 'role'],
             tableKey: 0,
             tableData: [],
             staffList: [],
@@ -136,10 +139,10 @@ export default {
         handleAssign(row, index) {
             this.dialogFormVisible1 = true
             this.assignType = index
-            this.handleObj = row;
+            this.handleObj = row
+            this.dialogTit = this.assignTypeArr[index]
+            this.dialogType = this.dialogTypeArr[index]
             if (index == 1) {
-                this.dialogTit = '仓库'
-                this.dialogType = 'warehouse'
                 getWarehouse().then(resp => {
                     this.dataList = resp.data.data;
                     getWarehouseListByUserId({ userId: row.id }).then(res => {
@@ -154,8 +157,6 @@ export default {
                 })
             }
             if (index == 2) {
-                this.dialogTit = '车辆'
-                this.dialogType = 'truck'
                 getTruck().then(resp => {
                     this.dataList = resp.data.data;
                     getTruckListByUserId({ userId: row.id }).then(res => {
@@ -170,8 +171,6 @@ export default {
                 })
             }
             if (index == 3) {
-                this.dialogTit = '线路'
-                this.dialogType = 'route'
                 getRoute().then(resp => {
                     this.dataList = resp.data.data;
                     getRouteListByUserId({ userId: row.id }).then(res => {
@@ -186,8 +185,6 @@ export default {
                 })
             }
             if (index == 4) {
-                this.dialogTit = '品牌'
-                this.dialogType = 'brand'
                 getBrand().then(resp => {
                     this.dataList = resp.data.data;
                     getBrandListByUserId({ userId: row.id }).then(res => {

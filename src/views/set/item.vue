@@ -5,7 +5,7 @@
         </div>
         <div class="app-container">
             <div class="filter-container">
-                <el-input size="small" v-model="listQuery.queryParam.itemName" placeholder="商品代码/名称" style="width: 200px;" class="filter-item" />
+                <el-input size="small" v-model="listQuery.queryParam.itemName" placeholder="商品代码/名称/助记码/规格/特性/品牌..." style="width: 360px;" class="filter-item" />
                 <!-- <el-input size="small" v-model="listQuery.queryParam.itemCode" placeholder="商品代码" style="width: 200px;" class="filter-item" /> -->
                 <el-button size="mini" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
                 <el-button size="mini" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
@@ -63,6 +63,11 @@
                         <span>{{row.exchangeRate}}</span>
                     </template>
                 </el-table-column>
+                <el-table-column label="通用售价" width="90" align="right">
+                    <template slot-scope="{row}">
+                        <span>{{row.stdPrice}}</span>
+                    </template>
+                </el-table-column>
                 <el-table-column label="税率" width="90" align="right">
                     <template slot-scope="{row}">
                         <span>{{row.taxRate}}</span>
@@ -97,8 +102,8 @@
                 </el-table-column>
             </el-table>
             <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.limit" @pagination="getList" />
-            <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增商品':'修改商品'" :visible.sync="dialogFormVisible" width="740px">
-                <el-form ref="dataForm" :rules="rules" :model="temp" :inline="true" label-position="left" label-width="110px" style="width:680px; margin-left:30px;overflow:auto;height:600px">
+            <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增商品':'修改商品'" :visible.sync="dialogFormVisible" width="700px">
+                <el-form ref="dataForm" :rules="rules" :model="temp" :inline="true" label-position="left" label-width="110px" style="width:660px; margin-left:10px;overflow:auto;height:600px">
                     <el-form-item label="商品代码" prop="itemCode" style="margin-right:20px">
                         <el-input v-model="temp.itemCode" placeholder="商品代码" />
                     </el-form-item>
@@ -151,30 +156,6 @@
                     <el-form-item label="特性" prop="def1" style="margin-right:20px">
                         <el-input v-model="temp.def1" placeholder="如口味" />
                     </el-form-item>
-                    <el-form-item label="商品属性" prop="attr">
-                        <el-radio-group v-model="temp.attr">
-                            <el-radio :label="0" style="margin-right:10px">库存商品</el-radio>
-                            <el-radio :label="1">负单价商品</el-radio>
-                        </el-radio-group>
-                    </el-form-item>
-                    <el-form-item label="打印用计量单位" prop="measPrint">
-                        <el-radio v-model="temp.measPrint" :label="1" style="margin-right:10px">主单位</el-radio>
-                        <el-radio v-model="temp.measPrint" :label="0">辅助单位</el-radio>
-                    </el-form-item>
-                    <el-form-item label="销售改价" prop="salePriceType">
-                        <el-radio-group v-model="temp.salePriceType">
-                            <el-radio :label="0" style="margin-right:10px">完全禁止</el-radio>
-                            <el-radio :label="1" style="margin-right:10px">按业务员</el-radio>
-                            <el-radio :label="2">完全可以</el-radio>
-                        </el-radio-group>
-                    </el-form-item>
-                    <el-form-item label="退货改价" prop="returnPriceType">
-                        <el-radio-group v-model="temp.returnPriceType">
-                            <el-radio :label="0" style="margin-right:10px">完全禁止</el-radio>
-                            <el-radio :label="1" style="margin-right:10px">按业务员</el-radio>
-                            <el-radio :label="2">完全可以</el-radio>
-                        </el-radio-group>
-                    </el-form-item>
                     <el-form-item label="显示用计量单位" prop="measSale">
                         <el-select v-model="temp.measSale" style="width:185px" class="filter-item">
                             <el-option label="主单位" :value="0"></el-option>
@@ -192,13 +173,36 @@
                             <el-option v-for="item in [0,1,2,3,4]" :key="item" :label="item" :value="item"></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="是否可拆箱" prop="isIndivisible">
-                        <el-radio-group v-model="temp.isIndivisible">
-                            <el-radio :label="0" style="margin-right:10px">不可以</el-radio>
-                            <el-radio :label="1" style="margin-right:10px">可以</el-radio>
+                    <el-form-item label="通用售价" prop="stdPrice">
+                        <el-input v-model="temp.stdPrice" placeholder="保质期" />
+                    </el-form-item>
+                    <el-form-item label="商品属性" prop="attr">
+                        <el-radio-group v-model="temp.attr">
+                            <el-radio :label="0" style="margin-right:10px">库存商品</el-radio>
+                            <el-radio :label="1">负单价商品</el-radio>
                         </el-radio-group>
                     </el-form-item>
-                    <el-form-item label="" style="width:155px"></el-form-item>
+                    <el-form-item label="打印用计量单位" prop="measPrint" style="margin-left:10px">
+                        <el-radio v-model="temp.measPrint" :label="1" style="margin-right:10px">主单位</el-radio>
+                        <el-radio v-model="temp.measPrint" :label="0">辅助单位</el-radio>
+                    </el-form-item>
+                    <el-form-item label="销售改价" prop="salePriceType">
+                        <el-radio-group v-model="temp.salePriceType">
+                            <el-radio :label="0" style="margin-right:10px">完全禁止</el-radio>
+                            <el-radio :label="1" style="margin-right:10px">按业务员</el-radio>
+                            <el-radio :label="2">完全允许</el-radio>
+                        </el-radio-group>
+                    </el-form-item>
+                    <el-form-item label="退货改价" prop="returnPriceType">
+                        <el-radio-group v-model="temp.returnPriceType">
+                            <el-radio :label="0" style="margin-right:10px">完全禁止</el-radio>
+                            <el-radio :label="1" style="margin-right:10px">按业务员</el-radio>
+                            <el-radio :label="2">完全允许</el-radio>
+                        </el-radio-group>
+                    </el-form-item>
+                    <el-form-item label="" prop="isIndivisible">
+                        <el-checkbox v-model="temp.isBatch" :false-label="0" :true-label="1" style="margin-right:10px">允许拆箱</el-checkbox>
+                    </el-form-item>
                     <el-form-item label="" prop="isBatch">
                         <el-checkbox v-model="temp.isBatch" :false-label="0" :true-label="1" style="margin-right:10px">序列号管理</el-checkbox>
                     </el-form-item>
@@ -274,7 +278,7 @@ export default {
                 exchangeRate: '',
                 salePriceType: 1,
                 returnPriceType: 1,
-                returnPriceType: '',
+                stdPrice: '',
                 prodArea: '',
                 priceModeCode: 0,
                 brandId: '',
@@ -308,7 +312,7 @@ export default {
                 exchangeRate: '',
                 salePriceType: 1,
                 returnPriceType: 1,
-                returnPriceType: '',
+                stdPrice: '',
                 prodArea: '',
                 priceModeCode: 0,
                 brandId: '',
@@ -483,7 +487,7 @@ export default {
     }
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
 .main {
     position: relative;
     width: 100%;
@@ -506,4 +510,5 @@ export default {
 .tableDiv {
     width: 100%;
 }
+/deep/.el-form-item{margin-bottom: 16px}
 </style>

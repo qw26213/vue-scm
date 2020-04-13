@@ -65,7 +65,7 @@
                     <el-input v-model="temp.coaCode" placeholder="科目代码" :disabled="dialogStatus=='update'&&temp.leaf==0 && temp.unchageableFlag==0" />
                 </el-form-item>
                 <el-form-item label="科目名称" prop="coaName" min-width="220">
-                    <el-input v-model="temp.coaName" placeholder="科目名称" :disabled="dialogStatus=='update'&&temp.leaf==0 && temp.unchageableFlag==0" />
+                    <el-input v-model="temp.coaName" placeholder="科目名称" :disabled="!(dialogStatus=='update'&&temp.leaf==1 && temp.unchageableFlag==0)" />
                 </el-form-item>
                 <el-form-item label="上级科目" prop="parentId">
                     <el-input v-for="item in coaArr" :key="item.id" v-if="temp.parentId == item.id" v-model="item.coaName" placeholder="上级科目" disabled />
@@ -93,8 +93,8 @@
                     <el-checkbox :checked="temp.auxiliary&&temp.auxiliary.charAt(5)==1" v-model="temp.auxiliaryName_5" :false-label="0" :true-label="1">项目</el-checkbox>
                 </el-form-item>
                 <el-form-item label="" style="width:610px">
-                    <el-checkbox v-model="temp.isDisable" :false-label="0" :true-label="1">是否禁用</el-checkbox>
-                    <el-checkbox v-model="temp.isDisableChildren" :false-label="0" :true-label="1">同时修改子科目</el-checkbox>
+                    <el-checkbox v-model="temp.isDisable" :disabled="!(dialogStatus=='update'&&temp.leaf==1 && temp.unchageableFlag==0)" :false-label="0" :true-label="1">是否禁用</el-checkbox>
+                    <el-checkbox v-model="temp.isDisableChildren" :disabled="!(dialogStatus=='update'&&temp.leaf==1 && temp.unchageableFlag==0)" :false-label="0" :true-label="1">同时修改子科目</el-checkbox>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer" align="center">
@@ -107,7 +107,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { getCoaDatatables, coaClassification, delCoa, updateDisabledCoa, saveCoa, updateDispName, getGlCoaCode } from '@/api/user'
-import { getCoaCodeUsedByIdNoSysTemplet, getChildrenCountByParentId, getCoaCodeUsedById, getChildCountById } from '@/api/user'
+import { getCoaCodeUsedByIdNoSysTemplet, getChildrenCountByParentId, getCoaCodeUsedById, getChildCountById, getMsgBeforeDelete } from '@/api/user'
 export default {
     data() {
         return {
@@ -129,6 +129,11 @@ export default {
                 crDr: 1,
                 auxiliary: '',
                 unchageableFlag: 0,
+                coaHierarchyId: '',
+                coaLevel: '',
+                coaIndustryId: '',
+                dispName: '',
+                noAuxiliary: '',
                 leaf: 0
             },
             resetTemp: {
@@ -149,6 +154,11 @@ export default {
                 crDr: 1,
                 auxiliary: '',
                 unchageableFlag: 0,
+                coaHierarchyId: '',
+                coaLevel: '',
+                coaIndustryId: '',
+                dispName: '',
+                noAuxiliary: '',
                 leaf: 0
             },
             rules: {
@@ -302,53 +312,19 @@ export default {
             })
         },
         handleDel(row) {
-            getCoaCodeUsedByIdNoSysTemplet(row.id).then(res => {
-                if (res.data.data == 1) {
-                    getChildrenCountByParentId(row.parentId).then(resp => {
-                        if (resp.data.body > 1) {
-                            this.$message.warning('此科目在余额表/凭证/模板中使用，不可删除！');
-                        } else {
-                            this.$confirm('此科目在余额表/凭证/模板中使用，删除后，数据将自动回滚至上级科目，是否继续？', '提示', {
-                                confirmButtonText: '确定',
-                                cancelButtonText: '取消',
-                                type: 'warning'
-                            }).then(() => {
-                                this.delCourse(row.id);
-                            }).catch(err => {
-                                console.log(err)
-                            })
-                        }
+            getMsgBeforeDelete(row.id).then(resp => {
+                if (resp.data.errorCode == 0) {
+                    this.$confirm(resp.data.msg, '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        this.delCourse(row.id)
+                    }).catch(err => {
+                        console.log(err)
                     })
                 } else {
-                    getCoaCodeUsedById(row.id).then(resp => {
-                        if (resp.data.data == 1) {
-                            getChildrenCountByParentId(row.parentId).then(rep => {
-                                if (res.body > 1) {
-                                    this.$message.warning('此科目在余额表/凭证/模板中使用，不可删除！')
-                                } else {
-                                    this.$confirm('此科目在余额表/凭证/模板中使用，删除后，数据将自动回滚至上级科目，是否继续？', '提示', {
-                                        confirmButtonText: '确定',
-                                        cancelButtonText: '取消',
-                                        type: 'warning'
-                                    }).then(() => {
-                                        this.delCourse(row.id);
-                                    }).catch(err => {
-                                        console.log(err)
-                                    })
-                                }
-                            })
-                        } else {
-                            this.confirm('确定要删除这个科目吗？', '提示', {
-                                confirmButtonText: '确定',
-                                cancelButtonText: '取消',
-                                type: 'warning'
-                            }).then(() => {
-                                this.delCourse(row.id);
-                            }).catch(err => {
-                                console.log(err)
-                            })
-                        }
-                    })
+                    this.$message.warning(res.data.msg)
                 }
             })
         },
@@ -356,7 +332,7 @@ export default {
             delCoa(id).then(res => {
                 if (res.data.errorCode == 0) {
                     this.getData();
-                    this.$message.success('删除成功')
+                    this.$message.success('删除科目成功')
                 } else {
                     this.$message.error(res.data.msg)
                 }

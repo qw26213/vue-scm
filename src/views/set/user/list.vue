@@ -33,7 +33,7 @@
             </el-table-column>
             <el-table-column label="单据查询权限" align="center">
                 <template slot-scope="{row}">
-                    <span>{{ row.queryType==1?'有':'无' }}</span>
+                    <span>{{ row.queryType==1?'自己':'全部' }}</span>
                 </template>
             </el-table-column>
             <el-table-column label="状态" align="center">
@@ -72,20 +72,20 @@
                         <el-option :value="9" label="禁用"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="密码" prop="password" v-show="dialogStatus=='create'">
+                <el-form-item label="密码" prop="password" v-if="dialogStatus=='create'">
                     <el-input type="password" v-model="temp.password" placeholder="密码" />
                 </el-form-item>
-                <el-form-item label="确认密码" prop="againPassword" v-show="dialogStatus=='create'">
+                <el-form-item label="确认密码" prop="againPassword" v-if="dialogStatus=='create'">
                     <el-input type="password" v-model="temp.againPassword" placeholder="确认密码" />
                 </el-form-item>
-                <el-form-item label="角色" prop="roleId">
+                <!-- <el-form-item label="角色" prop="roleId">
                     <el-select v-model="temp.roleId" style="width:185px" class="filter-item">
                         <el-option label="审核会计" value="888888"></el-option>
                         <el-option label="制单会计" value="888887"></el-option>
                         <el-option label="企业出纳" value="888889"></el-option>
                         <el-option label="企业老板" value="888890"></el-option>
                     </el-select>
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item label="员工" prop="staffId">
                     <el-select v-model="temp.staffId" style="width:185px">
                         <el-option v-for="item in staffList" :value="item.id" :label="item.staffName"></el-option>
@@ -102,7 +102,7 @@
             </el-form>
             <div slot="footer" class="dialog-footer" align="center">
                 <el-button @click="dialogFormVisible = false">取消</el-button>
-                <el-button type="primary" @click="dialogStatus == 'create'?handleCreate():handleModify()">确定</el-button>
+                <el-button type="primary" @click="save()">确定</el-button>
             </div>
         </el-dialog>
     </div>
@@ -217,7 +217,7 @@ export default {
                 this.$refs['dataForm'].clearValidate()
             })
         },
-        handleModify() {
+        save() {
             this.temp.auditLevel1 = '1'
             this.temp.auditLevel2 = '1'
             this.$refs['dataForm'].validate((valid) => {
@@ -226,24 +226,7 @@ export default {
                         if (res.data.errorCode == 0) {
                             this.getList();
                             this.dialogFormVisible = false
-                            this.$message.success('修改成功')
-                        } else {
-                            this.$message.error(res.data.msg)
-                        }
-                    })
-                }
-            })
-        },
-        handleCreate() {
-            this.temp.auditLevel1 = '1'
-            this.temp.auditLevel2 = '1'
-            this.$refs['dataForm'].validate((valid) => {
-                if (valid) {
-                    saveUser(this.temp).then(res => {
-                        if (res.data.errorCode == 0) {
-                            this.getList();
-                            this.dialogFormVisible = false
-                            this.$message.success('新增成功')
+                            this.$message.success(this.dialogStatus == 'create' ? '新增成功' : '修改成功')
                         } else {
                             this.$message.error(res.data.msg)
                         }

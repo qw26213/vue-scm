@@ -27,7 +27,6 @@
         </el-dropdown-menu>
       </el-dropdown>
     </div>
-
     <el-dialog title="修改密码" :visible.sync="dialogFormVisible" width="400px">
       <el-form ref="dataForm" :rules="rules" :model="pswForm" label-position="left" label-width="96px">
         <el-form-item label="原密码" prop="oldPsw">
@@ -45,10 +44,8 @@
         <el-button type="primary" @click="savePsw">确定</el-button>
       </div>
     </el-dialog>
-
   </div>
 </template>
-
 <script>
 import { updatePSW } from '@/api/user'
 import userImg from '@/assets/user.png'
