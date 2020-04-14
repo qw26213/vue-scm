@@ -524,3 +524,12 @@ export function validateVal(obj) {
         obj.value = obj.value.substring(0, 9);
     }
 }
+
+export function toNumStr(arg) {
+    if (arg == null)
+        return arg;
+    arg = String(arg).replace(/,/g, '');
+    if (isNaN(arg))
+        arg = 0;
+    return arg;
+}

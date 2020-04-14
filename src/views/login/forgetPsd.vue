@@ -1,5 +1,5 @@
 <template>
-    <div class="else-container">
+    <div class="container">
         <el-form ref="requsetFrom" :model="requsetFrom" :rules="loginRules" class="login-form" autocomplete="on" label-position="left" label-width="100px" style="width:400px;margin: 100px auto 0">
             <div class="title-container">
                 <h3 class="title">找回密码</h3>
@@ -109,6 +109,10 @@ export default {
 }
 </script>
 <style scoped>
+.container {
+  min-height: 100%;
+  overflow: hidden;
+}
 .title{text-align: center;margin-bottom: 20px}
 .bot{margin: 10px 0}
 .bot span{display: inline-block;font-size: 14px;color: #666;cursor:pointer;}

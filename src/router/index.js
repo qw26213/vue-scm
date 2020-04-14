@@ -38,6 +38,10 @@ export const constantRoutes = [{
     component: () => import('@/views/login/forgetPsd'),
     hidden: true
 }, {
+    path: '/forgetCode',
+    component: () => import('@/views/login/forgetCode'),
+    hidden: true
+}, {
     path: '/register',
     component: () => import('@/views/login/register'),
     hidden: true
