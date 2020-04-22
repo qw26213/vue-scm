@@ -66,10 +66,10 @@
                         <el-date-picker v-model="temp.effectiveDate" type="date" style="width:240px" placeholder="生效时间" value-format="yyyy-MM-dd"></el-date-picker>
                     </el-form-item>
                     <el-form-item label="改价类型" prop="modifiedType">
-                        <el-select v-model="temp.modifiedType" placeholder="修改类型" style="width:240px">
-                            <el-option label="不可修改" :value="0"></el-option>
-                            <el-option label="可修改" :value="1"></el-option>
-                            <el-option label="按商品" :value="2"></el-option>
+                        <el-select v-model="temp.modifiedType" placeholder="改价类型" style="width:240px">
+                            <el-option label="完全禁止" :value="0"></el-option>
+                            <el-option label="按商品" :value="1"></el-option>
+                            <el-option label="完全允许" :value="2"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="是否有效" prop="isDisable">
@@ -106,12 +106,12 @@
                             </el-date-picker>
                         </template>
                     </el-table-column>
-                    <el-table-column label="修改类型" align="center">
+                    <el-table-column label="改价类型" align="center">
                         <template slot-scope="{row}">
-                            <el-select v-model="row.modifiedType" placeholder="修改类型">
-                                <el-option label="可修改" :value="1"></el-option>
-                                <el-option label="不可修改" :value="0"></el-option>
-                                <el-option label="按商品" :value="2"></el-option>
+                            <el-select v-model="row.modifiedType" placeholder="改价类型">
+                                <el-option label="完全禁止" :value="0"></el-option>
+                                <el-option label="按商品" :value="1"></el-option>
+                                <el-option label="完全允许" :value="2"></el-option>
                             </el-select>
                         </template>
                     </el-table-column>

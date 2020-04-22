@@ -13,6 +13,11 @@ const userRouter = {
         component: () => import('@/views/home/user'),
         name: 'userInfo',
         meta: { title: '账户信息' }
+    },{
+        path: 'help',
+        component: () => import('@/views/home/help'),
+        name: 'userhelp',
+        meta: { title: '帮助' }
     }]
 }
 export default userRouter

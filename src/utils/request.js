@@ -27,12 +27,14 @@ axios.interceptors.response.use(
         if (error.response) {
             switch (error.response.status) {
                 case 401:
+                    if (document.getElementsByClassName('el-message').length === 0){
                     MessageBox.alert('登录已失效，请登录!', '提示', {
                         confirmButtonText: '确定',
                         callback: () => {
                           context.push('/login')
                         }
                     })
+                    }
                     break;
                 default:
                     Message.error(error.message || "error")

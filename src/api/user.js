@@ -203,6 +203,15 @@ export function resetAccount(data) {
     })
 }
 
+// 重置账套
+export function getAccount(data) {
+    return request({
+        url: '/drp/gl/book/get',
+        method: 'post',
+        data
+    })
+}
+
 // 修改账套
 export function saveBook(data) {
     return request({

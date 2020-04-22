@@ -1,5 +1,5 @@
 <template>
-    <el-select v-model="summary" style="width:100%;height:60px" placeholder="" class="filter-item" @change="changeVal" filterable allow-create>
+    <el-select v-model="summary" style="width:100%;height:60px" placeholder="摘要" class="filter-item" @change="changeVal" filterable allow-create>
         <el-option v-for="(item,index) in summaryList" :key="index" :label="item.summary" :value="item.summary"></el-option>
     </el-select>
 </template>

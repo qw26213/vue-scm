@@ -4,9 +4,10 @@
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
     <div class="right-menu">
       <template v-if="device!=='mobile'">
-        <search id="header-search" class="right-menu-item" />
-        <qq class="right-menu-item" />
-        <screenfull id="screenfull" class="right-menu-item hover-effect" />
+        <search id="header-search" class="right-menu-item" title="搜索" />
+        <help class="right-menu-item" title="帮助" />
+        <qq class="right-menu-item" title="在线客服" />
+        <screenfull id="screenfull" class="right-menu-item hover-effect" title="全屏" />
       </template>
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
@@ -56,9 +57,18 @@ import qq from '@/components/qq'
 import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
+import help from '@/components/help'
 import { setToken,getToken } from '@/utils/auth'
 
 export default {
+  components: {
+    Breadcrumb,
+    Hamburger,qq,
+    Screenfull,
+    SizeSelect,
+    Search,
+    help
+  },
   data(){
     return {
       avatar:userImg,
@@ -75,13 +85,6 @@ export default {
         againPassword: [{ required: true, message: ' 确认新密码不能为空', trigger: 'change' }]
       },
     }
-  },
-  components: {
-    Breadcrumb,
-    Hamburger,qq,
-    Screenfull,
-    SizeSelect,
-    Search
   },
   computed: {
     ...mapGetters([
@@ -123,7 +126,6 @@ export default {
     },
     logout() {
       this.$store.dispatch('user/logout').then(() => {
-        console.log('退出成功')
         this.$router.push({ path: '/login'})
       })
     }

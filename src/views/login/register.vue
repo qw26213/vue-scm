@@ -4,25 +4,30 @@
             <div class="title-container" style="margin-bottom:30px">
                 <h3 class="title">注册新用户</h3>
             </div>
+            <p class="tit">企业信息：</p>
             <el-form-item label="企业全称" prop="orgName">
-                <el-input v-model="reqFrom.orgName" placeholder="商品代码" />
+                <el-input v-model="reqFrom.orgName" placeholder="企业全称" />
             </el-form-item>
             <el-form-item label="企业联系人" prop="contactName">
                 <el-input v-model="reqFrom.contactName" placeholder="企业联系人" />
             </el-form-item>
             <el-form-item label="企业所在地" prop="areaId">
-                <el-select v-model="reqFrom.areaId" style="width:185px" class="filter-item">
+                <el-select v-model="reqFrom.areaId" style="width:185px" placeholder="企业所在地" class="filter-item">
                     <el-option v-for="item in areaList" :key="item.id" :label="item.areaName" :value="item.id"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="纳税类型" prop="taxFilingCategory">
-                <el-select v-model="reqFrom.taxFilingCategory" style="width:185px" class="filter-item">
+            <el-form-item label="详细地址" prop="invoiceAddr">
+                <el-input v-model="reqFrom.invoiceAddr" placeholder="详细地址" />
+            </el-form-item>
+            <el-form-item label="纳税类型" prop="taxFilingCategoryId">
+                <el-select v-model="reqFrom.taxFilingCategoryId" placeholder="纳税类型" style="width:185px" class="filter-item">
                     <el-option v-for="item in taxList" :key="item.id" :label="item.taxFilingCategoryName" :value="item.id"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="纳税人识别号" prop="taxRegistrationCertificateNo">
                 <el-input v-model="reqFrom.taxRegistrationCertificateNo" placeholder="纳税人识别号" />
             </el-form-item>
+            <p class="tit">管理员信息：</p>
             <el-form-item label="用户账号" prop="userAccount">
                 <el-input v-model="reqFrom.userAccount" placeholder="用户账号" />
             </el-form-item>
@@ -33,10 +38,7 @@
                 <el-input v-model="reqFrom.mobile" placeholder="注册手机号" />
             </el-form-item>
             <el-form-item label="注册邮箱" prop="mail">
-                <el-input v-model="reqFrom.mail" placeholder="注册手机号" />
-            </el-form-item>
-            <el-form-item label="详细地址" prop="invoiceAddr">
-                <el-input v-model="reqFrom.invoiceAddr" placeholder="详细地址" />
+                <el-input v-model="reqFrom.mail" placeholder="注册邮箱" />
             </el-form-item>
             <el-form-item label="登录密码" prop="password">
                 <el-input v-model="reqFrom.password" type="password" placeholder="登录密码" />
@@ -152,15 +154,15 @@
                 <p>4、 除非另行约定，否则服务的规定价格不包括所有适用税款和货币结汇。您自行负责支付这种税费或其他费用。如果金账簿未准时从您处收到所有款项，那么金账簿可能会暂停或取消服务。因未付款而暂停或取消服务可能会造成您无法访问和使用自己的账户及其内容。</p>
                 <p>5、 如果服务不包括Internet访问，那么您负责向您的Internet访问服务提供商支付相应费用。这些费用并不包含在您向金账簿支付的服务费用之中。如果您通过无线设备（例如，移动电话和平板电脑）来访问服务，则您的无线运营商可能会针对Web浏览、消息传递以及其他需要使用空中和无线数据服务的服务收取费用。请向您的运营商核实是否会向您收取这种费用。您应独自负责承担因通过任何无线或其他通信服务访问该服务而发生的任何费用。</p>
             </div>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+            <div slot="footer" class="dialog-footer" style="text-align:center">
+                <el-button type="primary" @click="dialogVisible = false" size="mini">确 定</el-button>
             </div>
         </el-dialog>
     </div>
 </template>
 <script>
 import { registerLoadTaxfilingcategory, registerLoadArea, register } from '@/api/login'
+import { getIndexInfo } from '@/api/user'
 export default {
     name: 'register',
     data() {
@@ -190,7 +192,7 @@ export default {
                 againPassword: '',
                 taxRegistrationCertificateNo: '',
                 invoiceAddr: '',
-                taxFilingCategory: '',
+                taxFilingCategoryId: '',
                 sign2: '',
                 mail: '',
                 mobile: '',
@@ -198,10 +200,10 @@ export default {
                 userName: '',
                 areaId: "",
             },
-            isRemember: true,
+            isRemember: false,
             rules: {
                 orgCode: [{ required: true, trigger: 'blur', validator: validateOrcode }],
-                userAccount: [{ required: true, message: '账号不能为空', trigger: 'blur' }],
+                userAccount: [{ required: true, message: '用户账号不能为空', trigger: 'blur' }],
                 password: [{ required: true, trigger: 'blur', validator: validatePassword }],
                 againPassword: [{ required: true, trigger: 'blur', validator: validatePassword }],
                 orgName: [{ required: true, trigger: 'blur', message: '企业名称不能为空' }],
@@ -210,15 +212,14 @@ export default {
                 mobile: [{ required: true, trigger: 'blur', message: '注册手机号不能为空' }],
                 mail: [{ required: true, trigger: 'blur', message: '注册邮箱不能为空' }],
                 contactName: [{ required: true, trigger: 'blur', message: '企业联系人不能为空' }],
-                taxFilingCategory: [{ required: true, trigger: 'blur', message: '纳税类型不能为空' }],
-                taxRegistrationCertificateNo: [{ required: true, trigger: 'blur', message: '纳税人识别号不能为空' }]
+                taxFilingCategoryId: [{ required: true, trigger: 'blur', message: '纳税类型不能为空' }]
             },
             loading: false,
             redirect: this.$route.query.redirect
         }
     },
     created() {
-        this.getData();
+        this.getData()
     },
     methods: {
         toPath(path) {
@@ -226,7 +227,7 @@ export default {
         },
         getData() {
             registerLoadTaxfilingcategory().then(res => {
-                this.taxList = res.data;
+                this.taxList = res.data
             })
             registerLoadArea().then(res => {
                 this.areaList = res.data;
@@ -237,12 +238,29 @@ export default {
                 confirmButtonText: '确定',
                 closeOnClickModal: false,
                 cancelButtonText: '取消',
-                type: 'info'
+                type: 'success',
+                showCancelButton: false,
+                showClose: false,
+                dangerouslyUseHTMLString: true
             }).then((res => {
-                this.$router.push('/')
-            }));
+                getIndexInfo(this.loginForm).then(res => {
+                    var user = res.data.userInfo
+                    sessionStorage.userInfo = JSON.stringify(res.data.userInfo)
+                    this.$store.commit('SET_NAME', user.userName)
+                    this.$store.commit('SET_AVATAR', 'https://panjiachen.gitee.io/vue-element-admin-site/home.png')
+                    sessionStorage.bookId = user.bookId
+                    sessionStorage.taxFilingCategoryCode = user.taxFilingCategoryCode
+                    this.$router.push('/home')
+                }).catch(err => {
+                    console.log(err)
+                })
+            }))
         },
         handleRegister() {
+            if (this.isRemember === false) {
+                this.$message.warning('请仔细阅读并同意《用户服务协议》!')
+                return
+            }
             this.$refs.reqFrom.validate(valid => {
                 if (valid) {
                     this.loading = true
@@ -271,15 +289,39 @@ export default {
 </script>
 <style scoped>
 .container {
-  min-height: 100%;
-  overflow: hidden;
+    min-height: 100%;
+    overflow: hidden;
 }
+
 .title {
     text-align: center;
     margin-bottom: 20px
 }
-.bot{margin: 10px 0}
-.bot span{display: inline-block;font-size: 14px;color: #666;cursor:pointer;}
-.bot span:hover{color:#333;}
-.agreement p{line-height: 24px;font-size: 13px;margin-top: 0;margin-bottom: 5px}
+
+.tit {
+    font-size: 14px;
+    color: #333;
+}
+
+.bot {
+    margin: 10px 0
+}
+
+.bot span {
+    display: inline-block;
+    font-size: 14px;
+    color: #666;
+    cursor: pointer;
+}
+
+.bot span:hover {
+    color: #333;
+}
+
+.agreement p {
+    line-height: 24px;
+    font-size: 13px;
+    margin-top: 0;
+    margin-bottom: 5px
+}
 </style>

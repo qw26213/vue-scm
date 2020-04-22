@@ -1,11 +1,11 @@
 <template>
     <div class="container">
-        <el-form ref="reqFrom" :model="reqFrom" :rules="rules" class="login-form" autocomplete="on" label-position="left" label-width="78px" style="width:400px;margin: 100px auto 0">
+        <el-form ref="reqFrom" :model="reqFrom" :rules="rules" class="login-form" autocomplete="on" label-position="right" label-width="78px" style="width:400px;margin: 100px auto 0">
             <div class="title-container" style="margin-bottom:50px">
                 <h3 class="title">找回企业代码</h3>
             </div>
-            <el-form-item label="注册邮箱" prop="email">
-                <el-input v-model="reqFrom.email" placeholder="注册邮箱" />
+            <el-form-item label="注册邮箱" prop="mail">
+                <el-input v-model="reqFrom.mail" placeholder="注册邮箱" />
             </el-form-item>
             <el-form-item label="用户账号" prop="userAccount">
                 <el-input v-model="reqFrom.userAccount" placeholder="用户账号" />
@@ -15,7 +15,7 @@
     </div>
 </template>
 <script>
-import { forgotSentVerifyCode,forgotPSWSave } from '@/api/login'
+import { forgotSentVerifyCode, forgotPSWSave, forgotOrgCode9 } from '@/api/login'
 export default {
     name: 'register',
     data() {
@@ -34,17 +34,12 @@ export default {
             }
         }
         return {
-            loginUrl:'',
-            taxList:[],
-            areaList:[],
             reqFrom: {
-                email: '',
+                mail: '',
                 userAccount: ''
             },
-            isRemember:true,
             rules: {
-                email: [{ required: true, message:'邮箱不能为空', trigger: 'blur'}],
-                userAccount: [{ required: true,message:'账号不能为空', trigger: 'blur'}]
+                mail: [{ required: true, message:'注册邮箱不能为空', trigger: 'blur'}]
             },
             loading: false
         }
@@ -53,28 +48,16 @@ export default {
       toPath(path){
         this.$router.push({ path: path})
       },
-      getCode(){
-        var obj = {
-            email:this.reqFrom.email,
-            userAccount:this.reqFrom.userAccount
-        }
-        forgotSentVerifyCode(obj).then((res) => {
-          if(res.data.errorCode==0)
-            this.$message.success('验证码已发送至邮箱！');
-          else
-            this.$message.error(res.data.msg);
-        })
-      },
       handleSave() {
         this.$refs.reqFrom.validate(valid => {
           if (valid) {
             this.loading = true
-            forgotPSWSave(this.reqFrom).then((res) => {
-              if(res.data.errorCode==0){
-                this.$message.success('密码设置成功！');
-                this.$router.push('/login')
+            forgotOrgCode9(this.reqFrom).then((res) => {
+              if(res.data.errorCode === 0){
+                this.$message.success(res.data.msg)
+                this.$router.go(-1)
               } else{
-                this.$message.error(res.data.msg);
+                this.$message.warning(res.data.msg)
               }
               this.loading = false
             }).catch(err => {
@@ -89,10 +72,7 @@ export default {
 }
 </script>
 <style scoped>
-.container {
-  min-height: 100%;
-  overflow: hidden;
-}
+.container {min-height: 100%;overflow: hidden;}
 .title{text-align: center;margin-bottom: 20px}
 .bot{margin: 10px 0}
 .bot span{display: inline-block;font-size: 14px;color: #666;cursor:pointer;}

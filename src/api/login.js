@@ -22,6 +22,14 @@ export function register(data) {
   })
 }
 
+export function forgotOrgCode9(data) {
+  return request({
+    url: '/drp/forgotOrgCode9',
+    method: 'post',
+    data
+  })
+}
+
 export function forgotSentVerifyCode(data){
   return request({
     url: '/drp/forgotSentVerifyCode',

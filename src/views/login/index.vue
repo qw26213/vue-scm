@@ -2,7 +2,7 @@
     <div class="login-container">
         <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
             <div class="title-container">
-                <h3 class="title">登录财务管理系统</h3>
+                <h3 class="title">财务分销管理系统</h3>
             </div>
             <el-form-item prop="orgCode">
                 <span class="svg-container">
@@ -21,12 +21,12 @@
             </el-form-item>
             <div class="bot clearfix">
                 <span class="fl" @click="toPath('/register')">注册新用户</span>
-                <span class="fr" @click="toPath('/forgetPsd')">忘记密码</span>
+                <span class="fr" @click="toPath('/forgetPsd')">忘记密码?</span>
             </div>
             <div class="bot clearfix">
                 <el-checkbox v-model="isRemember" style="float:left;margin-right:5px"></el-checkbox>
                 <span style="float:left;">记住企业代码</span>
-                <span class="fr" @click="toPath('/forgetCode')">忘记企业代码</span>
+                <span class="fr" @click="toPath('/forgetCode')">忘记企业代码?</span>
             </div>
             <el-button :loading="loading" type="primary" style="width:100%;margin:10px auto;" @click="handleLogin">登录</el-button>
         </el-form>
@@ -107,8 +107,8 @@ export default {
     },
     mounted() {
         document.onkeydown = () => {
-            if (window.event.keyCode == 13) {
-                this.handleLogin();
+            if (window.event.keyCode == 13 && document.getElementsByClassName('login-container').length > 0) {
+                this.handleLogin()
             }
         }
     }
