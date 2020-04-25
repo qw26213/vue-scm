@@ -20,7 +20,7 @@
                 <el-input clearable autocomplete="off" v-model="loginForm.password" placeholder="密码" type="password" />
             </el-form-item>
             <div class="bot clearfix">
-                <span class="fl" @click="toPath('/register')">注册新用户</span>
+                <span class="fl" @click="toPath('/register')">企业注册</span>
                 <span class="fr" @click="toPath('/forgetPsd')">忘记密码?</span>
             </div>
             <div class="bot clearfix">

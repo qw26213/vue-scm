@@ -4,17 +4,17 @@
             <el-button size="mini" type="primary" @click="saveData(0)">保存</el-button>
             <el-button size="mini" type="primary" @click="showTable()">试算平衡汇总</el-button>
         </div>
-        <el-table :data="tableData" v-loading="listLoading" border fit resize empty-text="无数据" style="width: 100%;" size="mini">
-            <el-table-column label="科目编码">
-                <template slot-scope="{row}">
-                    <span>{{row.coaCode}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="科目名称" min-width="100" style="padding-right:100px;">
+        <el-table :data="tableData" v-loading="listLoading" border fit resize empty-text="无数据" style="width: 100%;">
+            <el-table-column label="科目编码" min-width="90">
                 <template slot-scope="scope">
-                    <span>{{scope.row.showCoaName}}</span>
+                    <span>{{scope.row.coaCode}}</span>
                     <el-button v-if="scope.row.leaf == 1 && scope.row.type ==1 && scope.row.isAuxiliary == 1" type="primary" size="mini" @click="showSuplyConfig(scope.$index)" style="margin-left:10px">设置</el-button>
                     <el-button v-if="scope.row.leaf == 1 && scope.row.type !=1 && scope.row.isAuxiliary == 1" type="danger" size="mini" @click="removeRow(scope.$index)" style="margin-left:10px">删除</el-button>
+                </template>
+            </el-table-column>
+            <el-table-column label="科目名称" min-width="110" style="padding-right:100px;" show-overflow-tooltip>
+                <template slot-scope="scope">
+                    <span>{{scope.row.showCoaName}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="方向" width="100" align="center">

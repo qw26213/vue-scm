@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <el-form ref="reqFrom" :model="reqFrom" :rules="rules" class="login-form" autocomplete="on" label-position="right" label-width="78px" style="width:400px;margin: 100px auto 0">
+        <el-form ref="reqFrom" :model="reqFrom" :rules="rules" class="login-form" autocomplete="on" label-position="right" label-width="80px" style="width:400px;margin: 100px auto 0">
             <div class="title-container" style="margin-bottom:50px">
                 <h3 class="title">找回企业代码</h3>
             </div>

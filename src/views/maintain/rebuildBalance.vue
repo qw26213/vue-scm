@@ -19,7 +19,7 @@
             <el-button size="mini" type="primary" style="margin-left:15px" @click="getData('0')">只检查</el-button>
             <el-button size="mini" type="primary" @click="getData('1')">检查校正</el-button>
         </div>
-        <el-table :data="tableData" border fit resize empty-text="无错误数据" style="width: 100%;" size="mini">
+        <el-table :data="tableData" border fit resize empty-text="无错误数据" style="width: 100%;">
             <el-table-column label="科目编码">
                 <template slot-scope="{row}">
                     <span>{{row.coaCode}}</span>
@@ -35,9 +35,11 @@
                     <span>{{row.periodCode}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="错误信息" min-width="80">
+            <el-table-column label="错误信息" min-width="80" align="center">
                 <template slot-scope="{row}">
-                    <span>{{row.remarks}}</span>
+                  <el-popover placement="bottom-start" width="200" trigger="hover" :content="row.remarks">
+                    <el-button slot="reference" size="mini">查看</el-button>
+                  </el-popover>
                 </template>
             </el-table-column>
             <el-table-column label="期初借方" align="center">
@@ -53,7 +55,7 @@
                 </el-table-column>
             </el-table-column>
             <el-table-column label="期初贷方" align="center">
-                <el-table-column label="数量" min-width="80" align="center">
+                <el-table-column label="数量" min-width="80" align="right">
                     <template slot-scope="{row}">
                         <span>{{row.beginBalanceQtyCr | toFix }}</span>
                     </template>
@@ -107,7 +109,7 @@ export default {
     },
     filters: {
         toFix(val) {
-            if (!val) { return '0.00' }
+            if (!val || typeof val != 'Number') { return '0.00' }
             return parseFloat(val).toFix(2)
         }
     },

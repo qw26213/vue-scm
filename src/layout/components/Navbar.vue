@@ -45,10 +45,21 @@
         <el-button type="primary" @click="savePsw">确定</el-button>
       </div>
     </el-dialog>
+    <el-dialog title="温馨提示" :visible.sync="dialogFormVisible2" width="600px">
+      <div class="msgDiv" v-for="item in messagelist" :key="item.sentDate">
+        <div class="tit">• {{item.sender}}消息</div>
+        <div class="con" v-html="item.content">检测到10条采购单尚未生成凭证,请尽快到<b>【采购】--【采购单】--【生成凭证】</b>。</div> 
+        <div class="time">{{item.sentDate}}</div>
+      </div>
+      <div slot="footer" class="dialog-footer" align="right">
+        <el-checkbox v-model="isRemember" style="float:left;margin-right:5px;font-size:12px">今天不再显示</el-checkbox>
+        <el-button type="primary" @click="closeModal" size="mini">确定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
-import { updatePSW } from '@/api/user'
+import { updatePSW, getMessage } from '@/api/user'
 import userImg from '@/assets/user.png'
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
@@ -73,6 +84,9 @@ export default {
     return {
       avatar:userImg,
       dialogFormVisible: false,
+      dialogFormVisible2: true,
+      isRemember:false,
+      messagelist: [],
       id: '',
       pswForm: {
         oldPsw: '',
@@ -93,7 +107,18 @@ export default {
       'name'
     ])
   },
+  created() {
+    getMessage().then(res => {
+      this.messagelist = res.data.data || []
+      if(this.messagelist.length > 0) {
+        this.dialogFormVisible2 = true
+      }
+    })
+  },
   methods: {
+    closeModal(){
+      this.dialogFormVisible2 = false
+    },
     savePsw(){
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
@@ -217,4 +242,8 @@ export default {
     }
   }
 }
+.msgDiv{max-height: 500px; overflow: auto; padding-bottom: 15px;}
+.msgDiv .tit{color: #333; font-size: 14px; text-align: left; font-weight:bold}
+.msgDiv .con{color: #333; font-size: 14px; text-align: justify;margin-top:10px}
+.msgDiv .time{color: #666; font-size: 13px; text-align: right;margin-top:10px}
 </style>

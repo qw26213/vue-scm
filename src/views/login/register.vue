@@ -2,7 +2,7 @@
     <div class="container">
         <el-form ref="reqFrom" :model="reqFrom" :rules="rules" inline class="login-form" autocomplete="on" label-position="left" label-width="108px" style="width:620px;margin: 100px auto 0">
             <div class="title-container" style="margin-bottom:30px">
-                <h3 class="title">注册新用户</h3>
+                <h3 class="title">企业注册</h3>
             </div>
             <p class="tit">企业信息：</p>
             <el-form-item label="企业全称" prop="orgName">
@@ -163,6 +163,7 @@
 <script>
 import { registerLoadTaxfilingcategory, registerLoadArea, register } from '@/api/login'
 import { getIndexInfo } from '@/api/user'
+import { setToken } from '@/utils/auth'
 export default {
     name: 'register',
     data() {
@@ -243,6 +244,7 @@ export default {
                 showClose: false,
                 dangerouslyUseHTMLString: true
             }).then((res => {
+                setToken('111111')
                 getIndexInfo(this.loginForm).then(res => {
                     var user = res.data.userInfo
                     sessionStorage.userInfo = JSON.stringify(res.data.userInfo)

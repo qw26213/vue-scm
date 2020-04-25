@@ -58,6 +58,14 @@ export function getFuncs(data) {
     })
 }
 
+export function getMessage(data) {
+    return request({
+        url: '/drp/sys/message/messageList',
+        method: 'post',
+        data
+    })
+}
+
 export function getFuncByRoleId(data) {
     return request({
         url: '/drp/sys/roleFunc/getFuncByRoleId',

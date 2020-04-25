@@ -5,9 +5,9 @@
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
                         <span style="display:inline-block;line-height:28px">账套信息</span>
-                        <el-button v-if="userInfo.glBookEntity" type="primary" style="float: right;margin-right:10px" size="mini" @click="handleCompile">编辑</el-button>
-                        <el-button v-if="userInfo.glBookEntity" type="danger" style="float: right;margin-right:20px" size="mini" @click="resetAcc">重置</el-button>
-                        <el-button v-if="!userInfo.glBookEntity" type="primary" style="float: right;margin-right:10px" size="mini" @click="handleAdd">建账</el-button>
+                        <el-button v-if="!!userInfo.glBookEntity" type="primary" style="float: right;margin-right:10px" size="mini" @click="handleCompile">编辑</el-button>
+                        <el-button v-if="!!userInfo.glBookEntity" type="danger" style="float: right;margin-right:20px" size="mini" @click="resetAcc">重置</el-button>
+                        <el-button v-if="!!!userInfo.glBookEntity" type="primary" style="float: right;margin-right:10px" size="mini" @click="handleAdd">建账</el-button>
                     </div>
                     <div class="listItem"><label>企业代码:</label>{{managementInfo.orgCode}}</div>
                     <div class="listItem"><label>企业名称:</label>{{managementInfo.orgName}}</div>
@@ -25,105 +25,110 @@
                 </el-card>
             </el-col>
         </el-row>
-        <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新建账套':'修改账套'" :visible.sync="dialogFormVisible" width="670px">
-            <el-form ref="dataForm" :rules="rules1" inline :model="temp" label-position="left" label-width="100px" style="width: 620px; margin-left:20px;">
+        <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新建账套':'修改账套'" :visible.sync="dialogFormVisible" width="840px">
+            <el-form ref="dataForm" :rules="rules1" inline :model="temp" label-position="left" label-width="70px" style="width: 830px; margin-left:10px;">
                 <el-form-item label="账套名称" prop="bookName">
                     <el-input v-model="temp.bookName" placeholder="账套名称" />
                 </el-form-item>
                 <el-form-item label="科目体系" prop="coahierarchyId">
-                    <el-select v-model="temp.coahierarchyId" style="width:185px" :disabled="userInfo.glBookEntity">
+                    <el-select v-model="temp.coahierarchyId" style="width:185px" :disabled="!!userInfo.glBookEntity">
                         <el-option v-for="item in coaHierarchyList" :key="item.id" :label="item.coaHierarchyName" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="本位币" prop="baseCurrencyCode">
-                    <el-select v-model="temp.baseCurrencyCode" style="width:185px" :disabled="userInfo.glBookEntity">
+                <el-form-item label="本位币" prop="baseCurrencyCode" label-width="56px">
+                    <el-select v-model="temp.baseCurrencyCode" style="width:185px" :disabled="!!userInfo.glBookEntity">
                         <el-option v-for="item in currencyList" :key="item.id" :label="item.text" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="启用期间" prop="enablePeriodYear">
-                    <el-select size="mini" v-model="temp.enablePeriodYear" style="width: 80px" :disabled="userInfo.glBookEntity">
+                    <el-select size="mini" v-model="temp.enablePeriodYear" style="width: 80px" :disabled="!!userInfo.glBookEntity">
                         <el-option v-for="item in [2018,2019,2020,2021,2022]" :key="item" :value="item" :label="item"></el-option>
                     </el-select>
                     <label>年</label>
-                    <el-select size="mini" v-model="temp.enablePeriodNum" style="width: 65px" :disabled="userInfo.glBookEntity">
+                    <el-select size="mini" v-model="temp.enablePeriodNum" style="width: 65px" :disabled="!!userInfo.glBookEntity">
                         <el-option v-for="item in [1,2,3,4,5,6,7,8,9,10,11,12]" :key="item" :value="item" :label="item"></el-option>
                     </el-select>
                     <label>月</label>
                 </el-form-item>
                 <el-form-item label="科目级次" prop="coaLevel">
-                    <el-select v-model="temp.coaLevel" size="mini" style="width:50px" :disabled="userInfo.glBookEntity">
+                    <el-select v-model="temp.coaLevel" size="mini" style="width:56px" :disabled="!!userInfo.glBookEntity">
                         <el-option v-for="item in [4,5,6,7,8]" :key="item" :label="item" :value="item"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="科目编码规则" label-width="100px" prop="codingRule">
-                    <span class="spanItem1">4</span>
-                    <span>-</span>
-                    <span class="spanItem1">2</span>
-                    <span>-</span>
-                    <span class="spanItem1">2</span>
-                    <span>-</span>
-                    <select class="inputItem" v-model="codingRuleArr[3]" :disabled="userInfo.glBookEntity">
+                    <span class="">4 - 2 - 2 -</span>
+                    <select class="inputItem" v-model="codingRuleArr[3]" :disabled="!!userInfo.glBookEntity">
                         <option v-for="item in [2,3,4]" :key="item" :value="item">{{ item }}</option>
                     </select>
                     <span v-if="temp.coaLevel>4">-</span>
-                    <select v-if="temp.coaLevel>4" class="inputItem" v-model="codingRuleArr[4]" :disabled="userInfo.glBookEntity">
+                    <select v-if="temp.coaLevel>4" class="inputItem" v-model="codingRuleArr[4]" :disabled="!!userInfo.glBookEntity">
                         <option v-for="item in [2,3,4]" :key="item" :value="item">{{ item }}</option>
                     </select>
                     <span v-if="temp.coaLevel>5">-</span>
-                    <select v-if="temp.coaLevel>5" class="inputItem" v-model="codingRuleArr[5]" :disabled="userInfo.glBookEntity">
+                    <select v-if="temp.coaLevel>5" class="inputItem" v-model="codingRuleArr[5]" :disabled="!!userInfo.glBookEntity">
                         <option v-for="item in [2,3,4]" :key="item" :value="item">{{ item }}</option>
                     </select>
                     <span v-if="temp.coaLevel>6">-</span>
-                    <select v-if="temp.coaLevel>6" class="inputItem" v-model="codingRuleArr[6]" :disabled="userInfo.glBookEntity">
+                    <select v-if="temp.coaLevel>6" class="inputItem" v-model="codingRuleArr[6]" :disabled="!!userInfo.glBookEntity">
                         <option v-for="item in [2,3,4]" :key="item" :value="item">{{ item }}</option>
                     </select>
                     <span v-if="temp.coaLevel>7">-</span>
-                    <select v-if="temp.coaLevel>7" class="inputItem" v-model="codingRuleArr[7]" :disabled="userInfo.glBookEntity">
+                    <select v-if="temp.coaLevel>7" class="inputItem" v-model="codingRuleArr[7]" :disabled="!!userInfo.glBookEntity">
                         <option v-for="item in [2,3,4]" :key="item" :value="item">{{ item }}</option>
                     </select>
                 </el-form-item>
-                <el-form-item label="增值税率" prop="defaultTaxRateStr">
-                    <el-input v-model="temp.defaultTaxRateStr" placeholder="增值税率" style="width:160px;margin-right:5px" />%
+                <el-form-item>
+                    <span>自定义增值税率</span>
+                    <el-input v-model="temp.defaultTaxRateStr" placeholder="" size="mini" style="width:60px;margin-right:5px" />%
+                    <span style="font-size:12px;margin-right:10px">(小规模纳税人为3%，一般纳税人为13%)</span>
+                    <el-checkbox v-model="temp.isDispName" :false-label="0" :true-label="1" :disabled="!!userInfo.glBookEntity" style="margin-right:10px">科目名称显示路径</el-checkbox>
+                    <el-checkbox v-model="temp.isCoaCobinationCode" :false-label="0" :true-label="1" :disabled="!!userInfo.glBookEntity">凭证中显示辅助项编码组合</el-checkbox>
                 </el-form-item>
-                <el-form-item label="计提附加税" prop="isAutoJtfjs">
+                <el-form-item>
+                    <el-checkbox v-model="temp.isQuantity" :false-label="0" :true-label="1" :disabled="!!userInfo.glBookEntity" style="margin-right:10px">启用数量核算</el-checkbox>
+                    <el-checkbox v-model="temp.isCurrency" :false-label="0" :true-label="1" style="margin-right:500px" disabled>启用币种核算</el-checkbox>
+                    <el-checkbox v-model="temp.isAuxSupplier" :false-label="0" :true-label="1" :disabled="!!userInfo.glBookEntity" style="margin-right:10px">启用供应商核算</el-checkbox>
+                    <el-checkbox v-model="temp.isAuxCust" :false-label="0" :true-label="1" :disabled="!!userInfo.glBookEntity" style="margin-right:10px">启用客户核算</el-checkbox>
+                    <el-checkbox v-model="temp.isAuxDept" :false-label="0" :true-label="1" :disabled="!!userInfo.glBookEntity" style="margin-right:10px">启用部门核算</el-checkbox>
+                    <el-checkbox v-model="temp.isAuxStaff" :false-label="0" :true-label="1" :disabled="!!userInfo.glBookEntity" style="margin-right:10px">启用职员核算</el-checkbox>
+                    <el-checkbox v-model="temp.isAuxItem" :false-label="0" :true-label="1" :disabled="!!userInfo.glBookEntity" style="margin-right:10px">启用存货核算</el-checkbox>
+                    <el-checkbox v-model="temp.isAuxProj" :false-label="0" :true-label="1" :disabled="!!userInfo.glBookEntity" style="margin-right:10px">启用项目核算</el-checkbox>
+                </el-form-item>
+                <el-form-item>
+                    <el-checkbox v-model="temp.isAutoAuditWhenAutoSave" :false-label="0" :true-label="1" style="margin-right:10px">自动凭证在保存时自动审核</el-checkbox>
+                    <el-checkbox v-model="temp.autoAuditFlag" :false-label="0" :true-label="1" style="margin-right:10px" :disabled="temp.isAutoTransfer==1">结账时自动审核凭证</el-checkbox>
+                    <el-checkbox v-model="temp.isAutoTransfer" :false-label="0" :true-label="1" style="margin-right:300px" @change="autoTransferChange">期末自动结转、结账</el-checkbox>
+                    <el-checkbox v-if="temp.isAutoTransfer==1" v-model="temp.isAutoJzdtfy" :false-label="0" :true-label="1" style="margin-right:10px">自动结转待摊费用</el-checkbox>
+                    <el-checkbox v-if="temp.isAutoTransfer==1" v-model="temp.isAutoJtzj" :false-label="0" :true-label="1" style="margin-right:10px">自动计提折旧</el-checkbox>
+                    <el-checkbox v-if="temp.isAutoTransfer==1" v-model="temp.isAutoJtgz" :false-label="0" :true-label="1" style="margin-right:10px">自动计提工资</el-checkbox>
+                    <el-checkbox v-if="temp.isAutoTransfer==1" v-model="temp.isAutoJzwfplr" :false-label="0" :true-label="1" style="margin-right:10px">自动结转未分配利润(年末结转)</el-checkbox>
+                </el-form-item>
+                <el-form-item v-if="temp.isAutoTransfer==1" label="自动计提附加税" prop="isAutoJtfjs" label-width="120px" style="margin-right:20px">
                     <el-radio-group v-model="temp.isAutoJtfjs">
                         <el-radio :label="0" style="margin-right:10px">不计提</el-radio>
                         <el-radio :label="1" style="margin-right:10px">按月</el-radio>
                         <el-radio :label="3">按季</el-radio>
                     </el-radio-group>
                 </el-form-item>
-                <el-form-item>
-                    <label for="">城市建设维护税</label>
-                    <el-input v-model="temp.isAutoJtfjs7" style="width:50px" size="mini" />%
-                    <label style="margin-left:5px">教育附加</label>
-                    <el-input v-model="temp.isAutoJtfjs3" style="width:50px" size="mini" />%
-                    <label style="margin-left:5px">地方教育附加</label>
-                    <el-input v-model="temp.isAutoJtfjs2" style="width:50px" size="mini" />%
+                <el-form-item v-if="temp.isAutoTransfer==1" label="自动结转损益(期末结转)" prop="isAutoJzsy" label-width="170px" style="margin-left:10px">
+                    <el-radio-group v-model="temp.isAutoJzsy">
+                        <el-radio :label="0" style="margin-right:10px">不结转</el-radio>
+                        <el-radio :label="1" style="margin-right:10px">合并结转</el-radio>
+                        <el-radio :label="2">分开结转</el-radio>
+                    </el-radio-group>
                 </el-form-item>
-                <el-form-item>
-                    <el-checkbox v-model="temp.isQuantity" :false-label="0" :true-label="1" style="margin-right:10px">启用数量核算</el-checkbox>
-                    <el-checkbox v-model="temp.isCurrency" :false-label="0" :true-label="1" style="margin-right:10px" disabled>启用币种核算</el-checkbox>
-                    <el-checkbox v-model="temp.isAuxSupplier" :false-label="0" :true-label="1" style="margin-right:10px">启用供应商核算</el-checkbox>
-                    <el-checkbox v-model="temp.isAuxCust" :false-label="0" :true-label="1" style="margin-right:10px">启用客户核算</el-checkbox>
-                    <el-checkbox v-model="temp.isAuxDept" :false-label="0" :true-label="1" style="margin-right:10px">启用部门核算</el-checkbox>
-                    <el-checkbox v-model="temp.isAuxStaff" :false-label="0" :true-label="1" style="margin-right:10px">启用职员核算</el-checkbox>
-                    <el-checkbox v-model="temp.isAuxItem" :false-label="0" :true-label="1" style="margin-right:10px">启用存货核算</el-checkbox>
-                    <el-checkbox v-model="temp.isAuxProj" :false-label="0" :true-label="1" style="margin-right:10px">启用项目核算</el-checkbox>
+                <el-form-item v-if="temp.isAutoTransfer==1">
+                    <span>城市建设维护税</span>
+                    <el-input v-model="temp.isAutoJtfjs7" style="width:45px" size="mini" />%
+                    <span style="margin-left:5px">教育附加</span>
+                    <el-input v-model="temp.isAutoJtfjs3" style="width:45px" size="mini" />%
+                    <span style="margin-left:5px">地方教育附加</span>
+                    <el-input v-model="temp.isAutoJtfjs2" style="width:45px" size="mini" />%
+                    <span style="margin-left:5px">自动结转成本</span>
+                    <el-input v-model="temp.isAutoJzcb" style="width:45px" size="mini" />%
+                    <span style="margin-left:5px">自动计提所得税</span>
+                    <el-input v-model="temp.isAutoJtsds" style="width:45px" size="mini" />%
                 </el-form-item>
-                <el-form-item>
-                    <el-checkbox v-model="temp.isAutoAuditWhenAutoSave" :false-label="0" :true-label="1" style="margin-right:10px">自动凭证在保存时自动审核</el-checkbox>
-                    <el-checkbox v-model="temp.autoAuditFlag" :false-label="0" :true-label="1" style="margin-right:10px" :disabled="temp.isAutoTransfer==1">结账时自动审核凭证</el-checkbox>
-                    <el-checkbox v-model="temp.isAutoTransfer" :false-label="0" :true-label="1" style="margin-right:10px" @change="autoTransferChange">期末自动结转、结账</el-checkbox>
-                    <el-checkbox v-if="temp.isAutoTransfer==1" v-model="temp.isAutoJzcb" :false-label="0" :true-label="1" style="margin-right:10px">自动结转成本</el-checkbox>
-                    <el-checkbox v-if="temp.isAutoTransfer==1" v-model="temp.isAutoJzdtfy" :false-label="0" :true-label="1" style="margin-right:10px">自动结转待摊费用</el-checkbox>
-                    <el-checkbox v-if="temp.isAutoTransfer==1" v-model="temp.isAutoJtfjs" :false-label="0" :true-label="1" style="margin-right:10px">自动计提附加税</el-checkbox>
-                    <el-checkbox v-if="temp.isAutoTransfer==1" v-model="temp.isAutoJtzj" :false-label="0" :true-label="1" style="margin-right:10px">自动计提折旧</el-checkbox>
-                    <el-checkbox v-if="temp.isAutoTransfer==1" v-model="temp.isAutoJtgz" :false-label="0" :true-label="1" style="margin-right:10px">自动计提工资</el-checkbox>
-                    <el-checkbox v-if="temp.isAutoTransfer==1" v-model="temp.isAutoJtsds" :false-label="0" :true-label="1" style="margin-right:10px">自动计提所得税(季末结转)</el-checkbox>
-                    <el-checkbox v-if="temp.isAutoTransfer==1" v-model="temp.isAutoJzsy" :false-label="0" :true-label="1" style="margin-right:10px">自动结转损益(期末结转)</el-checkbox>
-                    <el-checkbox v-if="temp.isAutoTransfer==1" v-model="temp.isAutoJzwfplr" :false-label="0" :true-label="1" style="margin-right:10px">自动结转未分配利润(年末结转)</el-checkbox>
-                </el-form-item>
-                <p>注意：一般情况下增值税率，小规模纳税人为3%，一般纳税人为13%</p>
             </el-form>
             <div slot="footer" class="dialog-footer" align="center">
                 <el-button @click="dialogFormVisible = false">取消</el-button>
@@ -146,23 +151,25 @@ export default {
             codingRuleArr: [4, 2, 2, 2, 2, 2, 2, 2],
             temp: {
                 bookName: '',
-                coahierarchyId: '',
                 baseCurrencyCode: 'CNY',
                 enablePeriodYear: new Date().getFullYear(),
                 enablePeriodNum: new Date().getMonth() + 1,
-                coahierarchyId: '',
+                coahierarchyId: '2',
                 defaultTaxRateStr: '',
-                isAutoAuditWhenAutoSave: 0,
+                isAutoAuditWhenAutoSave: 1,
                 coaLevel: 5,
                 codingRule: '4-2-2-2-2',
                 isAutoJtfjs: 0,
+                isCoaCobinationCode: 0,
+                isDispName: 0,
                 isAutoJtfjs2: 0,
                 isAutoJtfjs3: 0,
                 isAutoJtfjs7: 0,
                 isAutoJtgz: 0,
+                autoAuditFlag: 0,
                 isAutoJtsds: 0,
                 isAutoJtzj: 0,
-                isAutoJzcb: 0,
+                isAutoJzcb: 100,
                 isAutoJzdtfy: 0,
                 isAutoJzsy: 0,
                 isAutoJzwfplr: 0,
@@ -228,7 +235,7 @@ export default {
             }).then(() => {
                 resetAccount().then(res => {
                     if (res.data.errorCode == 0) {
-                        this.$message.success('注销企业成功')
+                        this.$message.success('账套已被删除！')
                         this.$store.dispatch('user/logout').then(() => {
                             this.$router.push({ path: '/login' })
                         })
@@ -298,6 +305,11 @@ export default {
                     this.accountInfo = res.data.data[0] || {}
                     if (this.accountInfo != {}) {
                         this.accountInfo.defaultTaxRateStr = this.accountInfo.defaultTaxRate * 100
+                        this.accountInfo.isAutoJtfjs7 = this.accountInfo.isAutoJtfjs7 * 100
+                        this.accountInfo.isAutoJtfjs2 = this.accountInfo.isAutoJtfjs2 * 100
+                        this.accountInfo.isAutoJtfjs3 = this.accountInfo.isAutoJtfjs3 * 100
+                        this.accountInfo.isAutoJzcb = this.accountInfo.isAutoJzcb * 100
+                        this.accountInfo.isAutoJtsds = this.accountInfo.isAutoJtsds * 100
                     }
                 }
             })
@@ -350,7 +362,7 @@ export default {
 }
 
 .inputItem {
-    width: 36px;
+    width: 32px;
     line-height: 28px;
     text-align: center;
     border: 1px solid #DCDFE6;
