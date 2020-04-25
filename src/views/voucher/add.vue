@@ -56,8 +56,10 @@
                     </td>
                     <td class="p0 urel">
                         <div class="number f12 ptb05" v-if="row.isQuantity==1">
-                            <p style="margin-bottom: 3px;">数量:<input type="text" v-model="row.qNumber" /><i class="uom">{{row.qUom}}</i></p>
-                            <p>单价:</span><input type="text" v-model="row.qPrice" /><i class="uom">元</i></p>
+                            <p style="margin-bottom: 3px;">数量:
+                                <input type="text" v-model="row.qNumber" /><i class="uom">{{row.qUom}}</i></p>
+                            <p>单价:
+                                <input type="text" v-model="row.qPrice" /><i class="uom">元</i></p>
                         </div>
                     </td>
                     <td class="urel p0">
@@ -194,7 +196,7 @@ import { getProj, getDept, getStaff, getSupplier, getCust, getItem } from '@/api
 import Pagination from '@/components/Pagination'
 import coaList from '@/components/voucher/coaList'
 import summaryList from '@/components/voucher/summaryList'
-var hexCas = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O']
+var hexCas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O']
 export default {
     name: 'voucherAdd',
     components: { coaList, summaryList, Pagination },
@@ -216,7 +218,7 @@ export default {
                 summary: '',
                 mnemonicCode: ''
             },
-            auxiliary:'000000',
+            auxiliary: '000000',
             curShowIndex: 0,
             temp: {},
             rules: {
@@ -255,7 +257,7 @@ export default {
         }
     },
     filters: {
-        numberFormat: function (num) {
+        numberFormat: function(num) {
             return num < 10 ? '00' + num : num < 100 ? '0' + num : num;
         }
     },
@@ -336,9 +338,9 @@ export default {
                                 // 显示对应的辅助核算项 1-26
                                 var auxiliaryType = AuxiliaryType[i]
                                 /* 获取当前辅助核算项的值 */
-                                var selectId = this.$refs[auxiliaryType+'Select'].selected.value
-                                var selectText = this.$refs[auxiliaryType+'Select'].selected.label
-                                var modelCode = this.$refs[auxiliaryType+'Select'].selected.key
+                                var selectId = this.$refs[auxiliaryType + 'Select'].selected.value
+                                var selectText = this.$refs[auxiliaryType + 'Select'].selected.label
+                                var modelCode = this.$refs[auxiliaryType + 'Select'].selected.key
                                 auxiliaryCode += "_" + hexCas[AuxiliaryType.indexOf(auxiliaryType)] + modelCode
                                 auxiliaryName += "_" + selectText
                             }
@@ -534,7 +536,7 @@ export default {
             for (var key in obj) {
                 this.$set(this.tableData[obj.index], key, obj[key])
             }
-            if(obj.isAuxiliary == 1) {
+            if (obj.isAuxiliary == 1) {
                 this.dialogFormVisible3 = true
                 this.auxiliary = obj.auxiliary
                 this.$nextTick(() => {

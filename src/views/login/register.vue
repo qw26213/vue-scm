@@ -164,6 +164,7 @@
 import { registerLoadTaxfilingcategory, registerLoadArea, register } from '@/api/login'
 import { getIndexInfo } from '@/api/user'
 import { setToken } from '@/utils/auth'
+import Cookies from "js-cookie";
 export default {
     name: 'register',
     data() {
@@ -248,8 +249,7 @@ export default {
                 getIndexInfo(this.loginForm).then(res => {
                     var user = res.data.userInfo
                     sessionStorage.userInfo = JSON.stringify(res.data.userInfo)
-                    this.$store.commit('SET_NAME', user.userName)
-                    this.$store.commit('SET_AVATAR', 'https://panjiachen.gitee.io/vue-element-admin-site/home.png')
+                    Cookies.set('userName', user.userName)
                     sessionStorage.bookId = user.bookId
                     sessionStorage.taxFilingCategoryCode = user.taxFilingCategoryCode
                     this.$router.push('/home')

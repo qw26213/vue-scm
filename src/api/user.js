@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-var fromData = [function (obj) { let c = ''; for (let i in obj) { c += encodeURIComponent(i) + '=' + encodeURIComponent(obj[i]) + '&' } return c }];
+var fromData = [function(obj) { let c = ''; for (let i in obj) { c += encodeURIComponent(i) + '=' + encodeURIComponent(obj[i]) + '&' } return c }];
 
 export function loginCheck(data) {
     return request({
@@ -20,26 +20,26 @@ export function getIndexInfo(data) {
 }
 
 export function getUserList() {
-  return request({
-    url: '/drp/sys/user/cmemlist',
-    method: 'post'
-  })
+    return request({
+        url: '/drp/sys/user/cmemlist',
+        method: 'post'
+    })
 }
 
 export function saveUser(data) {
-  return request({
-    url: '/drp/sys/user/save',
-    method: 'post',
-    data
-  })
+    return request({
+        url: '/drp/sys/user/save',
+        method: 'post',
+        data
+    })
 }
 
 export function delUser(data) {
-  return request({
-    url: '/drp/sys/user/deleteById',
-    method: 'post',
-    data
-  })
+    return request({
+        url: '/drp/sys/user/deleteById',
+        method: 'post',
+        data
+    })
 }
 
 export function getRoles(data) {
@@ -335,7 +335,7 @@ export function getMsgBeforeDelete(id) {
     return request({
         url: '/drp/gl/coa/getMsgBeforeDelete',
         method: 'post',
-        data: {id: id}
+        data: { id: id }
     })
 }
 
@@ -343,28 +343,28 @@ export function delCoa(id) {
     return request({
         url: '/drp/gl/coa/deleteById',
         method: 'post',
-        data: {id: id}
+        data: { id: id }
     })
 }
 
-export function getCoaCodeUsedByIdNoSysTemplet(id){
+export function getCoaCodeUsedByIdNoSysTemplet(id) {
     return request({
-        url: '/drp/gl/coa/getCoaCodeUsedByIdNoSysTemplet/'+id,
+        url: '/drp/gl/coa/getCoaCodeUsedByIdNoSysTemplet/' + id,
         method: 'post'
     })
 }
 
-export function getChildrenCountByParentId(parentId){
+export function getChildrenCountByParentId(parentId) {
     return request({
         url: '/drp/gl/coa/getChildrenCountByParentId',
         method: 'post',
-        data: {parentId: parentId}
+        data: { parentId: parentId }
     })
 }
 
-export function getCoaCodeUsedById(id){
+export function getCoaCodeUsedById(id) {
     return request({
-        url: '/drp/gl/coa/getCoaCodeUsedById/'+id,
+        url: '/drp/gl/coa/getCoaCodeUsedById/' + id,
         method: 'post'
     })
 }
@@ -384,42 +384,42 @@ export function updateDispName(bookId) {
     })
 }
 
-export function getProj(){
+export function getProj() {
     return request({
         url: '/drp/bd/proj/list',
         method: 'post'
     })
 }
 
-export function getItem(){
+export function getItem() {
     return request({
         url: '/drp/bd/item/list',
         method: 'post'
     })
 }
 
-export function getDept(){
+export function getDept() {
     return request({
         url: '/drp/bd/dept/list',
         method: 'post'
     })
 }
 
-export function getCust(){
+export function getCust() {
     return request({
         url: '/drp/bd/cust/list',
         method: 'post'
     })
 }
 
-export function getSupplier(){
+export function getSupplier() {
     return request({
         url: '/drp/bd/supplier/list',
         method: 'post'
     })
 }
 
-export function getStaff(){
+export function getStaff() {
     return request({
         url: '/drp/bd/staff/list',
         method: 'post'
