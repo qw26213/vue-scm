@@ -59,28 +59,16 @@
                 <el-button type="primary" @click="dialogStatus == 'create'?handleCreate():handleModify()">确定</el-button>
             </div>
         </el-dialog>
-        <el-dialog :close-on-click-modal="false" title="分配客户" :visible.sync="dialogFormVisible1" :show-close="false" ::close-on-click-modal="false" width="500px">
-            <div class="curTit">当前价格组：{{handleObj.priceGroupName}}({{handleObj.priceGroupCode}})</div>
-            <el-table ref="checkTable" :data="custList" border fit highlight-current-row style="width: 100%;" size="mini" row-key="id" @selection-change="handleSelectionChange" @select-all="selectAll">
-                <el-table-column type="selection" width="50" align="center" :reserve-selection="true"></el-table-column>
-                <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
-                <el-table-column label="客户代码" prop="custCode" />
-                <el-table-column label="客户名称" prop="custName" />
-            </el-table>
-            <pagination v-show="total2>10" :total="total2" :page.sync="custQuery.pageIndex" :limit.sync="custQuery.pageNum" @pagination="getCustArr" />
-            <div slot="footer" class="dialog-footer" align="center">
-                <el-button @click="cancelHanle()">取消</el-button>
-                <el-button type="primary" @click="updatePriceGroup()">确定</el-button>
-            </div>
-        </el-dialog>
+        <assignCust ref="custTable" :tit="handleObj.priceGroupName + handleObj.priceGroupCode" type="group" :showModal.sync="showModal" :handleObj="handleObj" @handleAssign="handleAssignCust"></assignCust>
     </div>
 </template>
 <script>
-import { getPriceGroup, savePriceGroup, delPriceGroup, updatePriceGroupDisabled, updatePriceGroupIdByCustIdList, getCust } from '@/api/basedata'
+import { getPriceGroup, savePriceGroup, delPriceGroup, updatePriceGroupDisabled, updatePriceGroupIdByCustIdList } from '@/api/basedata'
 import Pagination from '@/components/Pagination'
+import assignCust from '@/components/assignCust'
 import { getStrByData, deepClone } from '@/utils'
 export default {
-    components: { Pagination },
+    components: { Pagination, assignCust },
     name: 'priceGroup',
     data() {
         return {
@@ -88,9 +76,8 @@ export default {
             tableData: [],
             custList: [],
             handleObj: {},
-            selectIdArr: [],
+            selectIdArr: [], // 初始化时被选的数组
             total: 0,
-            total2: 0,
             listLoading: true,
             listQuery: {
                 page: 1,
@@ -104,9 +91,8 @@ export default {
                 isDisable: "0"
             },
             dialogFormVisible: false,
-            dialogFormVisible1: false,
+            showModal: false,
             dialogStatus: '',
-            custQuery: { pageIndex: 1, pageNum: 10, custCode: "", custName: "" },
             rules: {
                 priceGroupName: [{ required: true, message: '名称不能为空', trigger: 'change' }],
                 priceGroupCode: [{ required: true, message: '代码不能为空', trigger: 'change' }],
@@ -118,58 +104,19 @@ export default {
         this.getList()
     },
     methods: {
-        getCustArr() {
-            getCust(this.custQuery).then(res => {
-                this.custList = res.data.data || []
-                this.total2 = res.data.totalNum
-                this.initCheckedItems()
-            })
-        },
-        cancelHanle() {
-            this.dialogFormVisible1 = false;
-            this.$refs.checkTable.clearSelection()
-        },
-        selectAll(selection) {
-            var arr = [];
-            for (var i = 0; i < selection.length; i++) {
-                arr.push(selection[i].id)
-            }
-            this.selectIdArr = arr
-        },
-        handleSelectionChange(selection) {
-            var arr = [];
-            for (var i = 0; i < selection.length; i++) {
-                arr.push(selection[i].id)
-            }
-            this.selectIdArr = arr
-        },
         handleAssign(row) {
-            this.dialogFormVisible1 = true
-            this.handleObj = deepClone(row)
-            this.custQuery.pageIndex = 1
-            this.getCustArr()
+            this.handleObj = row
+            this.showModal = true
         },
-        initCheckedItems() {
-            this.selectIdArr = getStrByData(this.handleObj.custList)
-            var selectIds = this.selectIdArr.join(',')
-            this.$nextTick(() => {
-                this.custList.forEach(item => {
-                    if (selectIds.indexOf(item.id) >= 0) {
-                        this.$refs.checkTable.toggleRowSelection(item, true)
-                    }
-                })
-            })
-        },
-        updatePriceGroup() {
+        handleAssignCust(arr) {
             var obj = {
                 priceGroupId: this.handleObj.id,
-                custIdList: this.selectIdArr,
-                clear: 1
+                custIdList: arr
             }
             updatePriceGroupIdByCustIdList(obj).then(res => {
                 if (res.data.errorCode == 0) {
-                    this.cancelHanle();
-                    this.getList();
+                    this.$refs.custTable.closeModal()
+                    this.getList()
                     this.$message.success('分配客户成功')
                 } else {
                     this.$message.error(res.data.msg)

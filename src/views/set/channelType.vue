@@ -44,7 +44,6 @@
       </el-table-column>
     </el-table>
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
-
     <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增渠道类型':'修改渠道类型'" :visible.sync="dialogFormVisible" width="390px">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="110px" style="width: 340px; margin-left:10px;">
         <el-form-item label="渠道类型代码" prop="channelTypeCode">
@@ -66,40 +65,19 @@
         <el-button type="primary" @click="dialogStatus == 'create'?handleCreate():handleModify()">确定</el-button>
       </div>
     </el-dialog>
-    <el-dialog :close-on-click-modal="false" title="分配客户" :visible.sync="dialogFormVisible1" ::close-on-click-modal="false" width="500px">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="110px" style="width: 460px;">
-        <div class="curTit">当前渠道类型：{{handleObj.channelTypeName}}({{handleObj.channelTypeCode}})</div>
-        <el-table ref="checkTable" :data="custList" border fit style="width: 100%;" size="mini" @select="handleSelectionChange" @select-all="selectAll">
-          <el-table-column type="selection" width="50" align="center" :reserve-selection="true"></el-table-column>
-          <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
-          <el-table-column label="客户代码">
-            <template slot-scope="{row}">
-              <span>{{row.custCode}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="客户名称">
-            <template slot-scope="{row}">
-              <span>{{row.custName}}</span>
-            </template>
-          </el-table-column>
-        </el-table>
-      </el-form>
-      <div slot="footer" class="dialog-footer" align="center">
-        <el-button @click="cancelHanle()">取消</el-button>
-        <el-button type="primary" @click="updateCustType()">确定</el-button>
-      </div>
-    </el-dialog>
+    <assignCust ref="custTable" :tit="handleObj.channelTypeName + handleObj.channelTypeCode" type="channel" :showModal.sync="showModal" :handleObj="handleObj" @handleAssign="handleAssignCust"></assignCust>
   </div>
 </div>
 </template>
 
 <script>
-import { getChannelType,saveChannelType,delChannelType,getChannelTree,updateChannelTypeDisabled,updateChannelTypeIdByCustIdList,getCust,getCustListByChannelTypeId } from '@/api/basedata'
+import { getChannelType,saveChannelType,delChannelType,getChannelTree,updateChannelTypeDisabled,updateChannelTypeIdByCustIdList } from '@/api/basedata'
 import { getStrByData } from '@/utils'
 import Pagination from '@/components/Pagination'
+import assignCust from '@/components/assignCust'
 export default {
   name: 'baseChannel',
-  components: { Pagination },
+  components: { Pagination, assignCust },
   data() {
     return {
       tableKey: 0,
@@ -124,6 +102,7 @@ export default {
         isDisable: "0",
         parentId:""
       },
+      showModal: false,
       dialogFormVisible: false,
       dialogFormVisible1: false,
       dialogStatus: '',
@@ -138,55 +117,25 @@ export default {
   created() {
     this.getList()
     this.getLeftTree();
-    getCust({"page":1,"custCode":"","custName":""}).then(res => {
-      this.custList = res.data.data;
-    });
   },
   methods: {
-    cancelHanle(){
-      this.dialogFormVisible1 = false;
-      this.$refs.checkTable.clearSelection()
-    },
     handleNodeClick(e){
       this.listQuery.parentId = e.id;
       this.temp.parentId = e.id;
       this.getList();
     },
-    selectAll(selection){
-      var arr = [];
-      for(var i=0;i<selection.length;i++){
-        arr.push(selection[i].id)
-      }
-      this.selectIdArr = arr;
+    handleAssign(row) {
+        this.handleObj = row
+        this.showModal = true
     },
-    handleSelectionChange(selection,row) {
-      var arr = [];
-      for(var i=0;i<selection.length;i++){
-        arr.push(selection[i].id)
-      }
-      this.selectIdArr = arr;
-    },
-    handleAssign(row){
-      this.dialogFormVisible1 = true
-      this.handleObj = row;
-      getCustListByChannelTypeId({ channelTypeId: row.id }).then(res => {
-        this.selectIdArr = getStrByData(res.data.data);
-        var selectIds = this.selectIdArr.join(',');
-        this.custList.forEach(row => {
-          if(selectIds.indexOf(row.id) >= 0){
-            this.$refs.checkTable.toggleRowSelection(row,true);
-          }
-        })
-      })
-    },
-    updateCustType(){
+    handleAssignCust(arr){
       var obj = {
         channelTypeId:this.handleObj.id,
-        custIdList:this.selectIdArr
+        custIdList:arr
       }
       updateChannelTypeIdByCustIdList(obj).then(res => {
         if(res.data.errorCode==0){
-          this.cancelHanle();
+          this.$refs.custTable.closeModal()
           this.getList()
           this.$message.success('分配客户成功')
         }else{

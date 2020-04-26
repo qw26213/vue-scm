@@ -38,58 +38,17 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增客户类别':'修改客户类别'" :visible.sync="dialogFormVisible" width="480px">
-                <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="110px" style="width: 400px; margin-left:20px;">
-                    <el-form-item label="客户类别代码" prop="custTypeCode">
-                        <el-input v-model="temp.custTypeCode" placeholder="客户类别代码" />
-                    </el-form-item>
-                    <el-form-item label="客户类别名称" prop="custTypeName">
-                        <el-input v-model="temp.custTypeName" placeholder="客户类别名称" />
-                    </el-form-item>
-                    <el-form-item label="备注" prop="remarks">
-                        <el-input v-model="temp.remarks" placeholder="备注" />
-                    </el-form-item>
-                    <el-form-item label="是否可用" prop="isDisable">
-                        <el-radio v-model="temp.isDisable" :label="0">是</el-radio>
-                        <el-radio v-model="temp.isDisable" :label="1">否</el-radio>
-                    </el-form-item>
-                </el-form>
-                <div slot="footer" class="dialog-footer" align="center">
-                    <el-button @click="dialogFormVisible = false">取消</el-button>
-                    <el-button type="primary" @click="dialogStatus == 'create'?handleCreate():handleModify()">确定</el-button>
-                </div>
-            </el-dialog>
-            <el-dialog :close-on-click-modal="false" title="分配客户" :visible.sync="dialogFormVisible1" :show-close="false" ::close-on-click-modal="false" width="500px">
-                <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="110px" style="width: 460px;">
-                    <div class="curTit">当前客户类别：{{handleObj.custTypeName}}({{handleObj.custTypeCode}})</div>
-                    <el-table ref="checkTable" :data="custList" border fit style="width: 100%;" size="mini" @selection-change="handleSelectionChange" @select-all="selectAll">
-                        <el-table-column type="selection" width="50" align="center" :reserve-selection="true"></el-table-column>
-                        <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
-                        <el-table-column label="客户代码">
-                            <template slot-scope="{row}">
-                                <span>{{row.custCode}}</span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column label="客户名称">
-                            <template slot-scope="{row}">
-                                <span>{{row.custName}}</span>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </el-form>
-                <div slot="footer" class="dialog-footer" align="center">
-                    <el-button @click="cancelHanle()">取消</el-button>
-                    <el-button type="primary" @click="updateCustType()">确定</el-button>
-                </div>
-            </el-dialog>
+            <assignCust ref="custTable" :tit="handleObj.custTypeName + handleObj.custTypeCode" :showModal.sync="showModal" type="custType" :handleObj="handleObj" @handleAssign="handleAssignCust"></assignCust>
         </div>
     </div>
 </template>
 <script>
-import { getCustType, saveCustType, delCustType, getCustTypeTree, getCustListByCustTypeId, updateCustTypeDisabled, getCustTypeTreeDataByParentId, updateCustTypeIdByCustIdList, getCust } from '@/api/basedata'
+import { getCustType, saveCustType, delCustType, getCustTypeTree, updateCustTypeDisabled, getCustTypeTreeDataByParentId, updateCustTypeIdByCustIdList } from '@/api/basedata'
 import { getStrByData } from '@/utils'
+import assignCust from '@/components/assignCust'
 export default {
     name: 'baseCustType',
+    components: { assignCust },
     data() {
         return {
             tableKey: 0,
@@ -104,6 +63,7 @@ export default {
             selectIdArr: [],
             total: 0,
             listLoading: true,
+            showModal: false,
             parentId: '',
             temp: {
                 id: '',
@@ -122,7 +82,7 @@ export default {
                 parentId: ""
             },
             dialogFormVisible: false,
-            dialogFormVisible1: false,
+            showModal: false,
             dialogStatus: '',
             rules: {
                 custTypeName: [{ required: true, message: '名称不能为空', trigger: 'change' }],
@@ -132,9 +92,6 @@ export default {
     },
     created() {
         this.getList();
-        getCust({ "page": 1, "custCode": "", "custName": "" }).then(res => {
-            this.custList = res.data.data;
-        });
         this.getLeftTree();
     },
     methods: {
@@ -145,52 +102,23 @@ export default {
                 this.listLoading = false
             })
         },
-        cancelHanle() {
-            this.dialogFormVisible1 = false;
-            this.$refs.checkTable.clearSelection()
-        },
-        selectAll(selection) {
-            var arr = [];
-            for (var i = 0; i < selection.length; i++) {
-                arr.push(selection[i].id)
-            }
-            this.selectIdArr = arr;
-        },
         handleNodeClick(e) {
             this.parentId = e.id;
             this.temp.parentId = e.id;
             this.getList();
         },
-        handleSelectionChange(selection) {
-            var arr = [];
-            for (var i = 0; i < selection.length; i++) {
-                arr.push(selection[i].id)
-            }
-            this.selectIdArr = arr;
-        },
         handleAssign(row) {
-            this.dialogFormVisible1 = true
-            this.handleObj = row;
-            this.selectIdArr = getStrByData(row.custList);
-            var selectIds = this.selectIdArr.join(',');
-            getCustListByCustTypeId({ custTypeId: row.id }).then(res => {
-                this.selectIdArr = getStrByData(res.data.data);
-                var selectIds = this.selectIdArr.join(',');
-                this.custList.forEach(row => {
-                    if (selectIds.indexOf(row.id) >= 0) {
-                        this.$refs.checkTable.toggleRowSelection(row, true);
-                    }
-                })
-            })
+            this.showModal = true
+            this.handleObj = row
         },
-        updateCustType() {
+        handleAssignCust(arr) {
             var obj = {
                 custTypeId: this.handleObj.id,
-                custIdList: this.selectIdArr
+                custIdList: arr
             }
             updateCustTypeIdByCustIdList(obj).then(res => {
                 if (res.data.errorCode == 0) {
-                    this.cancelHanle();
+                    this.$refs.custTable.closeModal()
                     this.getList()
                     this.$message.success('分配客户成功')
                 } else {
@@ -203,7 +131,7 @@ export default {
             getCustTypeTreeDataByParentId({ parentId: this.parentId, includeRoot: 1 }).then(res => {
                 this.listLoading = false
                 res.data.data.map(item => {
-                    if (!item.id){
+                    if (!item.id) {
                         item.id = '1111111'
                     }
                 })
@@ -219,7 +147,7 @@ export default {
             }
             this.dialogFormVisible = true
             this.dialogStatus = 'create'
-            for (var key in this.temp){
+            for (var key in this.temp) {
                 this.temp[key] = this.resetTemp[key]
             }
             this.$nextTick(() => {
@@ -229,7 +157,7 @@ export default {
         handleCompile(obj) {
             this.dialogFormVisible = true
             this.dialogStatus = 'update'
-            for (var key in this.temp){
+            for (var key in this.temp) {
                 this.temp[key] = this.resetTemp[key]
             }
             this.$nextTick(() => {

@@ -25,7 +25,7 @@ export default {
   },
   data() {
     return {
-      title: '进销存管理系统',
+      title: '财务分销管理',
       logo: logoUrl
     }
   }

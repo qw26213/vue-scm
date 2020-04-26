@@ -1,5 +1,5 @@
 module.exports = {
-  title: '进销存管理系统',
+  title: '财务分销管理系统',
   showSettings: false,
   tagsView: true,
   fixedHeader: false,
