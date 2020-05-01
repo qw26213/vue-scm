@@ -33,6 +33,7 @@
     </div>
 </template>
 <script>
+import { removeToken, removeName } from '@/utils/auth'
 import { loginCheck, getIndexInfo } from '@/api/user'
 export default {
     name: 'login',
@@ -106,6 +107,8 @@ export default {
         }
     },
     mounted() {
+        removeToken()
+        removeName()
         document.onkeydown = () => {
             if (window.event.keyCode == 13 && document.getElementsByClassName('login-container').length > 0) {
                 this.handleLogin()

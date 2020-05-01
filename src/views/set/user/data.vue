@@ -93,7 +93,7 @@ export default {
             tableData: [],
             staffList: [],
             dialogTit: '',
-            showModal1: false,
+            showModal: false,
             showModal2: false,
             dialogType:'',
             dataList: [],
@@ -129,7 +129,7 @@ export default {
     methods: {
         handleAssCust(row) {
             this.handleObj = row
-            this.showModal1 = true
+            this.showModal = true
         },
         handleAssItem(row) {
             this.handleObj = row
