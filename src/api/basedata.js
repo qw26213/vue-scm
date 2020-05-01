@@ -1067,6 +1067,57 @@ export function updateBrandIdByUserIdList(data){
   })
 }
 
+// 商品分配[数据权限]
+export function getItemListByUserId(data){
+  return request({
+    url: '/drp/sys/userItem/getItemListByUserId',
+    method: 'post',
+    data
+  })
+}
+
+export function updateUserIdByItemIdList(data){
+  return request({
+    url: '/drp/sys/userItem/updateUserIdByItemIdList',
+    method: 'post',
+    data
+  })
+}
+
+// 角色分配[数据权限]
+export function getFuncListByUserIdAppsId(data){
+  return request({
+    url: '/drp/sys/roleFunc/getFuncListByUserIdAppsId',
+    method: 'post',
+    data
+  })
+}
+
+export function updateRoleIdByFuncIdList(data){
+  return request({
+    url: '/drp/sys/roleFunc/updateRoleIdByFuncIdList',
+    method: 'post',
+    data
+  })
+}
+
+// 客户分配[数据权限]
+export function getCustListByUserId(data){
+  return request({
+    url: '/drp/sys/userCust/getCustListByUserId',
+    method: 'post',
+    data
+  })
+}
+
+export function updateUserIdByCustIdList(data){
+  return request({
+    url: '/drp/sys/userCust/updateUserIdByCustIdList',
+    method: 'post',
+    data
+  })
+}
+
 export function getUserList() {
   return request({
     url: '/drp/sys/user/cmemlist',

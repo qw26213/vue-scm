@@ -79,7 +79,7 @@
                     <el-radio v-model="temp.cashFlowFlag" :label="0">否</el-radio>
                 </el-form-item>
                 <el-form-item label="" style="width:600px">
-                    <el-checkbox v-model="temp.isCurrency" :disabled="isForceAddChild==1" :false-label="0" :true-label="1">币种核算</el-checkbox>
+                    <el-checkbox v-model="temp.isCurrency" disabled :false-label="0" :true-label="1">币种核算</el-checkbox>
                     <el-checkbox v-model="temp.isAuxiliary" :disabled="isForceAddChild==1" :false-label="0" :true-label="1">辅助核算(至多选6项)</el-checkbox>
                     <el-checkbox v-model="temp.isQuantity" :disabled="isForceAddChild==1" :false-label="0" :true-label="1">数量核算</el-checkbox>
                     <el-input v-if="temp.isQuantity==1" :disabled="isForceAddChild==1" v-model="temp.uom" placeholder="计量单位" style="width:120px" />

@@ -34,7 +34,7 @@
                         <el-button type="default" size="mini" @click="handleCompile(row)">编辑</el-button>
                         <el-button type="danger" size="mini" @click="handleDel(row.id)">删除</el-button>
                         <el-button type="warning" size="mini" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
-                        <el-button type="primary" size="mini" @click="handleAssign(row)">分配客户</el-button>
+                        <el-button type="primary" size="mini" v-if="row.leaf==1" @click="handleAssign(row)">分配客户</el-button>
                     </template>
                 </el-table-column>
             </el-table>

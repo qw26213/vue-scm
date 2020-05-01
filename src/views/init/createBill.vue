@@ -41,11 +41,11 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="启用期间" prop="enablePeriodYear">
-                    <el-select size="mini" v-model="temp.enablePeriodYear" style="width: 80px" :disabled="!!userInfo.glBookEntity">
+                    <el-select size="mini" v-model="temp.enablePeriodYear" style="width: 72px" :disabled="!!userInfo.glBookEntity">
                         <el-option v-for="item in [2018,2019,2020,2021,2022]" :key="item" :value="item" :label="item"></el-option>
                     </el-select>
                     <label>年</label>
-                    <el-select size="mini" v-model="temp.enablePeriodNum" style="width: 65px" :disabled="!!userInfo.glBookEntity">
+                    <el-select size="mini" v-model="temp.enablePeriodNum" style="width: 56px" :disabled="!!userInfo.glBookEntity">
                         <el-option v-for="item in [1,2,3,4,5,6,7,8,9,10,11,12]" :key="item" :value="item" :label="item"></el-option>
                     </el-select>
                     <label>月</label>
@@ -81,8 +81,13 @@
                     <span>自定义增值税率</span>
                     <el-input v-model="temp.defaultTaxRateStr" placeholder="" size="mini" style="width:60px;margin-right:5px" />%
                     <span style="font-size:12px;margin-right:10px">(小规模纳税人为3%，一般纳税人为13%)</span>
-                    <el-checkbox v-model="temp.isDispName" :false-label="0" :true-label="1" :disabled="!!userInfo.glBookEntity" style="margin-right:10px">科目名称显示路径</el-checkbox>
-                    <el-checkbox v-model="temp.isCoaCobinationCode" :false-label="0" :true-label="1" :disabled="!!userInfo.glBookEntity">凭证中显示辅助项编码组合</el-checkbox>
+                    <el-checkbox v-model="temp.isDispName" :false-label="0" :true-label="1" style="margin-right:10px">科目名称显示路径</el-checkbox>
+                    <el-checkbox v-model="temp.isCoaCobinationCode" :false-label="0" :true-label="1">凭证中显示辅助项编码组合</el-checkbox>
+                    <span>新增凭证时默认凭证日期</span>
+                    <el-radio-group v-model="temp.isVoucherMaxDate">
+                        <el-radio :label="0" style="margin-right:10px">当前日期</el-radio>
+                        <el-radio :label="1">最大凭证日期</el-radio>
+                    </el-radio-group>
                 </el-form-item>
                 <el-form-item>
                     <el-checkbox v-model="temp.isQuantity" :false-label="0" :true-label="1" :disabled="!!userInfo.glBookEntity" style="margin-right:10px">启用数量核算</el-checkbox>
@@ -125,14 +130,14 @@
                     <span style="margin-left:5px">地方教育附加</span>
                     <el-input v-model="temp.isAutoJtfjs2" style="width:45px" size="mini" />%
                     <span style="margin-left:5px">自动结转成本</span>
-                    <el-input v-model="temp.isAutoJzcb" style="width:45px" size="mini" />%
+                    <el-input v-model="temp.isAutoJzcb" style="width:45px" size="mini" disabled />%
                     <span style="margin-left:5px">自动计提所得税</span>
                     <el-input v-model="temp.isAutoJtsds" style="width:45px" size="mini" />%
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer" align="center">
                 <el-button @click="dialogFormVisible = false">取消</el-button>
-                <el-button type="primary" @click="saveManageInfo()">确定</el-button>
+                <el-button type="primary" @click="saveManageInfo()">保存</el-button>
             </div>
         </el-dialog>
     </div>
@@ -161,6 +166,7 @@ export default {
                 codingRule: '4-2-2-2-2',
                 isAutoJtfjs: 0,
                 isCoaCobinationCode: 0,
+                isVoucherMaxDate: 0,
                 isDispName: 0,
                 isAutoJtfjs2: 0,
                 isAutoJtfjs3: 0,
@@ -276,6 +282,7 @@ export default {
             for (var key in this.temp) {
                 this.temp[key] = this.accountInfo[key]
             }
+            this.temp.isAutoJzcb = 100
             this.dialogFormVisible = true
             this.dialogStatus = 'update'
         },
@@ -294,6 +301,14 @@ export default {
                 }
             })
         },
+        formatNum(num){
+            if(!num) { return 0 }
+            if(String(num).indexOf('.') < 0){
+                return num.toFixed(0)
+            } else {
+                return num.toFixed(2)
+            }
+        },
         getData() {
             getmanagementInfo().then(res => {
                 if (res.data.errorCode == 0) {
@@ -304,12 +319,12 @@ export default {
                 if (res.data.errorCode == 0) {
                     this.accountInfo = res.data.data[0] || {}
                     if (this.accountInfo != {}) {
-                        this.accountInfo.defaultTaxRateStr = this.accountInfo.defaultTaxRate * 100
-                        this.accountInfo.isAutoJtfjs7 = this.accountInfo.isAutoJtfjs7 * 100
-                        this.accountInfo.isAutoJtfjs2 = this.accountInfo.isAutoJtfjs2 * 100
-                        this.accountInfo.isAutoJtfjs3 = this.accountInfo.isAutoJtfjs3 * 100
-                        this.accountInfo.isAutoJzcb = this.accountInfo.isAutoJzcb * 100
-                        this.accountInfo.isAutoJtsds = this.accountInfo.isAutoJtsds * 100
+                        this.accountInfo.defaultTaxRateStr = this.formatNum(this.accountInfo.defaultTaxRate * 100)
+                        this.accountInfo.isAutoJtfjs7 = this.formatNum(this.accountInfo.isAutoJtfjs7 * 100)
+                        this.accountInfo.isAutoJtfjs2 = this.formatNum(this.accountInfo.isAutoJtfjs2 * 100)
+                        this.accountInfo.isAutoJtfjs3 = this.formatNum(this.accountInfo.isAutoJtfjs3 * 100)
+                        this.accountInfo.isAutoJzcb = this.formatNum(this.accountInfo.isAutoJzcb * 100)
+                        this.accountInfo.isAutoJtsds = this.formatNum(this.accountInfo.isAutoJtsds * 100)
                     }
                 }
             })
@@ -336,6 +351,9 @@ export default {
 
 /deep/.el-card__body {
     padding: 10px 20px 15px;
+}
+/deep/ .el-input__inner{
+    padding: 0 5px;
 }
 </style>
 <style scoped>

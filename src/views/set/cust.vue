@@ -80,14 +80,14 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="280">
                 <template slot-scope="{row}">
-                    <el-button type="default" size="mini" @click="handleUpdate(row.overdraftBalance,row.id)">改已透支额度</el-button>
+                    <el-button type="default" size="mini" @click="handleUpdate(row.overdraftBalance, row.id)">改已透支额度</el-button>
                     <el-button type="primary" size="mini" @click="handleCompile(row)">编辑</el-button>
                     <el-button type="danger" size="mini" @click="handleDel(row.id)">删除</el-button>
                     <el-button type="warning" size="mini" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
                 </template>
             </el-table-column>
         </el-table>
-        <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+        <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
         <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增客户':'修改客户'" :visible.sync="dialogFormVisible" width="635px">
             <el-form ref="dataForm" :rules="rules" :model="temp" :inline="true" label-position="right" label-width="95px" style="width: 600px; margin-left:10px;">
                 <el-form-item label="客户代码" prop="custCode">
@@ -167,8 +167,8 @@
                 <el-form-item label="备注" prop="remarks">
                     <el-input v-model="temp.remarks" placeholder="备注" />
                 </el-form-item>
-                <el-form-item label="纳税人识别号" prop="taxRegistrationCertificateNo" label-width="234px">
-                    <el-input v-model="temp.taxRegistrationCertificateNo" placeholder="统一社会信用代码或纳税人识别号" style="width:340px" />
+                <el-form-item label="纳税人识别号" prop="taxRegistrationCertificateNo" label-width="134px">
+                    <el-input v-model="temp.taxRegistrationCertificateNo" placeholder="统一社会信用代码或纳税人识别号" style="width:440px" />
                 </el-form-item>
                 <el-form-item label="是否开票" prop="isInvoice">
                     <el-radio v-model="temp.isInvoice" :label="1">是</el-radio>
@@ -181,7 +181,7 @@
             </el-form>
             <div slot="footer" class="dialog-footer" align="center">
                 <el-button @click="dialogFormVisible = false">取消</el-button>
-                <el-button type="primary" @click="dialogStatus == 'create'?handleCreate():handleModify()">确定</el-button>
+                <el-button type="primary" @click="dialogStatus == 'create' ? handleCreate() : handleModify()">确定</el-button>
             </div>
         </el-dialog>
     </div>
@@ -301,6 +301,7 @@ export default {
             getCust(this.listQuery).then(res => {
                 this.listLoading = false
                 this.tableData = res.data.data
+                this.total = res.data.totalNum
             }).catch(err => {
                 this.listLoading = false
             })

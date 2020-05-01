@@ -1,6 +1,6 @@
 <template>
     <div class="app-container">
-        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini">
+        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;">
             <el-table-column label="序号" type="index" width="50" align="center">
             </el-table-column>
             <el-table-column label="企业代码">
@@ -35,17 +35,17 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="580">
                 <template slot-scope="{row}">
-                    <el-button type="default" size="mini" @click="handleAssign(row,0)">分配客户</el-button>
-                    <el-button type="primary" size="mini" @click="handleAssign(row,1)">分配仓库</el-button>
-                    <el-button type="info" size="mini" @click="handleAssign(row,2)">分配车辆</el-button>
-                    <el-button type="default" size="mini" @click="handleAssign(row,3)">分配线路</el-button>
-                    <el-button type="primary" size="mini" @click="handleAssign(row,4)">分配品牌</el-button>
-                    <el-button type="info" size="mini" @click="handleAssign(row,5)">分配商品</el-button>
-                    <el-button type="default" size="mini" @click="handleAssign(row,6)">分配角色</el-button>
+                    <el-button type="text" size="mini" @click="handleAssCust(row)">分配客户</el-button>
+                    <el-button type="text" size="mini" @click="handleAssign(row,1)">分配仓库</el-button>
+                    <el-button type="text" size="mini" @click="handleAssign(row,2)">分配车辆</el-button>
+                    <el-button type="text" size="mini" @click="handleAssign(row,3)">分配线路</el-button>
+                    <el-button type="text" size="mini" @click="handleAssign(row,4)">分配品牌</el-button>
+                    <el-button type="text" size="mini" @click="handleAssItem(row,5)">分配商品</el-button>
+                    <el-button type="text" size="mini" @click="handleAssign(row,6)">分配角色</el-button>
                 </template>
             </el-table-column>
         </el-table>
-        <el-dialog :close-on-click-modal="false" :title="'分配'+dialogTit" :visible.sync="dialogFormVisible1" :show-close="false" ::close-on-click-modal="false" width="500px">
+        <el-dialog :close-on-click-modal="false" :title="'分配'+dialogTit" :visible.sync="dialogFormVisible" :show-close="false" ::close-on-click-modal="false" width="500px">
             <el-form ref="dataForm" style="width: 460px;">
                 <el-table ref="checkTable" :data="dataList" border fit highlight-current-row style="width: 100%;" size="mini" @selection-change="handleSelectionChange" @select-all="selectAll">
                     <el-table-column type="selection" width="50" align="center" :reserve-selection="true"></el-table-column>
@@ -67,17 +67,24 @@
                 <el-button type="primary" @click="updateAssign()">确定</el-button>
             </div>
         </el-dialog>
+        <assignCust ref="custTable" :tit="handleObj.userName + handleObj.userCode" type="channel" :showModal.sync="showModal1" :handleObj="handleObj" @handleAssign="handleAssignCust">
+        </assignCust>
+        <assignItem ref="itemTable" :tit="handleObj.userName + handleObj.userCode" type="channel" :showModal.sync="showModal2" :handleObj="handleObj" @handleAssign="handleAssignItem">
+        </assignItem>
     </div>
 </template>
 <script>
 import { getUserList, saveUser, delUser } from '@/api/user'
-import { getWarehouse,getTruck,getRoute,getBrand, getStaff } from '@/api/basedata'
+import { getWarehouse,getTruck,getRoute,getBrand, getStaff, getRole } from '@/api/basedata'
 import { getWarehouseListByUserId, updateUserIdByWarehouseIdList, getTruckListByUserId, updateUserIdByTruckIdList } from '@/api/basedata'
 import { getRouteListByUserId, updateUserIdByRouteIdList, getBrandListByUserId, updateUserIdByBrandIdList } from '@/api/basedata'
+import { getFuncListByUserIdAppsId, updateRoleIdByFuncIdList, updateUserIdByCustIdList, updateUserIdByItemIdList } from '@/api/basedata'
 import { getStrByData } from '@/utils'
-
+import assignCust from '@/components/assignCust'
+import assignItem from '@/components/assignItem'
 export default {
     name: 'userList',
+    components: { assignCust, assignItem },
     data() {
         return {
             assignTypeArr: ['客户', '仓库', '车辆', '线路', '品牌', '商品', '角色'],
@@ -86,6 +93,8 @@ export default {
             tableData: [],
             staffList: [],
             dialogTit: '',
+            showModal1: false,
+            showModal2: false,
             dialogType:'',
             dataList: [],
             assignType: 0,
@@ -98,7 +107,7 @@ export default {
                 UserName: '',
                 UserCode: ''
             },
-            dialogFormVisible1: false,
+            dialogFormVisible: false,
             dialogStatus: '',
             rules: {
                 userName: [{ required: true, message: '用户姓名不能为空', trigger: 'change' }],
@@ -118,8 +127,16 @@ export default {
         })
     },
     methods: {
+        handleAssCust(row) {
+            this.handleObj = row
+            this.showModal1 = true
+        },
+        handleAssItem(row) {
+            this.handleObj = row
+            this.showModal2 = true
+        },
         cancelHanle() {
-            this.dialogFormVisible1 = false;
+            this.dialogFormVisible = false;
             this.$refs.checkTable.clearSelection()
         },
         selectAll(selection) {
@@ -137,7 +154,7 @@ export default {
             this.selectIdArr = arr;
         },
         handleAssign(row, index) {
-            this.dialogFormVisible1 = true
+            this.dialogFormVisible = true
             this.assignType = index
             this.handleObj = row
             this.dialogTit = this.assignTypeArr[index]
@@ -198,6 +215,20 @@ export default {
                     })
                 })
             }
+            if (index == 6) {
+                getRole().then(resp => {
+                    this.dataList = resp.data.data;
+                    getBrandListByUserId({ userId: row.id }).then(res => {
+                      this.selectIdArr = getStrByData(res.data);
+                      var selectIds = this.selectIdArr.join(',')
+                      this.dataList.forEach(row => {
+                        if(selectIds.indexOf(row.id) >= 0){
+                          this.$refs.checkTable.toggleRowSelection(row,true);
+                        }
+                      })
+                    })
+                })
+            }
         },
         updateAssign() {
             if (this.assignType == 1) {
@@ -212,6 +243,31 @@ export default {
             if (this.assignType == 4) {
                 this.updateAssign4();
             }
+            if (this.assignType == 6) {
+                this.updateAssign6();
+            }
+        },
+        handleAssignCust(arr) {
+            var obj = { userId: this.handleObj.id, userIdList: arr }
+            updateUserIdByWarehouseIdList(obj).then(res => {
+                if (res.data.errorCode == 0) {
+                    this.$refs.custTable.closeModal()
+                    this.$message.success('分配客户成功')
+                } else {
+                    this.$message.error(res.data.msg)
+                }
+            })
+        },
+        handleAssignItem(arr) {
+            var obj = { userId: this.handleObj.id, itemIdList: arr }
+            updateUserIdByWarehouseIdList(obj).then(res => {
+                if (res.data.errorCode == 0) {
+                    this.$refs.itemTable.closeModal()
+                    this.$message.success('分配商品成功')
+                } else {
+                    this.$message.error(res.data.msg)
+                }
+            })
         },
         updateAssign1() {
             var obj = { userId: this.handleObj.id, warehouseIdList: this.selectIdArr }
@@ -252,6 +308,17 @@ export default {
                 if (res.data.errorCode == 0) {
                     this.cancelHanle();
                     this.$message.success('分配品牌成功')
+                } else {
+                    this.$message.error(res.data.msg)
+                }
+            })
+        },
+        updateAssign6() {
+            var obj = { userId: this.handleObj.id, brandIdList: this.selectIdArr }
+            updateUserIdByBrandIdList(obj).then(res => {
+                if (res.data.errorCode == 0) {
+                    this.cancelHanle();
+                    this.$message.success('分配角色成功')
                 } else {
                     this.$message.error(res.data.msg)
                 }

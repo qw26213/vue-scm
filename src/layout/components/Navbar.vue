@@ -45,11 +45,10 @@
                 <el-button type="primary" @click="savePsw">确定</el-button>
             </div>
         </el-dialog>
-        <el-dialog title="温馨提示" :visible.sync="dialogFormVisible2 && messagelist.length>0" width="600px">
+        <el-dialog title="温馨提示" :visible.sync="dialogFormVisible2" width="600px">
             <div class="msgDiv" v-for="(item,index) in messagelist" :key="index">
-                <div class="tit">• {{item.sender}}消息</div>
+                <div class="tit">• {{item.sender}}消息 <span class="time">{{item.sentDate}}</span></div>
                 <div class="con" v-html="item.content"></div>
-                <div class="time">{{item.sentDate}}</div>
             </div>
             <div slot="footer" class="dialog-footer" align="right">
                 <el-checkbox v-model="isTodayShow" style="float:left;margin-right:5px;font-size:12px">今天不再显示</el-checkbox>
@@ -85,7 +84,7 @@ export default {
         return {
             avatar: userImg,
             dialogFormVisible: false,
-            dialogFormVisible2: true,
+            dialogFormVisible2: false,
             isTodayShow: false,
             messagelist: [],
             id: "",
@@ -105,7 +104,7 @@ export default {
                     { required: true, message: " 确认新密码不能为空", trigger: "change" }
                 ]
             }
-        };
+        }
     },
     computed: {
         ...mapGetters(["sidebar", "device", "name"])
@@ -113,10 +112,10 @@ export default {
     created() {
         if (!Cookies.get("msgModal")) {
             getMessage().then(res => {
-                this.messagelist = res.data.data || [];
-                this.dialogFormVisible2 = true;
+                this.messagelist = res.data.data || []
+                this.dialogFormVisible2 = this.messagelist.length > 0 ? true : false
             });
-        }
+        }    
     },
     methods: {
         closeModal() {
@@ -270,9 +269,10 @@ export default {
 }
 
 .msgDiv .time {
-    color: #666;
+    float:right;
+    color: #999;
     font-size: 13px;
     text-align: right;
-    margin-top: 10px;
+    padding-top:3px
 }
 </style>

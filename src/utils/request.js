@@ -20,20 +20,36 @@ axios.interceptors.request.use(
 // http response 拦截器
 axios.interceptors.response.use(
     response => {
-        let res = response.data;
-        return response;
+        let res = response.data
+        if(res && !res.errorCode) {
+            return response
+        }
+        if (res.errorCode == 0) {
+            return response
+        } else if (res.errorCode == 401) {
+            if (document.getElementsByClassName('el-message').length === 0){
+                MessageBox.alert('登录已失效，请登录!', '提示', {
+                    confirmButtonText: '确定',
+                    callback: () => {
+                      context.push('/login')
+                    }
+                })
+            }
+        } else {
+            Message.warning(res.msg)
+        }
     },
     error => {
         if (error.response) {
             switch (error.response.status) {
                 case 401:
                     if (document.getElementsByClassName('el-message').length === 0){
-                    MessageBox.alert('登录已失效，请登录!', '提示', {
-                        confirmButtonText: '确定',
-                        callback: () => {
-                          context.push('/login')
-                        }
-                    })
+                        MessageBox.alert('登录已失效，请登录!', '提示', {
+                            confirmButtonText: '确定',
+                            callback: () => {
+                              context.push('/login')
+                            }
+                        })
                     }
                     break;
                 default:

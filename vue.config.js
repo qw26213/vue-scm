@@ -35,7 +35,7 @@ module.exports = {
   },
   configureWebpack: {
     name: name,
-    externals:process.env.NODE_ENV === 'development'?{}:getProdExternals(),
+    externals:process.env.NODE_ENV === 'development' ? {} : getProdExternals(),
     plugins: [
       new HtmlWebpackPlugin({
         filename: 'index.html',

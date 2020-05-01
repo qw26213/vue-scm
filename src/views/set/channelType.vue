@@ -5,9 +5,6 @@
   </div>
   <div class="app-container">
     <div class="filter-container">
-      <!-- <el-input size="small" v-model="listQuery.channelTypeName" placeholder="渠道类型名称" style="width: 200px;" class="filter-item" /> -->
-      <!-- <el-input size="small" v-model="listQuery.channelTypeCode" placeholder="门店号" style="width: 200px;" class="filter-item" /> -->
-      <!-- <el-button size="mini" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button> -->
       <el-button size="mini" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
     </div>
 
