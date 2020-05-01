@@ -86,8 +86,8 @@ export default {
     },
     created() {
         getCatogery().then(res => {
-            this.catogeryList = res.data;
-            this.listQuery.jeCatogeryId = res.data[0].id
+            this.catogeryList = res.data.data
+            this.listQuery.jeCatogeryId = this.catogeryList[0].id
             this.getList()
         })
     },

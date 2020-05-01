@@ -2,6 +2,26 @@
     <div class="app-container">
         <div class="filter-container">
             <el-input size="small" v-model="listQuery.queryParam.custName" placeholder="客户代码/名称" style="width: 200px;" class="filter-item" />
+            <el-dropdown trigger="click">
+                <span class="el-dropdown-link" id="dropTit3">
+                    <el-input v-model="listQuery.queryParam.channelTypeName" placeholder="渠道类型" />
+                </span>
+                <el-dropdown-menu slot="dropdown" :visible-change="menuVisible1">
+                    <div style="width:185px;max-height:260px">
+                        <el-tree :data="treeData1" :props="defaultProps1" @node-click="handleNodeClick3" default-expand-all></el-tree>
+                    </div>
+                </el-dropdown-menu>
+            </el-dropdown>
+            <el-dropdown trigger="click">
+                <span class="el-dropdown-link" id="dropTit4">
+                    <el-input v-model="listQuery.queryParam.custTypeName" placeholder="客户类别" />
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                    <div style="width:185px;max-height:260px">
+                        <el-tree :data="treeData2" :props="defaultProps2" @node-click="handleNodeClick4" default-expand-all></el-tree>
+                    </div>
+                </el-dropdown-menu>
+            </el-dropdown>
             <el-button size="mini" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
             <el-button size="mini" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
         </div>
@@ -196,7 +216,7 @@ export default {
     data() {
         return {
             tableKey: 0,
-            addressCode:{},
+            addressCode: {},
             tableData: [],
             treeData1: [],
             treeData2: [],
@@ -217,7 +237,9 @@ export default {
                 pageNum: 20,
                 queryParam: {
                     custCode: '',
-                    custName: ''
+                    custName: '',
+                    channelTypeId: '',
+                    custTypeId: ''
                 }
             },
             temp: {
@@ -230,7 +252,10 @@ export default {
                 mnemonicCode: '',
                 channelTypeId: '',
                 channelTypeName: '',
-                custTypeId: '',province:'',city:'',district:'',
+                custTypeId: '',
+                province: '',
+                city: '',
+                district: '',
                 priceGroupId: '',
                 custTypeName: '',
                 isInvoice: 0,
@@ -248,7 +273,10 @@ export default {
                 mnemonicCode: '',
                 channelTypeId: '',
                 channelTypeName: '',
-                custTypeId: '',province:'',city:'',district:'',
+                custTypeId: '',
+                province: '',
+                city: '',
+                district: '',
                 priceGroupId: '',
                 custTypeName: '',
                 isInvoice: 0,
@@ -271,30 +299,40 @@ export default {
         this.getTree();
     },
     filters: {
-        Fixed: function (num) {
+        Fixed: function(num) {
             if (!num) { return '0.00' }
             return parseFloat(num).toFixed(2);
         }
     },
     methods: {
-        areaData(data){
+        areaData(data) {
             this.temp.province = data.split("-")[0]
             this.temp.city = data.split("-")[1]
             this.temp.area = data.split("-")[2]
         },
         handleNodeClick1(e) {
             if (e.leaf == 1) {
-                document.getElementById("dropTit1").click();
-                this.temp.channelTypeName = e.channelTypeName;
-                this.temp.channelTypeId = e.id;
+                document.getElementById("dropTit1").click()
+                this.temp.channelTypeName = e.channelTypeName
+                this.temp.channelTypeId = e.id
             }
         },
         handleNodeClick2(e) {
             if (e.leaf == 1) {
                 document.getElementById("dropTit2").click();
-                this.temp.custTypeName = e.custTypeName;
-                this.temp.custTypeId = e.id;
+                this.temp.custTypeName = e.custTypeName
+                this.temp.custTypeId = e.id
             }
+        },
+        handleNodeClick3(e) {
+            document.getElementById("dropTit3").click();
+            this.$set(this.listQuery.queryParam, 'channelTypeName', e.channelTypeName)
+            this.$set(this.listQuery.queryParam, 'channelTypeId', e.id)
+        },
+        handleNodeClick4(e) {
+            document.getElementById("dropTit4").click();
+            this.$set(this.listQuery.queryParam, 'custTypeName', e.custTypeName)
+            this.$set(this.listQuery.queryParam, 'custTypeId', e.id)
         },
         getList() {
             this.listLoading = true
@@ -442,5 +480,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-/deep/.el-form-item{margin-bottom: 16px}
+/deep/.el-form-item {
+    margin-bottom: 16px
+}
 </style>

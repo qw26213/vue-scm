@@ -94,8 +94,8 @@ export default {
             this.periodList = res.data.data
         })
         getCatogery().then(res => {
-          this.catogeryList = res.data;
-          this.listQuery.jeCatogeryId = res.data[0].id
+          this.catogeryList = res.data.data
+          this.listQuery.jeCatogeryId = res.data.data[0].id
           this.getList()
         })
     },

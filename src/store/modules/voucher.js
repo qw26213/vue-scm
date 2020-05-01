@@ -25,7 +25,7 @@ const mutations = {
 const actions = {
     getCoaList({ commit }, data) {
         getCoas().then(res => {
-            commit('SET_COA', res.data)
+            commit('SET_COA', res.data.data)
         })
     },
     getSummaryList({ commit }, data) {
@@ -35,7 +35,7 @@ const actions = {
     },
     getTempletType({ commit }, data) {
         getTempletTypeList().then(res => {
-            commit('SET_TEMPLETTYPE', res.data)
+            commit('SET_TEMPLETTYPE', res.data.data)
         })
     },
     getAuxiliaryTypeList({ commit }, data) {

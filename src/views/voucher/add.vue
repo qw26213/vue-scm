@@ -282,25 +282,25 @@ export default {
         this.$store.dispatch('voucher/getAuxiliaryTypeList')
         this.getTempletList()
         getCatogery().then(res => {
-            this.catogeryList = res.data
+            this.catogeryList = res.data.data
         })
         getCust().then(res => {
-            this.custList = res.data
+            this.custList = res.data.data
         })
         getDept().then(res => {
-            this.deptList = res.data
+            this.deptList = res.data.data
         })
         getStaff().then(res => {
-            this.staffList = res.data
+            this.staffList = res.data.data
         })
         getSupplier().then(res => {
-            this.supplierList = res.data
+            this.supplierList = res.data.data
         })
         getItem().then(res => {
-            this.itemList = res.data
+            this.itemList = res.data.data
         })
         getProj().then(res => {
-            this.projList = res.data
+            this.projList = res.data.data
         })
         if (this.$route.query.id) {
             getVoucherById({ id: this.$route.query.id }).then(res => {

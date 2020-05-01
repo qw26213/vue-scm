@@ -28,7 +28,7 @@ axios.interceptors.response.use(
             return response
         } else if (res.errorCode == 401) {
             if (document.getElementsByClassName('el-message').length === 0){
-                MessageBox.alert('登录已失效，请登录!', '提示', {
+                MessageBox.alert(res.msg, '提示', {
                     confirmButtonText: '确定',
                     callback: () => {
                       context.push('/login')

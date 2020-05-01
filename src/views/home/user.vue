@@ -275,10 +275,10 @@ export default {
         this.getData2()
         this.getData3()
         registerLoadArea().then(res => {
-            this.areaList = res.data
+            this.areaList = res.data.data
         })
         registerLoadIndustry().then(res => {
-            this.industryList = res.data
+            this.industryList = res.data.data
         })
         registerLoadTaxfilingcategory().then(res => {
             this.taxfillingcategoryList = res.data

@@ -22,37 +22,37 @@
                     <span>{{row.crDr==1?'借':row.crDr==0?'平':'贷'}}</span>
                 </template>
             </el-table-column>
-            <el-table-column :label="'期初余额('+userInfo.glBookEntity.enablePeriodCode+')'" min-width="80">
-                <el-table-column label="金额(元，可输入)" min-width="80" align="right">
+            <el-table-column :label="'期初余额('+userInfo.glBookEntity.enablePeriodCode+')'" min-width="240">
+                <el-table-column label="金额(元)" min-width="80" align="right">
                     <template slot-scope="scope">
                         <el-input class="tx-r" size="mini" v-model="scope.row.beginBalance" :disabled="scope.row.isAuxiliary==1&&scope.row.type==1&&scope.row.leaf==1" @change="valChange(scope.$index)" />
                     </template>
                 </el-table-column>
-                <el-table-column label="数量(可输入)" min-width="80" align="right">
+                <el-table-column label="数量" min-width="80" align="right">
                     <template slot-scope="scope">
                         <el-input class="tx-r" size="mini" v-model="scope.row.beginBalanceQty" :disabled="scope.row.isAuxiliary==1&&scope.row.type==1&&scope.row.leaf==1" @change="valChange(scope.$index)" />
                     </template>
                 </el-table-column>
             </el-table-column>
-            <el-table-column :label="'本年借方累计'+ (userInfo.glBookEntity.enablePeriodNum > 1 ? '(1-' + (userInfo.glBookEntity.enablePeriodNum - 1) + '月)':'')" min-width="80">
-                <el-table-column label="金额(元，可输入)" min-width="80" align="right">
+            <el-table-column :label="'本年借方累计'+ (userInfo.glBookEntity.enablePeriodNum > 1 ? '(1-' + (userInfo.glBookEntity.enablePeriodNum - 1) + '月)':'')" min-width="240">
+                <el-table-column label="金额(元)" min-width="80" align="right">
                     <template slot-scope="scope">
                         <el-input class="tx-r" size="mini" v-model="scope.row.periodNetDr" :disabled="scope.row.isAuxiliary==1&&scope.row.type==1&&scope.row.leaf==1" @change="valChange(scope.$index)" />
                     </template>
                 </el-table-column>
-                <el-table-column label="数量(可输入)" min-width="80" align="right">
+                <el-table-column label="数量" min-width="80" align="right">
                     <template slot-scope="scope">
                         <el-input class="tx-r" size="mini" v-model="scope.row.periodNetQtyDr" :disabled="scope.row.isAuxiliary==1&&scope.row.type==1&&scope.row.leaf==1" @change="valChange(scope.$index)" />
                     </template>
                 </el-table-column>
             </el-table-column>
-            <el-table-column :label="'本年贷方累计'+ (userInfo.glBookEntity.enablePeriodNum > 1 ? '(1-' + (userInfo.glBookEntity.enablePeriodNum - 1) + '月)':'')" min-width="80">
-                <el-table-column label="金额(元，可输入)" min-width="80" align="right">
+            <el-table-column :label="'本年贷方累计'+ (userInfo.glBookEntity.enablePeriodNum > 1 ? '(1-' + (userInfo.glBookEntity.enablePeriodNum - 1) + '月)':'')" min-width="240">
+                <el-table-column label="金额(元)" min-width="80" align="right">
                     <template slot-scope="scope">
                         <el-input class="tx-r" size="mini" v-model="scope.row.periodNetCr" :disabled="scope.row.isAuxiliary==1&&scope.row.type==1&&scope.row.leaf==1" @change="valChange(scope.$index)" />
                     </template>
                 </el-table-column>
-                <el-table-column label="数量(可输入)" min-width="80" align="right">
+                <el-table-column label="数量" min-width="80" align="right">
                     <template slot-scope="scope">
                         <el-input class="tx-r" size="mini" v-model="scope.row.periodNetQtyCr" :disabled="scope.row.isAuxiliary==1&&scope.row.type==1&&scope.row.leaf==1" @change="valChange(scope.$index)" />
                     </template>
@@ -224,22 +224,22 @@ export default {
     mounted() {
         this.getData()
         getCust().then(res => {
-            this.custList = res.data
+            this.custList = res.data.data
         })
         getDept().then(res => {
-            this.deptList = res.data
+            this.deptList = res.data.data
         })
         getStaff().then(res => {
-            this.staffList = res.data
+            this.staffList = res.data.data
         })
         getSupplier().then(res => {
-            this.supplierList = res.data
+            this.supplierList = res.data.data
         })
         getItem().then(res => {
-            this.itemList = res.data
+            this.itemList = res.data.data
         })
         getProj().then(res => {
-            this.projList = res.data
+            this.projList = res.data.data
         })
     },
     methods: {

@@ -204,7 +204,7 @@ export default {
     mounted() {
         this.getData()
         registerLoadTaxfilingcategory().then(res => {
-            this.taxfillingcategoryList = res.data
+            this.taxfillingcategoryList = res.data.data
         })
         getCurrencyList().then(res => {
             this.currencyList = res.data.data

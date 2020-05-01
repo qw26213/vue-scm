@@ -15,7 +15,7 @@
     </el-dialog>
 </template>
 <script>
-import { getCust, getCustListByRouteId, getCustListByChannelTypeId, getCustListByCustTypeId } from '@/api/basedata'
+import { getCust, getCustListByRouteId, getCustListByChannelTypeId, getCustListByCustTypeId, getCustListByUserId } from '@/api/basedata'
 import Pagination from '@/components/Pagination'
 import { getStrByData, deepClone } from '@/utils'
 export default {
@@ -66,6 +66,14 @@ export default {
                 if (this.type === 'group'){
                     this.curRowObj = deepClone(this.handleObj)
                     this.getCustTable()
+                }
+                if (this.type === 'user'){
+                    getCustListByUserId({ userId: this.handleObj.id }).then(res => {
+                        var rowObj = this.handleObj
+                        rowObj.custList = res.data.data
+                        this.curRowObj = deepClone(rowObj)
+                        this.getCustTable()
+                    })
                 }
             }
         }

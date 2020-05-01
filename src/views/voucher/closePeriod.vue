@@ -202,8 +202,8 @@ export default {
         this.$store.dispatch('voucher/getTempletType')
         this.$store.dispatch('voucher/getAuxiliaryTypeList')
         this.getTempletList()
-        getCatogery().then(res=>{
-            this.catogeryList = res.data
+        getCatogery().then(res => {
+            this.catogeryList = res.data.data
         })
     },
     methods: {

@@ -1085,17 +1085,17 @@ export function updateUserIdByItemIdList(data){
 }
 
 // 角色分配[数据权限]
-export function getFuncListByUserIdAppsId(data){
+export function getRoleListByUserId(data){
   return request({
-    url: '/drp/sys/roleFunc/getFuncListByUserIdAppsId',
+    url: '/drp/sys/userRole/getRoleListByUserId',
     method: 'post',
     data
   })
 }
 
-export function updateRoleIdByFuncIdList(data){
+export function updateUserIdByRoleIdList(data){
   return request({
-    url: '/drp/sys/roleFunc/updateRoleIdByFuncIdList',
+    url: '/drp/sys/userRole/updateUserIdByRoleIdList',
     method: 'post',
     data
   })

@@ -56,35 +56,44 @@
                 </template>
             </el-table-column>
         </el-table>
-        <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增下级科目':'修改科目'" :visible.sync="dialogFormVisible" width="600px">
-            <el-form ref="dataForm" :rules="rules" :model="temp" :inline="true" label-position="right" label-width="78px" style="width: 580px; margin-left:10px;">
+        <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增下级科目':'修改科目'" :visible.sync="dialogFormVisible" width="620px">
+            <el-form ref="dataForm" :rules="rules" :model="temp" :inline="true" label-position="right" label-width="85px" style="width: 580px; margin-left:10px;">
                 <el-form-item label="科目类别" prop="coaClassId">
                     <el-input v-model="temp.coaClassName" placeholder="科目类别" disabled />
                 </el-form-item>
                 <el-form-item label="科目代码" prop="coaCode">
-                    <el-input v-model="temp.coaCode" placeholder="科目代码" :disabled="dialogStatus=='update'&&temp.leaf==0 && temp.unchageableFlag==0" />
+                    <el-input v-model="temp.coaCode" placeholder="科目代码" :disabled="dialogStatus=='update' && temp.unchageableFlag==1" />
                 </el-form-item>
                 <el-form-item label="科目名称" prop="coaName" min-width="220">
-                    <el-input v-model="temp.coaName" placeholder="科目名称" :disabled="!(dialogStatus=='update'&&temp.leaf==1 && temp.unchageableFlag==0)" />
+                    <el-input v-model="temp.coaName" placeholder="科目名称" :disabled="dialogStatus=='update' && temp.unchageableFlag==1" />
                 </el-form-item>
-                <el-form-item label="上级科目" prop="parentId">
+                <el-form-item label="上级科目" prop="parentId" v-if="dialogStatus=='create'">
+                    <el-input v-model="parentName" placeholder="上级科目" disabled />
+                </el-form-item>
+                <el-form-item label="上级科目" prop="parentId" v-if="dialogStatus=='update'">
                     <el-input v-for="item in coaArr" :key="item.id" v-if="temp.parentId == item.id" v-model="item.coaName" placeholder="上级科目" disabled />
                 </el-form-item>
                 <el-form-item label="借贷方向" prop="crDr" style="width:265px">
-                    <el-radio v-model="temp.crDr" :label="1">借</el-radio>
-                    <el-radio v-model="temp.crDr" :label="-1">贷</el-radio>
+                    <el-radio v-model="temp.crDr" :label="1" :disabled="dialogStatus=='update' && temp.unchageableFlag==1">借</el-radio>
+                    <el-radio v-model="temp.crDr" :label="-1" :disabled="dialogStatus=='update' && temp.unchageableFlag==1">贷</el-radio>
                 </el-form-item>
                 <el-form-item label="是否现金" prop="cashFlowFlag" style="width:265px">
                     <el-radio v-model="temp.cashFlowFlag" :label="1">是</el-radio>
                     <el-radio v-model="temp.cashFlowFlag" :label="0">否</el-radio>
                 </el-form-item>
-                <el-form-item label="" style="width:600px">
+                <el-form-item label="" style="width:600px" v-if="temp.noAuxiliary == 0 && dialogStatus == 'create'">
                     <el-checkbox v-model="temp.isCurrency" disabled :false-label="0" :true-label="1">币种核算</el-checkbox>
                     <el-checkbox v-model="temp.isAuxiliary" :disabled="isForceAddChild==1" :false-label="0" :true-label="1">辅助核算(至多选6项)</el-checkbox>
                     <el-checkbox v-model="temp.isQuantity" :disabled="isForceAddChild==1" :false-label="0" :true-label="1">数量核算</el-checkbox>
                     <el-input v-if="temp.isQuantity==1" :disabled="isForceAddChild==1" v-model="temp.uom" placeholder="计量单位" style="width:120px" />
                 </el-form-item>
-                <el-form-item v-if="temp.isAuxiliary==1" style="width:600px">
+                <el-form-item label="" style="width:600px" v-if="dialogStatus == 'update'">
+                    <el-checkbox v-model="temp.isCurrency" disabled :false-label="0" :true-label="1">币种核算</el-checkbox>
+                    <el-checkbox v-model="temp.isAuxiliary" :disabled="temp.noAuxiliary==1 || temp.leaf==0 || temp.usedFlag==1" :false-label="0" :true-label="1">辅助核算(至多选6项)</el-checkbox>
+                    <el-checkbox v-model="temp.isQuantity" :disabled="temp.noAuxiliary==1 || temp.leaf==0 || temp.usedFlag==1" :false-label="0" :true-label="1">数量核算</el-checkbox>
+                    <el-input v-if="temp.isQuantity==1" :disabled="temp.noAuxiliary==1 || temp.leaf==0 || temp.usedFlag==1" v-model="temp.uom" placeholder="计量单位" style="width:120px" />
+                </el-form-item>
+                <el-form-item v-if="temp.isAuxiliary==1 && temp.noAuxiliary == 0" style="width:600px">
                     <el-checkbox :checked="temp.auxiliary&&temp.auxiliary.charAt(0)==1" v-model="temp.auxiliaryName_0" :false-label="0" :true-label="1">供应商</el-checkbox>
                     <el-checkbox :checked="temp.auxiliary&&temp.auxiliary.charAt(1)==1" v-model="temp.auxiliaryName_1" :false-label="0" :true-label="1">客户</el-checkbox>
                     <el-checkbox :checked="temp.auxiliary&&temp.auxiliary.charAt(2)==1" v-model="temp.auxiliaryName_2" :false-label="0" :true-label="1">部门</el-checkbox>
@@ -134,6 +143,7 @@ export default {
                 coaIndustryId: '',
                 dispName: '',
                 noAuxiliary: '',
+                usedFlag: 0,
                 leaf: 0
             },
             resetTemp: {
@@ -159,8 +169,10 @@ export default {
                 coaIndustryId: '',
                 dispName: '',
                 noAuxiliary: '',
+                usedFlag: 0,
                 leaf: 0
             },
+            parentName: '',
             rules: {
                 coaName: [{ required: true, message: '不能为空', trigger: 'change' }],
                 coaCode: [{ required: true, message: '不能为空', trigger: 'change' }]
@@ -194,6 +206,7 @@ export default {
             })
         },
         handleAdd(row) {
+            this.isForceAddChild = 0
             getCoaCodeUsedByIdNoSysTemplet(row.id).then(res => {
                 if (res.data.data == 1) {
                     this.$confirm("本科目已被使用，增加第一个下级科目时，系统将把上述信息更新至新增的下级科目中,是否继续？", '提示', {
@@ -202,12 +215,12 @@ export default {
                         type: 'warning'
                     }).then(() => {
                         this.isForceAddChild = 1
-                        console.log(this.isForceAddChild)
+                        console.log('强制增加下级')
                         this.initAddFrom(row)
                     })
                 } else {
-                    getCoaCodeUsedById(row.id).then(resp => {
-                        this.isForceAddChild = resp.data.data
+                    getCoaCodeUsedById(row.id).then(rep => {
+                        this.isForceAddChild = rep.data.data
                         this.initAddFrom(row)
                     })
                 }
@@ -220,6 +233,7 @@ export default {
             this.temp.coaClassName = row.coaClassName
             this.temp.coaClassId = row.coaClassId
             this.temp.parentId = row.id
+            this.parentName = row.coaName
             this.temp.cashFlowFlag = row.cashFlowFlag
             this.temp.crDr = row.crDr
             this.dialogStatus = 'create'
@@ -240,7 +254,7 @@ export default {
             var id = sessionStorage.bookId
             updateDispName(id).then(res => {
                 if (res.data.errorCode == 0) {
-                    this.getData();
+                    this.getData()
                     this.$message.success('科目表校正完成！')
                 } else {
                     this.$message.warning(res.data.msg)

@@ -23,7 +23,7 @@
                     <span>{{ row.isAdmin==1?'是':'否' }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="列查询权限" align="center">
+            <el-table-column label="列查询权限" align="center" min-width="90">
                 <template slot-scope="{row}">
                     <span>{{ row.queryType==1?'有':'无' }}</span>
                 </template>
@@ -67,9 +67,9 @@
                 <el-button type="primary" @click="updateAssign()">确定</el-button>
             </div>
         </el-dialog>
-        <assignCust ref="custTable" :tit="handleObj.userName + handleObj.userCode" type="channel" :showModal.sync="showModal1" :handleObj="handleObj" @handleAssign="handleAssignCust">
+        <assignCust ref="custTable" :tit="handleObj.userName + handleObj.userAccount" type="user" :showModal.sync="showModal" :handleObj="handleObj" @handleAssign="handleAssignCust">
         </assignCust>
-        <assignItem ref="itemTable" :tit="handleObj.userName + handleObj.userCode" type="channel" :showModal.sync="showModal2" :handleObj="handleObj" @handleAssign="handleAssignItem">
+        <assignItem ref="itemTable" :tit="handleObj.userName + handleObj.userAccount" type="user" :showModal.sync="showModal2" :handleObj="handleObj" @handleAssign="handleAssignItem">
         </assignItem>
     </div>
 </template>
@@ -78,7 +78,7 @@ import { getUserList, saveUser, delUser } from '@/api/user'
 import { getWarehouse,getTruck,getRoute,getBrand, getStaff, getRole } from '@/api/basedata'
 import { getWarehouseListByUserId, updateUserIdByWarehouseIdList, getTruckListByUserId, updateUserIdByTruckIdList } from '@/api/basedata'
 import { getRouteListByUserId, updateUserIdByRouteIdList, getBrandListByUserId, updateUserIdByBrandIdList } from '@/api/basedata'
-import { getFuncListByUserIdAppsId, updateRoleIdByFuncIdList, updateUserIdByCustIdList, updateUserIdByItemIdList } from '@/api/basedata'
+import { updateUserIdByCustIdList, updateUserIdByItemIdList, updateUserIdByRoleIdList, getRoleListByUserId } from '@/api/basedata'
 import { getStrByData } from '@/utils'
 import assignCust from '@/components/assignCust'
 import assignItem from '@/components/assignItem'
@@ -218,7 +218,7 @@ export default {
             if (index == 6) {
                 getRole().then(resp => {
                     this.dataList = resp.data.data;
-                    getBrandListByUserId({ userId: row.id }).then(res => {
+                    getRoleListByUserId({ userId: row.id }).then(res => {
                       this.selectIdArr = getStrByData(res.data);
                       var selectIds = this.selectIdArr.join(',')
                       this.dataList.forEach(row => {
@@ -249,7 +249,7 @@ export default {
         },
         handleAssignCust(arr) {
             var obj = { userId: this.handleObj.id, userIdList: arr }
-            updateUserIdByWarehouseIdList(obj).then(res => {
+            updateUserIdByCustIdList(obj).then(res => {
                 if (res.data.errorCode == 0) {
                     this.$refs.custTable.closeModal()
                     this.$message.success('分配客户成功')
@@ -260,7 +260,7 @@ export default {
         },
         handleAssignItem(arr) {
             var obj = { userId: this.handleObj.id, itemIdList: arr }
-            updateUserIdByWarehouseIdList(obj).then(res => {
+            updateUserIdByItemIdList(obj).then(res => {
                 if (res.data.errorCode == 0) {
                     this.$refs.itemTable.closeModal()
                     this.$message.success('分配商品成功')
@@ -314,8 +314,8 @@ export default {
             })
         },
         updateAssign6() {
-            var obj = { userId: this.handleObj.id, brandIdList: this.selectIdArr }
-            updateUserIdByBrandIdList(obj).then(res => {
+            var obj = { userId: this.handleObj.id, roleIdList: this.selectIdArr }
+            updateUserIdByRoleIdList(obj).then(res => {
                 if (res.data.errorCode == 0) {
                     this.cancelHanle();
                     this.$message.success('分配角色成功')

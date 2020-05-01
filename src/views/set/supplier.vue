@@ -64,8 +64,8 @@
     </el-table>
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
-    <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增供应商':'修改供应商'" :visible.sync="dialogFormVisible" width="680px">
-      <el-form ref="dataForm" :rules="rules" :model="temp" :inline="true" label-position="right" label-width="100px" style="width: 610px; margin-left:30px;">
+    <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增供应商':'修改供应商'" :visible.sync="dialogFormVisible" width="650px">
+      <el-form ref="dataForm" :rules="rules" :model="temp" :inline="true" label-position="right" label-width="100px" style="width: 610px; margin-left:10px;">
         <el-form-item label="供应商代码" prop="supplierCode">
           <el-input v-model="temp.supplierCode" placeholder="供应商代码" />
         </el-form-item>

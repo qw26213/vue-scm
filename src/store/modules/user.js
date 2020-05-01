@@ -41,7 +41,7 @@ const actions = {
                     commit('SET_TOKEN', token)
                     setToken(token)
                     getIndexInfo(this.loginForm).then(res => {
-                        var user = res.data.userInfo
+                        var user = res.data.data.userInfo
                         sessionStorage.userInfo = JSON.stringify(res.data.userInfo)
                         commit('SET_NAME', user.userName)
                         commit('SET_AVATAR', 'https://panjiachen.gitee.io/vue-element-admin-site/home.png')
@@ -64,7 +64,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             commit('SET_NAME', getName())
             getRoles().then(res => {
-                var roles = fetchRoles(res.data)
+                var roles = fetchRoles(res.data.data)
                 const data = { name: '王小二', id: '123456' }
                 const { name, id } = data
                 if (!roles || roles.length <= 0) {

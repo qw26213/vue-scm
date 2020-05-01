@@ -1,13 +1,13 @@
 <template>
-    <el-dialog :close-on-click-modal="false" :title="'分配客户_'+tit" :visible.sync="showModal" :show-close="false" ::close-on-click-modal="false" width="500px">
+    <el-dialog :close-on-click-modal="false" :title="'分配商品_'+tit" :visible.sync="showModal" :show-close="false" ::close-on-click-modal="false" width="500px">
         <!-- <div class="curTit">当前价格组：{{}})</div> -->
-        <el-table ref="table" :data="custData" border fit highlight-current-row style="width: 100%;" size="mini" row-key="id" @selection-change="selectChange" @select-all="selectChange">
+        <el-table ref="table" :data="itemData" border fit highlight-current-row style="width: 100%;" size="mini" row-key="id" @selection-change="selectChange" @select-all="selectChange">
             <el-table-column type="selection" width="50" align="center" :reserve-selection="true"></el-table-column>
             <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
-            <el-table-column label="客户代码" prop="custCode" />
-            <el-table-column label="客户名称" prop="custName" />
+            <el-table-column label="商品代码" prop="itemCode" />
+            <el-table-column label="商品名称" prop="itemName" />
         </el-table>
-        <pagination v-show="total>10" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getCustTable" />
+        <pagination v-show="total>10" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getItemTable" />
         <div slot="footer" class="dialog-footer" align="center">
             <el-button @click="closeModal">取消</el-button>
             <el-button type="primary" @click="saveAssign">确定</el-button>
@@ -15,57 +15,40 @@
     </el-dialog>
 </template>
 <script>
-import { getCust, getCustListByRouteId, getCustListByChannelTypeId, getCustListByCustTypeId } from '@/api/basedata'
+import { getItem, getItemListByUserId } from '@/api/basedata'
 import Pagination from '@/components/Pagination'
 import { getStrByData, deepClone } from '@/utils'
 export default {
     components: { Pagination },
-    name: 'assignCust',
+    name: 'assignitem',
     props: ['showModal', 'tit', 'handleObj', 'type'],
     data() {
         return {
             curRowObj: {},
-            custData: [],
+            itemData: [],
             selectIdArr2: [],
             initselectIds: [], // 初始化时被选的数组
             activePageSelectIds: [], //当前页被选的数据
             initActivePageSelectIds: [], //当前页刚进来被选的数据
             total: 0,
-            listQuery: { pageIndex: 1, pageNum: 10, custCode: "", custName: "" }
+            listQuery: { pageIndex: 1, pageNum: 10, itemCode: "", itemName: "" }
         }
     },
     watch: {
         showModal(val) {
             if (val === true) {
                 this.listQuery.pageIndex = 1
-                if (this.type === 'channel') {
-                    getCustListByChannelTypeId({ channelTypeId: this.handleObj.id }).then(res => {
+                if (this.type === 'user') {
+                    getItemListByUserId({ channelTypeId: this.handleObj.id }).then(res => {
                         var rowObj = this.handleObj
-                        rowObj.custList = res.data.data
+                        rowObj.itemList = res.data.data
                         this.curRowObj = deepClone(rowObj)
-                        console.log(this.curRowObj)
-                        this.getCustTable()
-                    })
-                }
-                if (this.type === 'route') {
-                    getCustListByRouteId({ routeId: this.handleObj.id }).then(res => {
-                        var rowObj = this.handleObj
-                        rowObj.custList = res.data
-                        this.curRowObj = deepClone(rowObj)
-                        this.getCustTable()
-                    })
-                }
-                if (this.type === 'custType') {
-                    getCustListByCustTypeId({ custTypeId: this.handleObj.id }).then(res => {
-                        var rowObj = this.handleObj
-                        rowObj.custList = res.data.data
-                        this.curRowObj = deepClone(rowObj)
-                        this.getCustTable()
+                        this.getItemTable()
                     })
                 }
                 if (this.type === 'group'){
                     this.curRowObj = deepClone(this.handleObj)
-                    this.getCustTable()
+                    this.getItemTable()
                 }
             }
         }
@@ -73,13 +56,13 @@ export default {
     methods: {
         closeModal() {
             this.$refs.table.clearSelection()
-            this.$emit('update:showModal', false)
+            this.$emit('update:showModal2', false)
         },
-        getCustTable() {
+        getItemTable() {
             this.initActivePageSelectIds = []
-            getCust(this.listQuery).then(res => {
-                this.custData = res.data.data || []
-                this.initselectIds = getStrByData(this.curRowObj.custList)
+            getItem(this.listQuery).then(res => {
+                this.itemData = res.data.data || []
+                this.initselectIds = getStrByData(this.curRowObj.itemList)
                 this.total = res.data.totalNum
                 this.initCheckedItems()
             })
@@ -100,10 +83,10 @@ export default {
             this.activePageSelectIds = arr
         },
         initCheckedItems() {
-            this.initselectIds = getStrByData(this.curRowObj.custList)
+            this.initselectIds = getStrByData(this.curRowObj.itemList)
             var selectIds = this.initselectIds.join(',')
             this.$nextTick(() => {
-                this.custData.forEach(item => {
+                this.itemData.forEach(item => {
                     if (selectIds.indexOf(item.id) >= 0) {
                         this.initActivePageSelectIds.push(item.id)
                         this.$refs.table.toggleRowSelection(item, true)

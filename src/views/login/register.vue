@@ -229,10 +229,10 @@ export default {
         },
         getData() {
             registerLoadTaxfilingcategory().then(res => {
-                this.taxList = res.data
+                this.taxList = res.data.data
             })
             registerLoadArea().then(res => {
-                this.areaList = res.data;
+                this.areaList = res.data.data
             })
         },
         next(info) {

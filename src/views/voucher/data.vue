@@ -218,7 +218,7 @@ export default {
             }
             printList({data:this.voucherIdArr}).then(res => {
                 if (res.data.success) {
-                    window.open("http://"+window.location.host+res.data.body);
+                    window.open("http://"+window.location.host+res.data.data);
                 } else {
                     this.$message.error(res.data.msg)
                 }
@@ -235,8 +235,8 @@ export default {
             if (joinJeHeaderId != null && joinJeHeaderId != '') {
                 getVoucherById({ id: joinJeHeaderId }).then(res => {
                     if (res.success) {
-                        if (res.data.body != null) {
-                            var header = res.data.body.header;
+                        if (res.data.data != null) {
+                            var header = res.data.data.header;
                             if (joinJeHeaderId != null) {
                                 info = "该凭证存在关联成本凭证:<b>" + header.jeDate + " " + header.jeCatogery + "-" + formatThis(header.jeSeq, 4) + "</b>号凭证,确定要删除这个凭证吗(关联凭证一并删除)？";
                             }

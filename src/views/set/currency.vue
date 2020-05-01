@@ -14,27 +14,27 @@
           <span>{{row.currencyCode}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="币种名称">
+      <el-table-column label="币种名称" width="170">
         <template slot-scope="{row}">
           <span>{{row.currencyName}}{{row.isDefault==1?'（默认）':''}}{{row.isBasecurrency==1?'（本位币）':''}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="币种符号">
+      <el-table-column label="币种符号" min-width="75">
         <template slot-scope="{row}">
           <span>{{row.symbol}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="单位">
+      <el-table-column label="单位" min-width="75">
         <template slot-scope="{row}">
           <span>{{row.uom}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="汇率">
+      <el-table-column label="汇率" min-width="75">
         <template slot-scope="{row}">
           <span>{{row.exchangerate}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="是否可用" width="100" align="center">
+      <el-table-column label="是否可用" min-width="75" align="center">
         <template slot-scope="{row}">
           <span>{{row.isDisable==0?'是':'否'}}</span>
         </template>

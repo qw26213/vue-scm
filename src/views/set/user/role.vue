@@ -107,14 +107,14 @@ export default {
             this.listLoading = true
             getRole(this.listQuery).then(res => {
                 this.listLoading = false
-                this.tableData = res.data
+                this.tableData = res.data.data
             }).catch(err => {
                 this.listLoading = false
             })
         },
         showFunc(id) {
           getFuncByRoleId({roleId: id}).then(res => {
-            this.funcList = res.data
+            this.funcList = res.data.data
           })
         },
         handleAdd(obj) {
