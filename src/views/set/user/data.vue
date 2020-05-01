@@ -69,13 +69,13 @@
         </el-dialog>
         <assignCust ref="custTable" :tit="handleObj.userName + handleObj.userAccount" type="user" :showModal.sync="showModal" :handleObj="handleObj" @handleAssign="handleAssignCust">
         </assignCust>
-        <assignItem ref="itemTable" :tit="handleObj.userName + handleObj.userAccount" type="user" :showModal.sync="showModal2" :handleObj="handleObj" @handleAssign="handleAssignItem">
+        <assignItem ref="itemTable" :tit="handleObj.userName + handleObj.userAccount" type="user" :openModal.sync="openModal" :handleObj="handleObj" @handleAssign="handleAssignItem">
         </assignItem>
     </div>
 </template>
 <script>
-import { getUserList, saveUser, delUser } from '@/api/user'
-import { getWarehouse,getTruck,getRoute,getBrand, getStaff, getRole } from '@/api/basedata'
+import { getUserList, saveUser, delUser, getRole } from '@/api/user'
+import { getWarehouse,getTruck,getRoute,getBrand, getStaff } from '@/api/basedata'
 import { getWarehouseListByUserId, updateUserIdByWarehouseIdList, getTruckListByUserId, updateUserIdByTruckIdList } from '@/api/basedata'
 import { getRouteListByUserId, updateUserIdByRouteIdList, getBrandListByUserId, updateUserIdByBrandIdList } from '@/api/basedata'
 import { updateUserIdByCustIdList, updateUserIdByItemIdList, updateUserIdByRoleIdList, getRoleListByUserId } from '@/api/basedata'
@@ -94,7 +94,7 @@ export default {
             staffList: [],
             dialogTit: '',
             showModal: false,
-            showModal2: false,
+            openModal: false,
             dialogType:'',
             dataList: [],
             assignType: 0,
@@ -133,7 +133,7 @@ export default {
         },
         handleAssItem(row) {
             this.handleObj = row
-            this.showModal2 = true
+            this.openModal = true
         },
         cancelHanle() {
             this.dialogFormVisible = false;

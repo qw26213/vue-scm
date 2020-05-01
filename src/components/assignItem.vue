@@ -1,5 +1,5 @@
 <template>
-    <el-dialog :close-on-click-modal="false" :title="'分配商品_'+tit" :visible.sync="showModal" :show-close="false" ::close-on-click-modal="false" width="500px">
+    <el-dialog :close-on-click-modal="false" :title="'分配商品_'+tit" :visible.sync="openModal" :show-close="false" ::close-on-click-modal="false" width="500px">
         <!-- <div class="curTit">当前价格组：{{}})</div> -->
         <el-table ref="table" :data="itemData" border fit highlight-current-row style="width: 100%;" size="mini" row-key="id" @selection-change="selectChange" @select-all="selectChange">
             <el-table-column type="selection" width="50" align="center" :reserve-selection="true"></el-table-column>
@@ -21,7 +21,7 @@ import { getStrByData, deepClone } from '@/utils'
 export default {
     components: { Pagination },
     name: 'assignitem',
-    props: ['showModal', 'tit', 'handleObj', 'type'],
+    props: ['openModal', 'tit', 'handleObj', 'type'],
     data() {
         return {
             curRowObj: {},
@@ -35,7 +35,7 @@ export default {
         }
     },
     watch: {
-        showModal(val) {
+        openModal(val) {
             if (val === true) {
                 this.listQuery.pageIndex = 1
                 if (this.type === 'user') {
@@ -56,7 +56,7 @@ export default {
     methods: {
         closeModal() {
             this.$refs.table.clearSelection()
-            this.$emit('update:showModal2', false)
+            this.$emit('update:openModal', false)
         },
         getItemTable() {
             this.initActivePageSelectIds = []
