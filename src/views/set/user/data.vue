@@ -78,7 +78,7 @@ import { getUserList, saveUser, delUser, getRole } from '@/api/user'
 import { getWarehouse,getTruck,getRoute,getBrand, getStaff } from '@/api/basedata'
 import { getWarehouseListByUserId, updateUserIdByWarehouseIdList, getTruckListByUserId, updateUserIdByTruckIdList } from '@/api/basedata'
 import { getRouteListByUserId, updateUserIdByRouteIdList, getBrandListByUserId, updateUserIdByBrandIdList } from '@/api/basedata'
-import { updateUserIdByCustIdList, updateUserIdByItemIdList, updateUserIdByRoleIdList, getRoleListByUserId } from '@/api/basedata'
+import { updateUserIdByCustIdList, updateUserIdByItemIdList, updateUserIdByRoleIdList, getRoleListByUserIdAppsId } from '@/api/basedata'
 import { getStrByData } from '@/utils'
 import assignCust from '@/components/assignCust'
 import assignItem from '@/components/assignItem'
@@ -218,7 +218,7 @@ export default {
             if (index == 6) {
                 getRole().then(resp => {
                     this.dataList = resp.data.data;
-                    getRoleListByUserId({ userId: row.id }).then(res => {
+                    getRoleListByUserIdAppsId({ userId: row.id }).then(res => {
                       this.selectIdArr = getStrByData(res.data);
                       var selectIds = this.selectIdArr.join(',')
                       this.dataList.forEach(row => {
@@ -248,7 +248,7 @@ export default {
             }
         },
         handleAssignCust(arr) {
-            var obj = { userId: this.handleObj.id, userIdList: arr }
+            var obj = { userId: this.handleObj.id, custIdList: arr }
             updateUserIdByCustIdList(obj).then(res => {
                 if (res.data.errorCode == 0) {
                     this.$refs.custTable.closeModal()

@@ -1085,9 +1085,9 @@ export function updateUserIdByItemIdList(data){
 }
 
 // 角色分配[数据权限]
-export function getRoleListByUserId(data){
+export function getRoleListByUserIdAppsId(data){
   return request({
-    url: '/drp/sys/userRole/getRoleListByUserId',
+    url: '/drp/sys/userRole/getRoleListByUserIdAppsId',
     method: 'post',
     data
   })
