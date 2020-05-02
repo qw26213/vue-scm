@@ -41,17 +41,17 @@
       </el-table-column>
       <el-table-column label="允许负库存" align="center">
         <template slot-scope="{row}">
-          <span>{{row.isNegative==1?'是':'否'}}</span>
+          <span>{{row.isNegative==1 ? '允许' : '不允许'}}</span>
         </template>
       </el-table-column>
       <el-table-column label="是否冷藏" align="center">
         <template slot-scope="{row}">
-          <span>{{row.isRefrigerated==1?'是':'否'}}</span>
+          <span>{{row.isRefrigerated==1 ? '是' : '否'}}</span>
         </template>
       </el-table-column>
       <el-table-column label="是否可用" align="center">
         <template slot-scope="{row}">
-          <span>{{row.isDisable==0?'是':'否'}}</span>
+          <span>{{row.isDisable==0 ? '是' : '否'}}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="260">
@@ -204,11 +204,11 @@ export default {
       this.dialogFormVisible1 = true
       this.handleObj = row;
       getUserListByWarehouseId({ warehouseId: row.id }).then(res => {
-        this.selectIdArr = getStrByData(res.data);
-        var selectIds = this.selectIdArr.join(',');
+        this.selectIdArr = getStrByData(res.data.data)
+        var selectIds = this.selectIdArr.join(',')
         this.userList.forEach(row => {
           if(selectIds.indexOf(row.id) >= 0){
-            this.$refs.checkTable.toggleRowSelection(row,true);
+            this.$refs.checkTable.toggleRowSelection(row,true)
           }
         })
       })

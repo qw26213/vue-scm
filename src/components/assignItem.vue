@@ -7,7 +7,7 @@
             <el-table-column label="商品代码" prop="itemCode" />
             <el-table-column label="商品名称" prop="itemName" />
         </el-table>
-        <pagination v-show="total>10" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getItemTable" />
+        <pagination v-show="total>10" :total="total" :page.sync="listQuery.pageIndex" :background="false" :limit.sync="listQuery.pageNum" @pagination="getItemTable" />
         <div slot="footer" class="dialog-footer" align="center">
             <el-button @click="closeModal">取消</el-button>
             <el-button type="primary" @click="saveAssign">确定</el-button>

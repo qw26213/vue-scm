@@ -29,7 +29,7 @@
           <span>{{row.arAp|format}}</span>
         </template>
       </el-table-column>
-      <el-table-column align="left" label="应用场景" min-width="240" show-overflow-tooltip>
+      <el-table-column align="left" label="应用场景" min-width="200" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span>
           {{row.poEnable==1?'采购、':''}}
@@ -86,21 +86,21 @@
           <el-radio v-model="temp.arAp" style="margin-right:10px" label="ADVR">预收</el-radio>
         </el-form-item>
         <el-form-item label="应用场景" prop="poEnable">
-            <el-checkbox style="margin-right:10px" v-model="temp.poEnable" false-label="0" true-label="1">采购</el-checkbox>
-            <el-checkbox style="margin-right:10px" v-model="temp.soEnable" false-label="0" true-label="1">销售</el-checkbox>
-            <el-checkbox style="margin-right:10px" v-model="temp.psEnable" false-label="0" true-label="1">预收</el-checkbox>
-            <el-checkbox style="margin-right:10px" v-model="temp.poReturnedEnable" false-label="0" true-label="1">采购退款</el-checkbox>
-            <el-checkbox style="margin-right:10px" v-model="temp.soReturnedEnable" false-label="0" true-label="1">销售退款</el-checkbox>
-            <el-checkbox style="margin-right:10px" v-model="temp.psReturnedEnable" false-label="0" true-label="1">预收退款</el-checkbox>
-            <el-checkbox style="margin-right:10px" v-model="temp.recEnable" false-label="0" true-label="1">收款</el-checkbox>
-            <el-checkbox v-model="temp.payEnable" false-label="0" true-label="1">付款</el-checkbox>
+            <el-checkbox style="margin-right:10px" v-model="temp.poEnable" :false-label="0" :true-label="1">采购</el-checkbox>
+            <el-checkbox style="margin-right:10px" v-model="temp.soEnable" :false-label="0" :true-label="1">销售</el-checkbox>
+            <el-checkbox style="margin-right:10px" v-model="temp.psEnable" :false-label="0" :true-label="1">预收</el-checkbox>
+            <el-checkbox style="margin-right:10px" v-model="temp.poReturnedEnable" :false-label="0" :true-label="1">采购退款</el-checkbox>
+            <el-checkbox style="margin-right:10px" v-model="temp.soReturnedEnable" :false-label="0" :true-label="1">销售退款</el-checkbox>
+            <el-checkbox style="margin-right:10px" v-model="temp.psReturnedEnable" :false-label="0" :true-label="1">预收退款</el-checkbox>
+            <el-checkbox style="margin-right:10px" v-model="temp.recEnable" :false-label="0" :true-label="1">收款</el-checkbox>
+            <el-checkbox v-model="temp.payEnable" :false-label="0" :true-label="1">付款</el-checkbox>
         </el-form-item>
         <el-form-item label="备注" prop="remarks">
           <el-input v-model="temp.remarks" placeholder="备注" />
         </el-form-item>
         <el-form-item label="是否可用" prop="isDisable">
-          <el-radio v-model="temp.isDisable" label="0">是</el-radio>
-          <el-radio v-model="temp.isDisable" label="1">否</el-radio>
+          <el-radio v-model="temp.isDisable" :label="0">是</el-radio>
+          <el-radio v-model="temp.isDisable" :label="1">否</el-radio>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer" align="center">
@@ -150,21 +150,37 @@ export default {
         coaCode:'',
         arAp:'',
         remarks:'',
-        poEnable: '1',
-        soEnable: '1',
-        psEnable: '1',
-        poReturnedEnable: '1',
-        soReturnedEnable: '1',
-        psReturnedEnable: '1',
-        recEnable: '1',
-        payEnable: '1',
-        isDisable: "0"
+        poEnable: 1,
+        soEnable: 1,
+        psEnable: 1,
+        poReturnedEnable: 1,
+        soReturnedEnable: 1,
+        psReturnedEnable: 1,
+        recEnable: 1,
+        payEnable: 1,
+        isDisable: 0
+      },
+      resetTemp: {
+        settleTypeName: '',
+        settleTypeCode: '',
+        coaCode:'',
+        arAp:'',
+        remarks:'',
+        poEnable: 1,
+        soEnable: 1,
+        psEnable: 1,
+        poReturnedEnable: 1,
+        soReturnedEnable: 1,
+        psReturnedEnable: 1,
+        recEnable: 1,
+        payEnable: 1,
+        isDisable: 0
       },
       dialogFormVisible: false,
       dialogStatus: '',
       rules: {
-        settleTypeName: [{ required: true, message: '名称不能为空', trigger: 'change' }],
-        settleTypeCode: [{ required: true, message: '代码不能为空', trigger: 'change' }],
+        settleTypeCode: [{ required: true, message: '结算方式代码不能为空', trigger: 'change' }],
+        settleTypeName: [{ required: true, message: '结算方式名称不能为空', trigger: 'change' }],
         coaCode: [{ required: true, message: '对应科目代码不能为空', trigger: 'change' }],
         arAp:[{required:true}],
         isDisable:[{required:true}]
@@ -184,16 +200,12 @@ export default {
         this.listLoading = false
       })
     },
-    handleAdd(obj) {
+    handleAdd() {
       this.dialogFormVisible = true
       this.dialogStatus = 'create'
-      this.temp.id = ''
-      this.temp.settleTypeName = ''
-      this.temp.settleTypeCode = ''
-      this.temp.coaCode = ''
-      this.temp.arAp = ''
-      this.temp.remarks = ''
-      this.temp.isDisable = '0'
+      for (var key in this.temp){
+        this.temp[key] = this.resetTemp[key]
+      }
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
@@ -201,13 +213,9 @@ export default {
     handleCompile(obj) {
       this.dialogFormVisible = true
       this.dialogStatus = 'update'
-      this.temp.id = obj.id
-      this.temp.settleTypeName = obj.settleTypeName
-      this.temp.settleTypeCode = obj.settleTypeCode
-      this.temp.coaCode = obj.coaCode
-      this.temp.remarks = obj.remarks
-      this.temp.arAp = obj.arAp==null?'':obj.arAp;
-      this.temp.isDisable = String(obj.isDisable)
+      for (var key in this.temp){
+        this.temp[key] = obj[key]
+      }
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })

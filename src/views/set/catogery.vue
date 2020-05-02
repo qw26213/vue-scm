@@ -42,8 +42,8 @@
             </el-table-column>
         </el-table>
         <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
-        <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增凭证字':'修改凭证字'" :visible.sync="dialogFormVisible" width="500px">
-            <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="100px" style="width: 300px; margin-left:50px;">
+        <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增凭证字':'修改凭证字'" :visible.sync="dialogFormVisible" width="460px">
+            <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="96px" style="width: 400px; margin-left:10px;">
                 <el-form-item label="凭证字名称" prop="catogeryName">
                     <el-input v-model="temp.catogeryName" placeholder="凭证字名称" />
                 </el-form-item>
@@ -53,7 +53,7 @@
                 <el-form-item label="打印标题" prop="printTitle">
                     <el-input v-model="temp.printTitle" placeholder="打印标题" />
                 </el-form-item>
-                <el-form-item label="默认" prop="isDefault">
+                <el-form-item label="是否默认" prop="isDefault">
                     <el-radio v-model="temp.isDefault" label="1">是</el-radio>
                     <el-radio v-model="temp.isDefault" label="0">否</el-radio>
                 </el-form-item>

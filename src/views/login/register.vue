@@ -247,8 +247,8 @@ export default {
             }).then((res => {
                 setToken('111111')
                 getIndexInfo(this.loginForm).then(res => {
-                    var user = res.data.userInfo
-                    sessionStorage.userInfo = JSON.stringify(res.data.userInfo)
+                    var user = res.data.data.userInfo
+                    sessionStorage.userInfo = JSON.stringify(user)
                     Cookies.set('userName', user.userName)
                     sessionStorage.bookId = user.bookId
                     sessionStorage.taxFilingCategoryCode = user.taxFilingCategoryCode

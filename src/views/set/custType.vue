@@ -38,6 +38,27 @@
                     </template>
                 </el-table-column>
             </el-table>
+            <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增客户类别':'修改客户类别'" :visible.sync="dialogFormVisible" width="460px">
+              <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="110px" style="width: 400px; margin-left:10px;">
+                <el-form-item label="客户类别代码" prop="custTypeCode">
+                  <el-input v-model="temp.custTypeCode" placeholder="客户类别代码" />
+                </el-form-item>
+                <el-form-item label="客户类别名称" prop="custTypeName">
+                  <el-input v-model="temp.custTypeName" placeholder="客户类别名称" />
+                </el-form-item>
+                <el-form-item label="备注" prop="remarks">
+                  <el-input v-model="temp.remarks" placeholder="备注" />
+                </el-form-item>
+                <el-form-item label="是否可用" prop="isDisable">
+                  <el-radio v-model="temp.isDisable" :label="0">是</el-radio>
+                  <el-radio v-model="temp.isDisable" :label="1">否</el-radio>
+                </el-form-item>
+              </el-form>
+              <div slot="footer" class="dialog-footer" align="center">
+                <el-button @click="dialogFormVisible = false">取消</el-button>
+                <el-button type="primary" @click="dialogStatus == 'create'?handleCreate():handleModify()">确定</el-button>
+              </div>
+            </el-dialog>
             <assignCust ref="custTable" :tit="handleObj.custTypeName + handleObj.custTypeCode" :showModal.sync="showModal" type="custType" :handleObj="handleObj" @handleAssign="handleAssignCust"></assignCust>
         </div>
     </div>
@@ -140,7 +161,7 @@ export default {
                 this.listLoading = false
             })
         },
-        handleAdd(obj) {
+        handleAdd() {
             if (this.parentId == '') {
                 this.$message.error('请先选择一个上级客户类别');
                 return
@@ -158,7 +179,7 @@ export default {
             this.dialogFormVisible = true
             this.dialogStatus = 'update'
             for (var key in this.temp) {
-                this.temp[key] = this.resetTemp[key]
+                this.temp[key] = obj[key]
             }
             this.$nextTick(() => {
                 this.$refs['dataForm'].clearValidate()

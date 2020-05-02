@@ -49,8 +49,8 @@
     </el-table>
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
-    <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增销售类型':'修改销售类型'" :visible.sync="dialogFormVisible" width="500px">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="110px" style="width: 300px; margin-left:50px;">
+    <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增销售类型':'修改销售类型'" :visible.sync="dialogFormVisible" width="460px">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="110px" style="width: 400px; margin-left:10px;">
         <el-form-item label="销售类型代码" prop="salesTypeCode">
           <el-input v-model="temp.salesTypeCode" placeholder="销售类型代码" />
         </el-form-item>
@@ -107,6 +107,14 @@ export default {
         remarks:'',
         isDisable: 0
       },
+      resetTemp: {
+        salesTypeName: '',
+        salesTypeCode: '',
+        priceRatio: 0,
+        coaCode:"",
+        remarks:'',
+        isDisable: 0
+      },
       dialogFormVisible: false,
       dialogStatus: '',
       rules: {
@@ -131,16 +139,12 @@ export default {
         this.listLoading = false
       })
     },
-    handleAdd(obj) {
+    handleAdd() {
       this.dialogFormVisible = true
       this.dialogStatus = 'create'
-      this.temp.id = ''
-      this.temp.salesTypeName = ''
-      this.temp.salesTypeCode = ''
-      this.temp.priceRatio = 0
-      this.temp.coaCode = ''
-      this.temp.remarks = ''
-      this.temp.isDisable = 0
+      for (var key in this.temp){
+        this.temp[key] = this.resetTemp[key]
+      }
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
@@ -148,13 +152,9 @@ export default {
     handleCompile(obj) {
       this.dialogFormVisible = true
       this.dialogStatus = 'update'
-      this.temp.id = obj.id
-      this.temp.salesTypeName = obj.salesTypeName
-      this.temp.salesTypeCode = obj.salesTypeCode
-      this.temp.priceRatio = obj.priceRatio
-      this.temp.coaCode = obj.coaCode
-      this.temp.remarks = obj.remarks
-      this.temp.isDisable = obj.isDisable
+      for (var key in this.temp){
+        this.temp[key] = obj[key]
+      }
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
@@ -164,9 +164,10 @@ export default {
       this.getList()
     },
     updateStatus(data){
-      this.$confirm('确定'+(data.isDisable==1?'解禁？':'禁用？'), '提示', {
-        confirmButtonText: '确定',closeOnClickModal:false,
+      this.$confirm('确定'+(data.isDisable==1 ? '解禁？' : '禁用？'), '提示', {
+        confirmButtonText: '确定',
         cancelButtonText: '取消',
+        closeOnClickModal:false,
         type: 'warning'
       }).then(() => {
         this.changeAvaiable(data);

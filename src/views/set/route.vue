@@ -156,7 +156,7 @@ export default {
             this.dialogFormVisible1 = true
             this.handleObj = row;
             getUserListByRouteId({ routeId: row.id }).then(res => {
-                this.selectIdArr1 = getStrByData(res.data);
+                this.selectIdArr1 = getStrByData(res.data.data);
                 var selectIds = this.selectIdArr1.join(',');
                 this.userList.forEach(row => {
                     if (selectIds.indexOf(row.id) >= 0) {
@@ -193,7 +193,8 @@ export default {
                     this.$refs.custTable.closeModal()
                     this.$message.success('分配客户成功')
                 } else {
-                    this.$message.error(res.data.msg)
+                    this.$refs.custTable.closeModal()
+                    this.$message.warning(res.data.msg)
                 }
             })
         },

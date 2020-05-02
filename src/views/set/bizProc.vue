@@ -43,10 +43,10 @@
     </el-table>
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
-    <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增业务流程':'修改业务流程'" :visible.sync="dialogFormVisible" width="500px">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="120px" style="width: 300px; margin-left:50px;">
+    <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增业务流程':'修改业务流程'" :visible.sync="dialogFormVisible" width="456px">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="110px" style="width: 400px; margin-left:10px;">
         <el-form-item label="业务类型" prop="bizTypeId">
-          <el-select v-model="temp.bizTypeId" style="width:180px" class="filter-item">
+          <el-select v-model="temp.bizTypeId" style="width:100%" class="filter-item">
             <el-option v-for="item in bizTypeList" :key="item.id" :label="item.bizTypeName" :value="item.id">
             </el-option>
           </el-select>
@@ -61,8 +61,8 @@
           <el-input v-model="temp.remarks" placeholder="备注" />
         </el-form-item>
         <el-form-item label="是否可用" prop="isDisable">
-          <el-radio v-model="temp.isDisable" label="0">是</el-radio>
-          <el-radio v-model="temp.isDisable" label="1">否</el-radio>
+          <el-radio v-model="temp.isDisable" :label="0">是</el-radio>
+          <el-radio v-model="temp.isDisable" :label="1">否</el-radio>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer" align="center">
@@ -92,10 +92,19 @@ export default {
         bizProcName: ''
       },
       temp: {
+        id: '',
         bizProcName: '',
         bizProcCode: '',
         bizTypeId:'',
-        isDisable: "0",
+        isDisable: 0,
+        remarks:''
+      },
+      resetTemp: {
+        id: '',
+        bizProcName: '',
+        bizProcCode: '',
+        bizTypeId:'',
+        isDisable: 0,
         remarks:''
       },
       dialogFormVisible: false,
@@ -126,11 +135,9 @@ export default {
     handleAdd(obj) {
       this.dialogFormVisible = true
       this.dialogStatus = 'create'
-      this.temp.id = ''
-      this.temp.bizProcName = ''
-      this.temp.bizProcCode = ''
-      this.temp.bizTypeId = ''
-      this.temp.isDisable = '0'
+      for (var key in this.temp){
+        this.temp[key] = this.resetTemp[key]
+      }
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
@@ -138,11 +145,9 @@ export default {
     handleCompile(obj) {
       this.dialogFormVisible = true
       this.dialogStatus = 'update'
-      this.temp.id = obj.id
-      this.temp.bizProcName = obj.bizProcName
-      this.temp.bizProcCode = obj.bizProcCode
-      this.temp.bizTypeId = obj.bizTypeId
-      this.temp.isDisable = String(obj.isDisable)
+      for (var key in this.temp){
+        this.temp[key] = obj[key]
+      }
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })

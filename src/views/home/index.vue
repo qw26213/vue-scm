@@ -211,7 +211,7 @@ export default {
           }
           home1TopN(obj).then(res => {
             if(res.data.data != null) {
-              this.tableData1 = res.data.data | []
+              this.tableData1 = res.data.data || []
             }
           })
         },
@@ -224,7 +224,7 @@ export default {
           }
           home2TopN(obj).then(res => {
             if(res.data.data != null) {
-              this.tableData2 = res.data.data | []
+              this.tableData2 = res.data.data || []
             }
           })
         },
@@ -236,7 +236,7 @@ export default {
           }
           home3TopN(obj).then(res => {
             if(res.data.data != null) {
-              this.tableData3 = res.data.data | []
+              this.tableData3 = res.data.data || []
             }
           })
         },
@@ -248,7 +248,7 @@ export default {
           }
           home4TopN(obj).then(res => {
             if(res.data.data != null) {
-              this.tableData4 = res.data.data | []
+              this.tableData4 = res.data.data || []
             }
           })
         }

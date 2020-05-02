@@ -29,7 +29,7 @@
           <span>{{row.isDisable==0?'是':'否'}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="left" width="280">
+      <el-table-column label="操作" align="center" width="280">
         <template slot-scope="{row}">
           <el-button type="primary" size="mini" @click="handleAssign(row)">分配用户</el-button>
           <el-button type="default" size="mini" @click="handleCompile(row)">编辑</el-button>
@@ -39,8 +39,8 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增品牌':'修改品牌'" :visible.sync="dialogFormVisible" width="500px">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="90px" style="width: 300px; margin-left:50px;">
+    <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增品牌':'修改品牌'" :visible.sync="dialogFormVisible" width="460px">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="90px" style="width: 400px; margin-left:10px;">
         <el-form-item label="品牌代码" prop="brandCode">
           <el-input v-model="temp.brandCode" placeholder="品牌代码" />
         </el-form-item>
@@ -151,7 +151,7 @@ export default {
       this.dialogFormVisible1 = true
       this.handleObj = row;
       getUserListByBrandId({ brandId: row.id }).then(res => {
-        this.selectIdArr = getStrByData(res.data);
+        this.selectIdArr = getStrByData(res.data.data);
         var selectIds = this.selectIdArr.join(',');
         this.userList.forEach(row => {
           if(selectIds.indexOf(row.id) >= 0){

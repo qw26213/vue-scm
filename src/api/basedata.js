@@ -744,7 +744,7 @@ export function delInvCatg(id){
   })
 }
 
-export function updateInvCatgDisabled(){
+export function updateInvCatgDisabled(data){
   return request({
     url: '/drp/bd/invCatg/updateIsDisableById',
     method: 'post',
@@ -849,7 +849,7 @@ export function delCurrency(id){
 
 export function updateCurrencyDisabled(data){
   return request({
-    url: '/drp/gl/currency/deleteById',
+    url: '/drp/gl/currency/updateIsDisableById',
     method: 'post',
     data
   })
@@ -881,7 +881,7 @@ export function delCatogery(id){
 
 export function updateCatogeryDisabled(data){
   return request({
-    url: '/drp/gl/catogery/deleteById',
+    url: '/drp/gl/catogery/updateIsDisableById',
     method: 'post',
     data
   })
@@ -913,7 +913,7 @@ export function delTempletType(id){
 
 export function updateTempletTypeDisabled(data){
   return request({
-    url: '/drp/gl/templetType/deleteById',
+    url: '/drp/gl/templetType/updateIsDisableById',
     method: 'post',
     data
   })

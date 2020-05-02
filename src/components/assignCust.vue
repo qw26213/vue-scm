@@ -7,7 +7,7 @@
             <el-table-column label="客户代码" prop="custCode" />
             <el-table-column label="客户名称" prop="custName" />
         </el-table>
-        <pagination v-show="total>10" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getCustTable" />
+        <pagination v-show="total>10" :total="total" :page.sync="listQuery.pageIndex" :background="false" :limit.sync="listQuery.pageNum" @pagination="getCustTable" />
         <div slot="footer" class="dialog-footer" align="center">
             <el-button @click="closeModal">取消</el-button>
             <el-button type="primary" @click="saveAssign">确定</el-button>
@@ -50,7 +50,7 @@ export default {
                 if (this.type === 'route') {
                     getCustListByRouteId({ routeId: this.handleObj.id }).then(res => {
                         var rowObj = this.handleObj
-                        rowObj.custList = res.data
+                        rowObj.custList = res.data.data
                         this.curRowObj = deepClone(rowObj)
                         this.getCustTable()
                     })

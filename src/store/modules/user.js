@@ -42,7 +42,7 @@ const actions = {
                     setToken(token)
                     getIndexInfo(this.loginForm).then(res => {
                         var user = res.data.data.userInfo
-                        sessionStorage.userInfo = JSON.stringify(res.data.userInfo)
+                        sessionStorage.userInfo = JSON.stringify(user)
                         commit('SET_NAME', user.userName)
                         commit('SET_AVATAR', 'https://panjiachen.gitee.io/vue-element-admin-site/home.png')
                         sessionStorage.bookId = user.bookId

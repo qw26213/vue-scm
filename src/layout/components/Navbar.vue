@@ -12,7 +12,7 @@
             <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
                 <div class="avatar-wrapper">
                     <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar" />
-                    <span class="user-name">{{name}}</span>
+                    <span class="user-name">{{ name || userName }}</span>
                     <i style="vertical-align: middle;" class="el-icon-arrow-down" />
                 </div>
                 <el-dropdown-menu slot="dropdown">
@@ -83,6 +83,7 @@ export default {
     data() {
         return {
             avatar: userImg,
+            userName: Cookies.get('userName'),
             dialogFormVisible: false,
             dialogFormVisible2: false,
             isTodayShow: false,
@@ -142,12 +143,12 @@ export default {
             });
         },
         handlePwd() {
-            this.dialogFormVisible = true;
-            this.temp.oldPsw = "";
-            this.temp.password = "";
-            this.temp.againPassword = "";
+            this.dialogFormVisible = true
+            this.temp.oldPsw = ""
+            this.temp.password = ""
+            this.temp.againPassword = ""
             this.$nextTick(() => {
-                this.$refs["dataForm"].clearValidate();
+                this.$refs["dataForm"].clearValidate()
             });
         },
         toggleSideBar() {

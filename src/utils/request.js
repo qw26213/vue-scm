@@ -37,6 +37,7 @@ axios.interceptors.response.use(
             }
         } else {
             Message.warning(res.msg)
+            return response
         }
     },
     error => {

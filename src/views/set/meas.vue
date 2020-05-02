@@ -32,8 +32,8 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增计量单位':'修改计量单位'" :visible.sync="dialogFormVisible" width="500px">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="110px" style="width: 300px; margin-left:50px;">
+    <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增计量单位':'修改计量单位'" :visible.sync="dialogFormVisible" width="456px">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="110px" style="width: 400px; margin-left:10px;">
         <el-form-item label="计量单位代码" prop="measCode">
           <el-input v-model="temp.measCode" placeholder="计量单位代码" />
         </el-form-item>
@@ -44,8 +44,8 @@
           <el-input v-model="temp.seq" placeholder="顺序" />
         </el-form-item>
         <el-form-item label="是否可用" prop="isDisable">
-          <el-radio v-model="temp.isDisable" label="0">是</el-radio>
-          <el-radio v-model="temp.isDisable" label="1">否</el-radio>
+          <el-radio v-model="temp.isDisable" :label="0">是</el-radio>
+          <el-radio v-model="temp.isDisable" :label="1">否</el-radio>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer" align="center">
@@ -72,10 +72,18 @@ export default {
         measCode: ''
       },
       temp: {
+        id: '',
         measName: '',
         measCode: '',
         seq:'',
-        isDisable: "0"
+        isDisable: 0
+      },
+      resetTemp: {
+        id: '',
+        measName: '',
+        measCode: '',
+        seq:'',
+        isDisable: 0
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -103,11 +111,9 @@ export default {
     handleAdd(obj) {
       this.dialogFormVisible = true
       this.dialogStatus = 'create'
-      this.temp.id = ''
-      this.temp.measName = ''
-      this.temp.measCode = ''
-      this.temp.seq = ''
-      this.temp.isDisable = '0'
+      for (var key in this.temp) {
+        this.temp = this.resetTemp[key]
+      }
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
@@ -115,11 +121,9 @@ export default {
     handleCompile(obj) {
       this.dialogFormVisible = true
       this.dialogStatus = 'update'
-      this.temp.id = obj.id
-      this.temp.measName = obj.measName
-      this.temp.measCode = obj.measCode
-      this.temp.seq = obj.seq
-      this.temp.isDisable = String(obj.isDisable)
+      for (var key in this.temp) {
+        this.temp = obj[key]
+      }
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })

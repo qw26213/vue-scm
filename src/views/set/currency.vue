@@ -48,8 +48,8 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增币种':'修改币种'" :visible.sync="dialogFormVisible" width="500px">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="80px" style="width: 300px; margin-left:50px;">
+    <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增币种':'修改币种'" :visible.sync="dialogFormVisible" width="460px">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="80px" style="width: 400px; margin-left:10px;">
         <el-form-item label="币种代码" prop="currencyCode">
           <el-input v-model="temp.currencyCode" placeholder="币种代码" />
         </el-form-item>
