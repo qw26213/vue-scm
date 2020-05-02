@@ -60,7 +60,7 @@
                 <el-button type="primary" @click="dialogStatus == 'create'?handleCreate():handleModify()">确定</el-button>
             </div>
         </el-dialog>
-        <el-dialog :close-on-click-modal="false" title="分配业务员" :visible.sync="dialogFormVisible1" :show-close="false" ::close-on-click-modal="false" width="500px">
+        <el-dialog :close-on-click-modal="false" title="分配用户" :visible.sync="dialogFormVisible1" :show-close="false" ::close-on-click-modal="false" width="500px">
             <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="110px" style="width: 460px;">
                 <div class="curTit">当前线路：{{handleObj.routeName}}({{handleObj.routeCode}})</div>
                 <el-table ref="checkTable" :data="userList" border fit highlight-current-row style="width: 100%;" size="mini" @select-change="handleSelectionChange1" @select-all="selectAll1">
@@ -80,7 +80,7 @@
             </el-form>
             <div slot="footer" class="dialog-footer" align="center">
                 <el-button @click="cancelHanle1()">取消</el-button>
-                <el-button type="primary" @click="updateRoute1()">确定</el-button>
+                <el-button type="primary" @click="handleAssignUser()">确定</el-button>
             </div>
         </el-dialog>
         <assignCust ref="custTable" :tit="handleObj.routeName + handleObj.routeCode" :showModal.sync="showModal" type="route" :handleObj="handleObj" @handleAssign="handleAssignCust"></assignCust>
@@ -169,14 +169,14 @@ export default {
             this.showModal = true
             this.handleObj = row
         },
-        updateRoute1() {
+        handleAssignUser() {
             var obj = {
                 routeId: this.handleObj.id,
                 userIdList: this.selectIdArr1
             }
             updateRouteIdByUserIdList(obj).then(res => {
                 if (res.data.errorCode == 0) {
-                    this.$refs.custTable.closeModal()
+                    this.cancelHanle1()
                     this.$message.success('分配用户成功')
                 } else {
                     this.$message.error(res.data.msg)

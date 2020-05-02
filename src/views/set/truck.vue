@@ -67,8 +67,8 @@
                 </template>
             </el-table-column>
         </el-table>
-        <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增车辆':'修改车辆'" :visible.sync="dialogFormVisible" width="670px">
-            <el-form ref="dataForm" :rules="rules" :model="temp" :inline="true" label-position="right" label-width="90px" style="width: 610px; margin-left:30px;">
+        <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增车辆':'修改车辆'" :visible.sync="dialogFormVisible" width="630px">
+            <el-form ref="dataForm" :rules="rules" :model="temp" :inline="true" label-position="right" label-width="90px" style="width: 590px; margin-left:10px;">
                 <el-form-item label="车辆代码" prop="truckCode">
                     <el-input v-model="temp.truckCode" placeholder="车辆代码" />
                 </el-form-item>

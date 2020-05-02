@@ -9,10 +9,10 @@
                     <select class="catogeryName uds">
                         <option value="0" v-for="item in catogeryList" :ke="item.id">{{item.catogeryName}}</option>
                     </select>
-                    <span class="catogeryNumber uds">{{billHeader.jeSeq | numberFormat}}</span>
+                    <span class="jeSeq uds">{{billHeader.jeSeq | numberFormat}}</span>
                     <span class="btn-wrap uds">
-                        <a class="btn-up" @click="catogeryNumberAdd(1)"></a>
-                        <a class="btn-down" @click="catogeryNumberAdd(-1)"></a>
+                        <a class="btn-up" @click="jeSeqAdd(1)"></a>
+                        <a class="btn-down" @click="jeSeqAdd(-1)"></a>
                     </span>
                 </el-form-item>
                 <el-form-item label="日期" prop="billDate" style="margin-bottom:10px;">
@@ -20,7 +20,7 @@
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="附单据" prop="expirationDate" style="float:right;margin-bottom:10px">
-                    <input type="text" class="catogeryNumber" v-model="billHeader.voucherAttachmentNum" style="width:40px;margin-right:6px" />
+                    <input type="text" class="jeSeq" v-model="billHeader.voucherAttachmentNum" style="width:40px;margin-right:6px" />
                     <span>张</span>
                 </el-form-item>
             </el-form>
@@ -122,7 +122,7 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <pagination v-show="total1>10" :total="total1" :page.sync="listQuery1.pageIndex" :limit.sync="listQuery1.pageNum" @pagination="getTempletList" />
+            <pagination v-show="total1>10" :total="total1" :page.sync="listQuery1.pageIndex" layout="prev, pager, next" :limit.sync="listQuery1.pageNum" @pagination="getTempletList" />
         </el-dialog>
         <el-dialog :close-on-click-modal="false" title="常用摘要" :visible.sync="dialogFormVisible2" width="410px">
             <div class="filter-container" style="padding-bottom:0;margin-top:-10px">
@@ -210,7 +210,7 @@ export default {
             totalZh: '',
             list: [],
             billHeader: {
-                catogeryNumber: 1,
+                jeSeq: 1,
                 billDate: getNowDate(),
                 voucherAttachmentNum: 0,
             },
@@ -445,7 +445,7 @@ export default {
                 totalDebiteMoney: this.total2,
                 voucherAttachmentNum: this.temp.voucherAttachmentNum,
                 voucherDate: this.temp.billDate,
-                voucherSeq: this.temp.catogeryNumber,
+                voucherSeq: this.temp.jeSeq,
                 // voucherId: voucherId,
                 // jeHeaderId: voucherId,
                 voucherTable: this.voucherTable
@@ -514,8 +514,8 @@ export default {
                 this.$message.error("系统错误")
             })
         },
-        catogeryNumberAdd(num) {
-            this.catogeryNumber = this.catogeryNumber + num == 0 ? this.catogeryNumber : this.catogeryNumber + num
+        jeSeqAdd(num) {
+            this.billHeader.jeSeq = this.billHeader.jeSeq + num == 0 ? this.billHeader.jeSeq : this.billHeader.jeSeq + num
         },
         getTempletList() {
             getTempletHeader(this.listQuery1).then(res => {

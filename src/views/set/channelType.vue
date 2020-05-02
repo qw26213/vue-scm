@@ -41,8 +41,8 @@
       </el-table-column>
     </el-table>
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
-    <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增渠道类型':'修改渠道类型'" :visible.sync="dialogFormVisible" width="390px">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="110px" style="width: 340px; margin-left:10px;">
+    <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增渠道类型':'修改渠道类型'" :visible.sync="dialogFormVisible" width="460px">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="110px" style="width: 400px; margin-left:10px;">
         <el-form-item label="渠道类型代码" prop="channelTypeCode">
           <el-input v-model="temp.channelTypeCode" placeholder="代码" />
         </el-form-item>

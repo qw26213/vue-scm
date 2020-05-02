@@ -118,11 +118,11 @@ export default {
         this.$refs['dataForm'].clearValidate()
       })
     },
-    handleCompile(obj) {
+    handleCompile(row) {
       this.dialogFormVisible = true
       this.dialogStatus = 'update'
       for (var key in this.temp) {
-        this.temp = obj[key]
+        this.temp[key] = row[key]
       }
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()

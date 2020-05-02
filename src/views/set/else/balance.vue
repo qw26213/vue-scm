@@ -258,9 +258,7 @@ export default {
             }
             getOpeningBalanceStatus(obj).then(res => {
                 if(res.data.errorCode == 0) {
-                    console.log("获取结账状态")
                     this.balanceStatus = res.data.data
-                    console.log(this.balanceStatus)
                 }
             })
         },

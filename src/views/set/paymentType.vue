@@ -8,17 +8,17 @@
         <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini">
             <el-table-column label="序号" type="index" width="100" align="center">
             </el-table-column>
-            <el-table-column label="付款方式代码">
+            <el-table-column label="付款方式代码" align="center">
                 <template slot-scope="{row}">
                     <span>{{row.paymentTypeCode}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="付款方式名称">
+            <el-table-column label="付款方式名称" align="center">
                 <template slot-scope="{row}">
                     <span>{{row.paymentTypeName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="月数">
+            <el-table-column label="月数" align="center">
                 <template slot-scope="{row}">
                     <span>{{row.month}}</span>
                 </template>

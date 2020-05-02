@@ -14,7 +14,7 @@
                 <el-input v-model="repForm.mobile" placeholder="手机号码" />
             </el-form-item>
             <el-form-item label="验证码" prop="verifyCode">
-                <el-input v-model="repForm.verifyCode" placeholder="邮箱验证码">
+                <el-input v-model="repForm.verifyCode" placeholder="验证码">
                     <el-button v-if="!isShowTime" slot="append" style="width:112px" @click="getCode">发送验证码</el-button>
                     <el-button v-if="isShowTime" slot="append" style="width:112px" @click="getCode">{{count}}秒</el-button>
                 </el-input>
