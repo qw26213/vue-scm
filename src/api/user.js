@@ -425,3 +425,10 @@ export function getStaff() {
         method: 'post'
     })
 }
+
+export function getOpeningBalanceStatus() {
+    return request({
+        url: '/drp/gl/period/getOpeningBalanceStatus',
+        method: 'post'
+    })
+}

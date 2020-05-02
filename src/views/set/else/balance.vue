@@ -8,8 +8,8 @@
             <el-table-column label="科目编码" min-width="90">
                 <template slot-scope="scope">
                     <span>{{scope.row.coaCode}}</span>
-                    <el-button v-if="scope.row.leaf == 1 && scope.row.type ==1 && scope.row.isAuxiliary == 1" type="primary" size="mini" @click="showSuplyConfig(scope.$index)" style="margin-left:10px">设置</el-button>
-                    <el-button v-if="scope.row.leaf == 1 && scope.row.type !=1 && scope.row.isAuxiliary == 1" type="danger" size="mini" @click="removeRow(scope.$index)" style="margin-left:10px">删除</el-button>
+                    <el-button v-if="scope.row.leaf == 1 && scope.row.type ==1 && scope.row.isAuxiliary == 1 && balanceStatus == 1" type="primary" size="mini" @click="showSuplyConfig(scope.$index)" style="margin-left:10px">设置</el-button>
+                    <el-button v-if="scope.row.leaf == 1 && scope.row.type !=1 && scope.row.isAuxiliary == 1 && balanceStatus == 1" type="danger" size="mini" @click="removeRow(scope.$index)" style="margin-left:10px">删除</el-button>
                 </template>
             </el-table-column>
             <el-table-column label="科目名称" min-width="110" style="padding-right:100px;" show-overflow-tooltip>
@@ -154,7 +154,7 @@
                     </el-select>
                 </el-form-item>
             </el-form>
-            <div slot="footer" class="dialog-footer" align="center">
+            <div slot="footer" class="dialog-footer" align="center" v-if="balanceStatus == 1">
                 <el-button @click="dialogFormVisible2 = false">取消</el-button>
                 <el-button type="primary" @click="saveAuxiliaryConfig">确定</el-button>
             </div>
@@ -162,7 +162,7 @@
     </div>
 </template>
 <script>
-import { getBalance, getPeriodList, updateListForSetBegin } from '@/api/user'
+import { getBalance, getPeriodList, updateListForSetBegin, getOpeningBalanceStatus } from '@/api/user'
 import { getProj, getDept, getStaff, getSupplier, getCust, getItem } from '@/api/user'
 import { getNowDate, deepClone, toNumStr } from '@/utils/index'
 var userInfo = JSON.parse(sessionStorage.userInfo)
@@ -212,6 +212,7 @@ export default {
             periodList: [],
             tableData: [],
             listLoading: false,
+            balanceStatus: 1,
             balanceObj: {}
         }
     },
@@ -223,6 +224,7 @@ export default {
     },
     mounted() {
         this.getData()
+        this.getBalanceStatus()
         getCust().then(res => {
             this.custList = res.data.data
         })
@@ -248,6 +250,18 @@ export default {
                 this.periodList = res.data.data
                 this.listQuery.periodCode1 = res.data.data[0].id
                 this.getData('0')
+            })
+        },
+        getBalanceStatus() {
+            var obj = {
+                periodCode: userInfo.glBookEntity.enablePeriodCode
+            }
+            getOpeningBalanceStatus(obj).then(res => {
+                if(res.data.errorCode == 0) {
+                    console.log("获取结账状态")
+                    this.balanceStatus = res.data.data
+                    console.log(this.balanceStatus)
+                }
             })
         },
         showTable() {
@@ -407,10 +421,9 @@ export default {
                 periodNum: userInfo.glBookEntity.enablePeriodNum,
                 coaHierarchyId: userInfo.glBookEntity.coahierarchyId
             }
-
             getBalance(obj).then(res => {
                 this.listLoading = false
-                this.tableData = res.data || []
+                this.tableData = res.data.data || []
                 this.auxiliaryData = deepClone(this.tableData)
             }).catch(err => {
                 this.listLoading = false

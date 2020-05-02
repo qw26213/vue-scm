@@ -91,7 +91,7 @@
                     <el-checkbox v-model="temp.isCurrency" disabled :false-label="0" :true-label="1">币种核算</el-checkbox>
                     <el-checkbox v-model="temp.isAuxiliary" :disabled="temp.noAuxiliary==1 || temp.leaf==0 || temp.usedFlag==1" :false-label="0" :true-label="1">辅助核算(至多选6项)</el-checkbox>
                     <el-checkbox v-model="temp.isQuantity" :disabled="temp.noAuxiliary==1 || temp.leaf==0 || temp.usedFlag==1" :false-label="0" :true-label="1">数量核算</el-checkbox>
-                    <el-input v-if="temp.isQuantity==1" :disabled="temp.noAuxiliary==1 || temp.leaf==0 || temp.usedFlag==1" v-model="temp.uom" placeholder="计量单位" style="width:120px" />
+                    <el-input v-if="temp.isQuantity==1" :disabled="temp.noAuxiliary==1 || temp.leaf==0 || temp.usedFlag==1" v-model="temp.uom" placeholder="计量单位" style="width:100px" />
                 </el-form-item>
                 <el-form-item v-if="temp.isAuxiliary==1 && temp.noAuxiliary == 0" style="width:600px">
                     <el-checkbox :checked="temp.auxiliary&&temp.auxiliary.charAt(0)==1" v-model="temp.auxiliaryName_0" :false-label="0" :true-label="1">供应商</el-checkbox>
@@ -283,7 +283,7 @@ export default {
                     var obj = this.temp
                     saveCoa(obj).then(res => {
                         if (res.data.errorCode == 0) {
-                            this.getData();
+                            this.getData()
                             this.dialogFormVisible = false
                             this.$message.success(this.dialogStatus == 'create' ? '新增下级科目成功' : '修改科目成功')
                         } else {
@@ -295,14 +295,14 @@ export default {
         },
         handleDisable(row) {
             var isDisable = row.isDisable
-            var coaCode = row.coaCode;
-            var coaName = row.coaName;
+            var coaCode = row.coaCode
+            var coaName = row.coaName
             var info = ""
             if (isDisable != 1) {
-                isDisable = "1";
+                isDisable = 1
                 info = "确定要禁用【" + coaCode + " " + coaName + "】及子科目吗？"
             } else {
-                isDisable = "0";
+                isDisable = 0
                 info = "确定要解除禁用【" + coaCode + " " + coaName + "】及父科目(禁用的子科目并不会同时解除禁用)吗？"
             }
             this.$confirm(info, '提示', {
@@ -317,7 +317,7 @@ export default {
                 }
                 updateDisabledCoa(obj).then(res => {
                     if (res.data.errorCode == 0) {
-                        this.getData();
+                        this.getData()
                         this.$message.success('修改科目禁用标志完成！')
                     } else {
                         this.$message.error(res.data.msg)
@@ -345,7 +345,7 @@ export default {
         delCourse(id) {
             delCoa(id).then(res => {
                 if (res.data.errorCode == 0) {
-                    this.getData();
+                    this.getData()
                     this.$message.success('删除科目成功')
                 } else {
                     this.$message.error(res.data.msg)
