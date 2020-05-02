@@ -34,8 +34,8 @@
                 </template>
             </el-table-column>
         </el-table>
-        <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增角色':'修改角色'" :visible.sync="dialogFormVisible1" width="380px">
-            <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="80px" style="width: 320px; margin-left:10px;">
+        <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增角色':'修改角色'" :visible.sync="dialogFormVisible1" width="460px">
+            <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="80px" style="width: 400px; margin-left:10px;">
                 <el-form-item label="角色代码" prop="roleCode">
                     <el-input v-model="temp.roleCode" placeholder="角色代码" />
                 </el-form-item>

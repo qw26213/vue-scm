@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
-    <div class="filter-container">
-      <el-button size="mini" class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-plus" @click="handleCreate">新增权限</el-button>
-    </div>
+    <!-- <div class="filter-container">
+      <el-button size="mini" class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-plus" @click="handleAdd">新增权限</el-button>
+    </div> -->
     <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;">
       <el-table-column label="序号" type="index" width="100" align="center"></el-table-column>
       <el-table-column label="权限代码">
@@ -17,7 +17,7 @@
       </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="{row}">
-          <el-button type="primary" size="mini" @click="toModify(row)">查看</el-button>
+          <el-button type="primary" size="mini" @click="showDetail(row)">查看</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -44,9 +44,9 @@ export default {
     this.getData()
   },
   methods: {
-    toModify(obj){
+    showDetail(obj){
       sessionStorage.roleInfo = JSON.stringify(obj);
-      this.$router.push('/roleModify');
+      this.$message.warning('暂无开发')
     },
     getCheckedNodes(){
       var permission = []
@@ -83,13 +83,13 @@ export default {
         })
       })
     },
-    handleCreate() {
+    handleAdd() {
       this.$router.push('/roleAdd')
     },
     async getData(){
       this.listLoading = true
-      const { data } = await getFuncs();
-      this.tableData = data
+      const { data } = await getFuncs()
+      this.tableData = data.data
       this.listLoading = false
     }
   }

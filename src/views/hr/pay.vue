@@ -36,18 +36,18 @@
       </el-table-column>
     </el-table>
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
-    <el-dialog title="复制往期薪酬" :visible.sync="dialogVisible1" width="410px">
-      <el-form ref="dataForm" :model="temp1" label-position="left" label-width="72px" style="margin-left:20px;">
+    <el-dialog title="复制往期薪酬" :visible.sync="dialogVisible1" width="460px">
+      <el-form ref="dataForm" :model="temp1" label-position="left" label-width="72px" style="margin-left:10px;width:400px">
         <el-form-item label="工资类型">
-          <el-select v-model="temp1.salaryType" placeholder="工资类型" style="width:250px" class="filter-item">
+          <el-select v-model="temp1.salaryType" placeholder="工资类型" style="width:100%" class="filter-item">
             <el-option label="正常工资" value="1"></el-option>
             <el-option label="劳务报酬" value="2"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="期间选择" style="margin-right:20px">
-          <el-date-picker :editable="false" v-model="temp1.periodStar" type="month" placeholder="月份" style="width:115px" value-format="yyyy-MM-dd"></el-date-picker>
+        <el-form-item label="期间选择">
+          <el-date-picker :editable="false" v-model="temp1.periodStar" type="month" placeholder="月份" style="width:152px" value-format="yyyy-MM-dd"></el-date-picker>
           <span>至</span>
-          <el-date-picker :editable="false" v-model="temp1.periodEnd" type="month" placeholder="月份" style="width:115px" value-format="yyyy-MM-dd"></el-date-picker>
+          <el-date-picker :editable="false" v-model="temp1.periodEnd" type="month" placeholder="月份" style="width:152px" value-format="yyyy-MM-dd"></el-date-picker>
         </el-form-item>
         <el-form-item label="是否覆盖">
           <el-radio v-model="temp1.cover" label="1">是</el-radio>
@@ -59,10 +59,10 @@
         <el-button type="primary" @click="handleSave()">确定</el-button>
       </div>
     </el-dialog>
-    <el-dialog title="薪酬导入" :visible.sync="dialogVisible2" width="400px">
-      <el-form ref="dataForm" :model="temp2" label-position="left" label-width="72px" style="margin-left:20px;">
-        <el-form-item label="选择月份" style="margin-right:20px">
-          <el-date-picker :editable="false" v-model="temp2.periodCode" type="month" placeholder="选择月份" style="width:230px" value-format="yyyy-MM"></el-date-picker>
+    <el-dialog title="薪酬导入" :visible.sync="dialogVisible2" width="460px">
+      <el-form ref="dataForm" :model="temp2" label-position="left" label-width="72px" style="margin-left:10px;width:400px">
+        <el-form-item label="选择月份">
+          <el-date-picker :editable="false" v-model="temp2.periodCode" type="month" placeholder="选择月份" style="width:100%" value-format="yyyy-MM"></el-date-picker>
         </el-form-item>
         <el-form-item label="选择文件">
           <el-button size="small" type="primary" @click="handFileImport"><i class="el-icon-upload" style="margin-right:5px"></i>点击上传</el-button>
@@ -127,6 +127,8 @@ export default {
       this.dialogVisible1 = true
     },
     downloadFile(){
+      this.$message.warning("暂未开发")
+      return
       window.location.href = 'http://49.232.47.16/drp/business/employee.xlsx'
     },
     handImport(){

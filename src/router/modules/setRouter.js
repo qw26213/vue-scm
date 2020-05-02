@@ -169,27 +169,27 @@ const setRouter = {
             name: 'dataRole',
             meta: { title: '数据权限' }
         }]
-    }, {
-        path: 'baseElse',
-        component: setView,
-        name: 'baseElse',
-        meta: { title: '其他' },
-        children: [{
-            path: 'feeType',
-            component: () => import('@/views/set/else/feeType'),
-            name: 'feeType',
-            meta: { title: '计价方式' }
-        }, {
-            path: 'payType',
-            component: () => import('@/views/set/else/payType'),
-            name: 'payType',
-            meta: { title: '收付类型' }
-        }, {
-            path: 'coaType',
-            component: () => import('@/views/set/else/coaType'),
-            name: 'coaType',
-            meta: { title: '科目分类' }
-        }]
+    // }, {
+    //     path: 'baseElse',
+    //     component: setView,
+    //     name: 'baseElse',
+    //     meta: { title: '其他' },
+    //     children: [{
+    //         path: 'feeType',
+    //         component: () => import('@/views/set/else/feeType'),
+    //         name: 'feeType',
+    //         meta: { title: '计价方式' }
+    //     }, {
+    //         path: 'payType',
+    //         component: () => import('@/views/set/else/payType'),
+    //         name: 'payType',
+    //         meta: { title: '收付类型' }
+    //     }, {
+    //         path: 'coaType',
+    //         component: () => import('@/views/set/else/coaType'),
+    //         name: 'coaType',
+    //         meta: { title: '科目分类' }
+    //     }]
     }, {
         path: 'balance',
         component: () => import('@/views/set/else/balance'),
