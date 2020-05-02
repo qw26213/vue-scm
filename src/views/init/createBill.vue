@@ -25,8 +25,8 @@
                 </el-card>
             </el-col>
         </el-row>
-        <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新建账套':'修改账套'" :visible.sync="dialogFormVisible" width="840px">
-            <el-form ref="dataForm" :rules="rules1" inline :model="temp" label-position="left" label-width="70px" style="width: 830px; margin-left:10px;">
+        <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新建账套':'修改账套'" :visible.sync="dialogFormVisible" width="832px">
+            <el-form ref="dataForm" :rules="rules1" inline :model="temp" label-position="left" label-width="70px" style="width: 780px; margin-left:10px;">
                 <el-form-item label="账套名称" prop="bookName">
                     <el-input v-model="temp.bookName" placeholder="账套名称" />
                 </el-form-item>
@@ -82,7 +82,7 @@
                     <el-input v-model="temp.defaultTaxRateStr" placeholder="" size="mini" style="width:60px;margin-right:5px" />%
                     <span style="font-size:12px;margin-right:10px">(小规模纳税人为3%，一般纳税人为13%)</span>
                     <el-checkbox v-model="temp.isDispName" :false-label="0" :true-label="1" style="margin-right:10px">科目名称显示路径</el-checkbox>
-                    <el-checkbox v-model="temp.isCoaCobinationCode" :false-label="0" :true-label="1">凭证中显示辅助项编码组合</el-checkbox>
+                    <el-checkbox v-model="temp.isCoaCobinationCode" :false-label="0" :true-label="1" style="margin-right:10px">凭证中显示辅助项编码组合</el-checkbox>
                     <span>新增凭证时默认凭证日期</span>
                     <el-radio-group v-model="temp.isVoucherMaxDate">
                         <el-radio :label="0" style="margin-right:10px">当前日期</el-radio>
@@ -354,6 +354,9 @@ export default {
 }
 /deep/ .el-input__inner{
     padding: 0 5px;
+}
+/deep/.el-form-item {
+    margin-bottom: 16px;
 }
 </style>
 <style scoped>

@@ -33,7 +33,7 @@
                     <span>{{ row.status==0?"正常":(row.status==5?'受限':'其它') }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" width="580">
+            <el-table-column label="操作" align="center" width="540">
                 <template slot-scope="{row}">
                     <el-button type="text" size="mini" @click="handleAssCust(row)">分配客户</el-button>
                     <el-button type="text" size="mini" @click="handleAssign(row,1)">分配仓库</el-button>
@@ -46,7 +46,7 @@
             </el-table-column>
         </el-table>
         <el-dialog :close-on-click-modal="false" :title="'分配'+dialogTit" :visible.sync="dialogFormVisible" :show-close="false" ::close-on-click-modal="false" width="500px">
-            <el-form ref="dataForm" style="width: 460px;">
+            <el-form ref="dataForm" style="width: 460px">
                 <el-table ref="checkTable" :data="dataList" border fit highlight-current-row style="width: 100%;" size="mini" @selection-change="handleSelectionChange" @select-all="selectAll">
                     <el-table-column type="selection" width="50" align="center" :reserve-selection="true"></el-table-column>
                     <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
@@ -161,9 +161,9 @@ export default {
             this.dialogType = this.dialogTypeArr[index]
             if (index == 1) {
                 getWarehouse().then(resp => {
-                    this.dataList = resp.data.data;
+                    this.dataList = resp.data.data
                     getWarehouseListByUserId({ userId: row.id }).then(res => {
-                      this.selectIdArr = getStrByData(res.data);
+                      this.selectIdArr = getStrByData(res.data.data)
                       var selectIds = this.selectIdArr.join(',')
                       this.dataList.forEach(row => {
                         if(selectIds.indexOf(row.id) >= 0){
@@ -175,9 +175,9 @@ export default {
             }
             if (index == 2) {
                 getTruck().then(resp => {
-                    this.dataList = resp.data.data;
+                    this.dataList = resp.data.data
                     getTruckListByUserId({ userId: row.id }).then(res => {
-                      this.selectIdArr = getStrByData(res.data);
+                      this.selectIdArr = getStrByData(res.data.data)
                       var selectIds = this.selectIdArr.join(',')
                       this.dataList.forEach(row => {
                         if(selectIds.indexOf(row.id) >= 0){
@@ -189,9 +189,9 @@ export default {
             }
             if (index == 3) {
                 getRoute().then(resp => {
-                    this.dataList = resp.data.data;
+                    this.dataList = resp.data.data
                     getRouteListByUserId({ userId: row.id }).then(res => {
-                      this.selectIdArr = getStrByData(res.data);
+                      this.selectIdArr = getStrByData(res.data.data)
                       var selectIds = this.selectIdArr.join(',')
                       this.dataList.forEach(row => {
                         if(selectIds.indexOf(row.id) >= 0){
@@ -203,9 +203,9 @@ export default {
             }
             if (index == 4) {
                 getBrand().then(resp => {
-                    this.dataList = resp.data.data;
+                    this.dataList = resp.data.data
                     getBrandListByUserId({ userId: row.id }).then(res => {
-                      this.selectIdArr = getStrByData(res.data);
+                      this.selectIdArr = getStrByData(res.data.data)
                       var selectIds = this.selectIdArr.join(',')
                       this.dataList.forEach(row => {
                         if(selectIds.indexOf(row.id) >= 0){
@@ -217,9 +217,9 @@ export default {
             }
             if (index == 6) {
                 getRole().then(resp => {
-                    this.dataList = resp.data.data;
+                    this.dataList = resp.data.data
                     getRoleListByUserIdAppsId({ userId: row.id }).then(res => {
-                      this.selectIdArr = getStrByData(res.data);
+                      this.selectIdArr = getStrByData(res.data.data)
                       var selectIds = this.selectIdArr.join(',')
                       this.dataList.forEach(row => {
                         if(selectIds.indexOf(row.id) >= 0){
@@ -334,3 +334,8 @@ export default {
     }
 }
 </script>
+<style lang="scss" scoped>
+/deep/ .el-button+.el-button {
+    margin-left: 5px;
+}
+</style>

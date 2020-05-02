@@ -39,7 +39,7 @@ export default {
             if (val === true) {
                 this.listQuery.pageIndex = 1
                 if (this.type === 'user') {
-                    getItemListByUserId({ channelTypeId: this.handleObj.id }).then(res => {
+                    getItemListByUserId({ userId: this.handleObj.id }).then(res => {
                         var rowObj = this.handleObj
                         rowObj.itemList = res.data.data
                         this.curRowObj = deepClone(rowObj)
