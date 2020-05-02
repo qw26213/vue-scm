@@ -1,10 +1,10 @@
 <template>
     <div class="app-container">
-        <div class="filter-container1 tx-r" style="margin-bottom:20px">
+        <div class="filter-container1 tx-r" style="margin-bottom:15px">
             <el-button size="mini" type="primary" @click="saveData(0)">保存</el-button>
             <el-button size="mini" type="primary" @click="showTable()">试算平衡汇总</el-button>
         </div>
-        <el-table :data="tableData" v-loading="listLoading" border fit resize empty-text="无数据" style="width: 100%;">
+        <el-table :data="tableData" v-loading="listLoading" border fit resize empty-text="暂无相关数据" style="width: 100%;" :height="tableHeight">
             <el-table-column label="科目编码" min-width="90">
                 <template slot-scope="scope">
                     <span>{{scope.row.coaCode}}</span>
@@ -179,6 +179,7 @@ export default {
             curShowIndex: 0,
             auxiliaryTypeArr: [],
             auxiliaryData: [],
+            tableHeight: document.querySelector(".app-main").clientHeight - 83,
             temp: {
                 auxiliary: '000000000000000',
                 beginBalance: 0,
@@ -268,7 +269,7 @@ export default {
         },
         removeRow(index) {
             this.tableData.splice(index, 1)
-            this.saveData(2)
+            // this.saveData(2)
         },
         getBalanceObj() {
             var obj = {
@@ -370,10 +371,10 @@ export default {
             curObj.type = 0
             curObj.isAuxiliary = 1
             this.tableData.splice(this.curShowIndex + 1, 0, curObj)
-            this.dialogFormVisible2 = false
             this.$refs['dataForm'].validate((valid) => {
                 if (valid) {
-                    this.saveData(1)
+                    this.dialogFormVisible2 = false
+                    // this.saveData(1)
                 }
             })
         },
