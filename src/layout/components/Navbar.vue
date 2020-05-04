@@ -266,6 +266,7 @@ export default {
     color: #333;
     font-size: 14px;
     text-align: justify;
+    line-height:22px;
     margin-top: 10px;
 }
 

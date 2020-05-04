@@ -3,11 +3,11 @@
         <div class="w1200 voucherHeader">
             <el-button type="primary" size="mini" @click="dialogFormVisible1 = true">从模板生成凭证</el-button>
             <el-button type="primary" size="mini" @click="dialogFormVisible2 = true">常用摘要</el-button>
-            <div class="voucherTit">记账凭证<span class="Period">2019年第10期</span></div>
+            <div class="voucherTit">记账凭证<span class="Period">2020年第4期</span></div>
             <el-form :inline="true" label-position="right" label-width="80px" style="width: 100%; margin-top:0px;">
                 <el-form-item label="凭证字号" prop="billNo" style="margin-bottom:10px">
-                    <select class="catogeryName uds">
-                        <option value="0" v-for="item in catogeryList" :ke="item.id">{{item.catogeryName}}</option>
+                    <select class="catogeryName uds" v-model="billHeader.jeCatogeryId">
+                        <option v-for="item in catogeryList" :ke="item.id" :value="item.id">{{item.catogeryName}}</option>
                     </select>
                     <span class="jeSeq uds">{{billHeader.jeSeq | numberFormat}}</span>
                     <span class="btn-wrap uds">
@@ -16,13 +16,13 @@
                     </span>
                 </el-form-item>
                 <el-form-item label="日期" prop="billDate" style="margin-bottom:10px;">
-                    <el-date-picker v-model="billHeader.billDate" type="date" placeholder="日期" size="mini" value-format="yyyy-MM-dd" style="width:120px">
+                    <el-date-picker v-model="billHeader.jeDate" type="date" placeholder="日期" size="mini" value-format="yyyy-MM-dd" style="width:120px">
                     </el-date-picker>
                 </el-form-item>
-                <el-form-item label="附单据" prop="expirationDate" style="float:right;margin-bottom:10px">
+                <!-- <el-form-item label="附单据" prop="expirationDate" style="float:right;margin-bottom:10px">
                     <input type="text" class="jeSeq" v-model="billHeader.voucherAttachmentNum" style="width:40px;margin-right:6px" />
                     <span>张</span>
-                </el-form-item>
+                </el-form-item> -->
             </el-form>
         </div>
         <table class="voucher table table-condensed w1200" style="border-left:none;">
@@ -57,29 +57,29 @@
                     <td class="p0 urel">
                         <div class="number f12 ptb05" v-if="row.isQuantity==1">
                             <p style="margin-bottom: 3px;">数量:
-                                <input type="text" v-model="row.qNumber" /><i class="uom">{{row.qUom}}</i></p>
+                                <input type="text" v-model="row.qNumber" @change="getAmount(index)" /><i class="uom">{{row.qUom}}</i></p>
                             <p>单价:
-                                <input type="text" v-model="row.qPrice" /><i class="uom">元</i></p>
+                                <input type="text" v-model="row.qPrice" @change="getAmount(index)" /><i class="uom">元</i></p>
                         </div>
                     </td>
                     <td class="urel p0">
                         <div class="money_bg">
                             <i v-if="row.accountedCr>0" v-for="(item,index) in String(row.accountedCr)" :key="index">{{item}}</i>
                         </div>
-                        <input type="text" autocomplete="off" class="input_bg" v-model="row.accountedCr" maxlength="12" @input="inputChange($event)">
+                        <input type="text" autocomplete="off" class="input_bg" v-model="row.accountedCr" maxlength="12" @input="inputChange($event, 'accountedCr',index)" @focus="foucsInput($event)">
                     </td>
                     <td class="urel p0">
                         <div class="money_bg">
                             <i v-if="row.accountedDr>0" v-for="(item,index) in String(row.accountedDr)" :key="index">{{item}}</i>
                         </div>
-                        <input type="text" autocomplete="off" class="input_bg" v-model="row.accountedDr" maxlength="12" @input="inputChange($event)">
+                        <input type="text" autocomplete="off" class="input_bg" v-model="row.accountedDr" maxlength="12" @input="inputChange($event, 'accountedDr',index)" @focus="foucsInput($event)">
                     </td>
                 </tr>
             </tbody>
             <tfoot>
                 <tr class="foot h42">
                     <td class="p0"></td>
-                    <td colspan="4" class="thstyle tx-l totalNumber">合计:{{totalZh}}</td>
+                    <td colspan="3" class="thstyle tx-l totalNumber">合计:{{totalZh}}</td>
                     <td class="col_debite p0 urel ovh">
                         <input type="hidden" v-model="totalMoney1" />
                         <div class="money_bg h42">
@@ -128,7 +128,7 @@
             <div class="filter-container" style="padding-bottom:0;margin-top:-10px">
                 <el-input size="small" v-model="summaryQuery.mnemonicCode" placeholder="助记码" style="width: 135px;" class="filter-item" />
                 <el-input size="small" v-model="summaryQuery.summary" placeholder="名称" style="width: 135px;" class="filter-item" />
-                <el-button size="mini" class="filter-item" type="primary" @click="handleSummaryAdd">创建摘要</el-button>
+                <el-button size="mini" class="filter-item" type="primary" @click="saveSummary">创建摘要</el-button>
             </div>
             <el-table :data="summaryPageData" border fit highlight-current-row style="width: 100%;" size="mini" cell-class-name="trCell">
                 <el-table-column label="序号" width="50" align="center">
@@ -202,7 +202,6 @@ export default {
     components: { coaList, summaryList, Pagination },
     data() {
         return {
-            selectCatogery: '',
             catogeryList: [],
             total1: 0,
             total2: 0,
@@ -210,8 +209,9 @@ export default {
             totalZh: '',
             list: [],
             billHeader: {
+                jeCatogeryId: '',
                 jeSeq: 1,
-                billDate: getNowDate(),
+                jeDate: getNowDate(),
                 voucherAttachmentNum: 0,
             },
             summaryQuery: {
@@ -283,6 +283,7 @@ export default {
         this.getTempletList()
         getCatogery().then(res => {
             this.catogeryList = res.data.data
+            this.$set(this.billHeader, 'jeCatogeryId', this.catogeryList[0].id)
         })
         getCust().then(res => {
             this.custList = res.data.data
@@ -310,7 +311,7 @@ export default {
                 this.tableData = res.data.data.lineList
                 var totalMoney = 0
                 for (var i = 0; i < this.tableData.length; i++) {
-                    totalMoney += Number(this.tableData[i].accountedDr);
+                    totalMoney += Number(this.tableData[i].accountedDr)
                 }
                 this.totalMoney1 = totalMoney
                 this.totalMoney2 = totalMoney
@@ -322,6 +323,20 @@ export default {
         }
     },
     methods: {
+        getAmount(index) {
+            var price = this.tableData[index].qPrice
+            var qty = this.tableData[index].qNumber
+            if (qty && price) {
+                var amount = (Number(qty) * Number(price)).toFixed(2)
+                if (this.tableData[index].crDr == 1) {
+                    this.$set(this.tableData[index], 'accountedCr', Number(amount))
+                }
+                if (this.tableData[index].crDr == -1) {
+                    this.$set(this.tableData[index], 'accountedDr', Number(amount))
+                }
+                this.getTotalMoney()
+            }
+        },
         saveAuxiliaryConfig() {
             this.$refs['dataForm'].validate((valid) => {
                 if (valid) {
@@ -375,7 +390,7 @@ export default {
                 console.log(err)
             });
         },
-        handleSummaryAdd() {
+        saveSummary() {
             var obj = {
                 mnemonicCode: this.summaryQuery.mnemonicCode,
                 summary: this.summaryQuery.summary,
@@ -411,11 +426,6 @@ export default {
         addRow() {
             this.tableData.push({})
         },
-        getSummaryData() {
-            getAllUnion().then(res => {
-
-            })
-        },
         delRow(index) {
             if (this.tableData.length <= 2) {
                 this.$message.warning('至少要保留两条分录！');
@@ -425,30 +435,30 @@ export default {
         },
         saveVoucher() {
             this.voucherTable = deleteEmptyObj(this.tableData)
-            if (this.voucherTable.length <= 2) {
+            if (this.voucherTable.length < 2) {
                 this.$message.warning('凭证至少要两条分录！');
                 return
             }
             const curPeriodValue = ''
             const obj = {
                 bookId: sessionStorage.bookId,
-                catogeryId: this.selectCatogery,
+                catogeryId: this.billHeader.jeCatogeryId,
                 catogeryName: '记',
                 catogeryTitle: "记账凭证",
                 // jzCode: jzCode,
                 // joinJeHeaderId:joinJeHeaderId,
-                periodCode: this.temp.billDate,
+                periodCode: this.billHeader.jeDate,
                 periodId: curPeriodValue,
-                periodName: '2020年02期',
-                saveType: saveTypeValue,
-                totalCreditMoney: this.total1,
-                totalDebiteMoney: this.total2,
+                periodName: '2020年04期',
+                saveType: 1,
                 voucherAttachmentNum: this.temp.voucherAttachmentNum,
                 voucherDate: this.temp.billDate,
                 voucherSeq: this.temp.jeSeq,
                 // voucherId: voucherId,
                 // jeHeaderId: voucherId,
-                voucherTable: this.voucherTable
+                voucherTable: this.voucherTable,
+                totalCreditMoney: Number(this.totalMoney1),
+                totalDebiteMoney: Number(this.totalMoney2),
             }
             voucherSave(obj).then(res => {
                 if (res.data.success) {
@@ -471,22 +481,22 @@ export default {
             })
         },
         foucsInput(event) {
-            console.log(event.currentTarget.value)
             event.currentTarget.value = event.currentTarget.value == 0 ? '' : ''
         },
-        inputChange(event) {
-            this.clearNoNum(event.currentTarget)
+        inputChange(event, accounted, index) {
+            validateVal(event.currentTarget)
+            if(accounted === 'accountedCr' && this.tableData[index].accountedCr > 0) {
+                this.tableData[index].accountedDr = 0
+            }
+            if(accounted === 'accountedDr' && this.tableData[index].accountedDr > 0) {
+                this.tableData[index].accountedCr = 0
+            }
+            this.getTotalMoney()
+        },
+        getTotalMoney(){
             this.totalMoney1 = this.calculate1()
             this.totalMoney2 = this.calculate2()
             this.totalZh = this.totalMoney1 == this.totalMoney2 ? convertCurrency(this.totalMoney1) : ''
-        },
-        clearNoNum(obj) {
-            // if (obj.value != '' && obj.value.substr(0, 1) == '=') {
-            //     obj.value = 0
-            //     valueBalance(obj)
-            //     return
-            // }
-            validateVal(obj)
         },
         calculate1() {
             var amount = 0;
@@ -528,11 +538,7 @@ export default {
         saveCoa() {
 
         },
-        saveSummary() {
-
-        },
         changeVal(obj) {
-            console.log(obj)
             for (var key in obj) {
                 this.$set(this.tableData[obj.index], key, obj[key])
             }

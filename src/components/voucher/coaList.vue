@@ -18,6 +18,7 @@ export default {
             isQuantity: 0,
             auxiliary: '',
             uom: '',
+            crDr: '',
             curIndex: this.index,
             coaList: this.dataList
         }
@@ -41,6 +42,7 @@ export default {
                     this.isQuantity = this.coaList[i].isQuantity
                     this.auxiliary = this.coaList[i].auxiliary
                     this.uom = this.coaList[i].uom
+                    this.crDr = this.coaList[i].crDr
                 }
             }
             var obj = {
@@ -49,7 +51,8 @@ export default {
                 isQuantity: this.isQuantity,
                 index: this.curIndex,
                 auxiliary: this.auxiliary,
-                qUom: this.uom
+                qUom: this.uom,
+                crDr: this.crDr
             }
             this.$emit('changeVal', obj)
         }

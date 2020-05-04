@@ -179,7 +179,7 @@ export default {
             curShowIndex: 0,
             auxiliaryTypeArr: [],
             auxiliaryData: [],
-            tableHeight: document.querySelector(".app-main").clientHeight - 83,
+            tableHeight: 700,//document.querySelector(".app-main").clientHeight - 83,
             temp: {
                 auxiliary: '000000000000000',
                 beginBalance: 0,
@@ -299,7 +299,6 @@ export default {
                 }
                 obj.sumPeriodNetDr = obj.sumPeriodNetDr + arr[i].periodNetDr
                 obj.sumPeriodNetCr = obj.sumPeriodNetCr + arr[i].periodNetCr
-
             }
             obj.diffBalance = obj.sumBalanceDr - obj.sumBalanceCr
             obj.diffPeriodNet = obj.sumPeriodNetDr - obj.sumPeriodNetCr
@@ -330,6 +329,36 @@ export default {
                 this.auxiliaryData[index].beginBalanceCr = auxiliaryTypeBalance
                 this.auxiliaryData[index].beginBalanceQtyCr = auxiliaryTypeBalanceQty
             }
+            this.calculate(index)
+        },
+        calculate(index) {
+            var amount1 = 0
+            var amount2 = 0
+            var amount3 = 0
+            var amount4 = 0
+            var amount5 = 0
+            var amount6 = 0
+            var coaCode = this.tableData[index].coaCode
+            for (let i = 0; i < this.tableData.length; i++) {
+                if (this.tableData[i].coaCode == coaCode && this.tableData[i].type == 0) {
+                    amount1 += Number(this.tableData[i].beginBalance)
+                    amount2 += Number(this.tableData[i].beginBalanceQty)
+                    amount3 += Number(this.tableData[i].periodNetDr)
+                    amount4 += Number(this.tableData[i].periodNetQtyDr)
+                    amount5 += Number(this.tableData[i].periodNetCr)
+                    amount6 += Number(this.tableData[i].periodNetQtyCr)
+                }
+            }
+            for (let i = 0; i < this.tableData.length; i++) {
+                if (this.tableData[i].coaCode == coaCode && this.tableData[i].type == 1) {
+                    this.$set(this.tableData[i], 'beginBalance', amount1)
+                    this.$set(this.tableData[i], 'beginBalanceQty', amount2)
+                    this.$set(this.tableData[i], 'periodNetDr', amount3)
+                    this.$set(this.tableData[i], 'periodNetQtyDr', amount4)
+                    this.$set(this.tableData[i], 'periodNetCr', amount5)
+                    this.$set(this.tableData[i], 'periodNetQtyCr', amount6)
+                }
+            }
         },
         showSuplyConfig(index) {
             this.dialogFormVisible2 = true
@@ -353,9 +382,9 @@ export default {
                         // 显示对应的辅助核算项 1-26
                         var auxiliaryType = AuxiliaryType[i]
                         /* 获取当前辅助核算项的值 */
-                        var selectId = this.$refs[auxiliaryType+'Select'].selected.value
-                        var selectText = this.$refs[auxiliaryType+'Select'].selected.label
-                        var modelCode = this.$refs[auxiliaryType+'Select'].selected.key
+                        var selectId = this.$refs[auxiliaryType + 'Select'].selected.value
+                        var selectText = this.$refs[auxiliaryType + 'Select'].selected.label
+                        var modelCode = this.$refs[auxiliaryType + 'Select'].selected.key
                         auxiliaryCode += "_" + hexCas[AuxiliaryType.indexOf(auxiliaryType)] + modelCode
                         auxiliaryName += "_" + selectText
                         curObj[auxiliaryType] = selectId
@@ -389,7 +418,7 @@ export default {
             }
             updateListForSetBegin(this.auxiliaryData).then(res => {
                 this.dialogFormVisible2 = false
-                if (res.data.errorCode == "0") {
+                if (res.data.errorCode == 0) {
                     if (type == 0) {
                         this.$message.success(info + "期初余额保存完成!")
                     }
