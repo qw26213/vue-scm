@@ -189,7 +189,7 @@ export default {
             sessionStorage.periodName = row.periodName;
             sessionStorage.jeCatogeryId = row.jeCatogeryId;
             sessionStorage.voucherFlag = 3; //凭证插入标记符
-            this.$router.push('/voucher/add?id=' + id)
+            this.$router.push('/voucher/add?id=' + row.id + '&type=2')
         },
         resetVoucherSeq() {
             let date1 = this.listQuery.queryParam.date1

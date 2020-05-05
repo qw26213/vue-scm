@@ -64,15 +64,15 @@
                     </td>
                     <td class="urel p0">
                         <div class="money_bg">
-                            <i v-if="row.accountedCr>0" v-for="(item,index) in String(row.accountedCr)" :key="index">{{item}}</i>
-                        </div>
-                        <input type="text" autocomplete="off" class="input_bg" v-model="row.accountedCr" maxlength="12" @input="inputChange($event, 'accountedCr',index)" @focus="foucsInput($event)">
-                    </td>
-                    <td class="urel p0">
-                        <div class="money_bg">
                             <i v-if="row.accountedDr>0" v-for="(item,index) in String(row.accountedDr)" :key="index">{{item}}</i>
                         </div>
                         <input type="text" autocomplete="off" class="input_bg" v-model="row.accountedDr" maxlength="12" @input="inputChange($event, 'accountedDr',index)" @focus="foucsInput($event)">
+                    </td>
+                    <td class="urel p0">
+                        <div class="money_bg">
+                            <i v-if="row.accountedCr>0" v-for="(item,index) in String(row.accountedCr)" :key="index">{{item}}</i>
+                        </div>
+                        <input type="text" autocomplete="off" class="input_bg" v-model="row.accountedCr" maxlength="12" @input="inputChange($event, 'accountedCr',index)" @focus="foucsInput($event)">
                     </td>
                 </tr>
             </tbody>
@@ -203,6 +203,7 @@ export default {
     data() {
         return {
             catogeryList: [],
+            saveType: this.$route.type, //插入有1
             total1: 0,
             total2: 0,
             numberArr: ['亿', '千', '百', '十', '万', '千', '百', '十', '元', '角', '分'],
@@ -312,7 +313,7 @@ export default {
                 this.tableData = res.data.data.lineList
                 var totalMoney = 0
                 for (var i = 0; i < this.tableData.length; i++) {
-                    totalMoney += Number(this.tableData[i].accountedDr)
+                    totalMoney += Number(this.tableData[i].accountedCr)
                 }
                 this.totalMoney1 = totalMoney
                 this.totalMoney2 = totalMoney
@@ -336,10 +337,10 @@ export default {
             if (qty && price) {
                 var amount = (Number(qty) * Number(price)).toFixed(2)
                 if (this.tableData[index].crDr == 1) {
-                    this.$set(this.tableData[index], 'accountedCr', Number(amount))
+                    this.$set(this.tableData[index], 'accountedDr', Number(amount))
                 }
                 if (this.tableData[index].crDr == -1) {
-                    this.$set(this.tableData[index], 'accountedDr', Number(amount))
+                    this.$set(this.tableData[index], 'accountedCr', Number(amount))
                 }
                 this.getTotalMoney()
             }
@@ -452,6 +453,7 @@ export default {
             }
             const curPeriodValue = ''
             const voucherId = this.$route.query.id || ''
+            const saveType = this.saveType || 1
             const obj = {
                 bookId: sessionStorage.bookId,
                 catogeryId: this.billHeader.jeCatogeryId,
@@ -462,7 +464,7 @@ export default {
                 periodCode: this.billHeader.jeDate,
                 periodId: curPeriodValue,
                 periodName: '2020年04期',
-                saveType: 1,
+                saveType: saveType, //1是新增，2是插入
                 voucherAttachmentNum: this.temp.voucherAttachmentNum,
                 voucherDate: this.temp.billDate,
                 voucherSeq: this.temp.jeSeq,
@@ -501,11 +503,11 @@ export default {
         },
         inputChange(event, accounted, index) {
             validateVal(event.currentTarget)
-            if(accounted === 'accountedCr' && this.tableData[index].accountedCr > 0) {
-                this.tableData[index].accountedDr = 0
-            }
             if(accounted === 'accountedDr' && this.tableData[index].accountedDr > 0) {
                 this.tableData[index].accountedCr = 0
+            }
+            if(accounted === 'accountedCr' && this.tableData[index].accountedCr > 0) {
+                this.tableData[index].accountedDr = 0
             }
             this.getTotalMoney()
         },
@@ -517,8 +519,8 @@ export default {
         calculate1() {
             var amount = 0;
             for (var i = 0; i < this.tableData.length; i++) {
-                if (this.tableData[i] && this.tableData[i].accountedCr) {
-                    amount += Number(this.tableData[i].accountedCr);
+                if (this.tableData[i] && this.tableData[i].accountedDr) {
+                    amount += Number(this.tableData[i].accountedDr);
                 }
             }
             return String(amount)
@@ -526,8 +528,8 @@ export default {
         calculate2() {
             var amount = 0;
             for (var i = 0; i < this.tableData.length; i++) {
-                if (this.tableData[i] && this.tableData[i].accountedDr) {
-                    amount += Number(this.tableData[i].accountedDr)
+                if (this.tableData[i] && this.tableData[i].accountedCr) {
+                    amount += Number(this.tableData[i].accountedCr)
                 }
             }
             return String(amount)

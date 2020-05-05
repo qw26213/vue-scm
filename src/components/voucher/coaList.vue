@@ -19,6 +19,7 @@ export default {
             auxiliary: '',
             uom: '',
             crDr: '',
+            coaCode: '',
             curIndex: this.index,
             coaList: this.dataList
         }
@@ -42,6 +43,7 @@ export default {
                     this.isQuantity = this.coaList[i].isQuantity
                     this.auxiliary = this.coaList[i].auxiliary
                     this.uom = this.coaList[i].uom
+                    this.coaCode = this.coaList[i].coaCode
                     this.crDr = this.coaList[i].crDr
                 }
             }
@@ -51,6 +53,7 @@ export default {
                 isQuantity: this.isQuantity,
                 index: this.curIndex,
                 auxiliary: this.auxiliary,
+                coaCode: this.coaCode,
                 qUom: this.uom,
                 crDr: this.crDr
             }
