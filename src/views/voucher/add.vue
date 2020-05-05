@@ -464,9 +464,9 @@ export default {
                 voucherSeq: this.temp.jeSeq,
                 voucherId: voucherId,
                 jeHeaderId: voucherId,
-                container: this.voucherTable,
+                voucherTable: this.voucherTable,
                 totalCreditMoney: Number(this.totalMoney1),
-                totalDebiteMoney: Number(this.totalMoney2),
+                totalDebiteMoney: Number(this.totalMoney2)
             }
             if(type == 1) {
                 this.saveTemplet(obj)
@@ -475,7 +475,7 @@ export default {
             }
         },
         saveTemplet(obj) {
-            templetSave(obj).then(res => {
+            templetSave({container: obj}).then(res => {
                 if (res.data.success) {
                     this.$message.success("凭证模板保存成功")
                 } else {
