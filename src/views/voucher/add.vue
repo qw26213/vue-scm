@@ -280,6 +280,7 @@ export default {
     created() {
         this.$store.dispatch('voucher/getTempletType')
         this.$store.dispatch('voucher/getAuxiliaryTypeList')
+        this.getGlPeriod()
         this.getTempletList()
         getCatogery().then(res => {
             this.catogeryList = res.data.data
@@ -323,6 +324,12 @@ export default {
         }
     },
     methods: {
+        getGlPeriod() {
+            getGlPeriodByCenterDate().then(res => {
+                this.glPeriod = res.data.data.periodName
+                this.glPeriodId = res.data.data.id
+            })
+        },
         getAmount(index) {
             var price = this.tableData[index].qPrice
             var qty = this.tableData[index].qNumber

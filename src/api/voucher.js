@@ -223,3 +223,23 @@ export function getCatogery(){
         data: { bookId: sessionStorage.bookId }
     })
 }
+
+export function backPeriodClose(data){
+    return request({
+        url:'/drp/gl/periodClose/backPeriodClose',
+        method:'post',
+        data
+    })
+}
+
+export function getPeriodState(str){
+    return request({
+        url:'/drp/gl/periodClose/getPeriodState',
+        method:'post',
+        data: {
+            periodYear:str.split('-')[0],
+            periodNum:str.split('-')[1],
+            periodCode: str
+        }
+    })
+}

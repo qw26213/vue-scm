@@ -317,11 +317,11 @@ export function getSales(data) {
     })
 }
 
-export function getSalesById(id) {
+export function getSalesById(id, date) {
     return request({
         url: '/drp/so/sales/getByHeaderId',
         method: 'post',
-        data: { id: id }
+        data: { id: id, billDate: date }
     })
 }
 
@@ -333,11 +333,11 @@ export function saveSales(data) {
     })
 }
 
-export function delSales(id) {
+export function delSales(id, date) {
     return request({
         url: '/drp/so/sales/deleteByHeaderId',
         method: 'post',
-        data: { id: id }
+        data: { id: id, billDate: date }
     })
 }
 

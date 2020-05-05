@@ -21,7 +21,7 @@
             <el-button size="mini" type="primary" @click="getList">查询</el-button>
             <el-button size="mini" type="primary" @click="handleAdd">新增</el-button>
         </div>
-        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row size="mini">
+        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row>
             <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
             <el-table-column label="单据日期" align="center" width="100">
                 <template slot-scope="{row}">

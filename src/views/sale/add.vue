@@ -250,8 +250,9 @@ export default {
         this.$store.dispatch('basedata/getSalesTypeArr')
         this.$store.dispatch('basedata/getSalesSettleType')
         if(this.$route.query.id){
-            this.id = this.$route.query.id;
-            getSalesById(this.id).then(res=>{
+            this.id = this.$route.query.id
+            var date = this.$route.query.billDate
+            getSalesById(this.id, date).then(res=>{
                 if(res.data.data){
                     for(var key in this.temp){
                         this.temp[key] = res.data.data[key];

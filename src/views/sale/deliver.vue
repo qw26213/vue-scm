@@ -5,7 +5,7 @@
       <el-button size="mini" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
     </div>
 
-    <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini" show-summary>
+    <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" show-summary>
       <el-table-column label="序号" type="index" width="50" align="center">
       </el-table-column>
       <el-table-column label="单据日期" align="center">

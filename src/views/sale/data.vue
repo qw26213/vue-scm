@@ -21,7 +21,7 @@
             <el-button size="mini" type="primary" @click="getList">查询</el-button>
             <el-button size="mini" type="primary" @click="handleAdd">新增</el-button>
         </div>
-        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row size="mini">
+        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row>
             <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
             <el-table-column label="单据日期" align="center" width="120">
                 <template slot-scope="{row}">
@@ -83,11 +83,11 @@
                     <span>{{row.status==1?'已审核':row.status==2?'已生成':'待审核'}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" width="150">
+            <el-table-column label="操作" align="center" width="240">
                 <template slot-scope="{row}">
-                    <span class="ctrl" v-if="row.status==0" @click="handleCompile(row.id)">编辑</span>
-                    <span class="ctrl" v-if="row.status==1" @click="handleScan(row.id)">查看</span>
-                    <span class="ctrl" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
+                    <span class="ctrl" v-if="row.status==0" @click="handleCompile(row)">编辑</span>
+                    <span class="ctrl" v-if="row.status==1" @click="handleScan(row)">查看</span>
+                    <span class="ctrl" v-if="row.status==0" @click="handleDel(row.id, row.billDate)">删除</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isOutboundOrder,row.id,row.outboundOrderHeaderId)">{{row.isOutboundOrder==1?'查看':'生成'}}出库单</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId)">{{row.isJeHeader==1?'查看':'生成'}}销售凭证</span>
@@ -229,10 +229,10 @@ export default {
         },
         handleCompile(id) {
             this.$store.dispatch('tagsView/delView', this.$route);
-            this.$router.push('/sale/modify?id=' + id)
+            this.$router.push('/sale/modify?id=' + row.id+'&billDate='+row.billDate)
         },
         handleScan(id) {
-            this.$router.push('/sale/detail?id=' + id)
+            this.$router.push('/sale/detail?id=' + row.id+'&billDate='+row.billDate)
         },
         handleCreateVouter(status,id1,id2){
           if(status==1){
@@ -254,17 +254,17 @@ export default {
             }
           });
         },
-        handleDel(id) {
+        handleDel(id, date) {
             this.$confirm('你确认要删除吗?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                this.delItem(id)
+                this.delItem(id,date)
             });
         },
         delItem(id) {
-            delSales(id).then(res => {
+            delSales(id, date).then(res => {
                 if (res.data.errorCode == 0) {
                     this.getList();
                     this.dialogFormVisible1 = false
