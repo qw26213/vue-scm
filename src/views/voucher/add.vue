@@ -446,6 +446,10 @@ export default {
                 this.$message.warning('凭证至少要两条分录！');
                 return
             }
+            var lineArr = []
+            for (var i=0;i<this.voucherTable.length;i++){
+                lineArr.push({container:this.voucherTable[i]})
+            }
             const curPeriodValue = ''
             const voucherId = this.$route.query.id || ''
             const obj = {
@@ -464,7 +468,7 @@ export default {
                 voucherSeq: this.temp.jeSeq,
                 voucherId: voucherId,
                 jeHeaderId: voucherId,
-                voucherTable: {container: this.voucherTable},
+                voucherTable: lineArr,
                 totalCreditMoney: Number(this.totalMoney1),
                 totalDebiteMoney: Number(this.totalMoney2)
             }
