@@ -89,8 +89,8 @@
                     <span class="ctrl" v-if="row.status==1" @click="handleScan(row)">查看</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleDel(row.id, row.billDate)">删除</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
-                    <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isOutboundOrder,row.id,row.outboundOrderHeaderId)">{{row.isOutboundOrder==1?'查看':'生成'}}出库单</span>
-                    <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId)">{{row.isJeHeader==1?'查看':'生成'}}销售凭证</span>
+                    <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isOutboundOrder,row.id,row.outboundOrderHeaderId,row.billDate)">{{row.isOutboundOrder==1?'查看':'生成'}}出库单</span>
+                    <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId,row.billDate)">{{row.isJeHeader==1?'查看':'生成'}}销售凭证</span>
                 </template>
             </el-table-column>
         </el-table>
@@ -141,6 +141,7 @@ export default {
             dialogFormVisible2: false,
             curBillId: '',
             isBillDate: '0',
+            curBillDate: '',
             listQuery: {
                 pageIndex: 1,
                 pageNum: 20,
@@ -201,23 +202,24 @@ export default {
                 this.listQuery.queryParam[key] = obj[key];
             }
         },
-        handleCreateBill(status, id1, id2) {
+        handleCreateBill(status, id1, id2, billDate) {
             if (status == 1) {
                 this.$router.push('/store/outboundOrderModify?id=' + id2 + '&status=' + status)
             } else {
                 this.curBillId = id1;
+                this.curBillDate = billDate
                 this.dialogFormVisible1 = true;
             }
         },
         createBill() {
-            var obj = { isBillDate: this.isBillDate, id: this.curBillId }
+            var obj = { isBillDate: this.isBillDate, id: this.curBillId, billDate: this.curBillDate }
             buildSales(obj).then(res => {
                 if (res.data.errorCode == 0) {
                     this.dialogFormVisible1 = false;
                     this.getList();
                     this.$message.success('生成出库单成功')
                 } else {
-                    this.$message.error(res.data.msg)
+                    this.$message.warning(res.data.msg)
                 }
             }).catch(() => {
                 this.$message.error('生成失败，请稍后重试！')
@@ -227,23 +229,24 @@ export default {
             this.$store.dispatch('tagsView/delView', this.$route);
             this.$router.replace('/sale/add')
         },
-        handleCompile(id) {
+        handleCompile(row) {
             this.$store.dispatch('tagsView/delView', this.$route);
             this.$router.push('/sale/modify?id=' + row.id+'&billDate='+row.billDate)
         },
-        handleScan(id) {
+        handleScan(row) {
             this.$router.push('/sale/detail?id=' + row.id+'&billDate='+row.billDate)
         },
-        handleCreateVouter(status,id1,id2){
+        handleCreateVouter(status,id1,id2,billDate){
           if(status==1){
             alert('查看销售凭证')
           }else{
             this.curBillId = id1;
+            this.curBillDate = billDate
             this.dialogFormVisible2 = true;
           }
         },
         createVouter(){
-          var obj = {isBillDate:this.isBillDate,id:this.curBillId}
+          var obj = {isBillDate:this.isBillDate,id:this.curBillId,billDate: this.curBillDate}
           buildSaleVoucherByHeaderId(obj).then(res => {
             if(res.data.errorCode==0){
               this.dialogFormVisible2 = false;

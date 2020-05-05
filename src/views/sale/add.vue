@@ -355,6 +355,7 @@ export default {
             this.temp.salesLine = deleteEmptyProp(this.tableData);
             this.temp.advPayAmount = Number(this.temp.advPayAmount);
             this.temp.settleTypeDetail = this.settleData;
+            this.temp.billDate = this.$route.query.billDate
             saveSales(this.temp).then(res => {
                 if (res.data.errorCode == 0) {
                     this.$message.success(this.id==""?'新增成功':'修改成功');

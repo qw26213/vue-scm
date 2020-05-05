@@ -3,47 +3,47 @@
         <div class="billList">
             <div class="item">
                 <p>结转成本</p>
-                <el-button type="primary" size="mini" @click="inputVoucher(0)">生成凭证</el-button>
+                <el-button type="primary" size="mini" @click="createVoucher(0)">生成凭证</el-button>
             </div>
             <div class="item">
                 <p>结转待摊费用</p>
-                <el-button type="primary" size="mini" @click="inputVoucher(1)">生成凭证</el-button>
+                <el-button type="primary" size="mini" @click="createVoucher(1)">生成凭证</el-button>
             </div>
             <div class="item">
                 <p>结转未缴增值税</p>
-                <el-button type="primary" size="mini" @click="inputVoucher(2)">生成凭证</el-button>
+                <el-button type="primary" size="mini" @click="createVoucher(2)">生成凭证</el-button>
             </div>
             <div class="item">
                 <p>计提附加税</p>
-                <el-button type="primary" size="mini" @click="inputVoucher(3)">生成凭证</el-button>
+                <el-button type="primary" size="mini" @click="createVoucher(3)">生成凭证</el-button>
             </div>
             <div class="item">
                 <p>计提折旧</p>
-                <el-button type="primary" size="mini" @click="inputVoucher(4)">生成凭证</el-button>
+                <el-button type="primary" size="mini" @click="createVoucher(4)">生成凭证</el-button>
             </div>
             <div class="item">
                 <p>计提工资</p>
-                <el-button type="primary" size="mini" @click="inputVoucher(5)">生成凭证</el-button>
+                <el-button type="primary" size="mini" @click="createVoucher(5)">生成凭证</el-button>
             </div>
             <div class="item" v-if="curMonth == '03' || curMonth == '06' || curMonth == '09' || curMonth == '12'">
                 <p>计提所得税</p>
-                <el-button type="primary" size="mini" @click="inputVoucher(6)">生成凭证</el-button>
+                <el-button type="primary" size="mini" @click="createVoucher(6)">生成凭证</el-button>
             </div>
             <div class="item">
                 <p>结转收入</p>
-                <el-button type="primary" size="mini" @click="inputVoucher(7)">生成凭证</el-button>
+                <el-button type="primary" size="mini" @click="createVoucher(7)">生成凭证</el-button>
             </div>
             <div class="item">
                 <p>结转费用</p>
-                <el-button type="primary" size="mini" @click="inputVoucher(8)">生成凭证</el-button>
+                <el-button type="primary" size="mini" @click="createVoucher(8)">生成凭证</el-button>
             </div>
             <div class="item">
                 <p>结转损益(合并)</p>
-                <el-button type="primary" size="mini" @click="inputVoucher(9)">生成凭证</el-button>
+                <el-button type="primary" size="mini" @click="createVoucher(9)">生成凭证</el-button>
             </div>
             <div class="item" v-if="curMonth == '12'">
                 <p>结转未分配利润</p>
-                <el-button type="primary" size="mini" @click="inputVoucher(10)">生成凭证</el-button>
+                <el-button type="primary" size="mini" @click="createVoucher(10)">生成凭证</el-button>
             </div>`
         </div>
     </div>
@@ -109,6 +109,9 @@ export default {
         this.getCurVoucherStatus()
     },
     methods: {
+        createVoucher(){
+            
+        },
         getCurVoucherStatus() {
             var curPeriod = '2020-04'
             this.curMonth = curPeriod.split('-')[1];
