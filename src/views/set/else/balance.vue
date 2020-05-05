@@ -179,7 +179,7 @@ export default {
             curShowIndex: 0,
             auxiliaryTypeArr: [],
             auxiliaryData: [],
-            tableHeight: 700,//document.querySelector(".app-main").clientHeight - 83,
+            tableHeight: document.body.clientHeight - 183,//document.querySelector(".app-main").clientHeight - 83,
             temp: {
                 auxiliary: '000000000000000',
                 beginBalance: 0,

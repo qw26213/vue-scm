@@ -100,7 +100,12 @@
                     <input type="text" class="inputCell tx-r" v-model="row.qualityDays">
                 </template>
             </el-table-column>
-            <el-table-column label="单价(元)">
+            <!-- <el-table-column label="单价(元)">
+                <template slot-scope="scope">
+                    <input type="text" class="inputCell tx-r" v-model="scope.row.price" @change="calculate(scope.$index)">
+                </template>
+            </el-table-column> -->
+            <el-table-column label="含税价">
                 <template slot-scope="scope">
                     <input type="text" class="inputCell tx-r" v-model="scope.row.vatPrice" @change="calculate(scope.$index)">
                 </template>
@@ -264,21 +269,23 @@ export default {
     },
     methods: {
         calculate(index){
-            var price = this.tableData[index].vatPrice;
-            var qty = this.tableData[index].qty;
-            if(qty&&price){
-                var amount = parseFloat(Number(qty) * Number(price)).toFixed(2);
-                this.$set(this.tableData[index],'amount',amount)
-                this.$set(this.tableData[index],'taxAmount',0)
-                this.$set(this.tableData[index],'vatAmount',amount)
+            var vatPrice = this.tableData[index].vatPrice //含税价
+            var qty = this.tableData[index].qty //数量
+            if(qty&&vatPrice){
+                var vatAmount = parseFloat(Number(qty) * Number(vatPrice)).toFixed(2)
+                this.$set(this.tableData[index],'vatAmount',vatAmount)
                 var taxRate = this.tableData[index].taxRate;
                 if(taxRate){
-                    var taxAmount = parseFloat(Number(amount)*Number(taxRate)/100).toFixed(2);
-                    var vatAmount = parseFloat(Number(amount)*(Number(taxRate)/100+1)).toFixed(2);
+                    var price = parseFloat(Number(vatPrice)/(Number(taxRate)/100+1)).toFixed(2)
+                    var amount = parseFloat(Number(qty)*Number(price)).toFixed(2)
+                    var taxAmount = parseFloat(Number(vatAmount) - Number(amount)).toFixed(2)
                     this.$set(this.tableData[index],'taxAmount',taxAmount)
-                    this.$set(this.tableData[index],'vatAmount',vatAmount)
+                    this.$set(this.tableData[index],'price',price)
+                    this.$set(this.tableData[index],'amount',amount)
                 }else{
                     this.$set(this.tableData[index],'taxRate',0)
+                    this.$set(this.tableData[index],'price',0)
+                    this.$set(this.tableData[index],'amount',0)
                 }
                 this.calculateTotal();
             }
