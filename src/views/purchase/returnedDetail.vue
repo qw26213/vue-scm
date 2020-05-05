@@ -107,11 +107,6 @@
                     <span>{{row.vatAmount | toFixed}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="是否赠品" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.salesTypeCode == 1 ?'是':'否'}}</span>
-                </template>
-            </el-table-column>
         </el-table>
         <div class="dataTable" style="margin-top: 10px">
             <el-form :inline="true" label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">

@@ -116,9 +116,9 @@
                     <span>{{row.vatAmount | toFixed}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="是否赠品" align="center">
+            <el-table-column label="销售方式" align="center">
                 <template slot-scope="{row}">
-                    <span>{{row.salesTypeCode == 1 ?'是':'否'}}</span>
+                    <span>{{row.salesTypeCode}}</span>
                 </template>
             </el-table-column>
         </el-table>

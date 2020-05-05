@@ -9,9 +9,6 @@
                 <el-form-item label="单据号:" prop="billNo">
                     <el-input size="mini" v-model="temp.billNo" placeholder="单据号" disabled />
                 </el-form-item>
-                <el-form-item label="业务类型:" prop="bizTypeId">
-                    <bizTypeList @selectChange="selectChange" :selectId="temp.bizTypeId"></bizTypeList>
-                </el-form-item>
                 <el-form-item label="供应商:" prop="supplierId">
                     <supplierList @selectChange="selectChange" :selectId="temp.supplierId"></supplierList>
                 </el-form-item>
@@ -109,11 +106,6 @@
             <el-table-column label="价税合计">
                 <template slot-scope="{row}">
                     <input type="text" class="inputCell tx-r" v-model="row.vatAmount||0" disabled>
-                </template>
-            </el-table-column>
-            <el-table-column label="是否赠品" align="center">
-                <template slot-scope="{row}">
-                    <el-checkbox v-model="row.salesTypeCode" false-label="0" true-label="1"></el-checkbox>
                 </template>
             </el-table-column>
         </el-table>

@@ -338,9 +338,11 @@ export default {
                 var amount = (Number(qty) * Number(price)).toFixed(2)
                 if (this.tableData[index].crDr == 1) {
                     this.$set(this.tableData[index], 'accountedDr', Number(amount))
+                    this.$set(this.tableData[index], 'accountedCr', 0)
                 }
                 if (this.tableData[index].crDr == -1) {
                     this.$set(this.tableData[index], 'accountedCr', Number(amount))
+                    this.$set(this.tableData[index], 'accountedDr', 0)
                 }
                 this.getTotalMoney()
             }
@@ -461,7 +463,7 @@ export default {
                 catogeryTitle: "记账凭证",
                 // jzCode: jzCode,
                 // joinJeHeaderId:joinJeHeaderId,
-                periodCode: this.billHeader.jeDate,
+                jeDate: this.billHeader.jeDate,
                 periodId: curPeriodValue,
                 periodName: '2020年04期',
                 saveType: saveType, //1是新增，2是插入
