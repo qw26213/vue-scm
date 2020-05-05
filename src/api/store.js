@@ -341,11 +341,11 @@ export function delSales(id, date) {
     })
 }
 
-export function auditSales(id) {
+export function auditSales(id, date) {
     return request({
         url: '/drp/so/sales/auditByHeaderId',
         method: 'post',
-        data: { id: id }
+        data: { id: id, billDate: date }
     })
 }
 

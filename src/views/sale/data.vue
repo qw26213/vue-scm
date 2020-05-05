@@ -88,7 +88,7 @@
                     <span class="ctrl" v-if="row.status==0" @click="handleCompile(row)">编辑</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleScan(row)">查看</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleDel(row.id, row.billDate)">删除</span>
-                    <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
+                    <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id,crow.billDate)">审核</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isOutboundOrder,row.id,row.outboundOrderHeaderId,row.billDate)">{{row.isOutboundOrder==1?'查看':'生成'}}出库单</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId,row.billDate)">{{row.isJeHeader==1?'查看':'生成'}}销售凭证</span>
                 </template>
@@ -176,19 +176,19 @@ export default {
                 this.listLoading = false
             })
         },
-        handleCheck(id) {
+        handleCheck(id, billDate) {
             this.$confirm('你确认要审核通过吗?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                this.checkItem(id)
+                this.checkItem(id, billDate)
             }).catch(()=>{
                 console.log('取消')
             })
         },
-        checkItem(id) {
-            auditSales(id).then(res => {
+        checkItem(id, billDate) {
+            auditSales(id, billDate).then(res => {
                 if (res.data.errorCode == 0) {
                     this.getList();
                     this.$message.success('审核成功')
