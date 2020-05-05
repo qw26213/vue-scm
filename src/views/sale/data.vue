@@ -73,9 +73,9 @@
                     <span>{{row.itemAmount|Fixed}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="返利金额" align="right">
+            <el-table-column label="应收金额" align="right">
                 <template slot-scope="{row}">
-                    <span>{{row.rebateAmount|Fixed}}</span>
+                    <span>{{row.receivableAmount|Fixed}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="状态" align="center">
@@ -88,7 +88,7 @@
                     <span class="ctrl" v-if="row.status==0" @click="handleCompile(row)">编辑</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleScan(row)">查看</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleDel(row.id, row.billDate)">删除</span>
-                    <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id,crow.billDate)">审核</span>
+                    <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id, row.billDate)">审核</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isOutboundOrder,row.id,row.outboundOrderHeaderId,row.billDate)">{{row.isOutboundOrder==1?'查看':'生成'}}出库单</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId,row.billDate)">{{row.isJeHeader==1?'查看':'生成'}}销售凭证</span>
                 </template>

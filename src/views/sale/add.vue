@@ -8,8 +8,8 @@
                 <el-form-item label="单据号:" prop="billNo">
                     <el-input size="mini" v-model="temp.billNo" placeholder="单据号" disabled />
                 </el-form-item>
-                <el-form-item label="业务类型:" prop="bizTypeId">
-                    <bizTypeList @selectChange="selectChange" :selectId="temp.bizTypeId"></bizTypeList>
+                <el-form-item label="业务员:" prop="staffId">
+                    <staffList @selectChange="selectChange" :selectId="temp.staffId"></staffList>
                 </el-form-item>
                 <el-form-item label="客户:" prop="custId">
                     <custList @selectChange="selectChange" keyType="custId" :selectId="temp.custId" :selectName="temp.custName"></custList>
@@ -22,9 +22,6 @@
                 </el-form-item>
                 <el-form-item label="车辆:" prop="truckId">
                     <truckList @selectChange="selectChange" keyType="truckId" allowNull="1" :selectId="temp.truckId"></truckList>
-                </el-form-item>
-                <el-form-item label="业务员:" prop="staffId">
-                    <staffList @selectChange="selectChange" :selectId="temp.staffId"></staffList>
                 </el-form-item>
                 <el-form-item label="收款方式:" prop="paymentTypeId">
                     <paymentTypeList @selectChange="selectChange" :selectId="temp.paymentTypeId"></paymentTypeList>
@@ -49,6 +46,10 @@
                 <el-form-item label="使用预收:" prop="advPayAmount">
                     <el-input size="mini" v-model="temp.advPayAmount" placeholder="使用预收" disabled />
                 </el-form-item>
+                <el-form-item label="应收金额:" prop="receivableAmount">
+                    <el-input size="mini" v-model="temp.receivableAmount" placeholder="应收金额" disabled />
+                </el-form-item>
+
                 <el-form-item label="发票:" prop="statusInvoice">
                 <!-- 与当前客户的isInvoice有关系 -->
                     <el-select v-model="temp.statusInvoice" size="mini">
@@ -107,7 +108,7 @@
             </el-table-column> -->
             <el-table-column label="含税价">
                 <template slot-scope="scope">
-                    <input type="text" class="inputCell tx-r" v-model="scope.row.vatPrice" @change="calculate(scope.$index)">
+                    <input type="text" class="inputCell tx-r" v-model="scope.row.vatPrice" :disables="userSalePriceType + scope.row.salePriceType <= 1" @change="calculate(scope.$index)">
                 </template>
             </el-table-column>
             <el-table-column label="数量">
@@ -115,9 +116,14 @@
                     <input type="text" class="inputCell tx-r" v-model="scope.row.qty" @change="calculate(scope.$index)">
                 </template>
             </el-table-column>
-            <el-table-column label="金额">
+            <el-table-column label="价税合计">
                 <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-r" v-model="row.amount" disabled>
+                    <input type="text" class="inputCell tx-r" v-model="row.vatAmount||0" disabled>
+                </template>
+            </el-table-column>
+            <el-table-column label="销售方式">
+                <template slot-scope="scope">
+                    <salesTypeList :selectId="scope.row.salesTypeCode" :index="scope.$index" @selectChange="salesTypeChange" ></salesTypeList>
                 </template>
             </el-table-column>
             <el-table-column label="税率(%)">
@@ -128,16 +134,6 @@
             <el-table-column label="税额">
                 <template slot-scope="{row}">
                     <input type="text" class="inputCell tx-r" v-model="row.taxAmount" disabled>
-                </template>
-            </el-table-column>
-            <el-table-column label="价税合计">
-                <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-r" v-model="row.vatAmount||0" disabled>
-                </template>
-            </el-table-column>
-            <el-table-column label="销售方式" align="center">
-                <template slot-scope="{row}">
-                    <salesTypeList :selectId="row.salesTypeCode"></salesTypeList>
                 </template>
             </el-table-column>
         </el-table>
@@ -201,12 +197,14 @@ import itemList from '@/components/selects/itemList'
 import settleTypeList from "@/components/selects/settleTypeList"
 import salesTypeList from "@/components/selects/salesTypeList"
 import { getName,getNowDate } from '@/utils/auth'
+var userInfo = JSON.parse(sessionStorage.userInfo)
 export default {
     name: 'saleAdd',
     components: { staffList,warehouseList,custList,truckList,bizTypeList,paymentTypeList,itemList,settleTypeList,salesTypeList },
     data() {
         return {
             id:'',
+            userSalePriceType: userInfo.salePriceType,
             status:this.$route.query.status,
             settleData:[{},{},{},{},{}],
             dialogFormVisible:false,
@@ -231,6 +229,7 @@ export default {
                 itemAmount: 0,
                 statusInvoice: 1,
                 advPayAmount: 0,
+                receivableAmount: 0,
                 rebateAmount: 0,
                 withoutPayAmount: 0,
                 auditDate:"",
@@ -315,6 +314,11 @@ export default {
         settleTypeChange(obj){
             for (var key in obj) {
                 this.settleData[obj.index][key] = obj[key];
+            }
+        },
+        salesTypeChange(obj){
+            for(var key in obj){
+                this.tableData[obj.index][key] = obj[key];
             }
         },
         selectChange(obj){

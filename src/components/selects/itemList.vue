@@ -24,6 +24,7 @@ export default {
         curName:"",
         curSubUom:"",
         curExchangeRate:"",
+        curSalePriceType: '',
         curCode:"",
         curNorms:"",
         curUom:"",
@@ -68,6 +69,7 @@ export default {
               this.curUom = this.itemList[i].uom
               this.curSubUom = this.itemList[i].subUom
               this.curExchangeRate = this.itemList[i].exchangeRate
+              this.curSalePriceType = this.itemList[i].salePriceType
             }
           }
           var obj = {
@@ -78,7 +80,8 @@ export default {
             itemId:this.curId,
             index:this.curIndex,
             subUom:this.curSubUom,
-            exchangeRate:this.curExchangeRate
+            exchangeRate:this.curExchangeRate,
+            salePriceType:this.curSalePriceType
           }
           this.$emit('changeVal',obj)
         }
