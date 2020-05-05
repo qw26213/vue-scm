@@ -266,7 +266,7 @@ export default {
                 this.delItem(id,date)
             });
         },
-        delItem(id) {
+        delItem(id, date) {
             delSales(id, date).then(res => {
                 if (res.data.errorCode == 0) {
                     this.getList();
