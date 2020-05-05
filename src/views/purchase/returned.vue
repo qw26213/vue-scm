@@ -145,8 +145,8 @@ export default {
                 pageIndex: 1,
                 pageNum: 20,
                 queryParam: {
-                    date1: getNowDate(),
-                    date2: getNowDate(),
+                    billDate1: getNowDate(),
+                    billDate2: getNowDate(),
                     billNo: "",
                     supplierId: '',
                     staffId: '',

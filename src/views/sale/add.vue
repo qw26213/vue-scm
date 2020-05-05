@@ -257,9 +257,10 @@ export default {
                         this.temp[key] = res.data.data[key];
                     }
                     this.temp.autoAdvr = true;
-                    for(var i=0;i<res.data.data.salesLine.length;i++){
+                    for(var i=0;i<res.data.data.salesLine.length;i++) {
                         for(var j=0;j<this.keys.length;j++){
                             this.tableData[i][this.keys[j]] = res.data.data.salesLine[i][this.keys[j]]
+                            this.tableData[i].taxRate = this.tableData[i].taxRate * 100
                         }
                     }
                     this.settleData = addNullObj2(res.data.data.settleTypeDetail)

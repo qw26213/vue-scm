@@ -53,6 +53,11 @@
                     <span>{{row.paymentDueDate}}</span>
                 </template>
             </el-table-column>
+            <el-table-column label="价税合计" align="right">
+                <template slot-scope="{row}">
+                    <span>{{row.itemAmount|Fixed}}</span>
+                </template>
+            </el-table-column>
             <el-table-column label="使用预收" align="right">
                 <template slot-scope="{row}">
                     <span>{{row.advPayAmount|Fixed}}</span>
@@ -66,11 +71,6 @@
             <el-table-column label="销售费用" align="right">
                 <template slot-scope="{row}">
                     <span>{{row.expensesAmount|Fixed}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="价税合计" align="right">
-                <template slot-scope="{row}">
-                    <span>{{row.itemAmount|Fixed}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="应收金额" align="right">
@@ -146,8 +146,8 @@ export default {
                 pageIndex: 1,
                 pageNum: 20,
                 queryParam: {
-                    date1: getNowDate(),
-                    date2: getNowDate(),
+                    billDate1: getNowDate(),
+                    billDate2: getNowDate(),
                     billNo: "",
                     status: '',
                     custId: '',

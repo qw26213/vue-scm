@@ -96,8 +96,8 @@
             </tfoot>
         </table>
         <div class="tx-c w1200" style="margin-top:15px">
-            <el-button class="filter-item" type="primary" @click="saveTemplet">保存为凭证模板</el-button>
-            <el-button class="filter-item" type="default" @click="saveVoucher">保存并新增凭证</el-button>
+            <el-button class="filter-item" type="primary" @click="saveData(1)">保存为凭证模板</el-button>
+            <el-button class="filter-item" type="default" @click="saveData(2)">保存并新增凭证</el-button>
         </div>
         <el-dialog :close-on-click-modal="false" title="选择凭证模板" :visible.sync="dialogFormVisible1" width="540px">
             <el-table :data="templetData" border fit highlight-current-row style="width: 100%;" size="mini" cell-class-name="trCell">
@@ -147,7 +147,7 @@
             <pagination v-show="total2>10" :total="total2" :page.sync="listQuery2.pageIndex" :limit.sync="listQuery2.pageNum" @pagination="getSummaryByPage" />
         </el-dialog>
         <el-dialog :close-on-click-modal="false" title="设置科目辅助核算" :visible.sync="dialogFormVisible3" width="400px">
-            <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="60px" style="width: 360px; margin-left:10px;">
+            <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="65px" style="width: 360px; margin-left:10px;">
                 <el-form-item v-if="auxiliary.charAt(0)=='1'" label="供应商" prop="supplierId">
                     <el-select ref="supplierSelect" placeholder="供应商" v-model="temp.supplierId" style="width:280px">
                         <el-option v-for="(item,index) in supplierList" :key="item.supplierCode" :label="item.supplierName" :value="item.id"></el-option>
@@ -280,7 +280,7 @@ export default {
     created() {
         this.$store.dispatch('voucher/getTempletType')
         this.$store.dispatch('voucher/getAuxiliaryTypeList')
-        this.getGlPeriod()
+        // this.getGlPeriod()
         this.getTempletList()
         getCatogery().then(res => {
             this.catogeryList = res.data.data
@@ -440,13 +440,14 @@ export default {
             }
             this.tableData.splice(index, 1)
         },
-        saveVoucher() {
+        saveData(type) {
             this.voucherTable = deleteEmptyObj(this.tableData)
             if (this.voucherTable.length < 2) {
                 this.$message.warning('凭证至少要两条分录！');
                 return
             }
             const curPeriodValue = ''
+            const voucherId = ''
             const obj = {
                 bookId: sessionStorage.bookId,
                 catogeryId: this.billHeader.jeCatogeryId,
@@ -461,13 +462,20 @@ export default {
                 voucherAttachmentNum: this.temp.voucherAttachmentNum,
                 voucherDate: this.temp.billDate,
                 voucherSeq: this.temp.jeSeq,
-                // voucherId: voucherId,
-                // jeHeaderId: voucherId,
-                voucherTable: this.voucherTable,
+                voucherId: voucherId,
+                jeHeaderId: voucherId,
+                container: this.voucherTable,
                 totalCreditMoney: Number(this.totalMoney1),
                 totalDebiteMoney: Number(this.totalMoney2),
             }
-            voucherSave(obj).then(res => {
+            if(type == 1) {
+                this.saveTemplet(obj)
+            } else {
+                this.saveVoucher(obj)
+            }
+        },
+        saveTemplet(obj) {
+            templetSave(obj).then(res => {
                 if (res.data.success) {
                     this.$message.success("凭证模板保存成功")
                 } else {
@@ -475,13 +483,10 @@ export default {
                 }
             })
         },
-        saveTemplet() {
-            const obj = {
-
-            }
-            templetSave(obj).then(res => {
+        saveVoucher(obj) {
+            voucherSave({container: obj}).then(res => {
                 if (res.data.success) {
-                    this.$message.success("凭证模板保存成功")
+                    this.$message.success("凭证新增成功")
                 } else {
                     this.$message.error(res.data.msg)
                 }

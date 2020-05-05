@@ -8,44 +8,41 @@
                 <el-form-item label="单据号:" prop="billNo">
                     <span>{{temp.billNo}}</span>
                 </el-form-item>
-                <el-form-item label="业务类型:" prop="bizTypeId">
-                    <span>{{temp.bizTypeName}}</span>
-                </el-form-item>
-                <el-form-item label="客户:" prop="custId">
-                    <span>{{temp.custName}}</span>
-                </el-form-item>
-                <el-form-item label="售达客户:" prop="soldToCust">
-                    <span>{{temp.soldToCustName}}</span>
-                </el-form-item>
-                <el-form-item label="仓库:" prop="warehouseId">
-                    <span>{{temp.warehouseName}}</span>
-                </el-form-item>
-                <el-form-item label="车辆:" prop="truckId">
-                    <span>{{temp.truckName}}</span>
-                </el-form-item>
                 <el-form-item label="业务员:" prop="staffId">
                     <span>{{temp.staffName}}</span>
                 </el-form-item>
-                <el-form-item label="收款方式:" prop="paymentTypeId">
+                <el-form-item label="客户:">
+                    <span>{{temp.custName}}</span>
+                </el-form-item>
+                <el-form-item label="售达客户:">
+                    <span>{{temp.soldToCustName}}</span>
+                </el-form-item>
+                <el-form-item label="仓库:">
+                    <span>{{temp.warehouseName}}</span>
+                </el-form-item>
+                <el-form-item label="车辆:">
+                    <span>{{temp.truckName}}</span>
+                </el-form-item>
+                <el-form-item label="收款方式:">
                     <span>{{temp.paymentTypeName}}</span>
                 </el-form-item>
-                <el-form-item label="收款到期日:" prop="paymentDueDate">
+                <el-form-item label="收款到期日:">
                     <span>{{temp.paymentDueDate}}</span>
                 </el-form-item>
-                <el-form-item label="合计金额:" prop="itemAmount">
+                <el-form-item label="合计金额:">
                     <span>{{temp.itemAmount}}</span>
                 </el-form-item>
-                <el-form-item label="抹零金额:" prop="withoutPayAmount">
+                <!-- <el-form-item label="抹零金额:" prop="withoutPayAmount">
                     <span>{{temp.withoutPayAmount}}</span>
-                </el-form-item>
-                <el-form-item label="现结金额:" prop="currPayAmount">
+                </el-form-item> -->
+                <el-form-item label="现结金额:">
                     <span>{{temp.currPayAmount}}</span>
                 </el-form-item>
-                <el-form-item label="返利金额:" prop="rebateAmount">
-                    <span>{{temp.rebateAmount}}</span>
+                <el-form-item label="应收金额:">
+                    <span>{{temp.receivableAmount}}</span>
                 </el-form-item>
-                <el-form-item label="使用预收:" prop="advPayAmount">
-                    <span>{{temp.advPayAmount==1?'是':'否'}}</span>
+                <el-form-item label="发票:" prop="advPayAmount">
+                    <span>{{temp.statusInvoice==0?'不开发票':temp.statusInvoice==1?'待开发票':'已开发票'}}</span>
                 </el-form-item>
                 <el-form-item label="自动匹配预收款:" prop="autoAdvr" label-width="96px">
                     <span>{{temp.autoAdvr==1?'是':'否'}}</span>
