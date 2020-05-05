@@ -447,7 +447,7 @@ export default {
                 return
             }
             const curPeriodValue = ''
-            const voucherId = ''
+            const voucherId = this.$route.query.id || ''
             const obj = {
                 bookId: sessionStorage.bookId,
                 catogeryId: this.billHeader.jeCatogeryId,
@@ -464,7 +464,7 @@ export default {
                 voucherSeq: this.temp.jeSeq,
                 voucherId: voucherId,
                 jeHeaderId: voucherId,
-                voucherTable: this.voucherTable,
+                voucherTable: {container: this.voucherTable},
                 totalCreditMoney: Number(this.totalMoney1),
                 totalDebiteMoney: Number(this.totalMoney2)
             }
