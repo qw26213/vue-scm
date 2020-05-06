@@ -106,7 +106,7 @@
                     <input type="text" class="inputCell tx-r" v-model="scope.row.price" @change="calculate(scope.$index)">
                 </template>
             </el-table-column> -->
-            <el-table-column label="含税价">
+            <el-table-column label="含税价(元)">
                 <template slot-scope="scope">
                     <input type="text" class="inputCell tx-r" v-model="scope.row.vatPrice" :disables="userSalePriceType + scope.row.salePriceType <= 1" @change="calculate(scope.$index)">
                 </template>

@@ -279,6 +279,7 @@ export default {
         }
     },
     created() {
+        this.getJeSeq()
         this.$store.dispatch('voucher/getTempletType')
         this.$store.dispatch('voucher/getAuxiliaryTypeList')
         // this.getGlPeriod()
@@ -329,6 +330,12 @@ export default {
             getGlPeriodByCenterDate().then(res => {
                 this.glPeriod = res.data.data.periodName
                 this.glPeriodId = res.data.data.id
+            })
+        },
+        getJeSeq(){
+            var obj = {}
+            getMaxVoucherSeq(obj).then(res => {
+                this.billHeader.jeSeq = res.data.data
             })
         },
         getAmount(index) {
@@ -494,6 +501,8 @@ export default {
         saveVoucher(obj) {
             voucherSave({container: obj}).then(res => {
                 if (res.data.success) {
+                    this.getJeSeq()
+                    this.tableData = [{},{},{},{}]
                     this.$message.success("凭证新增成功")
                 } else {
                     this.$message.error(res.data.msg)

@@ -1,9 +1,9 @@
 <template>
     <div class="app-container">
         <div class="filter-container">
-            <el-date-picker :editable="false" v-model="listQuery.queryParam.date1" type="date" placeholder="开始日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+            <el-date-picker :editable="false" v-model="listQuery.queryParam.billDate1" type="date" placeholder="开始日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
             <span class="zhi">至</span>
-            <el-date-picker :editable="false" v-model="listQuery.queryParam.date2" type="date" placeholder="结束日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+            <el-date-picker :editable="false" v-model="listQuery.queryParam.billDate2" type="date" placeholder="结束日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
             <el-input size="mini" v-model="listQuery.queryParam.billNo" placeholder="单据号" />
             <supplierList @selectChange="selectChange" ctrType="list" :selectId="listQuery.supplierId"></supplierList>
             <staffList @selectChange="selectChange" ctrType="list" :selectId="listQuery.staffId"></staffList>
@@ -68,7 +68,7 @@
                 </template>
             </el-table-column>
         </el-table>
-        <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
+        <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
         <el-dialog :close-on-click-modal="false" title="选择采购退货单日期" :visible.sync="dialogFormVisible" width="400px">
           <el-form style="margin-top:30px;text-align:center;">
             <el-form-item label="" prop="isBillDate">
@@ -134,6 +134,7 @@ export default {
             getWarehousingReturned(this.listQuery).then(res => {
                 this.listLoading = false
                 this.tableData = res.data.data
+                this.total = res.data.totalNum
             }).catch(err => {
                 this.listLoading = false
             })

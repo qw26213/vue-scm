@@ -86,29 +86,14 @@
                     <span>{{row.qualityDays}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="单价(元)" align="right">
+            <el-table-column label="含税价(元)" align="right">
                 <template slot-scope="{row}">
-                    <span>{{row.price | toFixed}}</span>
+                    <span>{{row.vatPrice | toFixed}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="数量" align="right">
                 <template slot-scope="{row}">
                     <span>{{row.qty}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="金额" align="right">
-                <template slot-scope="{row}">
-                    <span>{{row.amount | toFixed}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="税率(%)" align="right">
-                <template slot-scope="{row}">
-                    <span>{{row.taxRate}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="税额" align="right">
-                <template slot-scope="{row}">
-                    <span>{{row.taxAmount | toFixed}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="价税合计" align="right">
@@ -119,6 +104,16 @@
             <el-table-column label="销售方式" align="center">
                 <template slot-scope="{row}">
                     <span>{{row.salesTypeCode}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="税率(%)" align="right">
+                <template slot-scope="{row}">
+                    <span>{{row.taxRate}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="税额" align="right">
+                <template slot-scope="{row}">
+                    <span>{{row.taxAmount | toFixed}}</span>
                 </template>
             </el-table-column>
         </el-table>
@@ -201,6 +196,7 @@ export default {
                     for(var i=0;i<res.data.data.salesLine.length;i++){
                         for(var j=0;j<this.keys.length;j++){
                             this.tableData[i][this.keys[j]] = res.data.data.salesLine[i][this.keys[j]]
+                            this.tableData[i].taxRate = this.tableData[i].taxRate * 100
                         }
                     }
                     this.settleData = addNullObj2(res.data.data.settleTypeDetail)
