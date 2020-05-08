@@ -172,6 +172,12 @@ export default {
                         this.temp[key] = res.data.data[key]
                     }
                     this.tableData = addNullObj(res.data.data.outboundOrderLine);
+                    for(var i=0;i<this.tableData.length;i++) {
+                        if(this.tableData[i].taxRate < 1) {
+                            this.tableData[i].taxRate = this.tableData[i].taxRate * 100
+                        }
+                    }
+                    
                 }
             })
         }

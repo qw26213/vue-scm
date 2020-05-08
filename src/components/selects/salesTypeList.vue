@@ -28,7 +28,7 @@ export default {
     },
     methods: {
         changeVal(val){
-            var obj = {paymentTypeId:val,index:this.curIndex}
+            var obj = {salesTypeCode:val,index:this.curIndex}
             this.$emit('selectChange',obj)
         }
     }

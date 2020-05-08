@@ -260,7 +260,9 @@ export default {
                     for(var i=0;i<res.data.data.salesLine.length;i++) {
                         for(var j=0;j<this.keys.length;j++){
                             this.tableData[i][this.keys[j]] = res.data.data.salesLine[i][this.keys[j]]
-                            this.tableData[i].taxRate = this.tableData[i].taxRate * 100
+                            if(this.tableData[i].taxRate < 1) {
+                                this.tableData[i].taxRate = this.tableData[i].taxRate * 100
+                            }
                         }
                     }
                     this.settleData = addNullObj2(res.data.data.settleTypeDetail)
@@ -336,6 +338,11 @@ export default {
                   this.tableData[i].truckId = obj.truckId
                 }
             }
+            if(obj&&obj.index){
+                for(var i=0;i<this.tableData.length;i++){
+                  this.tableData[obj.index][key] = obj[key]
+                }
+            }
         },
         changeVal(obj){
             for(var key in obj){
@@ -360,7 +367,6 @@ export default {
             this.temp.salesLine = deleteEmptyProp(this.tableData);
             this.temp.advPayAmount = Number(this.temp.advPayAmount);
             this.temp.settleTypeDetail = this.settleData;
-            this.temp.billDate = this.$route.query.billDate
             saveSales(this.temp).then(res => {
                 if (res.data.errorCode == 0) {
                     this.$message.success(this.id==""?'新增成功':'修改成功');
