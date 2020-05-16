@@ -66,13 +66,13 @@
                     </td>
                     <td class="urel p0">
                         <div class="money_bg">
-                            <i v-if="row.accountedDr" v-for="(item,index) in String(row.accountedDr)" :key="index" :style="{color:(row.accountedDr<0?'#f00':'#333')}">{{item}}</i>
+                            <i v-if="row.accountedDr && row.accountedDr != 0" v-for="(item,index) in String(row.accountedDr)" :key="index" :style="{color:(row.accountedDr<0?'#f00':'#333')}">{{item}}</i>
                         </div>
                         <input type="text" autocomplete="off" class="input_bg" v-model="row.accountedDr" maxlength="12" @input="inputChange($event, 'accountedDr',index)" @focus="foucsInput($event, 'accountedDr', index)" @blur="formatNum($event, 'accountedDr', index)">
                     </td>
                     <td class="urel p0">
                         <div class="money_bg">
-                            <i v-if="row.accountedCr" v-for="(item,index) in String(row.accountedCr)" :key="index" :style="{color:(row.accountedCr<0?'#f00':'#333')}">{{item}}</i>
+                            <i v-if="row.accountedCr && row.accountedCr != 0" v-for="(item,index) in String(row.accountedCr)" :key="index" :style="{color:(row.accountedCr<0?'#f00':'#333')}">{{item}}</i>
                         </div>
                         <input type="text" autocomplete="off" class="input_bg" v-model="row.accountedCr" maxlength="12" @input="inputChange($event, 'accountedCr',index)" @focus="foucsInput($event, 'accountedCr', index)" @blur="formatNum($event, 'accountedCr', index)">
                     </td>
@@ -194,7 +194,7 @@ import { mapGetters } from 'vuex'
 import { getGlPeriodByCenterDate, getGlPeriodByPeriodCode, getMaxVoucherSeq, getVoucherById, voucherSave, getCatogery } from '@/api/voucher'
 import { getTempletHeader, getTempletTypeList, getTempletById, templetSave } from '@/api/voucher'
 import { getAllUnion, addSummary, delSummary } from '@/api/voucher'
-import { getNowDate, deleteEmptyObj, addNullObj, addNullObj2, convertCurrency, validateVal, showNumber1, showNumber2 } from '@/utils'
+import { getNowDate, deleteEmptyObj, addNullObj, addNullObj2, convertCurrency, validateVal, deepClone, showNumber1, showNumber2 } from '@/utils'
 import { getProj, getDept, getStaff, getSupplier, getCust, getItem } from '@/api/user'
 import Pagination from '@/components/Pagination'
 import coaList from '@/components/voucher/coaList'
@@ -282,15 +282,13 @@ export default {
         }
     },
     created() {
-        this.getJeSeq()
         this.$store.dispatch('voucher/getTempletType')
         this.$store.dispatch('voucher/getAuxiliaryTypeList')
-        // this.getGlPeriod()
-        this.getTempletList()
         getCatogery().then(res => {
             this.catogeryList = res.data.data
             this.$set(this.billHeader, 'jeCatogeryId', this.catogeryList[0].id)
         })
+        this.getTempletList()
         getCust().then(res => {
             this.custList = res.data.data
         })
@@ -330,16 +328,15 @@ export default {
         } else {
             this.$store.dispatch('voucher/getSummaryList')
             this.$store.dispatch('voucher/getCoaList')
+            this.getBillHeader()
         }
     },
     methods: {
-        getGlPeriod() {
+        getBillHeader(){
             getGlPeriodByCenterDate().then(res => {
                 this.glPeriod = res.data.data.periodName
                 this.glPeriodId = res.data.data.id
             })
-        },
-        getJeSeq() {
             var obj = {}
             getMaxVoucherSeq(obj).then(res => {
                 this.billHeader.jeSeq = res.data.data
@@ -458,13 +455,15 @@ export default {
             this.tableData.splice(index, 1)
         },
         saveData(type) {
-            this.voucherTable = deleteEmptyObj(this.tableData)
+            this.voucherTable = deepClone(deleteEmptyObj(this.tableData))
             if (this.voucherTable.length < 2) {
                 this.$message.warning('凭证至少要两条分录！');
                 return
             }
             var lineArr = []
             for (var i = 0; i < this.voucherTable.length; i++) {
+                this.$set(this.voucherTable[i], 'accountedCr', Number(this.voucherTable[i].accountedCr)/100)
+                this.$set(this.voucherTable[i], 'accountedDr', Number(this.voucherTable[i].accountedDr)/100)
                 lineArr.push({ container: this.voucherTable[i] })
             }
             const curPeriodValue = ''
@@ -472,6 +471,9 @@ export default {
             const saveType = this.saveType || 1
             const obj = {
                 bookId: sessionStorage.bookId,
+                baseCurrencyCode: 'CNY',
+                baseCurrencyId:  '',
+                baseCurrencyName: '人民币',
                 catogeryId: this.billHeader.jeCatogeryId,
                 catogeryName: '记',
                 catogeryTitle: "记账凭证",
@@ -481,7 +483,7 @@ export default {
                 periodId: curPeriodValue,
                 periodName: '2020年05期',
                 saveType: saveType, //1是新增，2是插入
-                voucherAttachmentNum: this.temp.voucherAttachmentNum,
+                voucherAttachmentNum: 0,
                 voucherDate: this.temp.billDate,
                 voucherSeq: this.temp.jeSeq,
                 voucherId: voucherId,
@@ -503,7 +505,7 @@ export default {
         saveTemplet(obj) {
             templetSave({ container: obj }).then(res => {
                 if (res.data.success) {
-                    this.$message.success("凭证模板保存成功")
+                    this.$message.success("凭证模板保存成功!")
                 } else {
                     this.$message.error(res.data.msg)
                 }
@@ -543,10 +545,11 @@ export default {
             this.$set(this.tableData[index], param, num)
         },
         inputChange(event, param, index) {
-            validateVal(event.currentTarget)
+            var num = validateVal(event.currentTarget.value)
+            this.$set(this.tableData[index], param, num)
             if (this.tableData[index].accountedDr != 0 || this.tableData[index].accountedCr != 0) {
-                var p = param === 'accountedDr' ? 'accountedCr' : 'accountedDr'
-                this.$set(this.tableData[index], p, '')
+                var item = param === 'accountedDr' ? 'accountedCr' : 'accountedDr'
+                this.$set(this.tableData[index], item, 0)
             }
         },
         getTotalMoney() {
@@ -558,7 +561,7 @@ export default {
             var amount = 0;
             for (var i = 0; i < this.tableData.length; i++) {
                 if (this.tableData[i] && this.tableData[i].accountedDr) {
-                    amount += Number(this.tableData[i].accountedDr);
+                    amount += Number(this.tableData[i].accountedDr)
                 }
             }
             return String(amount)

@@ -495,34 +495,35 @@ export function convertCurrency(money) {
     return chineseStr
 }
 
-export function validateVal(obj) {
-    if (obj.value.indexOf('-') < 0) {
-        if (obj.value != '' && obj.value.substr(0, 1) == '.') {
-            obj.value = "";
+export function validateVal(numval) {
+    if (numval.indexOf('-') < 0) {
+        if (numval != '' && numval.substr(0, 1) == '.') {
+            numval = ""
         }
     } else {
-        if (obj.value != '' && obj.value.substr(1, 2) == '.') {
-            obj.value = "-";
+        if (numval != '' && numval.substr(1, 2) == '.') {
+            numval = "-"
         }
-        if (obj.value.length > 1 && obj.value.indexOf('-') > 0) {
-            obj.value = obj.value.substring(0, obj.value.length - 1);
-        }
-    }
-    obj.value = obj.value.replace(/[^\d.-]/g, "");
-    obj.value = obj.value.replace(/\.{2,}/g, ".");
-    obj.value = obj.value.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
-    obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3');
-    if (obj.value.indexOf(".") < 0 && obj.value != "") {
-        if (obj.value.substr(0, 1) == '0' && obj.value.length == 2) {
-            obj.value = obj.value.substr(1, obj.value.length);
+        if (numval.length > 1 && numval.indexOf('-') > 0) {
+            numval = numval.substring(0, numval.length - 1);
         }
     }
-    if (obj.value.indexOf('.') > 0 && obj.value.length > 12) {
-        obj.value = obj.value.substring(0, 11);
+    numval = numval.replace(/[^\d.-]/g, "")
+    numval = numval.replace(/\.{2,}/g, ".")
+    numval = numval.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
+    numval = numval.replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3');
+    if (numval.indexOf(".") < 0 && numval != "") {
+        if (numval.substr(0, 1) == '0' && numval.length == 2) {
+            numval = numval.substr(1, numval.length)
+        }
     }
-    if (obj.value.indexOf('.') < 0) {
-        obj.value = obj.value.substring(0, 9);
+    if (numval.indexOf('.') > 0 && numval.length > 12) {
+        numval = numval.substring(0, 11)
     }
+    if (numval.indexOf('.') < 0) {
+        numval = numval.substring(0, 9)
+    }
+    return numval ? Number(numval) : ''
 }
 
 export function toNumStr(arg) {
