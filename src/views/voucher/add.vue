@@ -100,7 +100,7 @@
         <div class="tx-c w1200" style="margin-top:15px">
             <el-button v-if="!$route.query.id" class="filter-item" type="primary" @click="saveData(1)">保存为凭证模板</el-button>
             <el-button v-if="!$route.query.id" class="filter-item" type="default" @click="saveData(2)">保存并新增凭证</el-button>
-            <el-button v-if="$route.query.id" class="filter-item" type="primary" style="width:160px" @click="saveData(3)">保存凭证</el-button>
+            <el-button v-if="$route.query.id" class="filter-item" type="primary" style="width:160px" @click="saveData(2)">保存凭证</el-button>
         </div>
         <el-dialog :close-on-click-modal="false" title="选择凭证模板" :visible.sync="dialogFormVisible1" width="540px">
             <el-table :data="templetData" border fit highlight-current-row style="width: 100%;" size="mini" cell-class-name="trCell">
@@ -489,8 +489,8 @@ export default {
                 voucherId: voucherId,
                 jeHeaderId: voucherId,
                 voucherTable: lineArr,
-                totalCreditMoney: Number(this.totalMoney1),
-                totalDebiteMoney: Number(this.totalMoney2)
+                totalCreditMoney: Number(this.totalMoney1)/100,
+                totalDebiteMoney: Number(this.totalMoney2)/100
             }
             if (type == 1) {
                 this.saveTemplet(obj)
@@ -499,7 +499,8 @@ export default {
                     this.$message.warning('借贷金额必须相等！')
                     return
                 }
-                this.saveVoucher(obj)
+                var type = this.$route.query.id && this.saveType == 1 ? 'modify' : 'save'
+                this.saveVoucher(obj, type)
             }
         },
         saveTemplet(obj) {
@@ -511,13 +512,14 @@ export default {
                 }
             })
         },
-        saveVoucher(obj) {
-            voucherSave({ container: obj }).then(res => {
+        saveVoucher(obj, type) {
+            console.log(this.saveType)
+            voucherSave({ container: obj }, type).then(res => {
                 if (res.data.success) {
-                    this.getJeSeq()
                     if (this.saveType == 1 && !this.$route.query.id) {
                         this.$message.success('凭证新增成功！')
                         this.tableData = [{}, {}, {}, {}]
+                        this.getJeSeq()
                     }
                     if (this.saveType == 1 && this.$route.query.id) {
                         this.$message.success('凭证保存成功！')

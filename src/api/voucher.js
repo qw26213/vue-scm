@@ -153,9 +153,9 @@ export function voucherAduit(data){
   })
 }
 
-export function voucherSave(data){
+export function voucherSave(data, type){
   return request({
-    url:'/drp/gl/voucher/save',
+    url:'/drp/gl/voucher/' + type,
     method: 'post',
     data
   })
