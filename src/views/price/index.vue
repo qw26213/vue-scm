@@ -63,7 +63,7 @@
                         <el-input v-model="temp.price" placeholder="售价" />
                     </el-form-item>
                     <el-form-item label="生效时间" prop="effectiveDate">
-                        <el-date-picker v-model="temp.effectiveDate" type="date" style="width:240px" placeholder="生效时间" value-format="yyyy-MM-dd"></el-date-picker>
+                        <el-date-picker v-model="temp.effectiveDate" type="datetime" style="width:240px" placeholder="生效时间" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
                     </el-form-item>
                     <el-form-item label="改价类型" prop="modifiedType">
                         <el-select v-model="temp.modifiedType" placeholder="改价类型" style="width:240px">
@@ -84,25 +84,15 @@
             </el-dialog>
             <el-dialog :close-on-click-modal="false" title="批量修改价格" :visible.sync="dialogFormVisible2" :show-close="false" ::close-on-click-modal="false" width="820px">
                 <el-table ref="checkTable" :data="tableList" border fit style="width: 100%;" size="mini" cell-class-name="compileall">
-                    <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
-                    <el-table-column label="价格组代码" align="left">
+                    <el-table-column label="价格组代码" align="left" prop="priceGroupCode" width="110"></el-table-column>
+                    <el-table-column label="价格组名称" align="left" prop="priceGroupName" width="110"></el-table-column>
+                    <el-table-column label="售价" align="right" width="120">
                         <template slot-scope="{row}">
-                            <span>{{row.priceGroupCode}}</span>
-                        </template>
+                            <el-input v-model="row.price" size="mini" placeholder="售价" style="width:100px" /></template>
                     </el-table-column>
-                    <el-table-column label="价格组名称" align="left">
+                    <el-table-column label="生效时间" width="188">
                         <template slot-scope="{row}">
-                            <span>{{row.priceGroupName}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="售价" align="right">
-                        <template slot-scope="{row}">
-                            <el-input v-model="row.price" size="mini" placeholder="售价" width="120" />
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="生效时间">
-                        <template slot-scope="{row}">
-                            <el-date-picker v-model="row.effectiveDate" type="date" placeholder="生效时间" size="mini" style="width:105px" :clearable="false">
+                            <el-date-picker v-model="row.effectiveDate" type="datetime" placeholder="生效时间" value-format="yyyy-MM-dd HH:mm:ss" style="width:170px" size="mini" :clearable="false">
                             </el-date-picker>
                         </template>
                     </el-table-column>
@@ -310,6 +300,9 @@ export default {
             })
         },
         handleModify2() {
+            this.tableList.forEach(item => {
+                item.effectiveDate = parseTime(item.effectiveDate)
+            })
             updatePriceByItemIdPriceGroupIdList(this.tableList).then(res => {
                 if (res.data.errorCode == 0) {
                     this.dialogFormVisible2 = false

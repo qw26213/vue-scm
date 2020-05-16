@@ -3,7 +3,7 @@
         <div class="w1200 voucherHeader">
             <el-button type="primary" size="mini" @click="dialogFormVisible1 = true">从模板生成凭证</el-button>
             <el-button type="primary" size="mini" @click="dialogFormVisible2 = true">常用摘要</el-button>
-            <div class="voucherTit">记账凭证<span class="Period">2020年第4期</span></div>
+            <div class="voucherTit">记账凭证<span class="Period">2020年第5期</span></div>
             <el-form :inline="true" label-position="right" label-width="80px" style="width: 100%; margin-top:0px;">
                 <el-form-item label="凭证字号" prop="billNo" style="margin-bottom:10px">
                     <select class="catogeryName uds" v-model="billHeader.jeCatogeryId">
@@ -16,7 +16,7 @@
                     </span>
                 </el-form-item>
                 <el-form-item label="日期" prop="billDate" style="margin-bottom:10px;">
-                    <el-date-picker v-model="billHeader.jeDate" type="date" placeholder="日期" size="mini" value-format="yyyy-MM-dd" style="width:120px">
+                    <el-date-picker v-model="billHeader.jeDate" type="date" placeholder="日期" size="mini" :clearable="false" value-format="yyyy-MM-dd" style="width:120px">
                     </el-date-picker>
                 </el-form-item>
                 <!-- <el-form-item label="附单据" prop="expirationDate" style="float:right;margin-bottom:10px">
@@ -57,22 +57,24 @@
                     <td class="p0 urel">
                         <div class="number f12 ptb05" v-if="row.isQuantity==1">
                             <p style="margin-bottom: 3px;">数量:
-                                <input type="text" v-model="row.qNumber" @change="getAmount(index)" /><i class="uom">{{row.qUom}}</i></p>
+                                <input type="text" v-model="row.qNumber" @change="getAmount(index)" /><i class="uom">{{row.qUom}}</i>
+                            </p>
                             <p>单价:
-                                <input type="text" v-model="row.qPrice" @change="getAmount(index)" /><i class="uom">元</i></p>
+                                <input type="text" v-model="row.qPrice" @change="getAmount(index)" /><i class="uom">元</i>
+                            </p>
                         </div>
                     </td>
                     <td class="urel p0">
                         <div class="money_bg">
-                            <i v-if="row.accountedDr>0" v-for="(item,index) in String(row.accountedDr)" :key="index">{{item}}</i>
+                            <i v-if="row.accountedDr" v-for="(item,index) in String(row.accountedDr)" :key="index" :style="{color:(row.accountedDr<0?'#f00':'#333')}">{{item}}</i>
                         </div>
-                        <input type="text" autocomplete="off" class="input_bg" v-model="row.accountedDr" maxlength="12" @input="inputChange($event, 'accountedDr',index)" @focus="foucsInput($event)">
+                        <input type="text" autocomplete="off" class="input_bg" v-model="row.accountedDr" maxlength="12" @input="inputChange($event, 'accountedDr',index)" @focus="foucsInput($event, 'accountedDr', index)" @blur="formatNum($event, 'accountedDr', index)">
                     </td>
                     <td class="urel p0">
                         <div class="money_bg">
-                            <i v-if="row.accountedCr>0" v-for="(item,index) in String(row.accountedCr)" :key="index">{{item}}</i>
+                            <i v-if="row.accountedCr" v-for="(item,index) in String(row.accountedCr)" :key="index" :style="{color:(row.accountedCr<0?'#f00':'#333')}">{{item}}</i>
                         </div>
-                        <input type="text" autocomplete="off" class="input_bg" v-model="row.accountedCr" maxlength="12" @input="inputChange($event, 'accountedCr',index)" @focus="foucsInput($event)">
+                        <input type="text" autocomplete="off" class="input_bg" v-model="row.accountedCr" maxlength="12" @input="inputChange($event, 'accountedCr',index)" @focus="foucsInput($event, 'accountedCr', index)" @blur="formatNum($event, 'accountedCr', index)">
                     </td>
                 </tr>
             </tbody>
@@ -83,21 +85,22 @@
                     <td class="col_debite p0 urel ovh">
                         <input type="hidden" v-model="totalMoney1" />
                         <div class="money_bg h42">
-                            <i class="lh42" v-for="(item,index) in String(totalMoney1)" v-if="totalMoney1>0" :key="index">{{item}}</i>
+                            <i v-if="totalMoney1 && totalMoney1 != 0" class="lh42" v-for="(item,index) in String(totalMoney1)" :key="index" :style="{color:(totalMoney1<0?'#f00':'#333')}">{{item}}</i>
                         </div>
                     </td>
                     <td class="col_credit p0 urel ovh">
                         <input type="hidden" v-model="totalMoney2" />
                         <div class="money_bg h42">
-                            <i class="lh42" v-for="(item,index) in String(totalMoney2)" v-if="totalMoney2>0" :key="index">{{item}}</i>
+                            <i v-if="totalMoney2 && totalMoney2 != 0" class="lh42" v-for="(item,index) in String(totalMoney2)" :key="index" :style="{color:(totalMoney2<0?'#f00':'#333')}">{{item}}</i>
                         </div>
                     </td>
                 </tr>
             </tfoot>
         </table>
         <div class="tx-c w1200" style="margin-top:15px">
-            <el-button class="filter-item" type="primary" @click="saveData(1)">保存为凭证模板</el-button>
-            <el-button class="filter-item" type="default" @click="saveData(2)">保存并新增凭证</el-button>
+            <el-button v-if="!$route.query.id" class="filter-item" type="primary" @click="saveData(1)">保存为凭证模板</el-button>
+            <el-button v-if="!$route.query.id" class="filter-item" type="default" @click="saveData(2)">保存并新增凭证</el-button>
+            <el-button v-if="$route.query.id" class="filter-item" type="primary" style="width:160px" @click="saveData(3)">保存凭证</el-button>
         </div>
         <el-dialog :close-on-click-modal="false" title="选择凭证模板" :visible.sync="dialogFormVisible1" width="540px">
             <el-table :data="templetData" border fit highlight-current-row style="width: 100%;" size="mini" cell-class-name="trCell">
@@ -191,7 +194,7 @@ import { mapGetters } from 'vuex'
 import { getGlPeriodByCenterDate, getGlPeriodByPeriodCode, getMaxVoucherSeq, getVoucherById, voucherSave, getCatogery } from '@/api/voucher'
 import { getTempletHeader, getTempletTypeList, getTempletById, templetSave } from '@/api/voucher'
 import { getAllUnion, addSummary, delSummary } from '@/api/voucher'
-import { getNowDate, deleteEmptyObj, addNullObj, addNullObj2, convertCurrency, validateVal } from '@/utils'
+import { getNowDate, deleteEmptyObj, addNullObj, addNullObj2, convertCurrency, validateVal, showNumber1, showNumber2 } from '@/utils'
 import { getProj, getDept, getStaff, getSupplier, getCust, getItem } from '@/api/user'
 import Pagination from '@/components/Pagination'
 import coaList from '@/components/voucher/coaList'
@@ -203,7 +206,7 @@ export default {
     data() {
         return {
             catogeryList: [],
-            saveType: this.$route.type, //插入有1
+            saveType: this.$route.type || 1, //插入传2
             total1: 0,
             total2: 0,
             numberArr: ['亿', '千', '百', '十', '万', '千', '百', '十', '元', '角', '分'],
@@ -312,13 +315,17 @@ export default {
                 this.$store.dispatch('voucher/getCoaList')
                 this.billHeader = res.data.data.header
                 this.tableData = res.data.data.lineList
-                var totalMoney = 0
-                for (var i = 0; i < this.tableData.length; i++) {
-                    totalMoney += Number(this.tableData[i].accountedCr)
+                if (this.tableData.length < 3) {
+                    this.tableData.push({})
                 }
-                this.totalMoney1 = totalMoney
-                this.totalMoney2 = totalMoney
-                this.totalZh = this.totalMoney1 == this.totalMoney2 ? convertCurrency(this.totalMoney1) : ''
+                if (this.tableData.length < 4) {
+                    this.tableData.push({})
+                }
+                for (var i = 0; i < this.tableData.length; i++) {
+                    this.$set(this.tableData[i], 'accountedCr', this.tableData[i].accountedCr * 100)
+                    this.$set(this.tableData[i], 'accountedDr', this.tableData[i].accountedDr * 100)
+                }
+                this.getTotalMoney()
             })
         } else {
             this.$store.dispatch('voucher/getSummaryList')
@@ -332,7 +339,7 @@ export default {
                 this.glPeriodId = res.data.data.id
             })
         },
-        getJeSeq(){
+        getJeSeq() {
             var obj = {}
             getMaxVoucherSeq(obj).then(res => {
                 this.billHeader.jeSeq = res.data.data
@@ -372,7 +379,7 @@ export default {
                                 /* 获取当前辅助核算项的值 */
                                 var selectId = this.$refs[auxiliaryType + 'Select'].selected.value
                                 var selectText = this.$refs[auxiliaryType + 'Select'].selected.label
-                                var modelCode = this.$refs[auxiliaryType + 'Select'].selected.key
+                                var modelCode = this.$refs[auxiliaryType + 'Select'].selected.$attrs.key
                                 auxiliaryCode += "_" + hexCas[AuxiliaryType.indexOf(auxiliaryType)] + modelCode
                                 auxiliaryName += "_" + selectText
                             }
@@ -457,8 +464,8 @@ export default {
                 return
             }
             var lineArr = []
-            for (var i=0;i<this.voucherTable.length;i++){
-                lineArr.push({container:this.voucherTable[i]})
+            for (var i = 0; i < this.voucherTable.length; i++) {
+                lineArr.push({ container: this.voucherTable[i] })
             }
             const curPeriodValue = ''
             const voucherId = this.$route.query.id || ''
@@ -469,10 +476,10 @@ export default {
                 catogeryName: '记',
                 catogeryTitle: "记账凭证",
                 // jzCode: jzCode,
-                // joinJeHeaderId:joinJeHeaderId,
+                joinJeHeaderId: voucherId,
                 jeDate: this.billHeader.jeDate,
                 periodId: curPeriodValue,
-                periodName: '2020年04期',
+                periodName: '2020年05期',
                 saveType: saveType, //1是新增，2是插入
                 voucherAttachmentNum: this.temp.voucherAttachmentNum,
                 voucherDate: this.temp.billDate,
@@ -483,14 +490,18 @@ export default {
                 totalCreditMoney: Number(this.totalMoney1),
                 totalDebiteMoney: Number(this.totalMoney2)
             }
-            if(type == 1) {
+            if (type == 1) {
                 this.saveTemplet(obj)
             } else {
+                if (this.totalMoney1 !== this.totalMoney2) {
+                    this.$message.warning('借贷金额必须相等！')
+                    return
+                }
                 this.saveVoucher(obj)
             }
         },
         saveTemplet(obj) {
-            templetSave({container: obj}).then(res => {
+            templetSave({ container: obj }).then(res => {
                 if (res.data.success) {
                     this.$message.success("凭证模板保存成功")
                 } else {
@@ -499,30 +510,46 @@ export default {
             })
         },
         saveVoucher(obj) {
-            voucherSave({container: obj}).then(res => {
+            voucherSave({ container: obj }).then(res => {
                 if (res.data.success) {
                     this.getJeSeq()
-                    this.tableData = [{},{},{},{}]
-                    this.$message.success("凭证新增成功")
+                    if (this.saveType == 1 && !this.$route.query.id) {
+                        this.$message.success('凭证新增成功！')
+                        this.tableData = [{}, {}, {}, {}]
+                    }
+                    if (this.saveType == 1 && this.$route.query.id) {
+                        this.$message.success('凭证保存成功！')
+                        this.$store.dispatch('tagsView/delView', this.$route);
+                        this.$router.replace('/voucher/data');
+                    }
+                    if (this.saveType == 2) {
+                        this.$message.success('凭证插入成功！')
+                        this.$store.dispatch('tagsView/delView', this.$route);
+                        this.$router.replace('/voucher/data');
+                    }
                 } else {
                     this.$message.error(res.data.msg)
                 }
             })
         },
-        foucsInput(event) {
-            event.currentTarget.value = event.currentTarget.value == 0 ? '' : ''
-        },
-        inputChange(event, accounted, index) {
-            validateVal(event.currentTarget)
-            if(accounted === 'accountedDr' && this.tableData[index].accountedDr > 0) {
-                this.tableData[index].accountedCr = 0
-            }
-            if(accounted === 'accountedCr' && this.tableData[index].accountedCr > 0) {
-                this.tableData[index].accountedDr = 0
-            }
+        formatNum(event, param, index) {
+            var num = showNumber1(event.currentTarget.value)
+            this.$set(this.tableData[index], param, num)
             this.getTotalMoney()
         },
-        getTotalMoney(){
+        foucsInput(event, param, index) {
+            event.currentTarget.select()
+            var num = showNumber2(event.currentTarget.value)
+            this.$set(this.tableData[index], param, num)
+        },
+        inputChange(event, param, index) {
+            validateVal(event.currentTarget)
+            if (this.tableData[index].accountedDr != 0 || this.tableData[index].accountedCr != 0) {
+                var p = param === 'accountedDr' ? 'accountedCr' : 'accountedDr'
+                this.$set(this.tableData[index], p, '')
+            }
+        },
+        getTotalMoney() {
             this.totalMoney1 = this.calculate1()
             this.totalMoney2 = this.calculate2()
             this.totalZh = this.totalMoney1 == this.totalMoney2 ? convertCurrency(this.totalMoney1) : ''

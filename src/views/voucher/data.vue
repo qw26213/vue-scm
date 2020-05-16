@@ -78,11 +78,11 @@
                 <template slot-scope="{row}">
                     <span class="ctrl" @click="insertVoucher(row)">插入</span>
                     <span class="ctrl" @click="handleCompile(row.id)">编辑</span>
-                    <span v-if="row.status==0" class="ctrl" @click="handleDel(row)">删除</span>
+                    <span v-if="row.jeStatus==0" class="ctrl" @click="handleDel(row)">删除</span>
                 </template>
             </el-table-column>
         </el-table>
-        <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
+        <pagination v-show="total>10" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
     </div>
 </template>
 <script>
@@ -119,7 +119,7 @@ export default {
             curBillId: '',
             listQuery: {
                 pageIndex: 1,
-                pageNum: 20,
+                pageNum: 10,
                 queryParam: {
                     date1: getNowMonth(),
                     date2: getNowMonth(),
@@ -157,6 +157,7 @@ export default {
             getVoucher(this.listQuery).then(res => {
                 this.listLoading = false
                 this.tableData = res.data.data
+                this.total = res.data.totalNum || 0
             }).catch(err => {
                 this.listLoading = false
             })
@@ -189,7 +190,7 @@ export default {
             sessionStorage.periodName = row.periodName;
             sessionStorage.jeCatogeryId = row.jeCatogeryId;
             sessionStorage.voucherFlag = 3; //凭证插入标记符
-            this.$router.push('/voucher/add?id=' + row.id + '&type=2')
+            this.$router.push('/voucher/insert?id=' + row.id + '&type=2')
         },
         resetVoucherSeq() {
             let date1 = this.listQuery.queryParam.date1
@@ -209,8 +210,7 @@ export default {
                 }).catch(err=>{
                         this.$message.success("请重新登录")
                 })
-            });
-
+            })
         },
         printVoucher() {
             if(this.voucherIdArr.length==0){

@@ -129,7 +129,7 @@ export function byteLength(str) {
     for (var i = str.length - 1; i >= 0; i--) {
         const code = str.charCodeAt(i)
         if (code > 0x7f && code <= 0x7ff) s++
-        else if (code > 0x7ff && code <= 0xffff) s += 2
+            else if (code > 0x7ff && code <= 0xffff) s += 2
         if (code >= 0xDC00 && code <= 0xDFFF) i--
     }
     return s
@@ -258,7 +258,7 @@ export function getTime(type) {
 export function debounce(func, wait, immediate) {
     let timeout, args, context, timestamp, result
 
-    const later = function () {
+    const later = function() {
         // 据上一次触发时间间隔
         const last = +new Date() - timestamp
 
@@ -275,7 +275,7 @@ export function debounce(func, wait, immediate) {
         }
     }
 
-    return function (...args) {
+    return function(...args) {
         context = this
         timestamp = +new Date()
         const callNow = immediate && !timeout
@@ -532,4 +532,34 @@ export function toNumStr(arg) {
     if (isNaN(arg))
         arg = 0;
     return arg;
+}
+
+export function showNumber1(value) {
+    if (value == "" || value == "0" || value == "0." || value == "0.0" || value == "0.00" || value == "00.00") {
+        var value = ''
+    } else {
+        var value = (value * 100).toFixed(0)
+        if (value >= 10 && value < 100) {
+            var value = '0' + String(value)
+        } else if (value > -100 && value <= -10) {
+            var value = '0' + String(value)
+        } else if (value > 0 && value < 10) {
+            var value = '00' + String(value)
+        } else if (value > -10 && value < 0) {
+            var value = '00' + String(value)
+        }
+        if (value.indexOf('.') > 0 && value.indexOf('.') == value.length - 1) {
+            value = value.substring(0, value.length - 1)
+        }
+    }
+    return value
+}
+
+export function showNumber2(value) {
+    if (value == "" || value == "0") {
+        var value = ''
+    } else {
+        var value = value / 100
+    }
+    return value
 }
