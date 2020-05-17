@@ -52,8 +52,8 @@
                         <summaryList :dataList="summaryArr" :index="index" @changeVal="changeVal" :val="row.summary"></summaryList>
                     </td>
                     <td class="p0 urel" width="330">
-                        <coaList v-show="!row.coaCobinationCode" :dataList="coaArr" :index="index" @changeVal="changeVal" :val="row.coaId"></coaList>
-                        <div v-show="row.coaCobinationCode && dialogStatus == 'static'" class="longName" @click="longNameClick(row, index)">{{ row.coaCode + ' ' + row.coaName + '_'+ row.coaCobinationName }}</div>
+                        <coaList v-show="!row.auxiliaryName" :dataList="coaArr" :index="index" @changeVal="changeVal" :val="row.coaId"></coaList>
+                        <div v-show="row.auxiliaryName && dialogStatus == 'static'" class="longName" @click="longNameClick(row, index)">{{ row.coaCode + ' ' + row.coaName + '_'+ row.auxiliaryName }}</div>
                     </td>
                     <td class="p0 urel">
                         <div class="number f12 ptb05" v-if="row.isQuantity==1">
@@ -160,7 +160,7 @@
             <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="65px" style="width: 360px; margin-left:10px;">
                 <el-form-item v-if="auxiliary.charAt(0)=='1'" label="供应商" prop="supplierId">
                     <el-select ref="supplierSelect" placeholder="供应商" v-model="temp.supplierId" style="width:280px">
-                        <el-option v-for="(item,index) in supplierList" :key="item.id" :label="item.supplierName" :data-code="item.supplierCode"></el-option>
+                        <el-option v-for="(item,index) in supplierList" :key="item.id" :label="item.supplierName" :data-code="item.supplierCode" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item v-if="auxiliary.charAt(1)=='1'" label="客户" prop="custId">
@@ -387,12 +387,11 @@ export default {
             }
         },
         longNameClick(row, index) {
-            this.$set(this.tableData[index], 'auxiliaryName', '')
-            this.dialogStatus = 'update'
             this.dialogFormVisible3 = true
             this.showModifyAuxiliary(row, index)
         },
         showModifyAuxiliary(row, index) {
+            this.dialogStatus = 'update'
             this.auxiliary = row.auxiliary
             for (var key in this.temp) {
                 this.temp[key] = row[key]
@@ -440,7 +439,7 @@ export default {
                                 const selectText = this.$refs[auxiliaryType + 'Select'].selected.label
                                 auxiliaryCode += '_' + hexCas[AuxiliaryType.indexOf(auxiliaryType)] + modelCode
                                 auxiliaryName += '_' + selectText
-                                curObj[auxiliaryType + 'Id'] = this.$refs[auxiliaryType + 'Select'].value
+                                curObj[auxiliaryType + 'Id'] = this.temp[auxiliaryType + 'Id']
                             }
                         }
                         curObj.auxiliaryCode = auxiliaryCode.substring(1)
