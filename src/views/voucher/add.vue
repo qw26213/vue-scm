@@ -3,7 +3,7 @@
         <div class="w1200 voucherHeader">
             <el-button type="primary" size="mini" @click="dialogFormVisible1 = true">从模板生成凭证</el-button>
             <el-button type="primary" size="mini" @click="dialogFormVisible2 = true">常用摘要</el-button>
-            <div class="voucherTit">记账凭证<span class="Period">2020年第5期</span></div>
+            <div class="voucherTit">记账凭证<span class="Period">{{ periodName }}</span></div>
             <el-form :inline="true" label-position="right" label-width="80px" style="width: 100%; margin-top:0px;">
                 <el-form-item label="凭证字号" prop="billNo" style="margin-bottom:10px">
                     <select class="catogeryName uds" v-model="billHeader.jeCatogeryId">
@@ -52,7 +52,7 @@
                         <summaryList :dataList="summaryArr" :index="index" @changeVal="changeVal" :val="row.summary"></summaryList>
                     </td>
                     <td class="p0 urel">
-                        <coaList :dataList="coaArr" :selectId="row.itemId" :index="index" @changeVal="changeVal" :val="row.coaId"></coaList>
+                        <coaList :dataList="coaArr" :index="index" @changeVal="changeVal" :val="row.coaId"></coaList>
                     </td>
                     <td class="p0 urel">
                         <div class="number f12 ptb05" v-if="row.isQuantity==1">
@@ -68,13 +68,19 @@
                         <div class="money_bg">
                             <i v-if="row.accountedDr && row.accountedDr != 0" v-for="(item,index) in String(row.accountedDr)" :key="index" :style="{color:(row.accountedDr<0?'#f00':'#333')}">{{item}}</i>
                         </div>
-                        <input type="text" autocomplete="off" class="input_bg" v-model="row.accountedDr" maxlength="12" @input="inputChange($event, 'accountedDr',index)" @focus="foucsInput($event, 'accountedDr', index)" @blur="formatNum($event, 'accountedDr', index)">
+                        <input type="text" autocomplete="off" class="input_bg" v-model="row.accountedDr" maxlength="12" 
+                        @input="inputChange($event, 'accountedDr',index)" 
+                        @focus="foucsInput($event, 'accountedDr', index)" 
+                        @blur="formatNum($event, 'accountedDr', index)">
                     </td>
                     <td class="urel p0">
                         <div class="money_bg">
                             <i v-if="row.accountedCr && row.accountedCr != 0" v-for="(item,index) in String(row.accountedCr)" :key="index" :style="{color:(row.accountedCr<0?'#f00':'#333')}">{{item}}</i>
                         </div>
-                        <input type="text" autocomplete="off" class="input_bg" v-model="row.accountedCr" maxlength="12" @input="inputChange($event, 'accountedCr',index)" @focus="foucsInput($event, 'accountedCr', index)" @blur="formatNum($event, 'accountedCr', index)">
+                        <input type="text" autocomplete="off" class="input_bg" v-model="row.accountedCr" maxlength="12" 
+                        @input="inputChange($event, 'accountedCr',index)" 
+                        @focus="foucsInput($event, 'accountedCr', index)" 
+                        @blur="formatNum($event, 'accountedCr', index)">
                     </td>
                 </tr>
             </tbody>
@@ -149,7 +155,7 @@
             </el-table>
             <pagination v-show="total2>10" :total="total2" :page.sync="listQuery2.pageIndex" :limit.sync="listQuery2.pageNum" @pagination="getSummaryByPage" />
         </el-dialog>
-        <el-dialog :close-on-click-modal="false" title="设置科目辅助核算" :visible.sync="dialogFormVisible3" width="400px">
+        <el-dialog :close-on-click-modal="false" title="设置科目辅助核算" :visible.sync="dialogFormVisible3" :show-close="false" width="400px">
             <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="65px" style="width: 360px; margin-left:10px;">
                 <el-form-item v-if="auxiliary.charAt(0)=='1'" label="供应商" prop="supplierId">
                     <el-select ref="supplierSelect" placeholder="供应商" v-model="temp.supplierId" style="width:280px">
@@ -183,7 +189,7 @@
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer" align="center">
-                <el-button @click="dialogFormVisible3 = false">取消</el-button>
+                <el-button @click="cancelAuxiliaryConfig">取消</el-button>
                 <el-button type="primary" @click="saveAuxiliaryConfig">确定</el-button>
             </div>
         </el-dialog>
@@ -191,7 +197,8 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import { getGlPeriodByCenterDate, getGlPeriodByPeriodCode, getMaxVoucherSeq, getVoucherById, voucherSave, getCatogery } from '@/api/voucher'
+import { getGlPeriodByCenterDate, getGlPeriodByPeriodCode, getMaxVoucherSeq, getVoucherMaxDate } from '@/api/voucher'
+import { getVoucherById, voucherSave, getCatogery } from '@/api/voucher'
 import { getTempletHeader, getTempletTypeList, getTempletById, templetSave } from '@/api/voucher'
 import { getAllUnion, addSummary, delSummary } from '@/api/voucher'
 import { getNowDate, deleteEmptyObj, addNullObj, addNullObj2, convertCurrency, validateVal, deepClone, showNumber1, showNumber2 } from '@/utils'
@@ -206,6 +213,9 @@ export default {
     data() {
         return {
             catogeryList: [],
+            periodId: '',
+            periodName: '',
+            periodCode: '',
             saveType: this.$route.type || 1, //插入传2
             total1: 0,
             total2: 0,
@@ -224,7 +234,14 @@ export default {
             },
             auxiliary: '000000',
             curShowIndex: 0,
-            temp: {},
+            temp: {
+                supplierId: '',
+                custId: '',
+                staffId: '',
+                projId: '',
+                itemId: '',
+                deptId: ''
+            },
             rules: {
                 supplierId: [{ required: true, message: '供应商不能为空', trigger: 'change' }],
                 custId: [{ required: true, message: '客户不能为空', trigger: 'change' }],
@@ -320,8 +337,8 @@ export default {
                     this.tableData.push({})
                 }
                 for (var i = 0; i < this.tableData.length; i++) {
-                    this.$set(this.tableData[i], 'accountedCr', this.tableData[i].accountedCr * 100)
                     this.$set(this.tableData[i], 'accountedDr', this.tableData[i].accountedDr * 100)
+                    this.$set(this.tableData[i], 'accountedCr', this.tableData[i].accountedCr * 100)
                 }
                 this.getTotalMoney()
             })
@@ -333,14 +350,38 @@ export default {
     },
     methods: {
         getBillHeader(){
-            getGlPeriodByCenterDate().then(res => {
-                this.glPeriod = res.data.data.periodName
-                this.glPeriodId = res.data.data.id
+            var date = getNowDate()
+            getGlPeriodByCenterDate({ centerDate: date }).then(res => {
+                this.periodName = res.data.data.periodName
+                this.periodCode = res.data.data.periodCode
+                this.periodId = res.data.data.id
+                this.getJeSeqNum(this.periodId)
             })
-            var obj = {}
+            // var rep = { periodCode1: date.substr(0, 5) + "01", periodCode2: date.substr(0, 5) + "12" }
+            // getGlPeriodByPeriodCode(rep).then(res => {
+            //     if (res.data.data && res.data.data.length > 0) {
+            //         var periodId = this.getPeriodIdByCode(res.data.data,date.substring(0,7));
+            //         this.getJeSeqNum(periodId)
+            //     }
+            // })
+            getVoucherMaxDate().then(res => {
+                if (res.data.errorCode == 0) {
+                    this.billHeader.jeDate = res.data.data
+                }
+            })
+        },
+        getJeSeqNum(periodId) {
+            var obj = {periodId: periodId, catogeryId: this.billHeader.jeCatogeryId}
             getMaxVoucherSeq(obj).then(res => {
                 this.billHeader.jeSeq = res.data.data
             })
+        },
+        getPeriodIdByCode(arr,code) {
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i].periodCode == code) {
+                    return arr[i].id
+                }
+            }
         },
         getAmount(index) {
             var price = this.tableData[index].qPrice
@@ -357,6 +398,12 @@ export default {
                 }
                 this.getTotalMoney()
             }
+        },
+        cancelAuxiliaryConfig() {
+            this.dialogFormVisible3 = false
+            this.$set(this.tableData[this.curShowIndex], 'coaId', '')
+            console.log(this.tableData[this.curShowIndex].coaId)
+            this.$set(this.tableData[this.curShowIndex], 'isQuantity', 0)
         },
         saveAuxiliaryConfig() {
             this.$refs['dataForm'].validate((valid) => {
@@ -414,8 +461,7 @@ export default {
         saveSummary() {
             var obj = {
                 mnemonicCode: this.summaryQuery.mnemonicCode,
-                summary: this.summaryQuery.summary,
-                bookId: sessionStorage.bookId
+                summary: this.summaryQuery.summary
             }
             if (this.summaryQuery.mnemonicCode == "" || this.summaryQuery.summary == "") {
                 this.$message.warning('摘要编码和名称都不能为空！')
@@ -466,11 +512,9 @@ export default {
                 this.$set(this.voucherTable[i], 'accountedDr', Number(this.voucherTable[i].accountedDr)/100)
                 lineArr.push({ container: this.voucherTable[i] })
             }
-            const curPeriodValue = ''
             const voucherId = this.$route.query.id || ''
             const saveType = this.saveType || 1
             const obj = {
-                bookId: sessionStorage.bookId,
                 baseCurrencyCode: 'CNY',
                 baseCurrencyId:  '',
                 baseCurrencyName: '人民币',
@@ -480,8 +524,8 @@ export default {
                 // jzCode: jzCode,
                 joinJeHeaderId: voucherId,
                 jeDate: this.billHeader.jeDate,
-                periodId: curPeriodValue,
-                periodName: '2020年05期',
+                periodId: this.periodId,
+                periodName: this.periodName,
                 saveType: saveType, //1是新增，2是插入
                 voucherAttachmentNum: 0,
                 voucherDate: this.temp.billDate,
@@ -513,7 +557,6 @@ export default {
             })
         },
         saveVoucher(obj, type) {
-            console.log(this.saveType)
             voucherSave({ container: obj }, type).then(res => {
                 if (res.data.success) {
                     if (this.saveType == 1 && !this.$route.query.id) {
@@ -596,14 +639,14 @@ export default {
                 this.$message.error("系统错误")
             })
         },
-        saveCoa() {
-
-        },
         changeVal(obj) {
             for (var key in obj) {
                 this.$set(this.tableData[obj.index], key, obj[key])
             }
             if (obj.isAuxiliary == 1) {
+                for (var key in this.rules) {
+                    this.temp[key] = ''
+                }
                 this.dialogFormVisible3 = true
                 this.auxiliary = obj.auxiliary
                 this.$nextTick(() => {

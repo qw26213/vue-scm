@@ -60,9 +60,9 @@ export function synVoucherData(data){
 
 export function delTempletHeader(id) {
     return request({
-        url: '/drp/gl/templetHeader/deleteById/'+id,
+        url: '/drp/gl/templetHeader/deleteById',
         method: 'post',
-        data
+        data: {id: id}
     })
 }
 
@@ -122,6 +122,14 @@ export function printList(data){
   })
 }
 
+export function getVoucherMaxDate(data){
+  return request({
+    url:'/drp/gl/voucher/getVoucherMaxDate',
+    method: 'post',
+    data
+  })
+}
+
 export function delVoucher(data){
   return request({
     url:'/drp/gl/voucher/deleteById',
@@ -163,8 +171,9 @@ export function voucherSave(data, type){
 
 export function getTempletById(id){
   return request({
-    url:'/drp/gl/templet/customGetTempletById/'+id,
-    method: 'post'
+    url:'/drp/gl/templet/customGetTempletById',
+    method: 'post',
+    data: {id: id}
   })
 }
 

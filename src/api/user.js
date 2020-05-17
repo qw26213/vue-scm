@@ -349,8 +349,9 @@ export function delCoa(id) {
 
 export function getCoaCodeUsedByIdNoSysTemplet(id) {
     return request({
-        url: '/drp/gl/coa/getCoaCodeUsedByIdNoSysTemplet/' + id,
-        method: 'post'
+        url: '/drp/gl/coa/getCoaCodeUsedByIdNoSysTemplet',
+        method: 'post',
+        data: {id: id}
     })
 }
 
@@ -364,8 +365,9 @@ export function getChildrenCountByParentId(parentId) {
 
 export function getCoaCodeUsedById(id) {
     return request({
-        url: '/drp/gl/coa/getCoaCodeUsedById/' + id,
-        method: 'post'
+        url: '/drp/gl/coa/getCoaCodeUsedById',
+        method: 'post',
+        data: {id: id}
     })
 }
 
@@ -379,8 +381,9 @@ export function saveCoa(data) {
 
 export function updateDispName(bookId) {
     return request({
-        url: '/drp/gl/coa/updateDispName/' + bookId,
-        method: 'post'
+        url: '/drp/gl/coa/updateDispName/',
+        method: 'post',
+        data: {bookId: bookId}
     })
 }
 

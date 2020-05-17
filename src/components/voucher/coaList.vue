@@ -8,11 +8,11 @@
 <script>
 export default {
     name: 'coaList',
-    props: ['selectId', 'index', 'dataList', 'val'],
+    props: ['index', 'dataList', 'val'],
     data() {
         return {
             curName: '',
-            curId: '',
+            curId: this.val,
             isAuxiliary: 0,
             isCurrency: 0,
             isQuantity: 0,
@@ -24,13 +24,17 @@ export default {
             coaList: this.dataList
         }
     },
-    watch:{
+    watch: {
         dataList() {
             this.coaList = this.dataList
             this.curId = this.val
         },
-        val(){
-            this.curId = this.val
+        'val': {
+            handler: function() {
+                this.curId = this.val
+            },
+            deep: true,
+            immediate: true
         }
     },
     methods: {

@@ -85,14 +85,6 @@ module.exports = {
         pathRewrite: {// 如果接口本身没有/drp需要通过pathRewrite来重写了地址
           '^/drp': '/drp'
         }
-      },
-      '/bpo/v2': {
-        target: 'https://opms-test.bytedance.com',
-        ws: true,
-        changeOrigin: true,
-        pathRewrite: {
-          '^/bpo/v2': '/bpo/v2'
-        }
       }
     }
   }
