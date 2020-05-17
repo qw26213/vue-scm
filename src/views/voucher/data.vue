@@ -27,14 +27,14 @@
             <el-button size="mini" type="primary" @click="resetVoucherSeq">整理凭证号</el-button>
             <el-button size="mini" type="primary" @click="printVoucher">打印</el-button>
         </div>
-        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit style="width: 100%;" size="mini" cell-class-name="tpCell" @selection-change="handleSelectionChange">
+        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit style="width: 100%;" size="mini" cell-class-name="tpCell" :default-sort="{prop: 'jeSeq', order: this.listQuery.queryParam.desc==1 ?'descending': 'ascending'}" @selection-change="selectionChange" @sort-change="sortChange">
             <el-table-column type="selection" width="55" align="center"></el-table-column>
             <el-table-column label="日期" align="center" width="100">
                 <template slot-scope="{row}">
                     <span>{{row.jeDate}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="凭证字号" align="center">
+            <el-table-column label="凭证字号" align="center" sortable="custom" prop="jeSeq" width="110">
                 <template slot-scope="{row}">
                     <a href="javascript:" @click="handleCompile(row.id)">{{row.jeCatogery}}-{{row.jeSeq | catogeryNumberFor}}</a>
                 </template>
@@ -146,12 +146,17 @@ export default {
         this.getList()
     },
     methods: {
-        handleSelectionChange(val){
+        selectionChange(val){
             let arr = []
             for(let i = 0;i<val.length;i++){
                 arr.push(val[i].id)
             }
             this.voucherIdArr = arr
+        },
+        sortChange({prop, order}) {
+            var desc = order === 'descending' ? 1 : 0
+            this.$set(this.listQuery.queryParam , 'desc', desc)
+            this.getList()
         },
         getList() {
             this.listLoading = true
