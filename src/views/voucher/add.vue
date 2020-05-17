@@ -16,7 +16,7 @@
                     </span>
                 </el-form-item>
                 <el-form-item label="日期" prop="billDate" style="margin-bottom:10px;">
-                    <el-date-picker v-model="billHeader.jeDate" type="date" placeholder="日期" size="mini" :clearable="false" value-format="yyyy-MM-dd" style="width:120px">
+                    <el-date-picker v-model="billHeader.jeDate" type="date" placeholder="日期" size="mini" :clearable="false" value-format="yyyy-MM-dd" style="width:120px" @change="getJeSeqByDate">
                     </el-date-picker>
                 </el-form-item>
                 <!-- <el-form-item label="附单据" prop="expirationDate" style="float:right;margin-bottom:10px">
@@ -155,7 +155,7 @@
             </el-table>
             <pagination v-show="total2>10" :total="total2" :page.sync="listQuery2.pageIndex" :limit.sync="listQuery2.pageNum" @pagination="getSummaryByPage" />
         </el-dialog>
-        <el-dialog :close-on-click-modal="false" title="设置科目辅助核算" :visible.sync="dialogFormVisible3" :show-close="false" width="400px">
+        <el-dialog :close-on-click-modal="false" :title="'辅助核算设置——'+showCoaCode" :visible.sync="dialogFormVisible3" :show-close="false" width="400px">
             <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="65px" style="width: 360px; margin-left:10px;">
                 <el-form-item v-if="auxiliary.charAt(0)=='1'" label="供应商" prop="supplierId">
                     <el-select ref="supplierSelect" placeholder="供应商" v-model="temp.supplierId" style="width:280px">
@@ -213,6 +213,7 @@ export default {
     data() {
         return {
             catogeryList: [],
+            showCoaCode: '',
             periodId: '',
             periodName: '',
             periodCode: '',
@@ -345,33 +346,33 @@ export default {
         } else {
             this.$store.dispatch('voucher/getSummaryList')
             this.$store.dispatch('voucher/getCoaList')
-            this.getBillHeader()
+            this.getJeSeqByDate()
+            getVoucherMaxDate().then(res => {
+                this.billHeader.jeDate = res.data.data //取服务器日期
+            })
         }
     },
     methods: {
-        getBillHeader(){
-            var date = getNowDate()
+        getJeSeqByDate(){
+            var date = this.billHeader.jeDate
             getGlPeriodByCenterDate({ centerDate: date }).then(res => {
-                this.periodName = res.data.data.periodName
-                this.periodCode = res.data.data.periodCode
-                this.periodId = res.data.data.id
-                this.getJeSeqNum(this.periodId)
+                if(res.data.errorCode === 200) {
+                    this.periodName = res.data.data.periodName
+                    this.periodCode = res.data.data.periodCode
+                    this.periodId = res.data.data.id
+                    this.getJeSeqNum(this.periodId)
+                }
             })
             // var rep = { periodCode1: date.substr(0, 5) + "01", periodCode2: date.substr(0, 5) + "12" }
             // getGlPeriodByPeriodCode(rep).then(res => {
-            //     if (res.data.data && res.data.data.length > 0) {
-            //         var periodId = this.getPeriodIdByCode(res.data.data,date.substring(0,7));
-            //         this.getJeSeqNum(periodId)
-            //     }
             // })
-            getVoucherMaxDate().then(res => {
-                if (res.data.errorCode == 0) {
-                    this.billHeader.jeDate = res.data.data
-                }
-            })
         },
         getJeSeqNum(periodId) {
-            var obj = {periodId: periodId, catogeryId: this.billHeader.jeCatogeryId}
+            var obj = {
+                periodId: periodId, 
+                catogeryId: this.billHeader.jeCatogeryId,
+                jeDate: this.billHeader.jeDate
+            }
             getMaxVoucherSeq(obj).then(res => {
                 this.billHeader.jeSeq = res.data.data
             })
@@ -402,7 +403,6 @@ export default {
         cancelAuxiliaryConfig() {
             this.dialogFormVisible3 = false
             this.$set(this.tableData[this.curShowIndex], 'coaId', '')
-            console.log(this.tableData[this.curShowIndex].coaId)
             this.$set(this.tableData[this.curShowIndex], 'isQuantity', 0)
         },
         saveAuxiliaryConfig() {
@@ -643,16 +643,19 @@ export default {
             for (var key in obj) {
                 this.$set(this.tableData[obj.index], key, obj[key])
             }
+            this.showCoaCode = obj.coaCode + ' ' + obj.coaName
+            this.curShowIndex = obj.index
             if (obj.isAuxiliary == 1) {
+                this.auxiliary = obj.auxiliary
                 for (var key in this.rules) {
                     this.temp[key] = ''
                 }
                 this.dialogFormVisible3 = true
-                this.auxiliary = obj.auxiliary
                 this.$nextTick(() => {
                     this.$refs['dataForm'].clearValidate()
                 })
-                this.curShowIndex = obj.index
+            } else {
+                this.auxiliary = '000000'
             }
         }
     }

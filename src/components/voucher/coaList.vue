@@ -4,14 +4,25 @@
         </el-option>
     </el-select>
 </template>
-<!--  filterable remote reserve-keyword :remote-method="remoteGet" -->
 <script>
 export default {
     name: 'coaList',
-    props: ['index', 'dataList', 'val'],
+    props: {
+        dataList: {
+            type: Array,
+            default: []
+        },
+        index: {
+            type: Number,
+            default: 0
+        },
+        val: {
+            type: String,
+            default: ''
+        }
+    },
     data() {
         return {
-            curName: '',
             curId: this.val,
             isAuxiliary: 0,
             isCurrency: 0,
@@ -20,6 +31,7 @@ export default {
             uom: '',
             crDr: '',
             coaCode: '',
+            coaName: '',
             curIndex: this.index,
             coaList: this.dataList
         }
@@ -33,12 +45,13 @@ export default {
             handler: function() {
                 this.curId = this.val
             },
-            deep: true,
-            immediate: true
+            deep: false, //为true可监听到对象内部属性的改变
+            immediate: false //为true表示在watch中声明的时候，就立即执行handler方法
         }
     },
     methods: {
         changeVal(val) {
+            if (!val) { return }
             this.curId = val;
             for (var i = 0; i < this.coaList.length; i++) {
                 if (this.coaList[i].id == this.curId) {
@@ -48,6 +61,7 @@ export default {
                     this.auxiliary = this.coaList[i].auxiliary
                     this.uom = this.coaList[i].uom
                     this.coaCode = this.coaList[i].coaCode
+                    this.coaName = this.coaList[i].coaName
                     this.crDr = this.coaList[i].crDr
                 }
             }
@@ -58,6 +72,8 @@ export default {
                 index: this.curIndex,
                 auxiliary: this.auxiliary,
                 coaCode: this.coaCode,
+                coaId: this.curId,
+                coaName: this.coaName,
                 qUom: this.uom,
                 crDr: this.crDr
             }
