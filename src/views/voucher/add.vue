@@ -58,10 +58,10 @@
                     <td class="p0 urel">
                         <div class="number f12 ptb05" v-if="row.isQuantity==1">
                             <p style="margin-bottom: 3px;">数量:
-                                <input type="text" v-model="row.qNumber" @change="getAmount(index)" /><i class="uom">{{row.qUom}}</i>
+                                <input type="text" v-model="row.qty" @change="getAmount(index)" /><i class="uom">{{row.uom}}</i>
                             </p>
                             <p>单价:
-                                <input type="text" v-model="row.qPrice" @change="getAmount(index)" /><i class="uom">元</i>
+                                <input type="text" v-model="row.unitprice" @change="getAmount(index)" /><i class="uom">元</i>
                             </p>
                         </div>
                     </td>
@@ -529,26 +529,25 @@ export default {
                 this.$set(this.voucherTable[i], 'coaHierarchyId', 2)
                 this.$set(this.voucherTable[i], 'accountedCr', Number(this.voucherTable[i].accountedCr)/100)
                 this.$set(this.voucherTable[i], 'accountedDr', Number(this.voucherTable[i].accountedDr)/100)
-                this.$set(this.voucherTable[i], 'qNumber', Number(this.voucherTable[i].qNumber))
-                this.$set(this.voucherTable[i], 'qPrice', Number(this.voucherTable[i].qPrice))
+                this.$set(this.voucherTable[i], 'qty', Number(this.voucherTable[i].qty))
+                this.$set(this.voucherTable[i], 'unitprice', Number(this.voucherTable[i].unitprice))
                 lineArr.push({ container: this.voucherTable[i] })
             }
             const voucherId = this.$route.query.id || ''
-            const saveType = this.saveType || 1
             const obj = {
-                voucherDate: this.billHeader.jeDate,
-                voucherSeq: this.billHeader.jeSeq,
+                jeDate: this.billHeader.jeDate,
+                jeSeq: this.billHeader.jeSeq,
+                jeCatogeryId: this.billHeader.jeCatogeryId,
+                jeCatogeryName: '记',
+                jeCatogeryTitle: "记账凭证",
                 baseCurrencyCode: 'CNY',
                 baseCurrencyId:  '',
                 baseCurrencyName: '人民币',
-                catogeryId: this.billHeader.jeCatogeryId,
-                catogeryName: '记',
-                catogeryTitle: "记账凭证",
                 joinJeHeaderId: voucherId,
-                jeDate: this.billHeader.jeDate,
+                periodCode: this.periodCode,
                 periodId: this.periodId,
                 periodName: this.periodName,
-                saveType: saveType, //1是新增，2是插入
+                saveType: this.saveType || 1, //1是新增，2是插入
                 voucherAttachmentNum: 0,
                 voucherId: voucherId,
                 jeHeaderId: voucherId,
@@ -601,8 +600,8 @@ export default {
             })
         },
         getAmount(index) {
-            var price = this.tableData[index].qPrice
-            var qty = this.tableData[index].qNumber
+            var price = this.tableData[index].unitprice
+            var qty = this.tableData[index].qty
             if (qty && price) {
                 var amount = (Number(qty) * Number(price) * 100).toFixed(2)
                 if (this.tableData[index].crDr == 1) {
