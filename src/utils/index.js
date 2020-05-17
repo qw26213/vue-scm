@@ -495,36 +495,6 @@ export function convertCurrency(money) {
     return chineseStr
 }
 
-export function validateVal(numval) {
-    if (numval.indexOf('-') < 0) {
-        if (numval != '' && numval.substr(0, 1) == '.') {
-            numval = ""
-        }
-    } else {
-        if (numval != '' && numval.substr(1, 2) == '.') {
-            numval = "-"
-        }
-        if (numval.length > 1 && numval.indexOf('-') > 0) {
-            numval = numval.substring(0, numval.length - 1);
-        }
-    }
-    numval = numval.replace(/[^\d.-]/g, "")
-    numval = numval.replace(/\.{2,}/g, ".")
-    numval = numval.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
-    numval = numval.replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3');
-    if (numval.indexOf(".") < 0 && numval != "") {
-        if (numval.substr(0, 1) == '0' && numval.length == 2) {
-            numval = numval.substr(1, numval.length)
-        }
-    }
-    if (numval.indexOf('.') > 0 && numval.length > 12) {
-        numval = numval.substring(0, 11)
-    }
-    if (numval.indexOf('.') < 0) {
-        numval = numval.substring(0, 9)
-    }
-    return numval ? Number(numval) : ''
-}
 
 export function toNumStr(arg) {
     if (arg == null)
@@ -535,8 +505,41 @@ export function toNumStr(arg) {
     return arg;
 }
 
+// input时触发
+export function validateVal(numval) {
+    // if (numval.indexOf('-') < 0) {
+    //     if (numval != '' && numval.substr(0, 1) == '.') {
+    //         numval = ""
+    //     }
+    // } else {
+    //     if (numval != '' && numval.substr(1, 2) == '.') {
+    //         numval = "-"
+    //     }
+    //     if (numval.length > 1 && numval.indexOf('-') > 0) {
+    //         numval = numval.substring(0, numval.length - 1);
+    //     }
+    // }
+    var a = numval.replace(/[^\d.-]/g, "")
+    var b = a.replace(/\.{2,}/g, ".")
+    var c = b.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
+    var d = c.replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3');
+    if (d.indexOf(".") < 0 && d != "") {
+        if (d.substr(0, 1) == '0' && d.length == 2) {
+            d = d.substr(1, d.length)
+        }
+    }
+    if (d.indexOf('.') > 0 && d.length > 12) {
+        d = d.substring(0, 11)
+    }
+    if (numval.indexOf('.') < 0) {
+        d = d.substring(0, 9)
+    }
+    return d ? d : ''
+}
+
+// blur时触发
 export function showNumber1(value) {
-    if (value == "" || value == "0" || value == "0." || value == "0.0" || value == "0.00" || value == "00.00") {
+    if (value == "" || value == "0" || value == "0." || value == "0.0" || value == "0.00" || value == "00.00" || value == '.') {
         var value = ''
     } else {
         var value = (value * 100).toFixed(0)
@@ -556,6 +559,7 @@ export function showNumber1(value) {
     return value
 }
 
+// fouces时触发
 export function showNumber2(value) {
     if (value == "" || value == "0") {
         var value = ''

@@ -48,11 +48,12 @@
                         <a title="增加分录" class="glyicon_plus" @click="addRow()"></a>
                         <a title="删除分录" class="glyicon_remove" @click="delRow(index)"></a>
                     </td>
-                    <td class="p0 urel">
+                    <td class="p0 urel" width="330">
                         <summaryList :dataList="summaryArr" :index="index" @changeVal="changeVal" :val="row.summary"></summaryList>
                     </td>
-                    <td class="p0 urel">
-                        <coaList :dataList="coaArr" :index="index" @changeVal="changeVal" :val="row.coaId"></coaList>
+                    <td class="p0 urel" width="330">
+                        <coaList v-show="!row.auxiliaryName" :dataList="coaArr" :index="index" @changeVal="changeVal" :val="row.coaId"></coaList>
+                        <div v-show="row.auxiliaryName && dialogStatus == 'static'" class="longName" @click="longNameClick(row, index)">{{ row.coaName + row.auxiliaryName }}</div>
                     </td>
                     <td class="p0 urel">
                         <div class="number f12 ptb05" v-if="row.isQuantity==1">
@@ -70,8 +71,8 @@
                         </div>
                         <input type="text" autocomplete="off" class="input_bg" v-model="row.accountedDr" maxlength="12" 
                         @input="inputChange($event, 'accountedDr',index)" 
-                        @focus="foucsInput($event, 'accountedDr', index)" 
-                        @blur="formatNum($event, 'accountedDr', index)">
+                        @focus="inputFocus($event, 'accountedDr', index)" 
+                        @blur="inputBlur($event, 'accountedDr', index)">
                     </td>
                     <td class="urel p0">
                         <div class="money_bg">
@@ -79,8 +80,8 @@
                         </div>
                         <input type="text" autocomplete="off" class="input_bg" v-model="row.accountedCr" maxlength="12" 
                         @input="inputChange($event, 'accountedCr',index)" 
-                        @focus="foucsInput($event, 'accountedCr', index)" 
-                        @blur="formatNum($event, 'accountedCr', index)">
+                        @focus="inputFocus($event, 'accountedCr', index)" 
+                        @blur="inputBlur($event, 'accountedCr', index)">
                     </td>
                 </tr>
             </tbody>
@@ -189,8 +190,8 @@
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer" align="center">
-                <el-button @click="cancelAuxiliaryConfig">取消</el-button>
-                <el-button type="primary" @click="saveAuxiliaryConfig">确定</el-button>
+                <el-button @click="cancelAuxiliary">取消</el-button>
+                <el-button type="primary" @click="saveAuxiliary">确定</el-button>
             </div>
         </el-dialog>
     </div>
@@ -225,7 +226,7 @@ export default {
             list: [],
             billHeader: {
                 jeCatogeryId: '',
-                jeSeq: 1,
+                jeSeq: 0,
                 jeDate: getNowDate(),
                 voucherAttachmentNum: 0,
             },
@@ -256,6 +257,7 @@ export default {
             dialogFormVisible1: false,
             dialogFormVisible2: false,
             dialogFormVisible3: false,
+            dialogStatus: 'static', //static原始状态，create设置辅助核算，update编辑辅助核算
             templetData: [],
             summaryTable: [],
             summaryPageData: [],
@@ -384,6 +386,11 @@ export default {
                 }
             }
         },
+        longNameClick(row, index) {
+            this.$set(this.tableData[index], 'auxiliaryName', '')
+            this.dialogStatus = 'update'
+            this.dialogFormVisible3 = true
+        },
         getAmount(index) {
             var price = this.tableData[index].qPrice
             var qty = this.tableData[index].qNumber
@@ -400,12 +407,19 @@ export default {
                 this.getTotalMoney()
             }
         },
-        cancelAuxiliaryConfig() {
+        cancelAuxiliary() {
+            console.log(this.dialogStatus)
             this.dialogFormVisible3 = false
-            this.$set(this.tableData[this.curShowIndex], 'coaId', '')
-            this.$set(this.tableData[this.curShowIndex], 'isQuantity', 0)
+            if (this.dialogStatus === 'create') {
+                // 设置辅助核算取消时清空
+                this.$set(this.tableData[this.curShowIndex], 'coaId', '')
+                this.$set(this.tableData[this.curShowIndex], 'isQuantity', 0)
+            } else {
+                // 编辑辅助核算取消时清空选择
+            }
+            this.dialogStatus = 'static'
         },
-        saveAuxiliaryConfig() {
+        saveAuxiliary() {
             this.$refs['dataForm'].validate((valid) => {
                 if (valid) {
                     var editIndex = this.curShowIndex
@@ -433,6 +447,7 @@ export default {
                         // this.tableData.splice(this.curShowIndex + 1, 0, curObj)
                     }
                     this.dialogFormVisible3 = false
+                    this.dialogStatus = 'static'
                 }
             })
         },
@@ -511,32 +526,31 @@ export default {
                 this.$set(this.voucherTable[i], 'accountedDr', Number(this.voucherTable[i].accountedDr)/100)
                 this.$set(this.voucherTable[i], 'qNumber', Number(this.voucherTable[i].qNumber))
                 this.$set(this.voucherTable[i], 'qPrice', Number(this.voucherTable[i].qPrice))
-                this.$set(this.voucherTable[i], 'coaCode', Number(this.voucherTable[i].coaCode))
                 lineArr.push({ container: this.voucherTable[i] })
             }
             const voucherId = this.$route.query.id || ''
             const saveType = this.saveType || 1
             const obj = {
+                voucherDate: this.billHeader.jeDate,
+                voucherSeq: this.billHeader.jeSeq,
                 baseCurrencyCode: 'CNY',
                 baseCurrencyId:  '',
                 baseCurrencyName: '人民币',
                 catogeryId: this.billHeader.jeCatogeryId,
                 catogeryName: '记',
                 catogeryTitle: "记账凭证",
-                // jzCode: jzCode,
                 joinJeHeaderId: voucherId,
                 jeDate: this.billHeader.jeDate,
                 periodId: this.periodId,
                 periodName: this.periodName,
                 saveType: saveType, //1是新增，2是插入
                 voucherAttachmentNum: 0,
-                voucherDate: this.temp.billDate,
-                voucherSeq: this.temp.jeSeq,
                 voucherId: voucherId,
                 jeHeaderId: voucherId,
                 voucherTable: lineArr,
                 totalCreditMoney: Number(this.totalMoney1)/100,
                 totalDebiteMoney: Number(this.totalMoney2)/100
+                // jzCode: jzCode
             }
             if (type == 1) {
                 this.saveTemplet(obj)
@@ -581,12 +595,12 @@ export default {
                 }
             })
         },
-        formatNum(event, param, index) {
+        inputBlur(event, param, index) {
             var num = showNumber1(event.currentTarget.value)
             this.$set(this.tableData[index], param, num)
             this.getTotalMoney()
         },
-        foucsInput(event, param, index) {
+        inputFocus(event, param, index) {
             event.currentTarget.select()
             var num = showNumber2(event.currentTarget.value)
             this.$set(this.tableData[index], param, num)
@@ -648,6 +662,7 @@ export default {
             this.showCoaCode = obj.coaCode + ' ' + obj.coaName
             this.curShowIndex = obj.index
             if (obj.isAuxiliary == 1) {
+                this.dialogStatus = 'create'
                 this.auxiliary = obj.auxiliary
                 for (var key in this.rules) {
                     this.temp[key] = ''

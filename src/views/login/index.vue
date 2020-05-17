@@ -66,7 +66,7 @@ export default {
                 password: [{ required: true, trigger: 'blur', validator: validatePassword }]
             },
             loading: false,
-            redirect: this.$route.query.redirect
+            redirect: '/home' // this.$route.query.redirect
         }
     },
     created() {
