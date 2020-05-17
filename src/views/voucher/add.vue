@@ -388,7 +388,7 @@ export default {
             var price = this.tableData[index].qPrice
             var qty = this.tableData[index].qNumber
             if (qty && price) {
-                var amount = (Number(qty) * Number(price)).toFixed(2)
+                var amount = (Number(qty) * Number(price) * 100).toFixed(2)
                 if (this.tableData[index].crDr == 1) {
                     this.$set(this.tableData[index], 'accountedDr', Number(amount))
                     this.$set(this.tableData[index], 'accountedCr', 0)
@@ -510,6 +510,9 @@ export default {
             for (var i = 0; i < this.voucherTable.length; i++) {
                 this.$set(this.voucherTable[i], 'accountedCr', Number(this.voucherTable[i].accountedCr)/100)
                 this.$set(this.voucherTable[i], 'accountedDr', Number(this.voucherTable[i].accountedDr)/100)
+                this.$set(this.voucherTable[i], 'qNumber', Number(this.voucherTable[i].qNumber))
+                this.$set(this.voucherTable[i], 'qPrice', Number(this.voucherTable[i].qPrice))
+                this.$set(this.voucherTable[i], 'coaCode', Number(this.voucherTable[i].coaCode))
                 lineArr.push({ container: this.voucherTable[i] })
             }
             const voucherId = this.$route.query.id || ''
