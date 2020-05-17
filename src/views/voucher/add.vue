@@ -52,8 +52,8 @@
                         <summaryList :dataList="summaryArr" :index="index" @changeVal="changeVal" :val="row.summary"></summaryList>
                     </td>
                     <td class="p0 urel" width="330">
-                        <coaList v-show="!row.auxiliaryName" :dataList="coaArr" :index="index" @changeVal="changeVal" :val="row.coaId"></coaList>
-                        <div v-show="row.auxiliaryName && dialogStatus == 'static'" class="longName" @click="longNameClick(row, index)">{{ row.coaName + row.auxiliaryName }}</div>
+                        <coaList v-show="!row.coaCobinationCode" :dataList="coaArr" :index="index" @changeVal="changeVal" :val="row.coaId"></coaList>
+                        <div v-show="row.coaCobinationCode && dialogStatus == 'static'" class="longName" @click="longNameClick(row, index)">{{ row.coaCode + ' ' + row.coaName + '_'+ row.coaCobinationName }}</div>
                     </td>
                     <td class="p0 urel">
                         <div class="number f12 ptb05" v-if="row.isQuantity==1">
@@ -160,32 +160,32 @@
             <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="65px" style="width: 360px; margin-left:10px;">
                 <el-form-item v-if="auxiliary.charAt(0)=='1'" label="供应商" prop="supplierId">
                     <el-select ref="supplierSelect" placeholder="供应商" v-model="temp.supplierId" style="width:280px">
-                        <el-option v-for="(item,index) in supplierList" :key="item.id" :label="item.supplierName" :value="item.supplierCode"></el-option>
+                        <el-option v-for="(item,index) in supplierList" :key="item.id" :label="item.supplierName" :data-code="item.supplierCode"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item v-if="auxiliary.charAt(1)=='1'" label="客户" prop="custId">
                     <el-select ref="custSelect" placeholder="客户" v-model="temp.custId" style="width:280px">
-                        <el-option v-for="(item,index) in custList" :key="item.id" :label="item.custName" :value="item.custCode"></el-option>
+                        <el-option v-for="(item,index) in custList" :key="item.id" :label="item.custName" :data-code="item.custCode" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item v-if="auxiliary.charAt(2)=='1'" label="部门" prop="deptId">
                     <el-select ref="deptSelect" placeholder="部门" v-model="temp.deptId" style="width:280px">
-                        <el-option v-for="(item,index) in deptList" :key="item.id" :label="item.deptName" :value="item.deptCode"></el-option>
+                        <el-option v-for="(item,index) in deptList" :key="item.id" :label="item.deptName" :data-code="item.deptCode" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item v-if="auxiliary.charAt(3)=='1'" label="职员" prop="staffId">
                     <el-select ref="staffSelect" placeholder="职员" v-model="temp.staffId" style="width:280px">
-                        <el-option v-for="(item,index) in staffList" :key="item.id" :label="item.staffName" :value="item.staffCode"></el-option>
+                        <el-option v-for="(item,index) in staffList" :key="item.id" :label="item.staffName" :data-code="item.staffCode" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item v-if="auxiliary.charAt(4)=='1'" label="存货" prop="itemId">
                     <el-select ref="itemSelect" placeholder="存货" v-model="temp.itemId" style="width:280px">
-                        <el-option v-for="(item,index) in itemList" :key="item.id" :label="item.itemName" :value="item.itemCode"></el-option>
+                        <el-option v-for="(item,index) in itemList" :key="item.id" :label="item.itemName" :data-code="item.itemCode" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item v-if="auxiliary.charAt(5)=='1'" label="项目" prop="projId">
                     <el-select ref="projSelect" placeholder="项目" v-model="temp.projId" style="width:280px">
-                        <el-option v-for="(item,index) in projList" :key="item.id" :label="item.projName" :value="item.projCode"></el-option>
+                        <el-option v-for="(item,index) in projList" :key="item.id" :label="item.projName" :data-code="item.projCode" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
             </el-form>
@@ -207,7 +207,7 @@ import { getProj, getDept, getStaff, getSupplier, getCust, getItem } from '@/api
 import Pagination from '@/components/Pagination'
 import coaList from '@/components/voucher/coaList'
 import summaryList from '@/components/voucher/summaryList'
-var hexCas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O']
+var hexCas = ['A', 'B', 'C', 'D', 'E', 'F']
 export default {
     name: 'voucherAdd',
     components: { coaList, summaryList, Pagination },
@@ -390,22 +390,23 @@ export default {
             this.$set(this.tableData[index], 'auxiliaryName', '')
             this.dialogStatus = 'update'
             this.dialogFormVisible3 = true
+            this.showModifyAuxiliary(row, index)
         },
-        getAmount(index) {
-            var price = this.tableData[index].qPrice
-            var qty = this.tableData[index].qNumber
-            if (qty && price) {
-                var amount = (Number(qty) * Number(price) * 100).toFixed(2)
-                if (this.tableData[index].crDr == 1) {
-                    this.$set(this.tableData[index], 'accountedDr', Number(amount))
-                    this.$set(this.tableData[index], 'accountedCr', 0)
-                }
-                if (this.tableData[index].crDr == -1) {
-                    this.$set(this.tableData[index], 'accountedCr', Number(amount))
-                    this.$set(this.tableData[index], 'accountedDr', 0)
-                }
-                this.getTotalMoney()
+        showModifyAuxiliary(row, index) {
+            this.auxiliary = row.auxiliary
+            for (var key in this.temp) {
+                this.temp[key] = row[key]
             }
+        },
+        showSetAuxiliary() {
+            this.dialogStatus = 'create'
+            for (var key in this.temp) {
+                this.temp[key] = ''
+            }
+            this.dialogFormVisible3 = true
+            this.$nextTick(() => {
+                this.$refs['dataForm'].clearValidate()
+            })
         },
         cancelAuxiliary() {
             console.log(this.dialogStatus)
@@ -433,16 +434,17 @@ export default {
                         for (var i = 0; i < auxiliaries.length; i++) {
                             if (auxiliaries[i] != null && auxiliaries[i] == 1) {
                                 // 显示对应的辅助核算项 1-26
-                                var auxiliaryType = AuxiliaryType[i]
+                                const auxiliaryType = AuxiliaryType[i]
                                 /* 获取当前辅助核算项的值 */
-                                var modelCode = this.$refs[auxiliaryType + 'Select'].selected.value
-                                var selectText = this.$refs[auxiliaryType + 'Select'].selected.label
+                                const modelCode = this.$refs[auxiliaryType + 'Select'].selected.$attrs['data-code']
+                                const selectText = this.$refs[auxiliaryType + 'Select'].selected.label
                                 auxiliaryCode += '_' + hexCas[AuxiliaryType.indexOf(auxiliaryType)] + modelCode
                                 auxiliaryName += '_' + selectText
+                                curObj[auxiliaryType + 'Id'] = this.$refs[auxiliaryType + 'Select'].value
                             }
                         }
-                        curObj.auxiliaryName = curObj.coaName + '_' + auxiliaryName.substring(1)
-                        curObj.auxiliaryCode = curObj.coaCode + '_' + auxiliaryCode.substring(1)
+                        curObj.auxiliaryCode = auxiliaryCode.substring(1)
+                        curObj.auxiliaryName = auxiliaryName.substring(1)
                         // curObj.longName = 
                         // this.tableData.splice(this.curShowIndex + 1, 0, curObj)
                     }
@@ -451,6 +453,8 @@ export default {
                 }
             })
         },
+
+        // ******************************************************************************** 附属代码 *********************************************************************************************
         handDelSummary(id) {
             this.$confirm('你确认要删除该摘要吗?', '提示', {
                 confirmButtonText: '确定',
@@ -522,6 +526,8 @@ export default {
             }
             var lineArr = []
             for (var i = 0; i < this.voucherTable.length; i++) {
+                this.$set(this.voucherTable[i], 'rowId', i+1)
+                this.$set(this.voucherTable[i], 'coaHierarchyId', 2)
                 this.$set(this.voucherTable[i], 'accountedCr', Number(this.voucherTable[i].accountedCr)/100)
                 this.$set(this.voucherTable[i], 'accountedDr', Number(this.voucherTable[i].accountedDr)/100)
                 this.$set(this.voucherTable[i], 'qNumber', Number(this.voucherTable[i].qNumber))
@@ -595,6 +601,22 @@ export default {
                 }
             })
         },
+        getAmount(index) {
+            var price = this.tableData[index].qPrice
+            var qty = this.tableData[index].qNumber
+            if (qty && price) {
+                var amount = (Number(qty) * Number(price) * 100).toFixed(2)
+                if (this.tableData[index].crDr == 1) {
+                    this.$set(this.tableData[index], 'accountedDr', Number(amount))
+                    this.$set(this.tableData[index], 'accountedCr', 0)
+                }
+                if (this.tableData[index].crDr == -1) {
+                    this.$set(this.tableData[index], 'accountedCr', Number(amount))
+                    this.$set(this.tableData[index], 'accountedDr', 0)
+                }
+                this.getTotalMoney()
+            }
+        },
         inputBlur(event, param, index) {
             var num = showNumber1(event.currentTarget.value)
             this.$set(this.tableData[index], param, num)
@@ -662,15 +684,8 @@ export default {
             this.showCoaCode = obj.coaCode + ' ' + obj.coaName
             this.curShowIndex = obj.index
             if (obj.isAuxiliary == 1) {
-                this.dialogStatus = 'create'
                 this.auxiliary = obj.auxiliary
-                for (var key in this.rules) {
-                    this.temp[key] = ''
-                }
-                this.dialogFormVisible3 = true
-                this.$nextTick(() => {
-                    this.$refs['dataForm'].clearValidate()
-                })
+                this.showSetAuxiliary()
             } else {
                 this.auxiliary = '000000'
             }
