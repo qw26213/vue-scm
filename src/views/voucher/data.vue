@@ -127,7 +127,8 @@ export default {
                     endCoa: '',
                     jeStatus: '',
                     voucherSeq: '',
-                    summary: ''
+                    summary: '',
+                    desc: 1
                 }
             }
         }

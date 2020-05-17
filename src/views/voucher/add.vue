@@ -356,7 +356,7 @@ export default {
         getJeSeqByDate(){
             var date = this.billHeader.jeDate
             getGlPeriodByCenterDate({ centerDate: date }).then(res => {
-                if(res.data.errorCode === 200) {
+                if(res.data.errorCode == 0) {
                     this.periodName = res.data.data.periodName
                     this.periodCode = res.data.data.periodCode
                     this.periodId = res.data.data.id
