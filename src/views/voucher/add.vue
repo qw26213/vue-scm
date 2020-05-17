@@ -134,11 +134,11 @@
             </el-table>
             <pagination v-show="total1>10" :total="total1" :page.sync="listQuery1.pageIndex" layout="prev, pager, next" :limit.sync="listQuery1.pageNum" @pagination="getTempletList" />
         </el-dialog>
-        <el-dialog :close-on-click-modal="false" title="常用摘要" :visible.sync="dialogFormVisible2" width="410px">
+        <el-dialog :close-on-click-modal="false" title="常用摘要" :visible.sync="dialogFormVisible2" width="500px">
             <div class="filter-container" style="padding-bottom:0;margin-top:-10px">
-                <el-input size="small" v-model="summaryQuery.mnemonicCode" placeholder="助记码" style="width: 135px;" class="filter-item" />
-                <el-input size="small" v-model="summaryQuery.summary" placeholder="名称" style="width: 135px;" class="filter-item" />
-                <el-button size="mini" class="filter-item" type="primary" @click="saveSummary">创建摘要</el-button>
+                <el-input size="small" v-model="summaryQuery.mnemonicCode" placeholder="助记码" style="width: 180px;" class="filter-item" />
+                <el-input size="small" v-model="summaryQuery.summary" placeholder="名称" style="width: 180px;" class="filter-item" />
+                <el-button size="mini" class="filter-item" type="primary" @click="saveSummary">新增摘要</el-button>
             </div>
             <el-table :data="summaryPageData" border fit highlight-current-row style="width: 100%;" size="mini" cell-class-name="trCell">
                 <el-table-column label="序号" width="50" align="center">
@@ -526,7 +526,7 @@ export default {
             var lineArr = []
             for (var i = 0; i < this.voucherTable.length; i++) {
                 this.$set(this.voucherTable[i], 'rowId', i+1)
-                this.$set(this.voucherTable[i], 'coaHierarchyId', 2)
+                this.$set(this.voucherTable[i], 'rowNum ', i+1)
                 this.$set(this.voucherTable[i], 'accountedCr', Number(this.voucherTable[i].accountedCr)/100)
                 this.$set(this.voucherTable[i], 'accountedDr', Number(this.voucherTable[i].accountedDr)/100)
                 this.$set(this.voucherTable[i], 'qty', Number(this.voucherTable[i].qty))
