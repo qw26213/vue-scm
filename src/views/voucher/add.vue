@@ -159,32 +159,32 @@
             <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="65px" style="width: 360px; margin-left:10px;">
                 <el-form-item v-if="auxiliary.charAt(0)=='1'" label="供应商" prop="supplierId">
                     <el-select ref="supplierSelect" placeholder="供应商" v-model="temp.supplierId" style="width:280px">
-                        <el-option v-for="(item,index) in supplierList" :key="item.supplierCode" :label="item.supplierName" :value="item.id"></el-option>
+                        <el-option v-for="(item,index) in supplierList" :key="item.id" :label="item.supplierName" :value="item.supplierCode"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item v-if="auxiliary.charAt(1)=='1'" label="客户" prop="custId">
                     <el-select ref="custSelect" placeholder="客户" v-model="temp.custId" style="width:280px">
-                        <el-option v-for="(item,index) in custList" :key="item.custCode" :label="item.custName" :value="item.id"></el-option>
+                        <el-option v-for="(item,index) in custList" :key="item.id" :label="item.custName" :value="item.custCode"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item v-if="auxiliary.charAt(2)=='1'" label="部门" prop="deptId">
                     <el-select ref="deptSelect" placeholder="部门" v-model="temp.deptId" style="width:280px">
-                        <el-option v-for="(item,index) in deptList" :key="item.deptCode" :label="item.deptName" :value="item.id"></el-option>
+                        <el-option v-for="(item,index) in deptList" :key="item.id" :label="item.deptName" :value="item.deptCode"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item v-if="auxiliary.charAt(3)=='1'" label="职员" prop="staffId">
                     <el-select ref="staffSelect" placeholder="职员" v-model="temp.staffId" style="width:280px">
-                        <el-option v-for="(item,index) in staffList" :key="item.staffCode" :label="item.staffName" :value="item.id"></el-option>
+                        <el-option v-for="(item,index) in staffList" :key="item.id" :label="item.staffName" :value="item.staffCode"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item v-if="auxiliary.charAt(4)=='1'" label="存货" prop="itemId">
                     <el-select ref="itemSelect" placeholder="存货" v-model="temp.itemId" style="width:280px">
-                        <el-option v-for="(item,index) in itemList" :key="item.itemCode" :label="item.itemName" :value="item.id"></el-option>
+                        <el-option v-for="(item,index) in itemList" :key="item.id" :label="item.itemName" :value="item.itemCode"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item v-if="auxiliary.charAt(5)=='1'" label="项目" prop="projId">
                     <el-select ref="projSelect" placeholder="项目" v-model="temp.projId" style="width:280px">
-                        <el-option v-for="(item,index) in projList" :key="item.projCode" :label="item.projName" :value="item.id"></el-option>
+                        <el-option v-for="(item,index) in projList" :key="item.id" :label="item.projName" :value="item.projCode"></el-option>
                     </el-select>
                 </el-form-item>
             </el-form>
@@ -412,8 +412,8 @@ export default {
                     var curObj = this.tableData[editIndex]
                     var auxiliary = this.auxiliary
                     if (auxiliary != null && auxiliary.length > 0) {
-                        var auxiliaryCode = ""
-                        var auxiliaryName = ""
+                        var auxiliaryCode = ''
+                        var auxiliaryName = ''
                         var auxiliaries = auxiliary.split("")
                         var AuxiliaryType = ['supplier', 'cust', 'dept', 'staff', 'item', 'proj']
                         for (var i = 0; i < auxiliaries.length; i++) {
@@ -421,11 +421,10 @@ export default {
                                 // 显示对应的辅助核算项 1-26
                                 var auxiliaryType = AuxiliaryType[i]
                                 /* 获取当前辅助核算项的值 */
-                                var selectId = this.$refs[auxiliaryType + 'Select'].selected.value
+                                var modelCode = this.$refs[auxiliaryType + 'Select'].selected.value
                                 var selectText = this.$refs[auxiliaryType + 'Select'].selected.label
-                                var modelCode = this.$refs[auxiliaryType + 'Select'].selected.$attrs.key
-                                auxiliaryCode += "_" + hexCas[AuxiliaryType.indexOf(auxiliaryType)] + modelCode
-                                auxiliaryName += "_" + selectText
+                                auxiliaryCode += '_' + hexCas[AuxiliaryType.indexOf(auxiliaryType)] + modelCode
+                                auxiliaryName += '_' + selectText
                             }
                         }
                         curObj.auxiliaryName = curObj.coaName + '_' + auxiliaryName.substring(1)
