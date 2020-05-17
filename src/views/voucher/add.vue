@@ -535,22 +535,21 @@ export default {
             }
             const voucherId = this.$route.query.id || ''
             const obj = {
+                id: voucherId,
+                joinJeHeaderId: '',
                 jeDate: this.billHeader.jeDate,
                 jeSeq: this.billHeader.jeSeq,
                 jeCatogeryId: this.billHeader.jeCatogeryId,
                 jeCatogeryName: '记',
                 jeCatogeryTitle: "记账凭证",
+                voucherAttachmentNum: 0,
                 baseCurrencyCode: 'CNY',
                 baseCurrencyId:  '',
                 baseCurrencyName: '人民币',
-                joinJeHeaderId: voucherId,
                 periodCode: this.periodCode,
                 periodId: this.periodId,
                 periodName: this.periodName,
-                saveType: this.saveType || 1, //1是新增，2是插入
-                voucherAttachmentNum: 0,
-                voucherId: voucherId,
-                jeHeaderId: voucherId,
+                saveType: this.saveType,
                 voucherTable: lineArr,
                 totalCreditMoney: Number(this.totalMoney1)/100,
                 totalDebiteMoney: Number(this.totalMoney2)/100

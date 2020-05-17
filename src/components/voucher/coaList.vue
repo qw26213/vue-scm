@@ -74,7 +74,7 @@ export default {
                 coaCode: this.coaCode,
                 coaId: this.curId,
                 coaName: this.coaName,
-                qUom: this.uom,
+                uom: this.uom,
                 crDr: this.crDr
             }
             this.$emit('changeVal', obj)
