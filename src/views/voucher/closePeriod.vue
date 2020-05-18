@@ -1,51 +1,13 @@
 <template>
     <div class="main">
-        <div class="billList">
-            <div class="item">
-                <p>结转成本</p>
-                <el-button type="primary" size="mini" @click="createVoucher(0)">生成凭证</el-button>
-            </div>
-            <div class="item">
-                <p>结转待摊费用</p>
-                <el-button type="primary" size="mini" @click="createVoucher(1)">生成凭证</el-button>
-            </div>
-            <div class="item">
-                <p>结转未缴增值税</p>
-                <el-button type="primary" size="mini" @click="createVoucher(2)">生成凭证</el-button>
-            </div>
-            <div class="item">
-                <p>计提附加税</p>
-                <el-button type="primary" size="mini" @click="createVoucher(3)">生成凭证</el-button>
-            </div>
-            <div class="item">
-                <p>计提折旧</p>
-                <el-button type="primary" size="mini" @click="createVoucher(4)">生成凭证</el-button>
-            </div>
-            <div class="item">
-                <p>计提工资</p>
-                <el-button type="primary" size="mini" @click="createVoucher(5)">生成凭证</el-button>
-            </div>
-            <div class="item" v-if="curMonth == '03' || curMonth == '06' || curMonth == '09' || curMonth == '12'">
-                <p>计提所得税</p>
-                <el-button type="primary" size="mini" @click="createVoucher(6)">生成凭证</el-button>
-            </div>
-            <div class="item">
-                <p>结转收入</p>
-                <el-button type="primary" size="mini" @click="createVoucher(7)">生成凭证</el-button>
-            </div>
-            <div class="item">
-                <p>结转费用</p>
-                <el-button type="primary" size="mini" @click="createVoucher(8)">生成凭证</el-button>
-            </div>
-            <div class="item">
-                <p>结转损益(合并)</p>
-                <el-button type="primary" size="mini" @click="createVoucher(9)">生成凭证</el-button>
-            </div>
-            <div class="item" v-if="curMonth == '12'">
-                <p>结转未分配利润</p>
-                <el-button type="primary" size="mini" @click="createVoucher(10)">生成凭证</el-button>
-            </div>`
-        </div>
+        <el-row :gutter="30">
+            <el-col :span="6" v-for="(item, index) in dataList" :key="index" style="margin-bottom: 20px">
+                <el-card class="box-card" style="text-align:center;height:150px">
+                    <div class="itemTit">{{item}}</div>
+                    <el-button type="primary" :disabled="(curMonth == '03' || curMonth == '06' || curMonth == '09' || curMonth == '12')&&index==4" @click="createVoucher(index)">生成凭证</el-button>
+                </el-card>
+            </el-col>
+        </el-row>
     </div>
 </template>
 <script>
@@ -60,6 +22,7 @@ export default {
     components: { coaList, summaryList, Pagination },
     data() {
         return {
+            dataList: ['结转成本', '结转待摊费用', '结转未缴增值税', '计提附加税', '计提折旧', '计提工资', '计提所得税', '结转收入', '结转费用', '结转损益(合并)', '结转未分配利润'],
             selectCatogery: '',
             catogeryList: [],
             total1: 0,
@@ -85,7 +48,7 @@ export default {
             },
             curMonth: 1,
             searchPeriodId: '',
-            searchPeriodYear:'',
+            searchPeriodYear: '',
             searchPeriodNum: 0,
             searchPeriodName: '',
             searchPeriodCode: '',
@@ -109,13 +72,13 @@ export default {
         this.getCurVoucherStatus()
     },
     methods: {
-        createVoucher(){
-            
+        createVoucher(index) {
+            console.log(index)
         },
         getCurVoucherStatus() {
-            var curPeriod = '2020-04'
-            this.curMonth = curPeriod.split('-')[1];
-            this.initBillStatus(curPeriod);
+            var curPeriod = '2020-05'
+            this.curMonth = curPeriod.split('-')[1]
+            this.initBillStatus(curPeriod)
         },
         initBillStatus(str) {
             getPeriodState(str).then(res => {
@@ -157,20 +120,13 @@ export default {
 @import './voucher.scss';
 </style>
 <style scoped>
-.main{min-width: 1200px}
-.billList {
-    margin-top: 20px;
-    display: flex;
+.main {
+    min-width: 1200px;
+    padding: 30px 24px;
 }
 
-.billList .item {
-    margin-left: 15px;
-    width: 120px;
-    height: 100px;
-    border: 1px #ddd solid;
-    text-align: center;
-    border-radius: 2px;
-    font-size: 13px;
-    padding-top: 8px;
+.itemTit {
+    color:#333;font-size:16px;margin-bottom: 25px;
 }
+
 </style>

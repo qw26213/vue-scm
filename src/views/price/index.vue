@@ -82,7 +82,7 @@
                     <el-button type="primary" @click="handleModify()">确定</el-button>
                 </div>
             </el-dialog>
-            <el-dialog :close-on-click-modal="false" title="批量修改价格" :visible.sync="dialogFormVisible2" :show-close="false" ::close-on-click-modal="false" width="820px">
+            <el-dialog :close-on-click-modal="false" title="批量修改价格" :visible.sync="dialogFormVisible2" :show-close="false" width="820px">
                 <el-table ref="checkTable" :data="tableList" border fit style="width: 100%;" size="mini" cell-class-name="compileall">
                     <el-table-column label="价格组代码" align="left" prop="priceGroupCode" width="110"></el-table-column>
                     <el-table-column label="价格组名称" align="left" prop="priceGroupName" width="110"></el-table-column>

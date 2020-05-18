@@ -123,3 +123,4 @@ input:disabled{background-color:#ffffff;}
 .tpCell .cell p:last-child{border-bottom:none}
 
 .detail .dataTable span{width: 120px!important;display: block;}
+.clearfix:after{display: table;content: '';clear: both;}

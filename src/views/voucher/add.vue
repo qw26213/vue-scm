@@ -69,19 +69,13 @@
                         <div class="money_bg">
                             <i v-if="row.accountedDr && row.accountedDr != 0" v-for="(item,index) in String(row.accountedDr)" :key="index" :style="{color:(row.accountedDr<0?'#f00':'#333')}">{{item}}</i>
                         </div>
-                        <input type="text" autocomplete="off" class="input_bg" v-model="row.accountedDr" maxlength="12"
-                        @input="inputChange($event, 'accountedDr',index)" 
-                        @focus="inputFocus($event, 'accountedDr', index)" 
-                        @blur="inputBlur($event, 'accountedDr', index)">
+                        <input type="text" autocomplete="off" class="input_bg" v-model="row.accountedDr" maxlength="12" @input="inputChange($event, 'accountedDr',index)" @focus="inputFocus($event, 'accountedDr', index)" @blur="inputBlur($event, 'accountedDr', index)">
                     </td>
                     <td class="urel">
                         <div class="money_bg">
                             <i v-if="row.accountedCr && row.accountedCr != 0" v-for="(item,index) in String(row.accountedCr)" :key="index" :style="{color:(row.accountedCr<0?'#f00':'#333')}">{{item}}</i>
                         </div>
-                        <input type="text" autocomplete="off" class="input_bg" v-model="row.accountedCr" maxlength="12" 
-                        @input="inputChange($event, 'accountedCr',index)" 
-                        @focus="inputFocus($event, 'accountedCr', index)" 
-                        @blur="inputBlur($event, 'accountedCr', index)">
+                        <input type="text" autocomplete="off" class="input_bg" v-model="row.accountedCr" maxlength="12" @input="inputChange($event, 'accountedCr',index)" @focus="inputFocus($event, 'accountedCr', index)" @blur="inputBlur($event, 'accountedCr', index)">
                     </td>
                 </tr>
             </tbody>
@@ -180,7 +174,7 @@
                 </el-form-item>
                 <el-form-item v-if="auxiliary.charAt(4)=='1'" label="存货" prop="itemId">
                     <el-select ref="itemSelect" placeholder="存货" v-model="temp.itemId" style="width:280px">
-                        <el-option v-for="(item,index) in itemList" :key="item.id" :label="item.itemName" :data-code="item.itemCode" :value="item.id"></el-option>
+                        <el-option v-for="(item,index) in itemList" :key="item.id" :label="item.itemName" :data-code="item.itemCode" :data-uom="item.uom" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item v-if="auxiliary.charAt(5)=='1'" label="项目" prop="projId">
@@ -355,10 +349,10 @@ export default {
         }
     },
     methods: {
-        getJeSeqByDate(){
+        getJeSeqByDate() {
             var date = this.billHeader.jeDate
             getGlPeriodByCenterDate({ centerDate: date }).then(res => {
-                if(res.data.errorCode == 0) {
+                if (res.data.errorCode == 0) {
                     this.periodName = res.data.data.periodName
                     this.periodCode = res.data.data.periodCode
                     this.periodId = res.data.data.id
@@ -371,7 +365,7 @@ export default {
         },
         getJeSeqNum(periodId) {
             var obj = {
-                periodId: periodId, 
+                periodId: periodId,
                 catogeryId: this.billHeader.jeCatogeryId,
                 jeDate: this.billHeader.jeDate
             }
@@ -379,7 +373,7 @@ export default {
                 this.billHeader.jeSeq = res.data.data
             })
         },
-        getPeriodIdByCode(arr,code) {
+        getPeriodIdByCode(arr, code) {
             for (var i = 0; i < arr.length; i++) {
                 if (arr[i].periodCode == code) {
                     return arr[i].id
@@ -443,6 +437,9 @@ export default {
                                 coaCobinationCode += '_' + hexCas[AuxiliaryType.indexOf(auxiliaryType)] + modelCode
                                 coaCobinationName += '_' + selectText
                                 curObj[auxiliaryType + 'Id'] = this.temp[auxiliaryType + 'Id']
+                                if (auxiliaryType === 'item') {
+                                    curObj.uom = this.$refs[auxiliaryType + 'Select'].selected.$attrs['data-uom']
+                                }
                             }
                         }
                         curObj.coaCobinationCode = coaCobinationCode.substring(1)
@@ -456,7 +453,7 @@ export default {
             })
         },
 
-        // ******************************************************************************** 附属代码 *********************************************************************************************
+        // ******************************************************************************** 附属代码
         handDelSummary(id) {
             this.$confirm('你确认要删除该摘要吗?', '提示', {
                 confirmButtonText: '确定',
@@ -528,10 +525,10 @@ export default {
             }
             var lineArr = []
             for (var i = 0; i < this.voucherTable.length; i++) {
-                this.$set(this.voucherTable[i], 'rowId', i+1)
-                this.$set(this.voucherTable[i], 'rowNum ', i+1)
-                this.$set(this.voucherTable[i], 'accountedCr', Number(this.voucherTable[i].accountedCr)/100)
-                this.$set(this.voucherTable[i], 'accountedDr', Number(this.voucherTable[i].accountedDr)/100)
+                this.$set(this.voucherTable[i], 'rowId', i + 1)
+                this.$set(this.voucherTable[i], 'rowNum ', i + 1)
+                this.$set(this.voucherTable[i], 'accountedCr', Number(this.voucherTable[i].accountedCr) / 100)
+                this.$set(this.voucherTable[i], 'accountedDr', Number(this.voucherTable[i].accountedDr) / 100)
                 this.$set(this.voucherTable[i], 'qty', Number(this.voucherTable[i].qty))
                 this.$set(this.voucherTable[i], 'unitprice', Number(this.voucherTable[i].unitprice))
                 lineArr.push({ container: this.voucherTable[i] })
@@ -547,15 +544,15 @@ export default {
                 jeCatogeryTitle: "记账凭证",
                 voucherAttachmentNum: 0,
                 baseCurrencyCode: 'CNY',
-                baseCurrencyId:  '',
+                baseCurrencyId: '',
                 baseCurrencyName: '人民币',
                 periodCode: this.periodCode,
                 periodId: this.periodId,
                 periodName: this.periodName,
                 saveType: this.saveType,
                 voucherTable: lineArr,
-                totalCreditMoney: Number(this.totalMoney1)/100,
-                totalDebiteMoney: Number(this.totalMoney2)/100
+                totalCreditMoney: Number(this.totalMoney1) / 100,
+                totalDebiteMoney: Number(this.totalMoney2) / 100
                 // jzCode: jzCode
             }
             if (type == 1) {
