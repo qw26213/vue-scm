@@ -44,18 +44,18 @@
             </thead>
             <tbody class="voucher_tbody">
                 <tr v-for="(row,index) in tableData">
-                    <td class="p0 tablectrl">
+                    <td class="tablectrl">
                         <a title="增加分录" class="glyicon_plus" @click="addRow()"></a>
                         <a title="删除分录" class="glyicon_remove" @click="delRow(index)"></a>
                     </td>
-                    <td class="p0 urel" width="330">
+                    <td width="330">
                         <summaryList :dataList="summaryArr" :index="index" @changeVal="changeVal" :val="row.summary"></summaryList>
                     </td>
-                    <td class="p0 urel" width="330">
-                        <coaList v-show="!row.auxiliaryName" :dataList="coaArr" :index="index" @changeVal="changeVal" :val="row.coaId"></coaList>
-                        <div v-show="row.auxiliaryName && dialogStatus == 'static'" class="longName" @click="longNameClick(row, index)">{{ row.coaCode + ' ' + row.coaName + '_'+ row.auxiliaryName }}</div>
+                    <td width="330">
+                        <coaList v-show="!row.coaCobinationName || dialogStatus != 'static'" :dataList="coaArr" :index="index" @changeVal="changeVal" :val="row.coaId"></coaList>
+                        <div v-show="row.coaCobinationName && dialogStatus == 'static'" class="longName" @click="longNameClick(row, index)">{{ row.coaCode + ' ' + row.coaName + '_'+ row.coaCobinationName }}</div>
                     </td>
-                    <td class="p0 urel">
+                    <td>
                         <div class="number f12 ptb05" v-if="row.isQuantity==1">
                             <p style="margin-bottom: 3px;">数量:
                                 <input type="text" v-model="row.qty" @change="getAmount(index)" /><i class="uom">{{row.uom}}</i>
@@ -65,16 +65,16 @@
                             </p>
                         </div>
                     </td>
-                    <td class="urel p0">
+                    <td class="urel">
                         <div class="money_bg">
                             <i v-if="row.accountedDr && row.accountedDr != 0" v-for="(item,index) in String(row.accountedDr)" :key="index" :style="{color:(row.accountedDr<0?'#f00':'#333')}">{{item}}</i>
                         </div>
-                        <input type="text" autocomplete="off" class="input_bg" v-model="row.accountedDr" maxlength="12" 
+                        <input type="text" autocomplete="off" class="input_bg" v-model="row.accountedDr" maxlength="12"
                         @input="inputChange($event, 'accountedDr',index)" 
                         @focus="inputFocus($event, 'accountedDr', index)" 
                         @blur="inputBlur($event, 'accountedDr', index)">
                     </td>
-                    <td class="urel p0">
+                    <td class="urel">
                         <div class="money_bg">
                             <i v-if="row.accountedCr && row.accountedCr != 0" v-for="(item,index) in String(row.accountedCr)" :key="index" :style="{color:(row.accountedCr<0?'#f00':'#333')}">{{item}}</i>
                         </div>
@@ -202,7 +202,7 @@ import { getGlPeriodByCenterDate, getGlPeriodByPeriodCode, getMaxVoucherSeq, get
 import { getVoucherById, voucherSave, getCatogery } from '@/api/voucher'
 import { getTempletHeader, getTempletTypeList, getTempletById, templetSave } from '@/api/voucher'
 import { getAllUnion, addSummary, delSummary } from '@/api/voucher'
-import { getNowDate, deleteEmptyObj, addNullObj, addNullObj2, convertCurrency, validateVal, deepClone, showNumber1, showNumber2 } from '@/utils'
+import { getNowDate, deleteEmptyObj, addNullObj, addNullObj2, convertCurrency, validateVal, deepClone, showNumber1, showNumber2, getIsAuxiliary } from '@/utils'
 import { getProj, getDept, getStaff, getSupplier, getCust, getItem } from '@/api/user'
 import Pagination from '@/components/Pagination'
 import coaList from '@/components/voucher/coaList'
@@ -392,23 +392,26 @@ export default {
         },
         showModifyAuxiliary(row, index) {
             this.dialogStatus = 'update'
-            this.auxiliary = row.auxiliary
+            this.auxiliary = getIsAuxiliary(this.coaArr, row.coaId)
+            this.showCoaCode = row.coaCode + ' ' + row.coaName
+            this.curShowIndex = index
             for (var key in this.temp) {
                 this.temp[key] = row[key]
             }
         },
-        showSetAuxiliary() {
+        showSetAuxiliary(obj) {
             this.dialogStatus = 'create'
             for (var key in this.temp) {
                 this.temp[key] = ''
             }
+            this.showCoaCode = obj.coaCode + ' ' + obj.coaName
+            this.curShowIndex = obj.index
             this.dialogFormVisible3 = true
             this.$nextTick(() => {
                 this.$refs['dataForm'].clearValidate()
             })
         },
         cancelAuxiliary() {
-            console.log(this.dialogStatus)
             this.dialogFormVisible3 = false
             if (this.dialogStatus === 'create') {
                 // 设置辅助核算取消时清空
@@ -426,8 +429,8 @@ export default {
                     var curObj = this.tableData[editIndex]
                     var auxiliary = this.auxiliary
                     if (auxiliary != null && auxiliary.length > 0) {
-                        var auxiliaryCode = ''
-                        var auxiliaryName = ''
+                        var coaCobinationCode = ''
+                        var coaCobinationName = ''
                         var auxiliaries = auxiliary.split("")
                         var AuxiliaryType = ['supplier', 'cust', 'dept', 'staff', 'item', 'proj']
                         for (var i = 0; i < auxiliaries.length; i++) {
@@ -437,13 +440,13 @@ export default {
                                 /* 获取当前辅助核算项的值 */
                                 const modelCode = this.$refs[auxiliaryType + 'Select'].selected.$attrs['data-code']
                                 const selectText = this.$refs[auxiliaryType + 'Select'].selected.label
-                                auxiliaryCode += '_' + hexCas[AuxiliaryType.indexOf(auxiliaryType)] + modelCode
-                                auxiliaryName += '_' + selectText
+                                coaCobinationCode += '_' + hexCas[AuxiliaryType.indexOf(auxiliaryType)] + modelCode
+                                coaCobinationName += '_' + selectText
                                 curObj[auxiliaryType + 'Id'] = this.temp[auxiliaryType + 'Id']
                             }
                         }
-                        curObj.auxiliaryCode = auxiliaryCode.substring(1)
-                        curObj.auxiliaryName = auxiliaryName.substring(1)
+                        curObj.coaCobinationCode = coaCobinationCode.substring(1)
+                        curObj.coaCobinationName = coaCobinationName.substring(1)
                         // curObj.longName = 
                         // this.tableData.splice(this.curShowIndex + 1, 0, curObj)
                     }
@@ -581,7 +584,7 @@ export default {
                     if (this.saveType == 1 && !this.$route.query.id) {
                         this.$message.success('凭证新增成功！')
                         this.tableData = [{}, {}, {}, {}]
-                        this.getJeSeq()
+                        this.getJeSeqByDate()
                     }
                     if (this.saveType == 1 && this.$route.query.id) {
                         this.$message.success('凭证保存成功！')
@@ -678,11 +681,9 @@ export default {
             for (var key in obj) {
                 this.$set(this.tableData[obj.index], key, obj[key])
             }
-            this.showCoaCode = obj.coaCode + ' ' + obj.coaName
-            this.curShowIndex = obj.index
             if (obj.isAuxiliary == 1) {
                 this.auxiliary = obj.auxiliary
-                this.showSetAuxiliary()
+                this.showSetAuxiliary(obj)
             } else {
                 this.auxiliary = '000000'
             }

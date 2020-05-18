@@ -507,18 +507,6 @@ export function toNumStr(arg) {
 
 // input时触发
 export function validateVal(numval) {
-    // if (numval.indexOf('-') < 0) {
-    //     if (numval != '' && numval.substr(0, 1) == '.') {
-    //         numval = ""
-    //     }
-    // } else {
-    //     if (numval != '' && numval.substr(1, 2) == '.') {
-    //         numval = "-"
-    //     }
-    //     if (numval.length > 1 && numval.indexOf('-') > 0) {
-    //         numval = numval.substring(0, numval.length - 1);
-    //     }
-    // }
     var a = numval.replace(/[^\d.-]/g, "")
     var b = a.replace(/\.{2,}/g, ".")
     var c = b.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
@@ -567,4 +555,14 @@ export function showNumber2(value) {
         var value = value / 100
     }
     return value
+}
+
+
+export function getIsAuxiliary(arr, id) {
+    for (var i = 0; i < arr.length; i++) {
+        if (arr[i].id == id) {
+            return arr[i].auxiliary
+        }
+    }
+    return '000000'
 }

@@ -36,7 +36,7 @@
             </el-table-column>
             <el-table-column label="凭证字号" align="center" sortable="custom" prop="jeSeq" width="110">
                 <template slot-scope="{row}">
-                    <a href="javascript:" @click="handleCompile(row.id)">{{row.jeCatogery}}-{{row.jeSeq | catogeryNumberFor}}</a>
+                    <a href="javascript:" @click="handleCompile(row.id)">{{row.jeCatogeryName}}-{{ row.jeSeq | jeSeqFormat }}</a>
                 </template>
             </el-table-column>
             <el-table-column label="摘要" min-width="120">
@@ -44,7 +44,7 @@
                     <p clss="pCell" v-for="(item,index) in row.lineList" :key="index">{{item.summary}}</p>
                 </template>
             </el-table-column>
-            <el-table-column label="科目名称" min-width="240">
+            <el-table-column label="科目名称" min-width="240" show-overflow-tooltip>
                 <template slot-scope="{row}">
                     <p clss="pCell" style="width:max-content;min-width:100%" v-for="(item,index) in row.lineList" :key="index">{{item.longName}}</p>
                 </template>
@@ -102,7 +102,7 @@ export default {
             if (!num) { return '0.00' }
             return parseFloat(num).toFixed(2);
         },
-        catogeryNumberFor: function (num) {
+        jeSeqFormat : function (num) {
             return num < 10 ? '00' + num : num < 100 ? '0' + num : num;
         }
     },
