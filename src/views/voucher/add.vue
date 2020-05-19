@@ -299,27 +299,27 @@ export default {
         this.$store.dispatch('voucher/getTempletType')
         this.$store.dispatch('voucher/getAuxiliaryTypeList')
         getCatogery().then(res => {
-            this.catogeryList = res.data.data
+            this.catogeryList = res.data.data || []
             this.$set(this.billHeader, 'jeCatogeryId', this.catogeryList[0].id)
         })
         this.getTempletList()
         getCust().then(res => {
-            this.custList = res.data.data
+            this.custList = res.data.data || []
         })
         getDept().then(res => {
-            this.deptList = res.data.data
+            this.deptList = res.data.data || []
         })
         getStaff().then(res => {
-            this.staffList = res.data.data
+            this.staffList = res.data.data || []
         })
         getSupplier().then(res => {
-            this.supplierList = res.data.data
+            this.supplierList = res.data.data || []
         })
         getItem().then(res => {
-            this.itemList = res.data.data
+            this.itemList = res.data.data || []
         })
         getProj().then(res => {
-            this.projList = res.data.data
+            this.projList = res.data.data || []
         })
         if (this.$route.query.id) {
             getVoucherById({ id: this.$route.query.id }).then(res => {
@@ -334,8 +334,10 @@ export default {
                     this.tableData.push({})
                 }
                 for (var i = 0; i < this.tableData.length; i++) {
-                    this.$set(this.tableData[i], 'accountedDr', this.tableData[i].accountedDr * 100)
-                    this.$set(this.tableData[i], 'accountedCr', this.tableData[i].accountedCr * 100)
+                    if (this.tableData[i].accountedDr || this.tableData[i].accountedCr) {
+                        this.$set(this.tableData[i], 'accountedDr', this.tableData[i].accountedDr * 100)
+                        this.$set(this.tableData[i], 'accountedCr', this.tableData[i].accountedCr * 100)
+                    }
                 }
                 this.getTotalMoney()
             })

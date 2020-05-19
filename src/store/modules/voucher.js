@@ -25,22 +25,22 @@ const mutations = {
 const actions = {
     getCoaList({ commit }, data) {
         getCoas().then(res => {
-            commit('SET_COA', res.data.data)
+            commit('SET_COA', res.data.data || [])
         })
     },
     getSummaryList({ commit }, data) {
-        getAllUnion().then(res => {
-            commit('SET_SUMMARY', res.data.data)
+        getSummarys().then(res => {
+            commit('SET_SUMMARY', res.data.data || [])
         })
     },
     getTempletType({ commit }, data) {
         getTempletTypeList().then(res => {
-            commit('SET_TEMPLETTYPE', res.data.data)
+            commit('SET_TEMPLETTYPE', res.data.data || [])
         })
     },
     getAuxiliaryTypeList({ commit }, data) {
         getAuxiliaryType().then(res => {
-            commit('SET_AUXILIARY', res.data.data)
+            commit('SET_AUXILIARY', res.data.data || [])
         })
     }
 }

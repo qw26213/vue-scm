@@ -529,7 +529,7 @@ export function validateVal(numval) {
 
 // blur时触发
 export function showNumber1(value) {
-    if (value == "" || value == "0" || value == "0." || value == "0.0" || value == "0.00" || value == "00.00" || value == '.') {
+    if (!value || value == "0" || value == "0." || value == "0.0" || value == "0.00" || value == "00.00" || value == '.') {
         var value = ''
     } else {
         var value = (value * 100).toFixed(0)
@@ -551,10 +551,10 @@ export function showNumber1(value) {
 
 // fouces时触发
 export function showNumber2(value) {
-    if (value == "" || value == "0") {
+    if (!value || value == "0") {
         var value = ''
     } else {
-        var value = value / 100
+        var value = value * 1 / 100
     }
     return value
 }
