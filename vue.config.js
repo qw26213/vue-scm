@@ -31,7 +31,7 @@ module.exports = {
     overlay: {
       warnings: false,
       errors: true
-    }
+    } 
   },
   configureWebpack: {
     name: name,
