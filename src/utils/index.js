@@ -303,12 +303,14 @@ export function deleteEmptyProp(arr) {
 }
 
 export function deleteEmptyObj(arr) {
-    var newArr = [];
-    for (var i = 0; i < arr.length; i++) {
-        if (arr[i].summary && arr[i].summary != '') {
-            newArr.push(arr[i])
+    console.log(arr)
+    var newArr = []
+    arr.forEach(item => {
+        if (item.summary || item.coaId) {
+            newArr.push(item)
         }
-    }
+    })
+    console.log(newArr)
     return newArr
 }
 

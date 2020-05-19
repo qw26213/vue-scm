@@ -32,7 +32,6 @@ export default {
             crDr: '',
             coaCode: '',
             coaName: '',
-            curIndex: this.index,
             coaList: this.dataList
         }
     },
@@ -69,7 +68,7 @@ export default {
                 isAuxiliary: this.isAuxiliary,
                 isCurrency: this.isCurrency,
                 isQuantity: this.isQuantity,
-                index: this.curIndex,
+                index: this.index,
                 auxiliary: this.auxiliary,
                 coaCode: this.coaCode,
                 coaId: this.curId,

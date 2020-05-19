@@ -518,10 +518,25 @@ export default {
             this.tableData.splice(index, 1)
         },
         saveData(type) {
-            this.voucherTable = deepClone((this.tableData))
-            if (this.voucherTable.length < 2) {deleteEmptyObj
+            this.voucherTable = deepClone(deleteEmptyObj(this.tableData))
+            var listLen = this.voucherTable.length
+            if (this.voucherTable.length < 2) {
                 this.$message.warning('凭证至少要两条分录！')
                 return
+            }
+            for (var i = 0; i < listLen; i++) {
+                if (this.voucherTable[i].summary == "") {
+                    this.$message.warning("第" + (i + 1) + "行，摘要未填写！")
+                    return
+                }
+                if (this.voucherTable[i].coaId == "") {
+                    this.$message.warning("第" + (i + 1) + "行，科目未填写！")
+                    return
+                }
+                if (type != 1 && (this.voucherTable[i].accountedCr == "" && this.voucherTable[i].accountedDr == "")) {
+                    this.$message.warning("第" + (i + 1) + "行，金额未填写！")
+                    return
+                }
             }
             var lineArr = []
             for (var i = 0; i < this.voucherTable.length; i++) {
@@ -582,6 +597,7 @@ export default {
                         this.$message.success('凭证新增成功！')
                         this.tableData = [{}, {}, {}, {}]
                         this.getJeSeqByDate()
+                        this.getTotalMoney()
                     }
                     if (this.saveType == 1 && this.$route.query.id) {
                         this.$message.success('凭证保存成功！')
