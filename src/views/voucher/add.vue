@@ -512,15 +512,15 @@ export default {
         },
         delRow(index) {
             if (this.tableData.length <= 2) {
-                this.$message.warning('至少要保留两条分录！');
+                this.$message.warning('至少要保留两条分录')
                 return
             }
             this.tableData.splice(index, 1)
         },
         saveData(type) {
-            this.voucherTable = deepClone(deleteEmptyObj(this.tableData))
-            if (this.voucherTable.length < 2) {
-                this.$message.warning('凭证至少要两条分录！');
+            this.voucherTable = deepClone((this.tableData))
+            if (this.voucherTable.length < 2) {deleteEmptyObj
+                this.$message.warning('凭证至少要两条分录！')
                 return
             }
             var lineArr = []
@@ -585,13 +585,13 @@ export default {
                     }
                     if (this.saveType == 1 && this.$route.query.id) {
                         this.$message.success('凭证保存成功！')
-                        this.$store.dispatch('tagsView/delView', this.$route);
-                        this.$router.replace('/voucher/data');
+                        this.$store.dispatch('tagsView/delView', this.$route)
+                        this.$router.replace('/voucher/data')
                     }
                     if (this.saveType == 2) {
                         this.$message.success('凭证插入成功！')
-                        this.$store.dispatch('tagsView/delView', this.$route);
-                        this.$router.replace('/voucher/data');
+                        this.$store.dispatch('tagsView/delView', this.$route)
+                        this.$router.replace('/voucher/data')
                     }
                 } else {
                     this.$message.error(res.data.msg)
