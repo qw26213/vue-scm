@@ -3,6 +3,7 @@ import { getSummarys, getAllUnion, getCoas, getAuxiliaryType, getTempletTypeList
 const state = {
     coaArr: [],
     summaryArr: [],
+    summaryTable: [],
     auxiliaryArr: [],
     templetTypeList:[]
 }
@@ -13,6 +14,9 @@ const mutations = {
     },
     SET_SUMMARY: (state, data) => {
         state.summaryArr = data
+    },
+    SET_SUMMARYTABLE: (state, data) => {
+        state.summaryTable = data
     },
     SET_TEMPLETTYPE: (state, data) => {
         state.templetTypeList = data
@@ -41,6 +45,11 @@ const actions = {
     getAuxiliaryTypeList({ commit }, data) {
         getAuxiliaryType().then(res => {
             commit('SET_AUXILIARY', res.data.data || [])
+        })
+    },
+    getSummaryTable({ commit }, data) {
+        getAllUnion().then(res => {
+            commit('SET_SUMMARYTABLE', res.data.data || [])
         })
     }
 }

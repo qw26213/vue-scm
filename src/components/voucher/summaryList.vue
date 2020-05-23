@@ -1,5 +1,5 @@
 <template>
-    <el-select v-model="summary" style="width:100%;height:60px" placeholder="摘要" class="filter-item" @blur="changeVal1" @change="changeVal2" filterable allow-create>
+    <el-select v-model="summary" style="width:100%;height:60px" placeholder="摘要" class="filter-item" filterable :allow-create="allowAdd" @blur="changeVal1" @change="changeVal2">
         <el-option v-for="(item,index) in summaryList" :key="index" :label="item.summary" :value="item.summary"></el-option>
     </el-select>
 </template>
@@ -10,7 +10,8 @@ export default {
     data() {
         return {
             summary: '',
-            summaryList: this.dataList
+            summaryList: this.dataList,
+            allowAdd: false
         }
     },
     watch:{
@@ -36,6 +37,9 @@ export default {
                 index: this.index
             }
             this.$emit('changeVal', obj)
+        },
+        focusSelect(event) {
+            this.summaryList = this.dataList
         }
     }
 }

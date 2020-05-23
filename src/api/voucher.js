@@ -227,9 +227,8 @@ export function voucherModify(data){
 
 export function getCatogery(){
     return request({
-        url:'/drp/gl/catogery/list',
-        method:'post',
-        data: { bookId: sessionStorage.bookId }
+      url:'/drp/gl/catogery/list',
+      method:'post'
     })
 }
 
@@ -246,9 +245,9 @@ export function getPeriodState(str){
         url:'/drp/gl/periodClose/getPeriodState',
         method:'post',
         data: {
-            periodYear:str.split('-')[0],
-            periodNum:str.split('-')[1],
-            periodCode: str
+          periodYear:str.split('-')[0],
+          periodNum:str.split('-')[1],
+          periodCode: str
         }
     })
 }

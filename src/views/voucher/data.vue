@@ -1,5 +1,5 @@
 <template>
-    <div class="app-container">
+    <div class="app-container" style="min-width:1100px">
         <div class="filter-container">
             <el-select v-model="listQuery.queryParam.date1" placeholder="开始期间" size="mini">
                 <el-option v-for="item in periodList" :key="item.id" :label="item.text" :value="item.id"></el-option>

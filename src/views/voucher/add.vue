@@ -3,12 +3,12 @@
         <div class="w1200 voucherHeader">
             <el-button type="primary" size="mini" @click="dialogFormVisible1 = true">从模板生成凭证</el-button>
             <el-button type="primary" size="mini" @click="dialogFormVisible2 = true">常用摘要</el-button>
-            <div class="voucherTit">记账凭证<span class="Period">{{ periodName }}</span></div>
+            <div class="voucherTit">{{voucherTit}}<span class="Period">{{ periodName }}</span></div>
             <el-form :inline="true" label-position="right" label-width="80px" style="width: 100%; margin-top:0px;">
                 <el-form-item label="凭证字号" prop="billNo" style="margin-bottom:10px">
-                    <select class="catogeryName uds" v-model="billHeader.jeCatogeryId">
-                        <option v-for="item in catogeryList" :ke="item.id" :value="item.id">{{item.catogeryName}}</option>
-                    </select>
+                    <el-select ref="catogeryRef" v-model="billHeader.jeCatogeryId" style="width:50px" size="mini" @change="catogeryChange">
+                        <el-option v-for="item in catogeryList" :key="item.id" :label="item.catogeryName" :data-tit="item.catogeryTitle" :value="item.id"></el-option>
+                    </el-select>
                     <span class="jeSeq uds">{{billHeader.jeSeq | numberFormat}}</span>
                     <span class="btn-wrap uds">
                         <a class="btn-up" @click="jeSeqAdd(1)"></a>
@@ -150,35 +150,35 @@
             </el-table>
             <pagination v-show="total2>10" :total="total2" :page.sync="listQuery2.pageIndex" :limit.sync="listQuery2.pageNum" @pagination="getSummaryByPage" />
         </el-dialog>
-        <el-dialog :close-on-click-modal="false" :title="'科目辅助核算设置——'+showCoaCode" :visible.sync="dialogFormVisible3" :show-close="false" width="400px">
-            <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="65px" style="width: 360px; margin-left:10px;">
+        <el-dialog :close-on-click-modal="false" :title="'科目辅助核算设置——'+showCoaCode" :visible.sync="dialogFormVisible3" :show-close="false" width="480px">
+            <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="65px" style="width: 420px; margin-left:10px;">
                 <el-form-item v-if="auxiliary.charAt(0)=='1'" label="供应商" prop="supplierId">
-                    <el-select ref="supplierSelect" placeholder="供应商" v-model="temp.supplierId" style="width:280px">
+                    <el-select ref="supplierSelect" placeholder="供应商" v-model="temp.supplierId" style="width:100%">
                         <el-option v-for="(item,index) in supplierList" :key="item.id" :label="item.supplierName" :data-code="item.supplierCode" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item v-if="auxiliary.charAt(1)=='1'" label="客户" prop="custId">
-                    <el-select ref="custSelect" placeholder="客户" v-model="temp.custId" style="width:280px">
+                    <el-select ref="custSelect" placeholder="客户" v-model="temp.custId" style="width:100%">
                         <el-option v-for="(item,index) in custList" :key="item.id" :label="item.custName" :data-code="item.custCode" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item v-if="auxiliary.charAt(2)=='1'" label="部门" prop="deptId">
-                    <el-select ref="deptSelect" placeholder="部门" v-model="temp.deptId" style="width:280px">
+                    <el-select ref="deptSelect" placeholder="部门" v-model="temp.deptId" style="width:100%">
                         <el-option v-for="(item,index) in deptList" :key="item.id" :label="item.deptName" :data-code="item.deptCode" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item v-if="auxiliary.charAt(3)=='1'" label="职员" prop="staffId">
-                    <el-select ref="staffSelect" placeholder="职员" v-model="temp.staffId" style="width:280px">
+                    <el-select ref="staffSelect" placeholder="职员" v-model="temp.staffId" style="width:100%">
                         <el-option v-for="(item,index) in staffList" :key="item.id" :label="item.staffName" :data-code="item.staffCode" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item v-if="auxiliary.charAt(4)=='1'" label="存货" prop="itemId">
-                    <el-select ref="itemSelect" placeholder="存货" v-model="temp.itemId" style="width:280px">
+                    <el-select ref="itemSelect" placeholder="存货" v-model="temp.itemId" style="width:100%">
                         <el-option v-for="(item,index) in itemList" :key="item.id" :label="item.itemName" :data-code="item.itemCode" :data-uom="item.uom" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item v-if="auxiliary.charAt(5)=='1'" label="项目" prop="projId">
-                    <el-select ref="projSelect" placeholder="项目" v-model="temp.projId" style="width:280px">
+                    <el-select ref="projSelect" placeholder="项目" v-model="temp.projId" style="width:100%">
                         <el-option v-for="(item,index) in projList" :key="item.id" :label="item.projName" :data-code="item.projCode" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
@@ -199,8 +199,23 @@
                     <template slot-scope="{row}">
                         <div v-if="row.isAuxiliary==1" style="display:inline-block;margin-right:10px" v-for="(item, index) in row.auxTypes" :key="index">
                             <span style="display:inline-block;text-align:right">{{ item.auxiliaryTypeName }}：</span>
-                            <el-select v-model="row[item.auxiliaryTypeCode+'Id']" size="small" :placeholder="item.auxiliaryTypeName" style="width:140px">
-                                <el-option v-for="(it,index) in item.children" :key="it.id" :label="it.modelName" :data-code="it.modelCode" :value="it.id" />
+                            <el-select v-if="item.auxiliaryTypeCode==='supplier'" v-model="row.supplierId" size="small" placeholder="供应商" style="width:140px">
+                                <el-option v-for="(item,index) in supplierList" :key="item.id" :label="item.supplierName" :value="item.id"></el-option>
+                            </el-select>
+                            <el-select v-if="item.auxiliaryTypeCode==='cust'" v-model="row.custId" size="small" placeholder="客户" style="width:140px">
+                                <el-option v-for="(item,index) in custList" :key="item.id" :label="item.custName" :value="item.id"></el-option>
+                            </el-select>
+                            <el-select v-if="item.auxiliaryTypeCode==='dept'" v-model="row.deptId" size="small" placeholder="部门" style="width:140px">
+                                <el-option v-for="(item,index) in deptList" :key="item.id" :label="item.deptName" :value="item.id"></el-option>
+                            </el-select>
+                            <el-select v-if="item.auxiliaryTypeCode==='proj'" v-model="row.projId" size="small" placeholder="部门" style="width:140px">
+                                <el-option v-for="(item,index) in projList" :key="item.id" :label="item.projName" :value="item.id"></el-option>
+                            </el-select>
+                            <el-select v-if="item.auxiliaryTypeCode==='staff'" v-model="row.staffId" size="small" placeholder="职员" style="width:140px">
+                                <el-option v-for="(item,index) in staffList" :key="item.id" :label="item.staffName" :value="item.id"></el-option>
+                            </el-select>
+                            <el-select v-if="item.auxiliaryTypeCode==='item'" v-model="row.itemId" size="small" placeholder="存货" style="width:140px">
+                                <el-option v-for="(item,index) in itemList" :key="item.id" :label="item.itemName" :value="item.id"></el-option>
                             </el-select>
                         </div>
                         <div v-if="row.isAuxiliary==0" style="text-align:center">无</div>
@@ -219,7 +234,7 @@ import { mapGetters } from 'vuex'
 import { getGlPeriodByCenterDate, getGlPeriodByPeriodCode, getMaxVoucherSeq, getVoucherMaxDate } from '@/api/voucher'
 import { getVoucherById, voucherSave, getCatogery } from '@/api/voucher'
 import { getTempletHeader, getTempletTypeList, getTempletById, templetSave } from '@/api/voucher'
-import { getAllUnion, addSummary, delSummary } from '@/api/voucher'
+import { addSummary, delSummary } from '@/api/voucher'
 import { getNowDate, deleteEmptyObj, addNullObj, addNullObj2, convertCurrency, validateVal, deepClone, showNumber1, showNumber2, getIsAuxiliary } from '@/utils'
 import { getProj, getDept, getStaff, getSupplier, getCust, getItem } from '@/api/user'
 import Pagination from '@/components/Pagination'
@@ -232,6 +247,7 @@ export default {
     data() {
         return {
             tableKey: 0,
+            voucherTit: '',
             catogeryList: [],
             lineData: [],
             showCoaCode: '',
@@ -280,7 +296,7 @@ export default {
             dialogFormVisible4: false,
             dialogStatus: 'static', //static原始状态，create设置辅助核算，update编辑辅助核算
             templetData: [],
-            summaryTable: [],
+            summaryData: [],
             summaryPageData: [],
             totalMoney1: 0,
             totalMoney2: 0,
@@ -311,14 +327,16 @@ export default {
             'auxiliaryArr',
             'templetTypeList',
             'summaryArr',
-            'coaArr'
+            'coaArr',
+            'summaryTable'
         ])
     },
     watch: {
-        summaryArr() {
-            this.summaryTable = this.summaryArr
+        summaryTable() {
+            console.log("111111")
+            this.summaryData = this.summaryTable
             this.listQuery2.pageIndex = 1
-            this.total2 = this.summaryTable.length
+            this.total2 = this.summaryData.length
             this.getSummaryByPage()
         }
     },
@@ -328,6 +346,7 @@ export default {
         getCatogery().then(res => {
             this.catogeryList = res.data.data || []
             this.$set(this.billHeader, 'jeCatogeryId', this.catogeryList[0].id)
+            this.voucherTit = this.catogeryList[0].catogeryTitle
         })
         this.getTempletList()
         getCust().then(res => {
@@ -351,6 +370,7 @@ export default {
         if (this.$route.query.id) {
             getVoucherById({ id: this.$route.query.id }).then(res => {
                 this.$store.dispatch('voucher/getSummaryList')
+                this.$store.dispatch('voucher/getSummaryTable')
                 this.$store.dispatch('voucher/getCoaList')
                 this.billHeader = res.data.data.header
                 this.tableData = res.data.data.lineList
@@ -370,6 +390,7 @@ export default {
             })
         } else {
             this.$store.dispatch('voucher/getSummaryList')
+            this.$store.dispatch('voucher/getSummaryTable')
             this.$store.dispatch('voucher/getCoaList')
             this.getJeSeqByDate()
             getVoucherMaxDate().then(res => {
@@ -423,6 +444,12 @@ export default {
             })
             return val
         },
+        catogeryChange() {
+            this.getJeSeqNum()
+            this.$nextTick(() => {
+                this.voucherTit = this.$refs.catogeryRef.selected.$attrs['data-tit']
+            })
+        },
         getJeSeqByDate() {
             var date = this.billHeader.jeDate
             getGlPeriodByCenterDate({ centerDate: date }).then(res => {
@@ -430,13 +457,13 @@ export default {
                     this.periodName = res.data.data.periodName
                     this.periodCode = res.data.data.periodCode
                     this.periodId = res.data.data.id
-                    this.getJeSeqNum(this.periodId)
+                    this.getJeSeqNum()
                 }
             })
         },
         getJeSeqNum(periodId) {
             var obj = {
-                periodId: periodId,
+                periodId: this.periodId,
                 catogeryId: this.billHeader.jeCatogeryId,
                 jeDate: this.billHeader.jeDate
             }
@@ -535,7 +562,7 @@ export default {
                 delSummary(id).then(res => {
                     if (res.data.success) {
                         this.$message.success("摘要删除成功")
-                        this.$store.dispatch('voucher/getSummaryList')
+                        this.$store.dispatch('voucher/getSummaryTable')
                     } else {
                         this.$message.warning(res.data.msg)
                     }
@@ -560,7 +587,7 @@ export default {
                     this.$message.success("摘要创建成功")
                     this.summaryQuery.mnemonicCode = ""
                     this.summaryQuery.summary = ""
-                    this.$store.dispatch('voucher/getSummaryList')
+                    this.$store.dispatch('voucher/getSummaryTable')
                 } else {
                     this.$message.warning(res.data.msg)
                 }
@@ -574,7 +601,7 @@ export default {
             var min = pageIndex * 10 - 10
             var max = pageIndex * 10 <= this.total2 ? pageIndex * 10 : this.total2
             for (var i = min; i < max; i++) {
-                arr.push(this.summaryTable[i])
+                arr.push(this.summaryData[i])
             }
             this.summaryPageData = arr
         },
