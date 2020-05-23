@@ -150,7 +150,7 @@
             </el-table>
             <pagination v-show="total2>10" :total="total2" :page.sync="listQuery2.pageIndex" :limit.sync="listQuery2.pageNum" @pagination="getSummaryByPage" />
         </el-dialog>
-        <el-dialog :close-on-click-modal="false" :title="'辅助核算设置——'+showCoaCode" :visible.sync="dialogFormVisible3" :show-close="false" width="400px">
+        <el-dialog :close-on-click-modal="false" :title="'科目辅助核算设置——'+showCoaCode" :visible.sync="dialogFormVisible3" :show-close="false" width="400px">
             <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="65px" style="width: 360px; margin-left:10px;">
                 <el-form-item v-if="auxiliary.charAt(0)=='1'" label="供应商" prop="supplierId">
                     <el-select ref="supplierSelect" placeholder="供应商" v-model="temp.supplierId" style="width:280px">
@@ -188,6 +188,30 @@
                 <el-button type="primary" @click="saveAuxiliary">确定</el-button>
             </div>
         </el-dialog>
+        <el-dialog :close-on-click-modal="false" title="分录辅助核算设置" :visible.sync="dialogFormVisible4" :show-close="false" width="900px">
+            <el-table :key="tableKey" :data="lineData" border fit style="width: 100%;">
+                <el-table-column label="科目" min-width="120">
+                    <template slot-scope="{row}">
+                        <span>{{row.coaCode + ' ' + row.coaName}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="辅助核算" min-width="400">
+                    <template slot-scope="{row}">
+                        <div v-if="row.isAuxiliary==1" style="display:inline-block;margin-right:10px" v-for="(item, index) in row.auxTypes" :key="index">
+                            <span style="display:inline-block;text-align:right">{{ item.auxiliaryTypeName }}：</span>
+                            <el-select v-model="row[item.auxiliaryTypeCode+'Id']" size="small" :placeholder="item.auxiliaryTypeName" style="width:140px">
+                                <el-option v-for="(it,index) in item.children" :key="it.id" :label="it.modelName" :data-code="it.modelCode" :value="it.id" />
+                            </el-select>
+                        </div>
+                        <div v-if="row.isAuxiliary==0" style="text-align:center">无</div>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <div slot="footer" class="dialog-footer" align="center">
+                <el-button @click="cancelTempletAuxiliary">取消</el-button>
+                <el-button type="primary" @click="saveTempletAuxiliary">确定</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -207,7 +231,9 @@ export default {
     components: { coaList, summaryList, Pagination },
     data() {
         return {
+            tableKey: 0,
             catogeryList: [],
+            lineData: [],
             showCoaCode: '',
             periodId: '',
             periodName: '',
@@ -251,6 +277,7 @@ export default {
             dialogFormVisible1: false,
             dialogFormVisible2: false,
             dialogFormVisible3: false,
+            dialogFormVisible4: false,
             dialogStatus: 'static', //static原始状态，create设置辅助核算，update编辑辅助核算
             templetData: [],
             summaryTable: [],
@@ -351,6 +378,51 @@ export default {
         }
     },
     methods: {
+        cancelTempletAuxiliary() {
+            this.lineData = []
+            this.dialogFormVisible4 = false
+        },
+        saveTempletAuxiliary() {
+            var len = this.lineData.length
+            for (var i = 0; i < len; i++) {
+                var curObj = this.lineData[i]
+                // var len1 = this.lineData[i].auxTypes.length
+                if (curObj.isAuxiliary === 1) {
+                    var AuxiliaryType = ['supplier', 'cust', 'dept', 'staff', 'item', 'proj']
+                    var coaCobinationCode = ''
+                    var coaCobinationName = ''
+                    AuxiliaryType.forEach(item => {
+                        if (curObj[item+'Id']) {
+                            const id = curObj[item+'Id']
+                            const modelCode = this.getParamValueById(this[item + 'List'], item+'Code', id)
+                            const modelName = this.getParamValueById(this[item + 'List'], item+'Name', id)
+                            coaCobinationCode += '_' + hexCas[AuxiliaryType.indexOf(item)] + modelCode
+                            coaCobinationName += '_' + modelName
+                            if (item === 'item') {
+                                curObj.uom = this.getParamValueById(this[item + 'List'], 'uom', id)
+                            }
+                        }
+                    })
+                    curObj.coaCobinationCode = coaCobinationCode.substring(1)
+                    curObj.coaCobinationName = coaCobinationName.substring(1)
+                    if (curObj.coaCobinationCode === '' || curObj.coaCobinationCode.split('_').length < curObj.auxTypes.length) {
+                        this.$message.warning('第'+(i+1)+'行的辅助核算录入不完整！')
+                        return
+                    }
+                }
+            }
+            this.tableData = deepClone(this.lineData)
+            this.dialogFormVisible4 = false
+        },
+        getParamValueById(arr, param, id) {
+            var val = ''
+            arr.forEach(item => {
+                if(item.id == id) {
+                    val = item[param]
+                }
+            })
+            return val
+        },
         getJeSeqByDate() {
             var date = this.billHeader.jeDate
             getGlPeriodByCenterDate({ centerDate: date }).then(res => {
@@ -361,9 +433,6 @@ export default {
                     this.getJeSeqNum(this.periodId)
                 }
             })
-            // var rep = { periodCode1: date.substr(0, 5) + "01", periodCode2: date.substr(0, 5) + "12" }
-            // getGlPeriodByPeriodCode(rep).then(res => {
-            // })
         },
         getJeSeqNum(periodId) {
             var obj = {
@@ -676,7 +745,20 @@ export default {
         selectTemplet(id) {
             this.dialogFormVisible1 = false
             getTempletById(id).then(res => {
-                this.tableData = res.data.data.lineList
+                if(res.data.data.popup == 1) {
+                    this.lineData = res.data.data.lineList
+                    this.lineData.forEach(item => {
+                        item.supplierId = ''
+                        item.staffId = ''
+                        item.deptId = ''
+                        item.custId = ''
+                        item.itemId = ''
+                        item.projId = ''
+                    })
+                    this.dialogFormVisible4 = true
+                } else {
+                    this.tableData = res.data.data.lineList
+                }
             }).catch(err => {
                 this.$message.error("系统错误")
             })
