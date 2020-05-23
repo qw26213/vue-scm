@@ -1,53 +1,53 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-date-picker :editable="false" v-model="listQuery.periodCode1" type="date" placeholder="开始日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+      <el-date-picker :editable="false" v-model="listQuery.periodCode1" type="date" placeholder="开始日期" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
       <span class="zhi">至</span>
-      <el-date-picker :editable="false" v-model="listQuery.periodCode2" type="date" placeholder="结束日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
-      <el-button size="mini" type="primary" @click="getList">查询</el-button>
+      <el-date-picker :editable="false" v-model="listQuery.periodCode2" type="date" placeholder="结束日期" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+      <el-button size="small" type="primary" @click="getList">查询</el-button>
     </div>
 
-    <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini" show-summary>
+    <el-table :key="tableKey" v-loading="listLoading" :data="tableData" cell-class-name="tpCell" border fit highlight-current-row style="width: 100%;" size="small">
       <el-table-column label="序号" type="index" width="50" align="center">
       </el-table-column>
       <el-table-column label="科目编码" align="center">
         <template slot-scope="{row}">
-          <span>{{row.coaCode}}</span>
+          <span> {{row.coaCode}}</span>
         </template>
       </el-table-column>
       <el-table-column label="科目名称">
         <template slot-scope="{row}">
-          <span>{{row.pageCoaName}}</span>
+          <span style="padding-left:10px" v-html="row.pageCoaName"></span>
         </template> 
       </el-table-column>
       <el-table-column label="期间">
         <template slot-scope="{row}">
-          <span>{{row.listPeriodCode}}</span>
+          <p clss="pCell" style="text-align:center" v-for="(item,index) in row.listPeriodCode" :key="index">{{item}}</p>
         </template>
       </el-table-column>
       <el-table-column label="摘要">
         <template slot-scope="{row}">
-          <span>{{row.listSummary}}</span>
+          <p clss="pCell" style="width:max-content;min-width:100%" v-for="(item,index) in row.listSummary" :key="index">{{item}}</p>
         </template>
       </el-table-column>
       <el-table-column label="借方金额">
         <template slot-scope="{row}">
-          <span>{{row.listNetDr}}</span>
+          <p clss="pCell" style="text-align:right" v-for="(item,index) in row.listNetDr" :key="index">{{item | Fixed}}</p>
         </template>
       </el-table-column>
       <el-table-column label="贷方金额">
         <template slot-scope="{row}">
-          <span>{{row.listNetCr}}</span>
+          <p clss="pCell" style="text-align:right" v-for="(item,index) in row.listNetCr" :key="index">{{item | Fixed}}</p>
         </template>
       </el-table-column>
       <el-table-column label="方向">
         <template slot-scope="{row}">
-          <span>{{row.listCrDrStr}}</span>
+          <p clss="pCell" style="text-align:center" v-for="(item,index) in row.listCrDrStr" :key="index">{{item}}</p>
         </template>
       </el-table-column>
       <el-table-column label="余额">
         <template slot-scope="{row}">
-          <span>{{row.listBalance}}</span>
+          <p clss="pCell" style="text-align:right" v-for="(item,index) in row.listBalance" :key="index">{{item | Fixed}}</p>
         </template>
       </el-table-column>
     </el-table>
@@ -62,6 +62,12 @@ import Pagination from '@/components/Pagination'
 export default {
   name: 'totalAccount',
   components: { Pagination },
+  filters: {
+      Fixed: function (num) {
+          if (!num) { return '0.00' }
+          return parseFloat(num).toFixed(2);
+      }
+  },
   data() {
     return {
       tableKey: 0,
