@@ -239,7 +239,7 @@ import { getNowDate, deleteEmptyObj, addNullObj, addNullObj2, convertCurrency, v
 import { getProj, getDept, getStaff, getSupplier, getCust, getItem } from '@/api/user'
 import Pagination from '@/components/Pagination'
 import coaList from '@/components/voucher/coaList'
-import summaryList from '@/components/voucher/summaryList'
+import summaryList from '@/components/voucher/summaryList' 
 var hexCas = ['A', 'B', 'C', 'D', 'E', 'F']
 export default {
     name: 'voucherAdd',
