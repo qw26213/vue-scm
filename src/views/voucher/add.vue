@@ -3,7 +3,7 @@
         <div class="w1200 voucherHeader">
             <el-button type="primary" size="mini" @click="dialogFormVisible1 = true">从模板生成凭证</el-button>
             <el-button type="primary" size="mini" @click="dialogFormVisible2 = true">常用摘要</el-button>
-            <div class="voucherTit">{{voucherTit}}<span class="Period">{{ periodName }}</span></div>
+            <div class="voucherTit">{{billHeader.jeCatogeryTitle}}<span class="Period">{{ billHeader.periodName }}</span></div>
             <el-form :inline="true" label-position="right" label-width="80px" style="width: 100%; margin-top:0px;">
                 <el-form-item label="凭证字号" prop="billNo" style="margin-bottom:10px">
                     <el-select ref="catogeryRef" v-model="billHeader.jeCatogeryId" style="width:50px" size="mini" @change="catogeryChange">
@@ -98,7 +98,7 @@
                 </tr>
             </tfoot>
         </table>
-        <div class="tx-c w1200" style="margin-top:15px">
+        <div class="tx-c w1200" style="margin-top:20px">
             <el-button v-if="!$route.query.id" class="filter-item" type="primary" @click="saveData(1)">保存为凭证模板</el-button>
             <el-button v-if="!$route.query.id" class="filter-item" type="default" @click="saveData(2)">保存并新增凭证</el-button>
             <el-button v-if="$route.query.id" class="filter-item" type="primary" style="width:160px" @click="saveData(2)">保存凭证</el-button>
@@ -251,9 +251,6 @@ export default {
             catogeryList: [],
             lineData: [],
             showCoaCode: '',
-            periodId: '',
-            periodName: '',
-            periodCode: '',
             saveType: this.$route.type || 1, //插入传2
             total1: 0,
             total2: 0,
@@ -264,7 +261,11 @@ export default {
                 jeCatogeryId: '',
                 jeSeq: 0,
                 jeDate: getNowDate(),
-                voucherAttachmentNum: 0,
+                periodId: '',
+                periodCode: '',
+                periodName: '',
+                jeCatogeryTitle: '记账凭证',
+                voucherAttachmentNum: 0
             },
             summaryQuery: {
                 summary: '',
@@ -346,7 +347,7 @@ export default {
         getCatogery().then(res => {
             this.catogeryList = res.data.data || []
             this.$set(this.billHeader, 'jeCatogeryId', this.catogeryList[0].id)
-            this.voucherTit = this.catogeryList[0].catogeryTitle
+            this.$set(this.billHeader, 'jeCatogeryTitle', this.catogeryList[0].catogeryTitle)
         })
         this.getTempletList()
         getCust().then(res => {
@@ -447,16 +448,17 @@ export default {
         catogeryChange() {
             this.getJeSeqNum()
             this.$nextTick(() => {
-                this.voucherTit = this.$refs.catogeryRef.selected.$attrs['data-tit']
+                this.billHeader.jeCatogeryTitle = this.$refs.catogeryRef.selected.$attrs['data-tit']
+                this.billHeader.jeCatogeryName = this.$refs.catogeryRef.selected.label
             })
         },
         getJeSeqByDate() {
             var date = this.billHeader.jeDate
             getGlPeriodByCenterDate({ centerDate: date }).then(res => {
                 if (res.data.errorCode == 0) {
-                    this.periodName = res.data.data.periodName
-                    this.periodCode = res.data.data.periodCode
-                    this.periodId = res.data.data.id
+                    this.billHeader.periodName = res.data.data.periodName
+                    this.billHeader.periodCode = res.data.data.periodCode
+                    this.billHeader.periodId = res.data.data.id
                     this.getJeSeqNum()
                 }
             })
@@ -653,15 +655,15 @@ export default {
                 jeDate: this.billHeader.jeDate,
                 jeSeq: this.billHeader.jeSeq,
                 jeCatogeryId: this.billHeader.jeCatogeryId,
-                jeCatogeryName: '记',
-                jeCatogeryTitle: "记账凭证",
+                jeCatogeryName: this.billHeader.jeCatogeryName,
+                jeCatogeryTitle: this.billHeader.jeCatogeryTitle,
                 voucherAttachmentNum: 0,
                 baseCurrencyCode: 'CNY',
                 baseCurrencyId: '',
                 baseCurrencyName: '人民币',
-                periodCode: this.periodCode,
-                periodId: this.periodId,
-                periodName: this.periodName,
+                periodCode: this.billHeader.periodCode,
+                periodId: this.billHeader.periodId,
+                periodName: this.billHeader.periodName,
                 saveType: this.saveType,
                 voucherTable: lineArr,
                 totalCreditMoney: Number(this.totalMoney1) / 100,

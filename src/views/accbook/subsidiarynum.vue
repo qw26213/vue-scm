@@ -7,9 +7,7 @@
       <el-button size="mini" type="primary" @click="getList">查询</el-button>
     </div>
 
-    <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini" show-summary>
-      <el-table-column label="序号" type="index" width="50" align="center">
-      </el-table-column>
+    <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini">
       <el-table-column label="科目编码" align="center">
         <template slot-scope="{row}">
           <span>{{row.coaCode}}</span>
@@ -20,7 +18,7 @@
           <span>{{row.jeDate}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="凭证字号">
+      <el-table-column label="凭证字号" align="center">
         <template slot-scope="{row}">
           <span>{{row.jeCatogery}}</span>
         </template> 
@@ -41,14 +39,14 @@
             <span>{{row.qtyDr}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="单价">
+        <el-table-column label="单价" align="right">
           <template slot-scope="{row}">
-            <span>{{row.unitpriceDr}}</span>
+            <span>{{row.unitpriceDr | Fixed}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="金额">
+        <el-table-column label="金额" align="right">
           <template slot-scope="{row}">
-            <span>{{row.accountedDr}}</span>
+            <span>{{row.accountedDr | Fixed}}</span>
           </template>
         </el-table-column>
       </el-table-column>
@@ -60,12 +58,12 @@
         </el-table-column>
         <el-table-column label="单价">
           <template slot-scope="{row}">
-            <span>{{row.unitpriceCr}}</span>
+            <span>{{row.unitpriceCr | Fixed}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="金额">
+        <el-table-column label="金额" align="right">
           <template slot-scope="{row}">
-            <span>{{row.accountedCr}}</span>
+            <span>{{row.accountedCr | Fixed}}</span>
           </template>
         </el-table-column>
       </el-table-column>
@@ -81,6 +79,12 @@ import Pagination from '@/components/Pagination'
 export default {
   name: 'grossprofit2',
   components: { Pagination },
+  filters: {
+      Fixed: function (num) {
+          if (!num) { return '0.00' }
+          return parseFloat(num).toFixed(2);
+      }
+  },
   data() {
     return {
       tableKey: 0,
