@@ -18,7 +18,8 @@ const getters = {
   templetTypeList: state => state.voucher.templetTypeList,
   auxiliaryArr: state => state.voucher.auxiliaryArr,
   salesTypeArr: state => state.basedata.salesTypeArr,
-  summaryTable: state => state.voucher.summaryTable
+  summaryTable: state => state.voucher.summaryTable,
+  periodArr: state => state.voucher.periodArr
 }
 
 export default getters

@@ -1,11 +1,12 @@
 import { getSummarys, getAllUnion, getCoas, getAuxiliaryType, getTempletTypeList } from '@/api/voucher'
-
+import { getPeriodList } from '@/api/user'
 const state = {
     coaArr: [],
     summaryArr: [],
     summaryTable: [],
     auxiliaryArr: [],
-    templetTypeList:[]
+    templetTypeList:[],
+    periodArr: []
 }
 
 const mutations = {
@@ -23,7 +24,10 @@ const mutations = {
     },
     SET_AUXILIARY: (state, data) => {
         state.auxiliaryArr = data
-    }
+    },
+    SET_PERIODARR: (state, data) => {
+        state.periodArr = data
+    },
 }
 
 const actions = {
@@ -51,7 +55,13 @@ const actions = {
         getAllUnion().then(res => {
             commit('SET_SUMMARYTABLE', res.data.data || [])
         })
+    },
+    getPeriod({ commit }, data) {
+        getPeriodList().then(res => {
+            commit('SET_PERIODARR', res.data.data || [])
+        })
     }
+
 }
 
 export default {

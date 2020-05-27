@@ -1,9 +1,19 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-date-picker :editable="false" v-model="listQuery.periodCode1" type="date" placeholder="开始日期" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+      <label class="label">期间：</label>
+      <el-select v-model="listQuery.periodCode1" size="small" placeholder="开始期间">
+        <el-option v-for="item in periodArr" :key="item.id" :label="item.text" :value="item.id"></el-option>
+      </el-select>
       <span class="zhi">至</span>
-      <el-date-picker :editable="false" v-model="listQuery.periodCode2" type="date" placeholder="结束日期" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+      <el-select v-model="listQuery.periodCode2" size="small" placeholder="结束期间">
+        <el-option v-for="item in periodArr" :key="item.id" :label="item.text" :value="item.id"></el-option>
+      </el-select>
+      <label class="label">科目：</label>
+      <el-select v-model="listQuery.coaCode1" size="small" placeholder="科目" filterable>
+        <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode">
+        </el-option>
+      </el-select>
       <el-button size="small" type="primary" @click="getList">查询</el-button>
     </div>
 
@@ -50,7 +60,7 @@
 
 <script>
 import { getProjsubsidiary } from '@/api/accbook'
-import { getNowDate } from '@/utils/auth'
+import { mapGetters } from 'vuex'
 import Pagination from '@/components/Pagination' 
 export default {
   name: 'grossprofit2',
@@ -68,15 +78,32 @@ export default {
       total: 0,
       listLoading: true,
       listQuery: {
-        periodCode1:getNowDate(),
-        periodCode2:getNowDate(),
+        periodCode1: '',
+        periodCode2: '',
+        coaCode1: '',
         page:1,
         limit:20
       }
     }
   },
+    computed: {
+      ...mapGetters([
+        'coaArr',
+        'periodArr'
+      ])
+    },
+    watch: {
+        periodArr(val){
+            if (val.length > 0) {
+                this.listQuery.periodCode1 = val[0].id
+                this.listQuery.periodCode2 = val[0].id
+                this.getList()
+            }
+        }
+    },
   created() {
-    this.getList()
+      this.$store.dispatch('voucher/getPeriod')
+      this.$store.dispatch('voucher/getCoaList')
   },
   methods: {
     getList() {
