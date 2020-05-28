@@ -29,7 +29,7 @@
               <el-option v-for="item in [1,2,3,4,5,6,7]" :key="item" :label="item" :value="item">
               </el-option>
             </el-select>
-            <el-button size="mini" type="primary" @click="getList">查询</el-button>
+            <el-button size="small" type="primary" @click="getList">查询</el-button>
         </div>
         <el-table :key="tableKey" v-loading="listLoading" :data="tableData" cell-class-name="tpCell" border fit highlight-current-row style="width: 100%;" size="small">
             <el-table-column label="科目编码" align="center">

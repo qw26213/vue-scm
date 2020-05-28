@@ -84,3 +84,11 @@ export function getCatogery() {
     method: 'post'
   })
 }
+
+export function exportSubsidiaryNum(data) {
+  return request({
+    url: '/drp/accbook/exportSubsidiaryNum',
+    method: 'post',
+    data
+  })
+}

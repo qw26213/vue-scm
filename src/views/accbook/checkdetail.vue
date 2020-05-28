@@ -14,11 +14,6 @@
                 <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode">
                 </el-option>
             </el-select>
-            <span class="zhi">至</span>
-            <el-select v-model="listQuery.coaCode2" size="small" placeholder="科目" filterable>
-                <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode">
-                </el-option>
-            </el-select>
             <el-button size="small" type="primary" @click="getList">查询</el-button>
         </div>
         <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
@@ -89,7 +84,6 @@ export default {
                 periodCode1: '',
                 periodCode2: '',
                 coaCode1: '',
-                coaCode2: '',
                 page: 1,
                 limit: 20
             }

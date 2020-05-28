@@ -14,12 +14,8 @@
                 <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode">
                 </el-option>
             </el-select>
-            <span class="zhi">至</span>
-            <el-select v-model="listQuery.coaCode2" size="small" placeholder="科目" filterable>
-                <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode">
-                </el-option>
-            </el-select>
             <el-button size="small" type="primary" @click="getList">查询</el-button>
+            <el-button size="small" type="warning" @click="exportExcel">导出</el-button>
         </div>
         <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
             <el-table-column label="日期" align="center">
@@ -103,7 +99,7 @@
     </div>
 </template>
 <script>
-import { getSubsidiarynum } from '@/api/accbook'
+import { getSubsidiarynum, exportSubsidiaryNum } from '@/api/accbook'
 import { mapGetters } from 'vuex'
 import Pagination from '@/components/Pagination'
 export default {
@@ -156,6 +152,14 @@ export default {
             getSubsidiarynum(this.listQuery).then(res => {
                 this.listLoading = false
                 this.tableData = res.data.data
+            }).catch(err => {
+                this.listLoading = false
+            })
+        },
+        exportExcel() {
+            exportSubsidiaryNum(this.listQuery).then(res => {
+                this.listLoading = false
+
             }).catch(err => {
                 this.listLoading = false
             })

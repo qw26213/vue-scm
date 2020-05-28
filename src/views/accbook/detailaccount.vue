@@ -15,11 +15,6 @@
                     <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode">
                     </el-option>
                 </el-select>
-                <span class="zhi">至</span>
-                <el-select v-model="listQuery.coaCode2" size="small" placeholder="科目" filterable>
-                    <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode">
-                    </el-option>
-                </el-select>
                 <el-button size="small" type="primary" @click="getList">查询</el-button>
             </div>
         </div>
