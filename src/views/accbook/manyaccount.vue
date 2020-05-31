@@ -1,12 +1,12 @@
 <template>
-    <div class="app-container">
+    <div class="app-container" style="min-width:1300px">
         <div class="filter-container">
             <label class="label">期间：</label>
-            <el-select v-model="listQuery.periodCode1" size="small" placeholder="开始期间">
+            <el-select v-model="listQuery.periodCode1" size="small" style="width:120px" placeholder="开始期间">
                 <el-option v-for="item in periodArr" :key="item.id" :label="item.text" :value="item.id"></el-option>
             </el-select>
             <span class="zhi">至</span>
-            <el-select v-model="listQuery.periodCode2" size="small" placeholder="结束期间">
+            <el-select v-model="listQuery.periodCode2" size="small" style="width:120px" placeholder="结束期间">
                 <el-option v-for="item in periodArr" :key="item.id" :label="item.text" :value="item.id"></el-option>
             </el-select>
             <label class="label">科目：</label>
@@ -14,11 +14,12 @@
                 <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode">
                 </el-option>
             </el-select>
-            <el-popover placement="bottom" title="更多" width="240" trigger="click">
+            <el-popover placement="bottom" title="更多" width="320" trigger="click">
                 <div>
-                    <p>
-                        <el-radio v-model="listQuery.isShowChildren" false-label="0" true-label="1">只显示下级科目</el-radio>
-                        <el-radio v-model="listQuery.isShowChildren" false-label="0" true-label="1">只显示末级科目</el-radio>
+                    <p><span>科目级次：</span>
+                        <el-radio v-model="listQuery.isShowChildren" label="">全部</el-radio>
+                        <el-radio v-model="listQuery.isShowChildren" :label="1">下级</el-radio>
+                        <el-radio v-model="listQuery.isShowChildren" :label="0">末级</el-radio>
                     </p>
                     <p>
                         <el-checkbox v-model="listQuery.isOnlyShowLeaf" false-label="0" true-label="1">显示明细栏余额</el-checkbox>
@@ -31,7 +32,7 @@
             </el-popover>
             <el-button size="small" type="primary" @click="getList">查询</el-button>
         </div>
-        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
+        <el-table :key="tableKey" v-loading="listLoading" :data="pageData" border fit highlight-current-row style="width: 100%;" size="small">
             <el-table-column label="日期" align="center">
                 <template slot-scope="{row}">
                     <span>{{row.jeDate}}</span>
@@ -68,7 +69,7 @@
                 </template>
             </el-table-column>
         </el-table>
-        <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+        <pagination v-show="total>10" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
     </div>
 </template>
 <script>
@@ -88,14 +89,17 @@ export default {
         return {
             tableKey: 0,
             tableData: [],
+            pageData: [],
             total: 0,
             listLoading: true,
             listQuery: {
                 periodCode1: '',
-                periodCode2: '',
                 coaCode1: '',
-                page: 1,
-                limit: 20
+                periodCode2: '',
+                isShowChildren: '',
+                isShowNetAndBalanceNotEqualToZero: 0,
+                isOnlyShowLeaf: 0,
+                pageIndex: 1
             }
         }
     },
@@ -119,11 +123,24 @@ export default {
         this.$store.dispatch('voucher/getCoaList')
     },
     methods: {
+        getDataByPage() {
+            var pageIndex = this.listQuery.pageIndex
+            var arr = []
+            var min = pageIndex * 10 - 10
+            var max = pageIndex * 10 <= this.total ? pageIndex * 10 : this.total
+            for (var i = min; i < max; i++) {
+                arr.push(this.tableData[i])
+            }
+            this.pageData = arr
+        },
         getList() {
             this.listLoading = true
+            this.listQuery.pageIndex = 1
             getMultisubsidiary(this.listQuery).then(res => {
                 this.listLoading = false
                 this.tableData = res.data.data
+                this.total = res.data.data.length
+                this.getDataByPage()
             }).catch(err => {
                 this.listLoading = false
             })

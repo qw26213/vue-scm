@@ -15,18 +15,18 @@
                     <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode">
                     </el-option>
                 </el-select>
-            <el-popover placement="bottom" title="更多" width="240" trigger="click">
-                <div>
-                    <p>
-                        <el-checkbox v-model="listQuery.isShowNetAndBalanceNotEqualToZero" false-label="0" true-label="1">发生额为0且余额为0不显示</el-checkbox>
-                    </p>
-                </div>
-                <el-button size="small" slot="reference">更多<i class="el-icon-arrow-right el-icon--right"></i></el-button>
-            </el-popover>
+                <el-popover placement="bottom" title="更多" width="240" trigger="click">
+                    <div>
+                        <p>
+                            <el-checkbox v-model="listQuery.isShowNetAndBalanceNotEqualToZero" false-label="0" true-label="1">发生额为0且余额为0不显示</el-checkbox>
+                        </p>
+                    </div>
+                    <el-button size="small" slot="reference">更多<i class="el-icon-arrow-right el-icon--right"></i></el-button>
+                </el-popover>
                 <el-button size="small" type="primary" @click="getList">查询</el-button>
             </div>
         </div>
-        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
+        <el-table :key="tableKey" v-loading="listLoading" :data="pageData" border fit highlight-current-row style="width: 100%;" size="small">
             <el-table-column label="日期" align="center">
                 <template slot-scope="{row}">
                     <span>{{row.jeDate}}</span>
@@ -68,7 +68,7 @@
                 </template>
             </el-table-column>
         </el-table>
-        <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+        <pagination v-show="total>20" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getDataByPage" />
     </div>
 </template>
 <script>
@@ -88,6 +88,7 @@ export default {
         return {
             tableKey: 0,
             tableData: [],
+            pageData: [],
             total: 0,
             listLoading: true,
             listQuery: {
@@ -96,8 +97,7 @@ export default {
                 coaCode1: '',
                 coaCode2: '',
                 isShowNetAndBalanceNotEqualToZero: '',
-                page: 1,
-                limit: 20
+                pageIndex: 1
             }
         }
     },
@@ -121,11 +121,24 @@ export default {
         this.$store.dispatch('voucher/getCoaList')
     },
     methods: {
+        getDataByPage() {
+            var pageIndex = this.listQuery.pageIndex
+            var arr = []
+            var min = pageIndex * 20 - 20
+            var max = pageIndex * 20 <= this.total ? pageIndex * 10 : this.total
+            for (var i = min; i < max; i++) {
+                arr.push(this.tableData[i])
+            }
+            this.pageData = arr
+        },
         getList() {
             this.listLoading = true
+            this.listQuery.pageIndex = 1
             getDetail(this.listQuery).then(res => {
                 this.listLoading = false
                 this.tableData = res.data.data
+                this.total = res.data.data.length
+                this.getDataByPage()
             }).catch(err => {
                 this.listLoading = false
             })

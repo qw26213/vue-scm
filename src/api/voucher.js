@@ -3,32 +3,28 @@ import request from '@/utils/request'
 export function getCoas() {
     return request({
         url: '/drp/gl/coa/treeData',
-        method: 'post',
-        data: { bookId: sessionStorage.bookId }
+        method: 'post'
     })
 }
 
 export function getAllUnion() {
     return request({
         url: '/drp/gl/summary/getAllUnion',
-        method: 'post',
-        data: { bookId: sessionStorage.bookId }
+        method: 'post'
     })
 }
 
 export function getSummarys() {
     return request({
         url: '/drp/gl/summary/datatables',
-        method: 'post',
-        data: { bookId: sessionStorage.bookId }
+        method: 'post'
     })
 }
 
-export function getAuxiliaryType(data) {
+export function getAuxiliaryType() {
     return request({
         url: '/drp/gl/auxiliaryType/get',
-        method: 'post',
-        data: { bookId: sessionStorage.bookId }
+        method: 'post'
     })
 }
 
@@ -232,9 +228,19 @@ export function getCatogery(){
     })
 }
 
+// -----------------------------------------------------------结账----------------------------
+
 export function backPeriodClose(data){
     return request({
         url:'/drp/gl/periodClose/backPeriodClose',
+        method:'post',
+        data
+    })
+}
+
+export function periodClose(data){
+    return request({
+        url:'/drp/gl/periodClose/periodClose',
         method:'post',
         data
     })

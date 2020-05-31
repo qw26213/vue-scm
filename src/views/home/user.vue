@@ -134,14 +134,14 @@
                 <el-form-item label="审核人签名" prop="sign2" style="margin-right:20px">
                     <el-input v-model="temp2.sign2" placeholder="用户姓名" />
                 </el-form-item>
-                <!-- <el-form-item label="角色" prop="roleId">
+                <el-form-item label="角色" prop="roleId">
                     <el-select v-model="temp2.roleId" style="width:185px" :disabled="userInfo.isAdmin == 0">
                         <el-option value="888888" label="审核会计"></el-option>
                         <el-option value="888887" label="制单会计"></el-option>
                         <el-option value="888889" label="企业出纳"></el-option>
                         <el-option value="888890" label="企业老板"></el-option>
                     </el-select>
-                </el-form-item> -->
+                </el-form-item>
                 <el-form-item label="状态" prop="status">
                     <el-select v-model="temp2.status" style="width:185px" :disabled="userInfo.isAdmin == 0">
                         <el-option :value="0" label="正常"></el-option>
@@ -160,7 +160,7 @@
                         <el-option v-for="item in staffList" :value="item.id" :label="item.staffName"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="单据查询权限" prop="queryType" label-width="100px" style="margin-right:20px">
+                <el-form-item label="单据查询权限" prop="queryType" label-width="100px" style="margin-right:60px">
                     <el-radio v-model="temp2.queryType" :label="0" :disabled="userInfo.isAdmin == 0">自己</el-radio>
                     <el-radio v-model="temp2.queryType" :label="1" :disabled="userInfo.isAdmin == 0">全部</el-radio>
                 </el-form-item>

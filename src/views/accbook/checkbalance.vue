@@ -23,14 +23,14 @@
                 <div>
                     <p>
                         <span>辅助类别：</span>
-                        <el-select v-model="listQuery.auxiliaryType" size="small" placeholder="辅助类别">
-                            <el-option v-for="item in periodArr" :key="item.id" :label="item.text" :value="item.id"></el-option>
+                        <el-select v-model="listQuery.auxiliaryType" size="small" placeholder="辅助类别" @change="auxiliaryChange">
+                            <el-option v-for="item in auxiliaryArr" :key="item.auxiliaryTypeCode" :label="item.auxiliaryTypeName" :value="item.auxiliaryTypeCode"></el-option>
                         </el-select>
                     </p>
                     <p>
                         <span>辅助名称：</span>
                         <el-select v-model="listQuery.auxiliaryCode" size="small" placeholder="辅助名称">
-                            <el-option v-for="item in periodArr" :key="item.id" :label="item.text" :value="item.id"></el-option>
+                            <el-option v-for="item in modalList" :key="item.id" :label="item.text" :value="item.id"></el-option>
                         </el-select>
                     </p>
                     <p>
@@ -111,8 +111,8 @@
 import { getProjbalance } from '@/api/accbook'
 import { mapGetters } from 'vuex'
 import Pagination from '@/components/Pagination'
+import { getProj, getDept, getStaff, getSupplier, getCust, getItem } from '@/api/user'
 export default {
-    name: 'grossprofit2',
     components: { Pagination },
     filters: {
         Fixed: function(num) {
@@ -126,6 +126,7 @@ export default {
             tableData: [],
             total: 0,
             listLoading: true,
+            modalList: [],
             listQuery: {
                 periodCode1: '',
                 periodCode2: '',
@@ -140,6 +141,7 @@ export default {
     },
     computed: {
         ...mapGetters([
+            'auxiliaryArr',
             'coaArr',
             'periodArr'
         ])
@@ -156,8 +158,41 @@ export default {
     created() {
         this.$store.dispatch('voucher/getPeriod')
         this.$store.dispatch('voucher/getCoaList')
+        this.$store.dispatch('voucher/getAuxiliaryTypeList')
     },
     methods: {
+        auxiliaryChange(code) {
+            if(code === 'supplier') {
+                getSupplier().then(res => {
+                    this.modalList = res.data.data || []
+                })
+            }
+            if(code === 'cust') {
+                getSupplier().then(res => {
+                    this.custList = res.data.data || []
+                })
+            }
+            if(code === 'proj') {
+                getProj().then(res => {
+                    this.modalList = res.data.data || []
+                })
+            }
+            if(code === 'staff') {
+                getStaff().then(res => {
+                    this.modalList = res.data.data || []
+                })
+            }
+            if(code === 'dept') {
+                getDept().then(res => {
+                    this.modalList = res.data.data || []
+                })
+            }
+            if(code === 'item') {
+                getItem().then(res => {
+                    this.modalList = res.data.data || []
+                })
+            }
+        },
         getList() {
             this.listLoading = true
             getProjbalance(this.listQuery).then(res => {

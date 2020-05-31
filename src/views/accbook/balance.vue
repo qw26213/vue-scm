@@ -3,11 +3,11 @@
         <div class="filter-container">
             <div class="filter-container">
                 <label class="label">期间：</label>
-                <el-select v-model="listQuery.periodCode1" size="small" placeholder="开始期间">
+                <el-select v-model="listQuery.periodCode1" size="small" style="width:120px" placeholder="开始期间">
                     <el-option v-for="item in periodArr" :key="item.id" :label="item.text" :value="item.id"></el-option>
                 </el-select>
                 <span class="zhi">至</span>
-                <el-select v-model="listQuery.periodCode2" size="small" placeholder="结束期间">
+                <el-select v-model="listQuery.periodCode2" size="small" style="width:120px" placeholder="结束期间">
                     <el-option v-for="item in periodArr" :key="item.id" :label="item.text" :value="item.id"></el-option>
                 </el-select>
                 <label class="label">科目：</label>
@@ -41,10 +41,10 @@
                     </div>
                     <el-button size="small" slot="reference">更多<i class="el-icon-arrow-right el-icon--right"></i></el-button>
                 </el-popover>
-                <el-button size="mini" type="primary" @click="getList">查询</el-button>
+                <el-button size="small" type="primary" @click="getList">查询</el-button>
             </div>
         </div>
-        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
+        <el-table :key="tableKey" v-loading="listLoading" :data="pageData" border fit highlight-current-row style="width: 100%;" size="small">
             <el-table-column label="科目编码" align="center">
                 <template slot-scope="{row}">
                     <span>{{row.coaCode}}</span>
@@ -104,7 +104,7 @@
                 </el-table-column>
             </el-table-column>
         </el-table>
-        <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+        <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.limit" @pagination="getDataByPage" />
     </div>
 </template>
 <script>
@@ -126,6 +126,7 @@ export default {
             tableData: [],
             total: 0,
             listLoading: true,
+            pageData: [],
             listQuery: {
                 periodCode1: '',
                 periodCode2: '',
@@ -135,8 +136,7 @@ export default {
                 coaLevel2: '',
                 isShowAuxiliary: '',
                 isShowNetAndBalanceNotEqualToZero: '',
-                page: 1,
-                limit: 20
+                pageIndex: 1
             }
         }
     },
@@ -160,11 +160,24 @@ export default {
         this.$store.dispatch('voucher/getCoaList')
     },
     methods: {
+        getDataByPage() {
+            var pageIndex = this.listQuery.pageIndex
+            var arr = []
+            var min = pageIndex * 20 - 20
+            var max = pageIndex * 20 <= this.total ? pageIndex * 10 : this.total
+            for (var i = min; i < max; i++) {
+                arr.push(this.tableData[i])
+            }
+            this.pageData = arr
+        },
         getList() {
             this.listLoading = true
+            this.listQuery.pageIndex = 1
             getBalance(this.listQuery).then(res => {
                 this.listLoading = false
                 this.tableData = res.data.data
+                this.total = res.data.data.length
+                this.getDataByPage()
             }).catch(err => {
                 this.listLoading = false
             })

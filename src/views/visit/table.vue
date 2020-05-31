@@ -27,7 +27,7 @@
                     <span>{{row.custName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="标签" align="center">
+            <el-table-column label="业务标签" align="center">
                 <template slot-scope="{row}">
                     <span>{{row.label}}</span>
                 </template>
@@ -49,7 +49,7 @@
                 </template>
             </el-table-column>
         </el-table>
-        <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" width="800px" top="5%">
+        <el-dialog :close-on-click-modal="false" :visible.sync="dialogFormVisible" width="720px" top="5%">
             <div class="imgWrap" :style="{backgroundImage:'url('+imgUrl+')'}">
             </div>
         </el-dialog>
@@ -176,7 +176,7 @@ export default {
 <style scoped>
 .imgWrap {
     width: 100%;
-    height: 600px;
+    height: 480px;
     background-color: rgba(0, 0, 0, 0.36);
     background-position: center center;
     background-size: contain;

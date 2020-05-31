@@ -18,14 +18,14 @@
                 <div>
                     <p>
                         <span>辅助类别：</span>
-                        <el-select v-model="listQuery.auxiliaryType" size="small" placeholder="辅助类别">
-                            <el-option v-for="item in periodArr" :key="item.id" :label="item.text" :value="item.id"></el-option>
+                        <el-select v-model="listQuery.auxiliaryType" size="small" placeholder="辅助类别" @change="auxiliaryChange">
+                            <el-option v-for="item in auxiliaryArr" :key="item.auxiliaryTypeCode" :label="item.auxiliaryTypeName" :value="item.auxiliaryTypeCode"></el-option>
                         </el-select>
                     </p>
                     <p>
                         <span>辅助名称：</span>
                         <el-select v-model="listQuery.auxiliaryCode" size="small" placeholder="辅助名称">
-                            <el-option v-for="item in periodArr" :key="item.id" :label="item.text" :value="item.id"></el-option>
+                            <el-option v-for="item in modalList" :key="item.id" :label="item.text" :value="item.id"></el-option>
                         </el-select>
                     </p>
                     <p>
@@ -86,6 +86,102 @@
 </template>
 <script>
 import { getProjsubsidiary } from '@/api/accbook'
+import { mapGetters } from 'vuex'
+import Pagination from '@/components/Pagination'
+import { getProj, getDept, getStaff, getSupplier, getCust, getItem } from '@/api/user'
+export default {
+    components: { Pagination },
+    filters: {
+        Fixed: function(num) {
+            if (!num) { return '0.00' }
+            return parseFloat(num).toFixed(2);
+        }
+    },
+    data() {
+        return {
+            tableKey: 0,
+            tableData: [],
+            total: 0,
+            listLoading: true,
+            modalList: [],
+            listQuery: {
+                periodCode1: '',
+                periodCode2: '',
+                coaCode1: '',
+                coaCode2: '',
+                auxiliaryType:'',
+                auxiliaryCode:'',
+                isShowCoa: 1,
+                isShowNetAndBalanceNotEqualToZero: 0
+            }
+        }
+    },
+    computed: {
+        ...mapGetters([
+            'auxiliaryArr',
+            'coaArr',
+            'periodArr'
+        ])
+    },
+    watch: {
+        periodArr(val) {
+            if (val.length > 0) {
+                this.listQuery.periodCode1 = val[0].id
+                this.listQuery.periodCode2 = val[0].id
+                this.getList()
+            }
+        }
+    },
+    created() {
+        this.$store.dispatch('voucher/getPeriod')
+        this.$store.dispatch('voucher/getCoaList')
+        this.$store.dispatch('voucher/getAuxiliaryTypeList')
+    },
+    methods: {
+        auxiliaryChange(code) {
+            if(code === 'supplier') {
+                getSupplier().then(res => {
+                    this.modalList = res.data.data || []
+                })
+            }
+            if(code === 'cust') {
+                getSupplier().then(res => {
+                    this.custList = res.data.data || []
+                })
+            }
+            if(code === 'proj') {
+                getProj().then(res => {
+                    this.modalList = res.data.data || []
+                })
+            }
+            if(code === 'staff') {
+                getStaff().then(res => {
+                    this.modalList = res.data.data || []
+                })
+            }
+            if(code === 'dept') {
+                getDept().then(res => {
+                    this.modalList = res.data.data || []
+                })
+            }
+            if(code === 'item') {
+                getItem().then(res => {
+                    this.modalList = res.data.data || []
+                })
+            }
+        },
+        getList() {
+            this.listLoading = true
+            getProjsubsidiary(this.listQuery).then(res => {
+                this.listLoading = false
+                this.tableData = res.data.data
+            }).catch(err => {
+                this.listLoading = false
+            })
+        }
+    }
+}
+</script>
 import { mapGetters } from 'vuex'
 import Pagination from '@/components/Pagination'
 export default {
