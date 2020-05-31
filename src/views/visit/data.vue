@@ -70,7 +70,7 @@
                 </template>
             </el-table-column>
         </el-table>
-        <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
+        <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
     </div>
 </template>
 <script>
@@ -126,8 +126,10 @@ export default {
         handleLink(id) {
             this.$router.push('/visit/table?id='+id)
         },
-        selectChange() {
-
+        selectChange(obj) {
+            for (var key in obj) {
+                this.listQuery.queryParam[key] = obj[key];
+            }
         },
         handleDel() {
 
