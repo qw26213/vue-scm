@@ -1,4 +1,4 @@
-'use strict'
+'use strict'   
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -31,7 +31,21 @@ module.exports = {
     overlay: {
       warnings: false,
       errors: true
-    } 
+    },
+    hot: true,
+    inline: false,
+    proxy: {
+      '/drp': {
+        target: 'http://49.232.47.16/',
+        // target: 'http://192.168.10.19/',
+        ws: true,
+        changeOrigin: true,// 如果接口跨域，需要进行这个参数配置
+        // secure: false,// 如果是https接口，需要配置这个参数
+        pathRewrite: {// 如果接口本身没有/drp需要通过pathRewrite来重写了地址
+          '^/drp': '/drp'
+        }
+      }
+    }
   },
   configureWebpack: {
     name: name,
@@ -52,7 +66,6 @@ module.exports = {
   chainWebpack(config) {
     config.plugins.delete('preload') // TODO: need test
     config.plugins.delete('prefetch') // TODO: need test
-
     config.module.rule('svg').exclude.add(resolve('src/icons')).end()
     config.module
       .rule('icons')
@@ -73,19 +86,5 @@ module.exports = {
       .when(process.env.NODE_ENV === 'development',
         config => config.devtool('cheap-source-map')
       )
-  },
-  devServer: {
-    proxy: {
-      '/drp': {
-        target: 'http://49.232.47.16/',
-        // target: 'http://192.168.10.19/',
-        ws: true,
-        changeOrigin: true,// 如果接口跨域，需要进行这个参数配置
-        // secure: false,// 如果是https接口，需要配置这个参数
-        pathRewrite: {// 如果接口本身没有/drp需要通过pathRewrite来重写了地址
-          '^/drp': '/drp'
-        }
-      }
-    }
   }
 }
