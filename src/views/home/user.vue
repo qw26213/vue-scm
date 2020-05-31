@@ -15,8 +15,10 @@
                     <div class="listItem"><label>详细地址:</label>{{managementInfo.invoiceAddr}}</div>
                     <div class="listItem"><label>纳税类型:</label>{{managementInfo.taxFilingCategoryName}}</div>
                     <div class="listItem"><label>纳税识别号:</label>{{managementInfo.taxRegistrationCertificateNo}}</div>
-                    <div class="listItem"><label>业务有效期:</label>{{managementInfo.bizExpirationDate}}</div>
-                    <div class="listItem"><label>账套名称:</label>{{managementInfo.bookName}}</div>
+                    <!-- <div class="listItem"><label>业务有效期:</label>{{managementInfo.bizExpirationDate}}</div> -->
+                    <!-- <div class="listItem"><label>账套名称:</label>{{managementInfo.bookName}}</div> -->
+                    <div class="listItem" style="color:#F56C6C"><label>试用期:</label>{{managementInfo.bizExpirationDate}}</div>
+                    <div class="listItem" style="color:#F56C6C"><label>账号月数:</label>{{managementInfo.lisenseNum+managementInfo.lisenseNum1}}月(购买{{managementInfo.lisenseNum}}月,赠送{{managementInfo.lisenseNum1}}月)</div>
                 </el-card>
             </el-col>
             <el-col :xs="12" :sm="12" :lg="12" class="card-panel-col">
@@ -33,7 +35,7 @@
                     <div class="listItem"><label>邮箱:</label>{{userInfo.mail}}</div>
                     <div class="listItem"><label>管理员:</label>{{userInfo.isAdmin == 1?'是':'否'}}</div>
                     <div class="listItem"><label style="width:100px">单据查询权限:</label>{{userInfo.queryType == 0?'自己':'全部'}}</div>
-                    <!-- <div class="listItem"><label>角色:</label>{{userInfo.roleName}}</div> -->
+                    <div class="listItem"><label>角色:</label>{{userInfo.roleName}}</div>
                 </el-card>
             </el-col>
             <el-col :xs="24" :sm="24" :lg="24" class="card-panel-col">
@@ -281,7 +283,7 @@ export default {
             this.industryList = res.data.data
         })
         registerLoadTaxfilingcategory().then(res => {
-            this.taxfillingcategoryList = res.data
+            this.taxfillingcategoryList = res.data.data
         })
         getStaff().then(res => {
             this.staffList = res.data.data

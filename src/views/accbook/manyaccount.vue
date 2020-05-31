@@ -14,6 +14,21 @@
                 <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode">
                 </el-option>
             </el-select>
+            <el-popover placement="bottom" title="更多" width="240" trigger="click">
+                <div>
+                    <p>
+                        <el-radio v-model="listQuery.isShowChildren" false-label="0" true-label="1">只显示下级科目</el-radio>
+                        <el-radio v-model="listQuery.isShowChildren" false-label="0" true-label="1">只显示末级科目</el-radio>
+                    </p>
+                    <p>
+                        <el-checkbox v-model="listQuery.isOnlyShowLeaf" false-label="0" true-label="1">显示明细栏余额</el-checkbox>
+                    </p>
+                    <p>
+                        <el-checkbox v-model="listQuery.isShowNetAndBalanceNotEqualToZero" false-label="0" true-label="1">发生额为0且余额为0不显示</el-checkbox>
+                    </p>
+                </div>
+                <el-button size="small" slot="reference">更多<i class="el-icon-arrow-right el-icon--right"></i></el-button>
+            </el-popover>
             <el-button size="small" type="primary" @click="getList">查询</el-button>
         </div>
         <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">

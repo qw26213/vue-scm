@@ -30,6 +30,20 @@
                     <el-option v-for="item in [1,2,3,4,5,6,7]" :key="item" :label="item" :value="item">
                     </el-option>
                 </el-select>
+                <el-popover placement="bottom" title="更多" width="240" trigger="click">
+                    <div>
+                        <p>
+                            <el-checkbox v-model="listQuery.isShowAuxiliary" false-label="0" true-label="1">显示辅助核算</el-checkbox>
+                        </p>
+                        <p>
+                            <el-checkbox v-model="listQuery.isQuantity" false-label="0" true-label="1">只显示数量核算科目</el-checkbox>
+                        </p>
+                        <p>
+                            <el-checkbox v-model="listQuery.isShowNetAndBalanceNotEqualToZero" false-label="0" true-label="1">发生额为0且余额为0不显示</el-checkbox>
+                        </p>
+                    </div>
+                    <el-button size="small" slot="reference">更多<i class="el-icon-arrow-right el-icon--right"></i></el-button>
+                </el-popover>
                 <el-button size="mini" type="primary" @click="getList">查询</el-button>
             </div>
         </div>
@@ -176,8 +190,9 @@ export default {
                 coaCode2: '',
                 coaLevel1: '',
                 coaLevel2: '',
-                page: 1,
-                limit: 20
+                isShowAuxiliary: 1,
+                isQuantity: 1,
+                isShowNetAndBalanceNotEqualToZero: 0
             }
         }
     },

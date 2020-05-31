@@ -14,6 +14,17 @@
                 <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode">
                 </el-option>
             </el-select>
+            <el-popover placement="bottom" title="更多" width="240" trigger="click">
+                <div>
+                    <p>
+                        <el-checkbox v-model="listQuery.isQuantity" false-label="0" true-label="1">只显示数量核算科目</el-checkbox>
+                    </p>
+                    <p>
+                        <el-checkbox v-model="listQuery.isShowNetAndBalanceNotEqualToZero" false-label="0" true-label="1">发生额为0且余额为0不显示</el-checkbox>
+                    </p>
+                </div>
+                <el-button size="small" slot="reference">更多<i class="el-icon-arrow-right el-icon--right"></i></el-button>
+            </el-popover>
             <el-button size="small" type="primary" @click="getList">查询</el-button>
             <el-button size="small" type="warning" @click="exportExcel">导出</el-button>
         </div>
@@ -122,6 +133,8 @@ export default {
                 periodCode2: '',
                 coaCode1: '',
                 coaCode2: '',
+                isQuantity: 1,
+                isShowNetAndBalanceNotEqualToZero: 0,
                 page: 1,
                 limit: 20
             }

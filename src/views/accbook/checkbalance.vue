@@ -19,6 +19,29 @@
                 <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode">
                 </el-option>
             </el-select>
+            <el-popover placement="bottom" title="更多" width="280" trigger="click">
+                <div>
+                    <p>
+                        <span>辅助类别：</span>
+                        <el-select v-model="listQuery.auxiliaryType" size="small" placeholder="辅助类别">
+                            <el-option v-for="item in periodArr" :key="item.id" :label="item.text" :value="item.id"></el-option>
+                        </el-select>
+                    </p>
+                    <p>
+                        <span>辅助名称：</span>
+                        <el-select v-model="listQuery.auxiliaryCode" size="small" placeholder="辅助名称">
+                            <el-option v-for="item in periodArr" :key="item.id" :label="item.text" :value="item.id"></el-option>
+                        </el-select>
+                    </p>
+                    <p>
+                        <el-checkbox v-model="listQuery.isShowCoa" false-label="0" true-label="1">显示末级科目</el-checkbox>
+                    </p>
+                    <p>
+                        <el-checkbox v-model="listQuery.isShowNetAndBalanceNotEqualToZero" false-label="0" true-label="1">发生额为0且余额为0不显示</el-checkbox>
+                    </p>
+                </div>
+                <el-button size="small" slot="reference">更多<i class="el-icon-arrow-right el-icon--right"></i></el-button>
+            </el-popover>
             <el-button size="small" type="primary" @click="getList">查询</el-button>
         </div>
         <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
@@ -108,19 +131,21 @@ export default {
                 periodCode2: '',
                 coaCode1: '',
                 coaCode2: '',
-                page: 1,
-                limit: 20
+                auxiliaryType:'',
+                auxiliaryCode:'',
+                isShowCoa: 1,
+                isShowNetAndBalanceNotEqualToZero: 0
             }
         }
     },
     computed: {
-      ...mapGetters([
-        'coaArr',
-        'periodArr'
-      ])
+        ...mapGetters([
+            'coaArr',
+            'periodArr'
+        ])
     },
     watch: {
-        periodArr(val){
+        periodArr(val) {
             if (val.length > 0) {
                 this.listQuery.periodCode1 = val[0].id
                 this.listQuery.periodCode2 = val[0].id
@@ -129,8 +154,8 @@ export default {
         }
     },
     created() {
-      this.$store.dispatch('voucher/getPeriod')
-      this.$store.dispatch('voucher/getCoaList')
+        this.$store.dispatch('voucher/getPeriod')
+        this.$store.dispatch('voucher/getCoaList')
     },
     methods: {
         getList() {
