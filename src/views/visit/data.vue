@@ -8,9 +8,8 @@
             <staffList @selectChange="selectChange" ctrType="list" :selectId="listQuery.queryParam.staffId"></staffList>
             <el-button size="mini" type="primary" @click="getList">查询</el-button>
         </div>
-        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini">
-            <el-table-column label="序号" type="index" width="50" align="center" />
-            <el-table-column label="拜访日期" align="center">
+        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
+            <el-table-column label="日期" align="center" width="100">
                 <template slot-scope="{row}">
                     <span>{{row.visitDate}}</span>
                 </template>
@@ -25,24 +24,49 @@
                     <span>{{row.custName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="标签">
+            <el-table-column label="签到时间" width="150">
                 <template slot-scope="{row}">
-                    <span>{{row.label}}</span>
+                    <span>{{row.checkInTime}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="文件大小">
+            <el-table-column label="偏差" width="110">
                 <template slot-scope="{row}">
-                    <span>{{row.fileSizeCategory}}</span>
+                    <span>{{row.distanceM}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="上传时间">
+            <el-table-column label="签退时间" width="150">
                 <template slot-scope="{row}">
-                    <span>{{row.udateDate}}</span>
+                    <span>{{row.checkOutTime}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" width="80">
+            <el-table-column label="偏差" width="110">
                 <template slot-scope="{row}">
-                    <span class="ctrl" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
+                    <span>{{row.distanceOutM}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="停留时间">
+                <template slot-scope="{row}">
+                    <span>{{row.staySecondsStr}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="使用Gps" align="center" width="100">
+                <template slot-scope="{row}">
+                    <span>{{row.isGps==1?'是':'否'}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="是否跳过" align="center" width="100">
+                <template slot-scope="{row}">
+                    <span>{{row.isSkip==1?'是':'否'}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="跳过原因" show-overflow-tooitip>
+                <template slot-scope="{row}">
+                    <span>{{row.skipReason}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="关联图片" align="center">
+                <template slot-scope="{row}">
+                    <el-button size="mini" type="primary" @click="handleLink(row.id)">查看</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -94,9 +118,13 @@ export default {
             getVisitData(this.listQuery).then(res => {
                 this.listLoading = false
                 this.tableData = res.data.data
+                this.total = res.data.totalNum
             }).catch(err => {
                 this.listLoading = false
             })
+        },
+        handleLink(id) {
+            this.$router.push('/visit/table?id='+id)
         },
         selectChange() {
 

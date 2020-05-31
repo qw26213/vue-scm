@@ -10,7 +10,7 @@ export function getVisitData(data) {
 
 export function getCrmFileInfo (data) {
   return request({
-    url: '/drp/crm/crmFileInfo/getResPageData',
+    url: '/drp/crm/crmFileInfo/getResPageCOSData',
     method: 'post',
     data
   })
