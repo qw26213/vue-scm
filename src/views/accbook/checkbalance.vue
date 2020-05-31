@@ -1,13 +1,27 @@
 <template>
     <div class="app-container">
         <div class="filter-container">
-            <el-date-picker :editable="false" v-model="listQuery.periodCode1" type="date" placeholder="开始日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+            <label class="label">期间：</label>
+            <el-select v-model="listQuery.periodCode1" size="small" placeholder="开始期间">
+                <el-option v-for="item in periodArr" :key="item.id" :label="item.text" :value="item.id"></el-option>
+            </el-select>
             <span class="zhi">至</span>
-            <el-date-picker :editable="false" v-model="listQuery.periodCode2" type="date" placeholder="结束日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
-            <el-button size="mini" type="primary" @click="getList">查询</el-button>
+            <el-select v-model="listQuery.periodCode2" size="small" placeholder="结束期间">
+                <el-option v-for="item in periodArr" :key="item.id" :label="item.text" :value="item.id"></el-option>
+            </el-select>
+            <label class="label">科目：</label>
+            <el-select v-model="listQuery.coaCode1" size="small" placeholder="科目" filterable>
+                <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode">
+                </el-option>
+            </el-select>
+            <span class="zhi">至</span>
+            <el-select v-model="listQuery.coaCode2" size="small" placeholder="科目" filterable>
+                <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode">
+                </el-option>
+            </el-select>
+            <el-button size="small" type="primary" @click="getList">查询</el-button>
         </div>
-        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini" show-summary>
-            <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
+        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
             <el-table-column label="项目编码" align="center">
                 <template slot-scope="{row}">
                     <span>{{row.auxiliaryCode}}</span>
@@ -19,48 +33,48 @@
                 </template>
             </el-table-column>
             <el-table-column label="期初余额">
-                <el-table-column label="借方">
+                <el-table-column label="借方" align="right">
                     <template slot-scope="{row}">
                         <span>{{row.beginBalanceDr}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="贷方">
+                <el-table-column label="贷方" align="right">
                     <template slot-scope="{row}">
                         <span>{{row.beginBalanceCr}}</span>
                     </template>
                 </el-table-column>
             </el-table-column>
             <el-table-column label="本期发生额">
-                <el-table-column label="借方">
+                <el-table-column label="借方" align="right">
                     <template slot-scope="{row}">
                         <span>{{row.beginBalanceDr}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="贷方">
+                <el-table-column label="贷方" align="right">
                     <template slot-scope="{row}">
                         <span>{{row.beginBalanceCr}}</span>
                     </template>
                 </el-table-column>
             </el-table-column>
             <el-table-column label="本年累计发生额">
-                <el-table-column label="借方">
+                <el-table-column label="借方" align="right">
                     <template slot-scope="{row}">
                         <span>{{row.yearNetDr}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="贷方">
+                <el-table-column label="贷方" align="right">
                     <template slot-scope="{row}">
                         <span>{{row.yearNetCr}}</span>
                     </template>
                 </el-table-column>
             </el-table-column>
             <el-table-column label="期末余额">
-                <el-table-column label="借方">
+                <el-table-column label="借方" align="right">
                     <template slot-scope="{row}">
                         <span>{{row.balanceDr}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="贷方">
+                <el-table-column label="贷方" align="right">
                     <template slot-scope="{row}">
                         <span>{{row.balanceCr}}</span>
                     </template>
@@ -72,11 +86,17 @@
 </template>
 <script>
 import { getProjbalance } from '@/api/accbook'
-import { getNowDate } from '@/utils/auth'
+import { mapGetters } from 'vuex'
 import Pagination from '@/components/Pagination'
 export default {
     name: 'grossprofit2',
     components: { Pagination },
+    filters: {
+        Fixed: function(num) {
+            if (!num) { return '0.00' }
+            return parseFloat(num).toFixed(2);
+        }
+    },
     data() {
         return {
             tableKey: 0,
@@ -84,15 +104,33 @@ export default {
             total: 0,
             listLoading: true,
             listQuery: {
-                periodCode1: getNowDate(),
-                periodCode2: getNowDate(),
+                periodCode1: '',
+                periodCode2: '',
+                coaCode1: '',
+                coaCode2: '',
                 page: 1,
                 limit: 20
             }
         }
     },
+    computed: {
+      ...mapGetters([
+        'coaArr',
+        'periodArr'
+      ])
+    },
+    watch: {
+        periodArr(val){
+            if (val.length > 0) {
+                this.listQuery.periodCode1 = val[0].id
+                this.listQuery.periodCode2 = val[0].id
+                this.getList()
+            }
+        }
+    },
     created() {
-        this.getList()
+      this.$store.dispatch('voucher/getPeriod')
+      this.$store.dispatch('voucher/getCoaList')
     },
     methods: {
         getList() {
