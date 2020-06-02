@@ -1,8 +1,8 @@
 <template>
     <div class="app-container">
         <div class="w1200 voucherHeader">
-            <el-button v-if="!jzType" type="primary" size="mini" @click="dialogFormVisible1 = true">从模板生成凭证</el-button>
-            <el-button v-if="!jzType" type="primary" size="mini" @click="dialogFormVisible2 = true">常用摘要</el-button>
+            <el-button v-if="jzType === 0" type="primary" size="mini" @click="dialogFormVisible1 = true">从模板生成凭证</el-button>
+            <el-button v-if="jzType === 0" type="primary" size="mini" @click="dialogFormVisible2 = true">常用摘要</el-button>
             <div class="voucherTit">{{billHeader.jeCatogeryTitle}}<span class="Period">{{ billHeader.periodName }}</span></div>
             <el-form :inline="true" label-position="right" label-width="80px" style="width: 100%; margin-top:0px;">
                 <el-form-item label="凭证字号" prop="billNo" style="margin-bottom:10px">
@@ -99,8 +99,9 @@
             </tfoot>
         </table>
         <div class="tx-c w1200" style="margin-top:20px">
-            <el-button v-if="!$route.query.id && !jzType" class="filter-item" type="primary" @click="saveData(1)">保存为凭证模板</el-button>
-            <el-button v-if="!$route.query.id" class="filter-item" type="default" @click="saveData(2)">保存并新增凭证</el-button>
+            <el-button v-if="!$route.query.id && jzType === 0" class="filter-item" type="primary" @click="saveData(1)">保存为凭证模板</el-button>
+            <el-button v-if="!$route.query.id && jzType === 0" class="filter-item" type="default" @click="saveData(2)">保存并新增凭证</el-button>
+            <el-button v-if="!$route.query.id && jzType === 1" class="filter-item" type="primary" style="width:160px" @click="saveData(2)">保存凭证</el-button>
             <el-button v-if="$route.query.id" class="filter-item" type="primary" style="width:160px" @click="saveData(2)">保存凭证</el-button>
         </div>
         <el-dialog :close-on-click-modal="false" title="选择凭证模板" :visible.sync="dialogFormVisible1" width="540px">
@@ -316,7 +317,8 @@ export default {
             supplierList: [],
             staffList: [],
             projList: [],
-            jzType: false,
+            jzCode: '',
+            jzType: 0,
         }
     },
     filters: {
@@ -389,7 +391,8 @@ export default {
             this.getTotalMoney()
         },
         initJzVoucher(jzCode, periodCode, rateObj) {
-            this.jzType = true
+            this.jzType = 1
+            this.jzCode = jzCode
             this.tableData = [{}, {}, {}, {}]
             this.getJeSeqByDate()
             this.getTotalMoney()
@@ -408,11 +411,17 @@ export default {
                 this.initMyVoucher(res)
             })
         },
+        getJzVoucher(id) {
+            this.jzType = 2
+            getVoucherById({ id: id }).then(res => {
+                this.initMyVoucher(res)
+            })
+        },
         initMyVoucher(res) {
             this.$store.dispatch('voucher/getSummaryList')
             this.$store.dispatch('voucher/getSummaryTable')
             this.$store.dispatch('voucher/getCoaList')
-            if (this.jzType === false) {
+            if (this.jzType !== 1 ) {
                 this.billHeader = res.data.data.header
             }
             this.tableData = res.data.data.lineList
@@ -699,8 +708,8 @@ export default {
                 saveType: this.saveType,
                 voucherTable: lineArr,
                 totalCreditMoney: Number(this.totalMoney1) / 100,
-                totalDebiteMoney: Number(this.totalMoney2) / 100
-                // jzCode: jzCode
+                totalDebiteMoney: Number(this.totalMoney2) / 100,
+                jzCode: this.jzCode
             }
             if (type == 1) {
                 this.saveTemplet(obj)
@@ -725,9 +734,13 @@ export default {
         saveVoucher(obj, type) {
             voucherSave({ container: obj }, type).then(res => {
                 if (res.data.success) {
-                    if (this.saveType == 1 && !this.$route.query.id) {
+                    if (this.saveType == 1 && !this.$route.query.id && this.jzType === 0) {
                         this.$message.success('凭证新增成功！')
                         this.initVoucher()
+                    }
+                    if (this.saveType == 1 && !this.$route.query.id && this.jzType === 1) {
+                        this.$message.success('结账凭证已生成！')
+                        this.$parent.closeModal()
                     }
                     if (this.saveType == 1 && this.$route.query.id) {
                         this.$message.success('凭证保存成功！')

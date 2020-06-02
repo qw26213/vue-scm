@@ -14,7 +14,7 @@
             <el-col :span="6" v-for="(item, index) in nameArr" :key="index" style="margin-bottom: 20px">
                 <el-card class="box-card" style="text-align:center;height:150px">
                     <div class="itemTit">{{item}}</div>
-                    <el-button v-if="index < createdVouterCount" type="default" :disabled="isSeasonEnd&&index==4" @click="showJzVoucher(index)" plain>查看凭证</el-button>
+                    <el-button v-if="jzCodeStrs.indexOf(codeArr[index])>=0" type="default" :disabled="isSeasonEnd&&index==4" @click="showJzVoucher(index)" plain>查看凭证</el-button>
                     <el-button v-else type="primary" :disabled="isSeasonEnd&&index==4" @click="createVoucher(index)" plain>生成凭证</el-button>
                 </el-card>
             </el-col>
@@ -41,7 +41,7 @@
                 <el-button type="primary" @click="saveRateConfig">确定</el-button>
             </div>
         </el-dialog>
-        <el-dialog :close-on-click-modal="false" :title="'生成结转凭证——'+nameArr[curIndex]" :visible.sync="dialogVisiable" width="1300px">
+        <el-dialog :close-on-click-modal="false" :title="'生成结转凭证——'+nameArr[curIndex]" :visible.sync="dialogVisiable" width="1320px">
             <voucherArea ref="voucherAdd"></voucherArea>
         </el-dialog>
     </div>
@@ -79,7 +79,8 @@ export default {
             createdVouterCount: 0,
             voucherList: [],
             rateForm: {},
-            rules: {}
+            rules: {},
+            jzCodeStrs: ''
         }
     },
     computed: {
@@ -116,7 +117,10 @@ export default {
 
         },
         formatInput(event) {
-            event.currentTarget.value = event.currentTarget.replace(/[^\d.]/g,'')
+            event.currentTarget.value = event.currentTarget.replace(/[^\d.]/g, '')
+        },
+        closeModal() {
+            this.dialogVisiable = false
         },
         createVoucher(index) {
             this.curIndex = index
@@ -143,7 +147,7 @@ export default {
         },
         saveRateConfig() {
             this.rateConfigVisiable = false,
-            this.$refs.voucherAdd.initJzVoucher(this.codeArr[this.curIndex], this.periodCode, this.rateForm)
+                this.$refs.voucherAdd.initJzVoucher(this.codeArr[this.curIndex], this.periodCode, this.rateForm)
         },
         initBillStatus(str) {
             getPeriodState(str).then(res => {
@@ -155,16 +159,30 @@ export default {
                 this.voucherNumber = res.data.data.jeHeaderCount
                 this.adjustmentPeriodFlag = res.data.data.glPeriod.adjustmentPeriodFlag
                 this.createdVouterCount = res.data.data.count
-                this.voucherList = res.data.data.voucher
+                if (this.createdVouterCount > 0) {
+                    this.voucherList = res.data.data.voucher
+                    var codeStrs = []
+                    this.voucherList.forEach(item => {
+                        codeStrs.push(item.jzCode)
+                    })
+                    this.jzCodeStrs = codeStrs
+                }
             })
         },
         showJzVoucher(index) {
+            const code = this.codeArr[index]
+            const voucher = this.voucherList.find(item => {
+                return item.jzCode === code
+            })
             var obj = {
-                periodCode: this.voucherList[index].periodCode,
-                jzCode: this.codeArr[index]
+                periodCode: voucher.periodCode,
+                jzCode: code
             }
             getIdByPeriodJzCode(obj).then(res => {
-
+                this.dialogVisiable = true
+                this.$nextTick(() => {
+                    this.$refs.voucherAdd.getJzVoucher(res.data.data)
+                })
             })
         },
         executeBackPeriodClose() {
