@@ -18,7 +18,7 @@
                     <!-- <div class="listItem"><label>业务有效期:</label>{{managementInfo.bizExpirationDate}}</div> -->
                     <!-- <div class="listItem"><label>账套名称:</label>{{managementInfo.bookName}}</div> -->
                     <div class="listItem" style="color:#F56C6C"><label>试用期:</label>{{managementInfo.bizExpirationDate}}</div>
-                    <div class="listItem" style="color:#F56C6C"><label>账号月数:</label>{{managementInfo.lisenseNum+managementInfo.lisenseNum1}}月(购买{{managementInfo.lisenseNum}}月,赠送{{managementInfo.lisenseNum1}}月)</div>
+                    <div class="listItem" style="color:#F56C6C"><label>账号月数:</label>{{managementInfo.lisenseNum+managementInfo.lisenseNum1}}(购买{{managementInfo.lisenseNum}}，赠送{{managementInfo.lisenseNum1}})</div>
                 </el-card>
             </el-col>
             <el-col :xs="12" :sm="12" :lg="12" class="card-panel-col">

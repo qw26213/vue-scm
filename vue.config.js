@@ -32,8 +32,6 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    hot: true,
-    inline: false,
     proxy: {
       '/drp': {
         target: 'http://49.232.47.16/',

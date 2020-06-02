@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <el-form ref="reqFrom" :model="reqFrom" :rules="rules" inline class="login-form" autocomplete="on" label-position="left" label-width="108px" style="width:620px;margin: 100px auto 0">
+        <el-form ref="reqFrom" :model="reqFrom" :rules="rules" inline class="login-form" autocomplete="on" label-position="left" label-width="108px" style="width:640px;margin: 100px auto 0">
             <div class="title-container" style="margin-bottom:30px">
                 <h3 class="title">企业注册</h3>
             </div>

@@ -18,9 +18,9 @@
                         <el-button v-if="managementInfo.taxFilingCategoryId==0" type="default" style="margin-left:20px" size="mini" @click="handleTransfer">转为一般纳税人</el-button>
                         <el-button v-if="managementInfo.taxFilingCategoryId==1" type="default" style="margin-left:20px" size="mini" @click="handleTransfer">转为小规模纳税人</el-button>
                     </div>
-                    <div class="listItem"><label>业务有效期:</label>{{managementInfo.bizExpirationDate}}</div>
+                    <div class="listItem"><label>试用期:</label>{{managementInfo.bizExpirationDate}}</div>
                     <div class="listItem"><label>账簿名称:</label>{{managementInfo.bookName}}</div>
-                    <div class="listItem"><label>审核级次:</label>{{managementInfo.auditLevel}}</div>
+                    <!-- <div class="listItem"><label>审核级次:</label>{{managementInfo.auditLevel}}</div> -->
                     </ul>
                 </el-card>
             </el-col>

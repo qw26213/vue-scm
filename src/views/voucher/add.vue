@@ -1,8 +1,8 @@
 <template>
     <div class="app-container">
         <div class="w1200 voucherHeader">
-            <el-button type="primary" size="mini" @click="dialogFormVisible1 = true">从模板生成凭证</el-button>
-            <el-button type="primary" size="mini" @click="dialogFormVisible2 = true">常用摘要</el-button>
+            <el-button v-if="!jzType" type="primary" size="mini" @click="dialogFormVisible1 = true">从模板生成凭证</el-button>
+            <el-button v-if="!jzType" type="primary" size="mini" @click="dialogFormVisible2 = true">常用摘要</el-button>
             <div class="voucherTit">{{billHeader.jeCatogeryTitle}}<span class="Period">{{ billHeader.periodName }}</span></div>
             <el-form :inline="true" label-position="right" label-width="80px" style="width: 100%; margin-top:0px;">
                 <el-form-item label="凭证字号" prop="billNo" style="margin-bottom:10px">
@@ -99,7 +99,7 @@
             </tfoot>
         </table>
         <div class="tx-c w1200" style="margin-top:20px">
-            <el-button v-if="!$route.query.id" class="filter-item" type="primary" @click="saveData(1)">保存为凭证模板</el-button>
+            <el-button v-if="!$route.query.id && !jzType" class="filter-item" type="primary" @click="saveData(1)">保存为凭证模板</el-button>
             <el-button v-if="!$route.query.id" class="filter-item" type="default" @click="saveData(2)">保存并新增凭证</el-button>
             <el-button v-if="$route.query.id" class="filter-item" type="primary" style="width:160px" @click="saveData(2)">保存凭证</el-button>
         </div>
@@ -233,13 +233,13 @@
 import { mapGetters } from 'vuex'
 import { getGlPeriodByCenterDate, getGlPeriodByPeriodCode, getMaxVoucherSeq, getVoucherMaxDate } from '@/api/voucher'
 import { getVoucherById, voucherSave, getCatogery } from '@/api/voucher'
-import { getTempletHeader, getTempletTypeList, getTempletById, templetSave } from '@/api/voucher'
+import { getTempletHeader, getTempletTypeList, getTempletById, templetSave, getJZVoucherByCode, getJzTempletById } from '@/api/voucher'
 import { addSummary, delSummary } from '@/api/voucher'
 import { getNowDate, deleteEmptyObj, addNullObj, addNullObj2, convertCurrency, validateVal, deepClone, showNumber1, showNumber2, getIsAuxiliary } from '@/utils'
 import { getProj, getDept, getStaff, getSupplier, getCust, getItem } from '@/api/user'
 import Pagination from '@/components/Pagination'
 import coaList from '@/components/voucher/coaList'
-import summaryList from '@/components/voucher/summaryList' 
+import summaryList from '@/components/voucher/summaryList'
 var hexCas = ['A', 'B', 'C', 'D', 'E', 'F']
 export default {
     name: 'voucherAdd',
@@ -315,7 +315,8 @@ export default {
             itemList: [],
             supplierList: [],
             staffList: [],
-            projList: []
+            projList: [],
+            jzType: false,
         }
     },
     filters: {
@@ -334,7 +335,6 @@ export default {
     },
     watch: {
         summaryTable() {
-            console.log("111111")
             this.summaryData = this.summaryTable
             this.listQuery2.pageIndex = 1
             this.total2 = this.summaryData.length
@@ -370,24 +370,7 @@ export default {
         })
         if (this.$route.query.id) {
             getVoucherById({ id: this.$route.query.id }).then(res => {
-                this.$store.dispatch('voucher/getSummaryList')
-                this.$store.dispatch('voucher/getSummaryTable')
-                this.$store.dispatch('voucher/getCoaList')
-                this.billHeader = res.data.data.header
-                this.tableData = res.data.data.lineList
-                if (this.tableData.length < 3) {
-                    this.tableData.push({})
-                }
-                if (this.tableData.length < 4) {
-                    this.tableData.push({})
-                }
-                for (var i = 0; i < this.tableData.length; i++) {
-                    if (this.tableData[i].accountedDr || this.tableData[i].accountedCr) {
-                        this.$set(this.tableData[i], 'accountedDr', this.tableData[i].accountedDr * 100)
-                        this.$set(this.tableData[i], 'accountedCr', this.tableData[i].accountedCr * 100)
-                    }
-                }
-                this.getTotalMoney()
+                this.initMyVoucher(res)
             })
         } else {
             this.$store.dispatch('voucher/getSummaryList')
@@ -400,6 +383,57 @@ export default {
         }
     },
     methods: {
+        initVoucher() {
+            this.tableData = [{}, {}, {}, {}]
+            this.getJeSeqByDate()
+            this.getTotalMoney()
+        },
+        initJzVoucher(jzCode, periodCode, rateObj) {
+            this.jzType = true
+            this.tableData = [{}, {}, {}, {}]
+            this.getJeSeqByDate()
+            this.getTotalMoney()
+            getJZVoucherByCode(jzCode).then(res => {
+                this.getJzTemplet(res.data.data[0].id, jzCode, periodCode, rateObj);
+            })
+        },
+        getJzTemplet(templetId, jzCode, periodCode, rateObj) {
+            var data = {
+                id:templetId,
+                jzCode:jzCode,
+                periodCode:periodCode,
+                ...rateObj
+            }
+            getJzTempletById(data).then(res => {
+                this.initMyVoucher(res)
+            })
+        },
+        initMyVoucher(res) {
+            this.$store.dispatch('voucher/getSummaryList')
+            this.$store.dispatch('voucher/getSummaryTable')
+            this.$store.dispatch('voucher/getCoaList')
+            if (this.jzType === false) {
+                this.billHeader = res.data.data.header
+            }
+            this.tableData = res.data.data.lineList
+            this.tableData.forEach(item => {
+                const curMonth = 6
+                item.summary = item.summary.replace('{month}', curMonth)
+            })
+            if (this.tableData.length < 3) {
+                this.tableData.push({})
+            }
+            if (this.tableData.length < 4) {
+                this.tableData.push({})
+            }
+            for (var i = 0; i < this.tableData.length; i++) {
+                if (this.tableData[i].accountedDr || this.tableData[i].accountedCr) {
+                    this.$set(this.tableData[i], 'accountedDr', this.tableData[i].accountedDr * 100)
+                    this.$set(this.tableData[i], 'accountedCr', this.tableData[i].accountedCr * 100)
+                }
+            }
+            this.getTotalMoney()
+        },
         cancelTempletAuxiliary() {
             this.lineData = []
             this.dialogFormVisible4 = false
@@ -414,10 +448,10 @@ export default {
                     var coaCobinationCode = ''
                     var coaCobinationName = ''
                     AuxiliaryType.forEach(item => {
-                        if (curObj[item+'Id']) {
-                            const id = curObj[item+'Id']
-                            const modelCode = this.getParamValueById(this[item + 'List'], item+'Code', id)
-                            const modelName = this.getParamValueById(this[item + 'List'], item+'Name', id)
+                        if (curObj[item + 'Id']) {
+                            const id = curObj[item + 'Id']
+                            const modelCode = this.getParamValueById(this[item + 'List'], item + 'Code', id)
+                            const modelName = this.getParamValueById(this[item + 'List'], item + 'Name', id)
                             coaCobinationCode += '_' + hexCas[AuxiliaryType.indexOf(item)] + modelCode
                             coaCobinationName += '_' + modelName
                             if (item === 'item') {
@@ -428,7 +462,7 @@ export default {
                     curObj.coaCobinationCode = coaCobinationCode.substring(1)
                     curObj.coaCobinationName = coaCobinationName.substring(1)
                     if (curObj.coaCobinationCode === '' || curObj.coaCobinationCode.split('_').length < curObj.auxTypes.length) {
-                        this.$message.warning('第'+(i+1)+'行的辅助核算录入不完整！')
+                        this.$message.warning('第' + (i + 1) + '行的辅助核算录入不完整！')
                         return
                     }
                 }
@@ -439,7 +473,7 @@ export default {
         getParamValueById(arr, param, id) {
             var val = ''
             arr.forEach(item => {
-                if(item.id == id) {
+                if (item.id == id) {
                     val = item[param]
                 }
             })
@@ -544,8 +578,6 @@ export default {
                         }
                         curObj.coaCobinationCode = coaCobinationCode.substring(1)
                         curObj.coaCobinationName = coaCobinationName.substring(1)
-                        // curObj.longName = 
-                        // this.tableData.splice(this.curShowIndex + 1, 0, curObj)
                     }
                     this.dialogFormVisible3 = false
                     this.dialogStatus = 'static'
@@ -695,9 +727,7 @@ export default {
                 if (res.data.success) {
                     if (this.saveType == 1 && !this.$route.query.id) {
                         this.$message.success('凭证新增成功！')
-                        this.tableData = [{}, {}, {}, {}]
-                        this.getJeSeqByDate()
-                        this.getTotalMoney()
+                        this.initVoucher()
                     }
                     if (this.saveType == 1 && this.$route.query.id) {
                         this.$message.success('凭证保存成功！')
@@ -774,7 +804,7 @@ export default {
         selectTemplet(id) {
             this.dialogFormVisible1 = false
             getTempletById(id).then(res => {
-                if(res.data.data.popup == 1) {
+                if (res.data.data.popup == 1) {
                     this.lineData = res.data.data.lineList
                     this.lineData.forEach(item => {
                         item.supplierId = ''

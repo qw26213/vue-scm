@@ -5,58 +5,64 @@
             <el-select v-model="periodCode" size="small" placeholder="会计期间">
                 <el-option v-for="item in periodArr" :key="item.id" :label="item.text" :value="item.id"></el-option>
             </el-select>
-            <span style="font-size:14px;margin:0 20px">本期凭证数：10条</span>
+            <span style="font-size:14px;margin:0 20px">本期凭证数：{{voucherNumber}}条</span>
             <el-button v-if="adjustmentPeriodFlag == 1" size="small" type="primary" style="width:100px" @click="executePeriodClose">结账</el-button>
-            <el-button v-else size="small" type="primary" style="width:100px" @click="execuBackPeriodClose">反结账</el-button>
+            <el-button v-else size="small" type="primary" style="width:100px" @click="executeBackPeriodClose">反结账</el-button>
             <el-button size="small" type="default" style="width:100px" @click="getList">日志</el-button>
         </div>
         <el-row :gutter="30">
-            <el-col :span="6" v-for="(item, index) in dataList" :key="index" style="margin-bottom: 20px">
+            <el-col :span="6" v-for="(item, index) in nameArr" :key="index" style="margin-bottom: 20px">
                 <el-card class="box-card" style="text-align:center;height:150px">
                     <div class="itemTit">{{item}}</div>
-                    <el-button type="primary" :disabled="(curMonth == '03' || curMonth == '06' || curMonth == '09' || curMonth == '12')&&index==4" @click="createVoucher(index)" plain>生成凭证</el-button>
+                    <el-button v-if="index < createdVouterCount" type="default" :disabled="isSeasonEnd&&index==4" @click="showJzVoucher(index)" plain>查看凭证</el-button>
+                    <el-button v-else type="primary" :disabled="isSeasonEnd&&index==4" @click="createVoucher(index)" plain>生成凭证</el-button>
                 </el-card>
             </el-col>
         </el-row>
-        <el-dialog :close-on-click-modal="false" :title="设置附加税率" :visible.sync="dialogFormVisible" width="500px">
-            <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="80px" style="width: 300px; margin-left:50px;">
-                <el-form-item label="计提方式" prop="month">
-                    <el-radio v-model="temp.month" :label="1">按月</el-radio>
-                    <el-radio v-model="temp.month" :label="3">按季</el-radio>
+        <el-dialog :close-on-click-modal="false" :title="curIndex==3?'设置附加税率':'设置企业所得税率'" :visible.sync="rateConfigVisiable" width="420px">
+            <el-form ref="dataForm" :rules="rules" :model="rateForm" label-position="left" label-width="100px" style="width: 360px; margin-left:10px;">
+                <el-form-item label="计提方式:" prop="month">
+                    <el-radio v-model="rateForm.month" :label="1">按月</el-radio>
+                    <el-radio v-model="rateForm.month" :label="3">按季</el-radio>
                 </el-form-item>
-                <el-form-item label="结转百分比：" prop="routeCode">
-                    <el-input v-model="temp.routeCode" placeholder="结转百分比" /> <span>%</span>
+                <el-form-item :label="curIndex==3?'城市建设税':'企业所得税'" prop="percent">
+                    <el-input v-model="rateForm.percent" :placeholder="curIndex==3?'城市建设税':'企业所得税'" style="width:240px;text-align:right" size="small" @input="formatInput($event)" /> <span>%</span>
                 </el-form-item>
-                <el-form-item label="教育费附加：" prop="percent1">
-                    <el-input v-model="temp.percent1" placeholder="教育费附加" />
+                <el-form-item v-if="curIndex == 3" label="教育费附加：" prop="percent1">
+                    <el-input v-model="rateForm.percent1" placeholder="教育费附加" style="width:240px;text-align:right" size="small" @input="formatInput($event)" /> <span>%</span>
                 </el-form-item>
-                <el-form-item label="地方教育费附加：" prop="percent2">
-                    <el-input v-model="temp.percent2" placeholder="地方教育费附加" />
+                <el-form-item v-if="curIndex == 3" label="地方教育费附加:" prop="percent2" label-width="120px">
+                    <el-input v-model="rateForm.percent2" placeholder="地方教育费附加" style="width:220px;text-align:right" size="small" @input="formatInput($event)" /> <span>%</span>
                 </el-form-item>
-                <p class="f12" style="margin-left:40px">注：请输入0-100的数</p>
+                <p class="f12">注：请输入0-100的数</p>
             </el-form>
             <div slot="footer" class="dialog-footer" align="center">
-                <el-button @click="dialogFormVisible = false">取消</el-button>
-                <el-button type="primary">确定</el-button>
+                <el-button @click="rateConfigVisiable = false">取消</el-button>
+                <el-button type="primary" @click="saveRateConfig">确定</el-button>
             </div>
+        </el-dialog>
+        <el-dialog :close-on-click-modal="false" :title="'生成结转凭证——'+nameArr[curIndex]" :visible.sync="dialogVisiable" width="1300px">
+            <voucherArea ref="voucherAdd"></voucherArea>
         </el-dialog>
     </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
 import { getNowDate } from '@/utils'
-import { backPeriodClose, getPeriodState, periodClose } from '@/api/voucher'
+import { backPeriodClose, getPeriodState, periodClose, getIdByPeriodJzCode } from '@/api/voucher'
 import Pagination from '@/components/Pagination'
 import coaList from '@/components/voucher/coaList'
 import summaryList from '@/components/voucher/summaryList'
+import voucherArea from './add.vue'
 export default {
     name: 'closePeriod',
-    components: { coaList, summaryList, Pagination },
+    components: { coaList, summaryList, Pagination, voucherArea },
     data() {
         return {
-            dataList: ['结转成本', '结转待摊费用', '结转未缴增值税', '计提附加税', '计提折旧', '计提工资', '计提所得税', '结转收入', '结转费用', '结转损益(合并)', '结转未分配利润'],
+            nameArr: ['结转成本', '结转待摊费用', '结转未缴增值税', '计提附加税', '计提折旧', '计提工资', '计提所得税', '结转收入', '结转费用', '结转损益(合并)', '结转未分配利润'],
+            codeArr: ['jzcb', 'jzdtfy', 'jzwjzzs', 'jtfjs', 'jtzj', 'jtgz', 'jtsds', 'jzsr', 'jzfy', 'jzsy', 'jzwfplr'],
             periodCode: '',
-            curMonth: 1,
+            curMonth: 2,
             searchPeriodId: '',
             searchPeriodYear: '',
             searchPeriodNum: 0,
@@ -64,9 +70,15 @@ export default {
             searchPeriodCode: '',
             voucherNumber: 0,
             curIndex: 0,
+            isSeasonEnd: false,
             adjustmentPeriodFlag: -1,
-            dialogFormVisible: false,
-            temp: {},
+            rateConfigVisiable: false,
+            dialogVisiable: false,
+            jzType: '',
+            jzCode: '',
+            createdVouterCount: 0,
+            voucherList: [],
+            rateForm: {},
             rules: {}
         }
     },
@@ -79,18 +91,23 @@ export default {
             'templetTypeList'
         ])
     },
+    watch: {
+        curMonth(val) {
+            this.isSeasonEnd = val == '03' || val == '06' || val == '09' || val == '12'
+        }
+    },
     created() {
         this.$store.dispatch('voucher/getCoaList')
         this.$store.dispatch('voucher/getSummaryList')
         this.$store.dispatch('voucher/getTempletType')
         this.$store.dispatch('voucher/getAuxiliaryTypeList')
         this.$store.dispatch('voucher/getPeriod')
-        this.getCurVoucherStatus()
     },
     watch: {
         periodArr(val) {
             if (val.length > 0) {
                 this.periodCode = val[0].id
+                this.initBillStatus(this.periodCode)
             }
         }
     },
@@ -98,16 +115,35 @@ export default {
         getList() {
 
         },
+        formatInput(event) {
+            event.currentTarget.value = event.currentTarget.replace(/[^\d.]/g,'')
+        },
         createVoucher(index) {
             this.curIndex = index
-            if (index == 3 || index == 6) {
-                this.dialogFormVisible = true
+            if (index == 3) {
+                this.rateConfigVisiable = true
+                this.rateForm = {
+                    month: 1,
+                    percent: 7,
+                    percent1: 3,
+                    percent2: 2
+                }
+            } else if (index == 6) {
+                this.rateConfigVisiable = true
+                this.rateForm = {
+                    month: 1,
+                    percent: 25
+                }
+            } else {
+                this.dialogVisiable = true
+                this.$nextTick(() => {
+                    this.$refs.voucherAdd.initJzVoucher(this.codeArr[index], this.periodCode, null)
+                })
             }
         },
-        getCurVoucherStatus() {
-            var curPeriod = '2020-05'
-            this.curMonth = curPeriod.split('-')[1]
-            this.initBillStatus(curPeriod)
+        saveRateConfig() {
+            this.rateConfigVisiable = false,
+            this.$refs.voucherAdd.initJzVoucher(this.codeArr[this.curIndex], this.periodCode, this.rateForm)
         },
         initBillStatus(str) {
             getPeriodState(str).then(res => {
@@ -118,9 +154,20 @@ export default {
                 this.searchPeriodCode = res.data.data.glPeriod.periodCode
                 this.voucherNumber = res.data.data.jeHeaderCount
                 this.adjustmentPeriodFlag = res.data.data.glPeriod.adjustmentPeriodFlag
+                this.createdVouterCount = res.data.data.count
+                this.voucherList = res.data.data.voucher
             })
         },
-        execuBackPeriodClose() {
+        showJzVoucher(index) {
+            var obj = {
+                periodCode: this.voucherList[index].periodCode,
+                jzCode: this.codeArr[index]
+            }
+            getIdByPeriodJzCode(obj).then(res => {
+
+            })
+        },
+        executeBackPeriodClose() {
             var data = {
                 periodId: this.searchPeriodId,
                 periodYear: this.searchPeriodYear,
@@ -130,14 +177,14 @@ export default {
             }
             backPeriodClose(data).then(res => {
                 if (res.data.success) {
-                    this.$message.success(backBillObj.periodCode + "及其之后期间反结转完成!")
-                    this.initBillStatus(backBillObj.periodCode)
+                    this.$message.success(data.periodCode + "及其之后期间反结转完成!")
+                    this.initBillStatus(data.periodCode)
                 } else {
                     if (res.data.errorCode == "101") {
-                        this.$message.warning("期间" + backBillObj.periodCode + "没有找到!")
+                        this.$message.warning("期间" + data.periodCode + "没有找到!")
                     }
                     if (res.data.errorCode == "102") {
-                        this.$message.warning("无法反结转，期间" + backBillObj.periodCode + "没有结转!")
+                        this.$message.warning("无法反结转，期间" + data.periodCode + "没有结转!")
                     }
                 }
             })
@@ -153,6 +200,7 @@ export default {
             backPeriodClose(data).then(res => {
                 if (res.data.errorCode == "0") {
                     this.$message.success(data.periodYear + "年第" + data.periodNum + "期结账完成!");
+                    this.initBillStatus(data.periodCode)
                 } else {
                     if (res.data.errorCode == "-100") {
                         this.$message.warning(res.data.msg)
