@@ -8,7 +8,7 @@
             <span style="font-size:14px;margin:0 20px">本期凭证数：{{voucherNumber}}条</span>
             <el-button v-if="adjustmentPeriodFlag == 1" size="small" type="primary" style="width:100px" @click="executePeriodClose">结账</el-button>
             <el-button v-else size="small" type="primary" style="width:100px" @click="executeBackPeriodClose">反结账</el-button>
-            <el-button size="small" type="default" style="width:100px" @click="getList">日志</el-button>
+            <el-button size="small" type="default" style="width:100px" @click="getLog">日志</el-button>
         </div>
         <el-row :gutter="30">
             <el-col :span="6" v-for="(item, index) in nameArr" :key="index" style="margin-bottom: 20px">
@@ -41,7 +41,7 @@
                 <el-button type="primary" @click="saveRateConfig">确定</el-button>
             </div>
         </el-dialog>
-        <el-dialog :close-on-click-modal="false" :title="'生成结转凭证——'+nameArr[curIndex]" :visible.sync="dialogVisiable" width="1320px">
+        <el-dialog :close-on-click-modal="false" :title="'生成结转凭证——'+nameArr[curIndex]" :visible.sync="dialogVisiable" width="1320px" top="5%">
             <voucherArea ref="voucherAdd"></voucherArea>
         </el-dialog>
     </div>
@@ -49,7 +49,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { getNowDate } from '@/utils'
-import { backPeriodClose, getPeriodState, periodClose, getIdByPeriodJzCode } from '@/api/voucher'
+import { backPeriodClose, getPeriodState, periodClose, getIdByPeriodJzCode, transLogList } from '@/api/voucher'
 import Pagination from '@/components/Pagination'
 import coaList from '@/components/voucher/coaList'
 import summaryList from '@/components/voucher/summaryList'
@@ -113,8 +113,10 @@ export default {
         }
     },
     methods: {
-        getList() {
-
+        getLog() {
+            transLogList(this.periodCode).then(res => {
+                this.$alert(res.data.msg, '提示')
+            })
         },
         formatInput(event) {
             event.currentTarget.value = event.currentTarget.replace(/[^\d.]/g, '')

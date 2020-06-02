@@ -26,7 +26,7 @@
           <span>{{row.creditLimit|Fixed}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="已透支额度" align="right"min-width="110">
+      <el-table-column label="已赊销金额" align="right"min-width="110">
         <template slot-scope="{row}">
           <span>{{row.overdraftBalance|Fixed}}</span>
         </template>
@@ -54,7 +54,7 @@
       <el-table-column label="操作" align="center" width="380">
         <template slot-scope="{row}">
           <el-button type="primary" size="mini" @click="handleUpdate1(row.creditLimit,row.id)">改信用额度</el-button>
-          <el-button type="default" size="mini" @click="handleUpdate2(row.overdraftBalance,row.id)">改已透支额度</el-button>
+          <el-button type="default" size="mini" @click="handleUpdate2(row.overdraftBalance,row.id)">改已赊销金额</el-button>
           <el-button type="primary" size="mini" @click="handleCompile(row)">编辑</el-button>
           <el-button type="danger" size="mini" @click="handleDel(row.id)">删除</el-button>
           <el-button type="warning" size="mini" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
@@ -236,7 +236,7 @@ export default {
       });
     },
     handleUpdate2(val,id) {
-      this.$prompt('请输入已透支额度', '提示', {
+      this.$prompt('请输入已赊销金额', '提示', {
         confirmButtonText: '确定',closeOnClickModal:false,
         cancelButtonText: '取消',
         closeOnClickModal:false,
@@ -264,7 +264,7 @@ export default {
       updateOverdraftBalanceById(obj).then(res => {
         if(res.data.errorCode==0){
           this.getList();
-          this.$message.success('修改已透支额度成功')
+          this.$message.success('修改已赊销金额成功')
         }else{
           this.$message.error(res.data.msg)
         }

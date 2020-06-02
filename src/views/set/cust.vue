@@ -1,12 +1,12 @@
 <template>
     <div class="app-container">
         <div class="filter-container">
-            <el-input size="small" v-model="listQuery.queryParam.custName" placeholder="客户代码/名称" style="width: 200px;" class="filter-item" />
+            <el-input v-model="listQuery.queryParam.custName" size="small" placeholder="客户代码/名称" style="width: 200px;" />
             <el-dropdown trigger="click">
                 <span class="el-dropdown-link" id="dropTit3">
-                    <el-input v-model="listQuery.queryParam.channelTypeName" placeholder="渠道类型" />
+                    <el-input v-model="listQuery.queryParam.channelTypeName" size="small" placeholder="渠道类型" />
                 </span>
-                <el-dropdown-menu slot="dropdown" :visible-change="menuVisible1">
+                <el-dropdown-menu slot="dropdown" size="small" :visible-change="menuVisible1">
                     <div style="width:185px;max-height:260px">
                         <el-tree :data="treeData1" :props="defaultProps1" @node-click="handleNodeClick3" default-expand-all></el-tree>
                     </div>
@@ -14,18 +14,18 @@
             </el-dropdown>
             <el-dropdown trigger="click">
                 <span class="el-dropdown-link" id="dropTit4">
-                    <el-input v-model="listQuery.queryParam.custTypeName" placeholder="客户类别" />
+                    <el-input v-model="listQuery.queryParam.custTypeName" size="small" placeholder="客户类别" />
                 </span>
-                <el-dropdown-menu slot="dropdown">
+                <el-dropdown-menu slot="dropdown" size="small">
                     <div style="width:185px;max-height:260px">
                         <el-tree :data="treeData2" :props="defaultProps2" @node-click="handleNodeClick4" default-expand-all></el-tree>
                     </div>
                 </el-dropdown-menu>
             </el-dropdown>
-            <el-button size="mini" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
-            <el-button size="mini" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
+            <el-button size="small" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
+            <el-button size="small" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
         </div>
-        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini">
+        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
             <el-table-column label="序号" type="index" width="50" align="center">
             </el-table-column>
             <el-table-column label="客户代码">
@@ -73,12 +73,12 @@
                     <span>{{row.advrBalance|Fixed}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="透支额度" align="right" width="100">
+            <el-table-column label="赊销额度" align="right" width="100">
                 <template slot-scope="{row}">
                     <span>{{row.creditLimit|Fixed}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="已透支金额" align="right" width="100">
+            <el-table-column label="已赊销金额" align="right" width="100">
                 <template slot-scope="{row}">
                     <span>{{row.overdraftBalance|Fixed}}</span>
                 </template>
@@ -100,7 +100,7 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="280">
                 <template slot-scope="{row}">
-                    <el-button type="default" size="mini" @click="handleUpdate(row.overdraftBalance, row.id)">改已透支额度</el-button>
+                    <el-button type="default" size="mini" @click="handleUpdate(row.overdraftBalance, row.id)">改已赊销额度</el-button>
                     <el-button type="primary" size="mini" @click="handleCompile(row)">编辑</el-button>
                     <el-button type="danger" size="mini" @click="handleDel(row.id)">删除</el-button>
                     <el-button type="warning" size="mini" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
@@ -148,8 +148,8 @@
                 <el-form-item label="地址" prop="addr">
                     <el-input v-model="temp.addr" placeholder="地址" />
                 </el-form-item>
-                <el-form-item label="透支额度" prop="creditLimit">
-                    <el-input v-model="temp.creditLimit" placeholder="透支额度" />
+                <el-form-item label="赊销额度" prop="creditLimit">
+                    <el-input v-model="temp.creditLimit" placeholder="赊销额度" />
                 </el-form-item>
                 <el-form-item label="拜访周期(天)" prop="visitCycle">
                     <el-input v-model="temp.visitCycle" placeholder="拜访周期" />
@@ -441,7 +441,7 @@ export default {
             })
         },
         handleUpdate(val, id) {
-            this.$prompt('已透支额度', '修改已透支额度', {
+            this.$prompt('已赊销额度', '修改已赊销额度', {
                 confirmButtonText: '确定',
                 closeOnClickModal: false,
                 cancelButtonText: '取消',
@@ -459,7 +459,7 @@ export default {
             updateOverdraftBalanceById1(obj).then(res => {
                 if (res.data.errorCode == 0) {
                     this.getList();
-                    this.$message.success('修改已透支额度成功')
+                    this.$message.success('修改已赊销额度成功')
                 } else {
                     this.$message.error(res.data.msg)
                 }

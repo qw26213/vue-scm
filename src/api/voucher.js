@@ -281,3 +281,11 @@ export function getJzTempletById(data) {
         data
     })
 }
+
+export function transLogList(data) {
+    return request({
+        url: '/drp/log/trans/transLogList',
+        method: 'post',
+        data
+    })
+}

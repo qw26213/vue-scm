@@ -189,14 +189,14 @@
                     <el-form-item label="销售改价" prop="salePriceType">
                         <el-radio-group v-model="temp.salePriceType">
                             <el-radio :label="0" style="margin-right:10px">完全禁止</el-radio>
-                            <el-radio :label="1" style="margin-right:10px">按业务员</el-radio>
+                            <el-radio :label="1" style="margin-right:10px">按员工</el-radio>
                             <el-radio :label="2">完全允许</el-radio>
                         </el-radio-group>
                     </el-form-item>
                     <el-form-item label="退货改价" prop="returnPriceType">
                         <el-radio-group v-model="temp.returnPriceType">
                             <el-radio :label="0" style="margin-right:10px">完全禁止</el-radio>
-                            <el-radio :label="1" style="margin-right:10px">按业务员</el-radio>
+                            <el-radio :label="1" style="margin-right:10px">按员工</el-radio>
                             <el-radio :label="2">完全允许</el-radio>
                         </el-radio-group>
                     </el-form-item>
