@@ -73,7 +73,7 @@
     </div>
 </template>
 <script>
-import { getMultisubsidiary } from '@/api/accbook'
+import { getMultisubsidiary, exportMultisubsidiary, printMultisubsidiary } from '@/api/accbook'
 import { mapGetters } from 'vuex'
 import Pagination from '@/components/Pagination'
 export default {
@@ -141,6 +141,16 @@ export default {
                 this.tableData = res.data.data
                 this.total = res.data.data.length
                 this.getDataByPage()
+            }).catch(err => {
+                this.listLoading = false
+            })
+        },
+        exportBook() {
+            exportMultisubsidiary(this.listQuery)
+        },
+        printBook() {
+            printMultisubsidiary(this.listQuery).then(res => {
+                window.open("http://"+window.location.host+res.data.data)
             }).catch(err => {
                 this.listLoading = false
             })

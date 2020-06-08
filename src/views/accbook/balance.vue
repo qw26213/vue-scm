@@ -106,7 +106,7 @@
     </div>
 </template>
 <script>
-import { getBalance } from '@/api/accbook'
+import { getBalance, exportBalance, printBalance } from '@/api/accbook'
 import { mapGetters } from 'vuex'
 import Pagination from '@/components/Pagination'
 export default {
@@ -177,6 +177,16 @@ export default {
                 this.tableData = res.data.data
                 this.total = res.data.data.length
                 this.getDataByPage()
+            }).catch(err => {
+                this.listLoading = false
+            })
+        },
+        exportBook() {
+            exportBalance(this.listQuery)
+        },
+        printBook() {
+            printBalance(this.listQuery).then(res => {
+                window.open("http://"+window.location.host+res.data.data)
             }).catch(err => {
                 this.listLoading = false
             })

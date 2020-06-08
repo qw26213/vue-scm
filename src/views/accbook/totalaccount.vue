@@ -1,5 +1,5 @@
 <template>
-    <div class="app-container" style="width:1380px">
+    <div class="app-container" style="min-width:1380px">
         <div class="filter-container">
             <label class="label">期间：</label>
             <el-select v-model="listQuery.periodCode1" size="small" style="width:120px" placeholder="开始期间">
@@ -166,11 +166,7 @@ export default {
             })
         },
         exportBook() {
-            exportLedger(this.listQuery).then(res => {
-                // window.open("http://"+window.location.host+res.data.data)
-            }).catch(err => {
-                this.listLoading = false
-            })
+            exportLedger(this.listQuery)
         },
         printBook() {
             printLedger(this.listQuery).then(res => {

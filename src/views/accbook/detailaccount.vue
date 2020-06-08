@@ -72,7 +72,7 @@
     </div>
 </template>
 <script>
-import { getDetail } from '@/api/accbook'
+import { getDetail, exportSubsidiary, printSubsidiary } from '@/api/accbook'
 import { mapGetters } from 'vuex'
 import Pagination from '@/components/Pagination'
 export default {
@@ -138,6 +138,16 @@ export default {
                 this.tableData = res.data.data
                 this.total = res.data.data.length
                 this.getDataByPage()
+            }).catch(err => {
+                this.listLoading = false
+            })
+        },
+        exportBook() {
+            exportSubsidiary(this.listQuery)
+        },
+        printBook() {
+            printSubsidiary(this.listQuery).then(res => {
+                window.open("http://"+window.location.host+res.data.data)
             }).catch(err => {
                 this.listLoading = false
             })

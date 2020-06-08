@@ -191,11 +191,7 @@ export default {
             })
         },
         exportBook() {
-            exportSubsidiaryNum(this.listQuery).then(res => {
-                this.listLoading = false
-            }).catch(err => {
-                this.listLoading = false
-            })
+            exportSubsidiaryNum(this.listQuery)
         }
     }
 }

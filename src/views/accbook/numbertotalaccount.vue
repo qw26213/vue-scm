@@ -45,6 +45,8 @@
                     <el-button size="small" slot="reference">更多<i class="el-icon-arrow-right el-icon--right"></i></el-button>
                 </el-popover>
                 <el-button size="mini" type="primary" @click="getList">查询</el-button>
+                <el-button size="small" type="default" @click="printBook">打印</el-button>
+                <el-button size="small" type="warning" @click="exportBook">导出</el-button>
             </div>
         </div>
         <el-table :key="tableKey" v-loading="listLoading" :data="pageData" border fit highlight-current-row style="width: 100%;" size="small">
@@ -160,7 +162,7 @@
     </div>
 </template>
 <script>
-import { getLedgernum } from '@/api/accbook'
+import { getLedgernum, exportLedgernum, printLedgernum } from '@/api/accbook'
 import { mapGetters } from 'vuex'
 import Pagination from '@/components/Pagination'
 export default {
@@ -232,6 +234,16 @@ export default {
                 this.tableData = res.data.data
                 this.total = res.data.data.length
                 this.getDataByPage()
+            }).catch(err => {
+                this.listLoading = false
+            })
+        },
+        exportBook() {
+            exportLedgernum(this.listQuery)
+        },
+        printBook() {
+            printLedgernum(this.listQuery).then(res => {
+                window.open("http://"+window.location.host+res.data.data)
             }).catch(err => {
                 this.listLoading = false
             })

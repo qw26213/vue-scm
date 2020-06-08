@@ -85,7 +85,7 @@
     </div>
 </template>
 <script>
-import { getProjsubsidiary } from '@/api/accbook'
+import { getProjsubsidiary, printProjsubsidiary, exportProjsubsidiary } from '@/api/accbook'
 import { mapGetters } from 'vuex'
 import Pagination from '@/components/Pagination'
 import { getProj, getDept, getStaff, getSupplier, getCust, getItem } from '@/api/user'
@@ -191,6 +191,16 @@ export default {
                 this.tableData = res.data.data
                 this.total = res.data.data.length
                 this.getDataByPage()
+            }).catch(err => {
+                this.listLoading = false
+            })
+        },
+        exportBook() {
+            exportLedger(this.listQuery)
+        },
+        printBook() {
+            printLedger(this.listQuery).then(res => {
+                window.open("http://"+window.location.host+res.data.data)
             }).catch(err => {
                 this.listLoading = false
             })
