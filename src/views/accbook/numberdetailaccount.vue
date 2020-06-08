@@ -2,11 +2,11 @@
     <div class="app-container">
         <div class="filter-container">
             <label class="label">期间：</label>
-            <el-select v-model="listQuery.periodCode1" size="small" placeholder="开始期间">
+            <el-select v-model="listQuery.periodCode1" size="small" style="width:120px" placeholder="开始期间">
                 <el-option v-for="item in periodArr" :key="item.id" :label="item.text" :value="item.id"></el-option>
             </el-select>
             <span class="zhi">至</span>
-            <el-select v-model="listQuery.periodCode2" size="small" placeholder="结束期间">
+            <el-select v-model="listQuery.periodCode2" size="small" style="width:120px" placeholder="结束期间">
                 <el-option v-for="item in periodArr" :key="item.id" :label="item.text" :value="item.id"></el-option>
             </el-select>
             <label class="label">科目：</label>
@@ -26,9 +26,10 @@
                 <el-button size="small" slot="reference">更多<i class="el-icon-arrow-right el-icon--right"></i></el-button>
             </el-popover>
             <el-button size="small" type="primary" @click="getList">查询</el-button>
-            <el-button size="small" type="warning" @click="exportExcel">导出</el-button>
+            <el-button size="small" type="default" @click="printBook">打印</el-button>
+            <el-button size="small" type="warning" @click="exportBook">导出</el-button>
         </div>
-        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
+        <el-table :key="tableKey" v-loading="listLoading" :data="pageData" border fit highlight-current-row style="width: 100%;" size="small">
             <el-table-column label="日期" align="center">
                 <template slot-scope="{row}">
                     <span>{{row.jeDate}}</span>
@@ -36,7 +37,7 @@
             </el-table-column>
             <el-table-column label="凭证字号" align="center">
                 <template slot-scope="{row}">
-                    <span>{{row.jeSeq}}</span>
+                    <a href="javascript:" @click="$router.push('/voucher/add?id='+row.jeHeaderId)">{{row.jeCatogeryName}}</a>
                 </template>
             </el-table-column>
             <el-table-column label="摘要">
@@ -50,7 +51,7 @@
                 </template>
             </el-table-column>
             <el-table-column label="借方发生额">
-                <el-table-column label="数量">
+                <el-table-column label="数量" align="right">
                     <template slot-scope="{row}">
                         <span>{{row.qtyDr}}</span>
                     </template>
@@ -67,7 +68,7 @@
                 </el-table-column>
             </el-table-column>
             <el-table-column label="贷方发生额">
-                <el-table-column label="数量">
+                <el-table-column label="数量" align="right">
                     <template slot-scope="{row}">
                         <span>{{row.qtyCr}}</span>
                     </template>
@@ -84,12 +85,12 @@
                 </el-table-column>
             </el-table-column>
             <el-table-column label="余额">
-                <el-table-column label="方向">
+                <el-table-column label="方向" align="center">
                     <template slot-scope="{row}">
                         <span>{{row.crDrStr}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="数量">
+                <el-table-column label="数量" align="right">
                     <template slot-scope="{row}">
                         <span>{{row.balanceQty}}</span>
                     </template>
@@ -106,11 +107,11 @@
                 </el-table-column>
             </el-table-column>
         </el-table>
-        <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+        <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.limit" @pagination="getDataByPage" />
     </div>
 </template>
 <script>
-import { getSubsidiarynum, exportSubsidiaryNum } from '@/api/accbook'
+import { getSubsidiarynum, exportSubsidiaryNum, printSubsidiaryNum } from '@/api/accbook'
 import { mapGetters } from 'vuex'
 import Pagination from '@/components/Pagination'
 export default {
@@ -118,7 +119,7 @@ export default {
     components: { Pagination },
     filters: {
         Fixed: function(num) {
-            if (!num) { return '0.00' }
+            if (!num) { return '' }
             return parseFloat(num).toFixed(2);
         }
     },
@@ -126,6 +127,7 @@ export default {
         return {
             tableKey: 0,
             tableData: [],
+            pageData: [],
             total: 0,
             listLoading: true,
             listQuery: {
@@ -135,7 +137,7 @@ export default {
                 coaCode2: '',
                 isQuantity: 1,
                 isShowNetAndBalanceNotEqualToZero: 0,
-                page: 1,
+                pageIndex: 1,
                 limit: 20
             }
         }
@@ -160,19 +162,37 @@ export default {
       this.$store.dispatch('voucher/getCoaList')
     },
     methods: {
+        getDataByPage() {
+            var pageIndex = this.listQuery.pageIndex
+            var arr = []
+            var min = pageIndex * 20 - 20
+            var max = pageIndex * 20 <= this.total ? pageIndex * 20 : this.total
+            for (var i = min; i < max; i++) {
+                arr.push(this.tableData[i])
+            }
+            this.pageData = arr
+        },
         getList() {
             this.listLoading = true
             getSubsidiarynum(this.listQuery).then(res => {
                 this.listLoading = false
                 this.tableData = res.data.data
+                this.total = res.data.data.length
+                this.getDataByPage()
             }).catch(err => {
                 this.listLoading = false
             })
         },
-        exportExcel() {
+        printBook() {
+            printSubsidiaryNum(this.listQuery).then(res => {
+                window.open("http://"+window.location.host+res.data.data)
+            }).catch(err => {
+                this.listLoading = false
+            })
+        },
+        exportBook() {
             exportSubsidiaryNum(this.listQuery).then(res => {
                 this.listLoading = false
-
             }).catch(err => {
                 this.listLoading = false
             })

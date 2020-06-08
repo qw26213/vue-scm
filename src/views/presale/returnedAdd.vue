@@ -9,9 +9,6 @@
                 <el-form-item label="单据号:" prop="billNo">
                     <el-input size="mini" v-model="temp.billNo" placeholder="单据号" disabled />
                 </el-form-item>
-                <el-form-item label="业务类型:" prop="bizTypeId">
-                    <bizTypeList @selectChange="selectChange" disabled="1" :selectId="temp.bizTypeId"></bizTypeList>
-                </el-form-item>
                 <el-form-item label="客户:" prop="custId">
                     <custList @selectChange="selectChange" disabled="1" keyType="custId" :selectId="temp.custId" :selectName="temp.custName"></custList>
                 </el-form-item>

@@ -27,7 +27,7 @@ const mutations = {
     },
     SET_PERIODARR: (state, data) => {
         state.periodArr = data
-    },
+    }
 }
 
 const actions = {
@@ -38,7 +38,7 @@ const actions = {
     },
     getSummaryList({ commit }, data) {
         getSummarys().then(res => {
-            commit('SET_SUMMARY', res.data.data || [])
+            commit('SET_SUMMARYTABLE', res.data.data || [])
         })
     },
     getTempletType({ commit }, data) {
@@ -53,7 +53,7 @@ const actions = {
     },
     getSummaryTable({ commit }, data) {
         getAllUnion().then(res => {
-            commit('SET_SUMMARYTABLE', res.data.data || [])
+            commit('SET_SUMMARY', res.data.data || [])
         })
     },
     getPeriod({ commit }, data) {

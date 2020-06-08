@@ -44,7 +44,7 @@
             </el-popover>
             <el-button size="small" type="primary" @click="getList">查询</el-button>
         </div>
-        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
+        <el-table :key="tableKey" v-loading="listLoading" :data="pageData" border fit highlight-current-row style="width: 100%;" size="small">
             <el-table-column label="项目编码" align="center">
                 <template slot-scope="{row}">
                     <span>{{row.auxiliaryCode}}</span>
@@ -104,7 +104,7 @@
                 </el-table-column>
             </el-table-column>
         </el-table>
-        <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+        <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.limit" @pagination="getDataByPage" />
     </div>
 </template>
 <script>
@@ -116,7 +116,7 @@ export default {
     components: { Pagination },
     filters: {
         Fixed: function(num) {
-            if (!num) { return '0.00' }
+            if (!num) { return '' }
             return parseFloat(num).toFixed(2);
         }
     },
@@ -124,6 +124,7 @@ export default {
         return {
             tableKey: 0,
             tableData: [],
+            pageData: [],
             total: 0,
             listLoading: true,
             modalList: [],
@@ -135,7 +136,9 @@ export default {
                 auxiliaryType:'',
                 auxiliaryCode:'',
                 isShowCoa: 1,
-                isShowNetAndBalanceNotEqualToZero: 0
+                isShowNetAndBalanceNotEqualToZero: 0,
+                pageIndex: 1,
+                limit: 20
             }
         }
     },
@@ -193,11 +196,24 @@ export default {
                 })
             }
         },
+        getDataByPage() {
+            var pageIndex = this.listQuery.pageIndex
+            var arr = []
+            var min = pageIndex * 20 - 20
+            var max = pageIndex * 20 <= this.total ? pageIndex * 20 : this.total
+            for (var i = min; i < max; i++) {
+                arr.push(this.tableData[i])
+            }
+            this.pageData = arr
+        },
         getList() {
             this.listLoading = true
+            this.listQuery.pageIndex = 1
             getProjbalance(this.listQuery).then(res => {
                 this.listLoading = false
                 this.tableData = res.data.data
+                this.total = res.data.data.length
+                this.getDataByPage()
             }).catch(err => {
                 this.listLoading = false
             })

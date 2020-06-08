@@ -178,7 +178,7 @@ export default {
             })
         },
         handleCheck(id, billDate) {
-            this.$confirm('你确认要审核通过吗?', '提示', {
+            this.$confirm('确定审核通过吗?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
@@ -259,7 +259,7 @@ export default {
           });
         },
         handleDel(id, date) {
-            this.$confirm('你确认要删除吗?', '提示', {
+            this.$confirm('确定删除吗?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'

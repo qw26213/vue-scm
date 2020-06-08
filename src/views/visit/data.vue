@@ -77,12 +77,15 @@
 import { getVisitData } from '@/api/visit'
 import Pagination from '@/components/Pagination'
 import { getNowDate } from '@/utils/auth'
+import { parseTime } from '@/utils/index'
 import staffList from '@/components/selects/staffList'
 import custList from '@/components/selects/custList'
 export default {
     name: 'presaleData',
     components: { Pagination,custList,staffList },
     data() {
+        const end = getNowDate()
+        const start = parseTime(new Date().getTime() - 86400000 * 7)
         return {
             tableKey: 0,
             tableData: [],
@@ -95,8 +98,8 @@ export default {
                 pageIndex: 1,
                 pageNum: 20,
                 queryParam: {
-                    visitDate1: '2020-01-01',
-                    visitDate2: '2020-06-01',
+                    visitDate1: start,
+                    visitDate2: end,
                     staffId: '',
                     custId: ''
                 }

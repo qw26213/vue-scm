@@ -85,10 +85,52 @@ export function getCatogery() {
   })
 }
 
-export function exportSubsidiaryNum(data) {
+export function printLedger(data) {
   return request({
-    url: '/drp/accbook/exportSubsidiaryNum',
+    url: '/drp/accbook/printLedger',
     method: 'post',
     data
   })
+}
+
+export function exportLedger(data) {
+  var exportUrl = '/drp/accbook/exportLedger'
+  var temp = document.createElement("form");
+  temp.action = exportUrl;
+  temp.method = "POST";
+  temp.style.display = 'none';
+  for (var x in data) {
+      var opt = document.createElement("textarea")
+      opt.name = x
+      opt.value = data[x]
+      temp.appendChild(opt)
+  }
+  document.body.appendChild(temp)
+  temp.submit()
+  return temp
+}
+
+export function printSubsidiaryNum(data) {
+  return request({
+    url: '/drp/accbook/printSubsidiaryNum',
+    method: 'post',
+    data
+  })
+}
+
+export function exportSubsidiaryNum(data) {
+  var exportUrl = '/drp/accbook/exportSubsidiaryNum'
+  var temp = document.createElement("form")
+  temp.action = exportUrl
+  temp.method = "POST"
+  temp.style.display = 'none'
+  for (var x in data) {
+      var opt = document.createElement("textarea")
+      opt.name = x
+      opt.value = data[x]
+      temp.appendChild(opt)
+  }
+  document.body.appendChild(temp)
+  temp.submit()
+  return temp
 }

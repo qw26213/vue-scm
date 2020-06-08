@@ -76,48 +76,87 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="150">
                 <template slot-scope="{row}">
-                    <span v-if="row.jeStatus>0&&row.jeStatus<5" class="ctrl" @click="handleCheck(row.id)">审核</span>
+                    <span v-if="row.jeStatus > 0 && row.jeStatus < 5" class="ctrl" @click="handleCheck(row.id)">审核</span>
                     <span v-if="row.jeStatus == -1">已退回</span>
                     <span v-if="row.jeStatus == 5" class="ctrl" @click="handleUnCheck(row.id)">反审核</span>
-                    <span class="ctrl" @click="handleDel(row)">查看审核</span>
+                    <span class="ctrl" @click="showAudit(row.id)">查看审核</span>
                 </template>
             </el-table-column>
         </el-table>
         <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
+        <el-dialog :close-on-click-modal="false" title="请输入审核意见" :visible.sync="dialogFormVisible" width="420px">
+            <el-form ref="dataForm" :rules="rules" :model="auditForm" label-position="top" label-width="100px" style="width: 380px; margin-left:10px;">
+                <el-form-item label="审核意见" prop="content">
+                    <el-input type="textarea" v-model="auditForm.content" row="2" size="small" />
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer" align="center">
+                <el-button type="default" @click="dialogFormVisible = false">取消审核</el-button>
+                <el-button type="primary" @click="checkAccessItem(1)">审核通过</el-button>
+                <el-button type="danger" @click="checkAccessItem(-1)">审核退回</el-button>
+            </div>
+        </el-dialog>
+        <el-dialog :close-on-click-modal="false" title="审核记录" empty-text="暂无审核记录" :visible.sync="dialogFormVisible1" width="600px" style="overflow:auto">
+            <el-table :key="tableKey" :data="tableData1" border fit style="width: 100%;" size="mini">
+                <el-table-column label="审核人" align="center" width="100">
+                    <template slot-scope="{row}">
+                        <span>{{row.jeAuditorName}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="审核意见" align="center" show-overflow-tooltip>
+                    <template slot-scope="{row}">
+                        <span>{{row.jeAuditRemark}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="审核日期" align="center" width="140">
+                    <template slot-scope="{row}">
+                        <span>{{row.jeAuditDate}}</span>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </el-dialog>
     </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
 import { getPeriodList } from '@/api/user'
-import { getVoucherAuditList, voucherAduit, unAudit } from '@/api/voucher'
+import { getVoucherAuditList, voucherAduit, unAudit, auditList } from '@/api/voucher'
 import Pagination from '@/components/Pagination'
 import { getNowMonth } from '@/utils/index'
 export default {
     name: 'presaleData',
     components: { Pagination },
     filters: {
-        jeStatusFor: function (status) {
+        jeStatusFor: function(status) {
             return status == 0 ? "制单完成" : status == -1 ? "退回" : status == 5 ? '审核通过' : status == 1 ? "一审通过" : status == 2 ? "二审通过" : status == 3 ? "三审通过" : '无';
         },
-        Fixed: function (num) {
+        Fixed: function(num) {
             if (!num) { return '0.00' }
             return parseFloat(num).toFixed(2);
         },
-        catogeryNumberFor: function (num) {
+        catogeryNumberFor: function(num) {
             return num < 10 ? '00' + num : num < 100 ? '0' + num : num;
         }
     },
     data() {
         return {
             periodList: [],
+            jeHeaderId: '',
             tableKey: 0,
             tableData: [],
-            voucherIdArr:[],
+            voucherIdArr: [],
             total: 0,
             isBillDate: '0',
             dialogFormVisible: false,
+            dialogFormVisible1: false,
+            tableData1: [],
             listLoading: true,
-            curBillId: '',
+            auditForm: {
+                content: ''
+            },
+            rules: {
+                content: [{ required: true, message: '审核意见不能为空', trigger: 'change' }]
+            },
             listQuery: {
                 pageIndex: 1,
                 pageNum: 20,
@@ -146,9 +185,9 @@ export default {
         this.getList();
     },
     methods: {
-        handleSelectionChange(val){
+        handleSelectionChange(val) {
             let arr = []
-            for(let i = 0;i<val.length;i++){
+            for (let i = 0; i < val.length; i++) {
                 arr.push(val[i].id)
             }
             this.voucherIdArr = arr
@@ -163,24 +202,31 @@ export default {
             })
         },
         handleCheck(id) {
-            this.$confirm('确定审核通过吗?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                this.checkItem([id])
-            });
+            this.dialogFormVisible = true
+            this.jeHeaderId = id
+            this.initAudit()
         },
-        checkItem(arr) {
-            voucherAduit({ids:arr}).then(res => {
+        checkAccessItem(status) {
+            this.$refs.dataForm.validate((valid) => {
+                if (valid) {
+                    var obj = { jeAuditRemark: this.auditForm.content, jeAuditStatus: status, jeHeaderId: this.jeHeaderId }
+                    this.checkItem(obj)
+                } else {
+                    return false
+                }
+            })
+        },
+        checkItem(obj) {
+            voucherAduit(obj).then(res => {
+                this.dialogFormVisible = false
                 if (res.data.success) {
-                    this.$message.success('审核成功')
+                    this.$message.success(res.data.msg)
                 } else {
                     this.$message.error(res.data.msg)
                 }
             })
         },
-        handleUnCheck(id){
+        handleUnCheck(id) {
             this.$confirm('确定反审核通过吗?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
@@ -189,8 +235,8 @@ export default {
                 this.unCheckItems([id])
             });
         },
-        unCheckItems(arr){
-            unAudit({ids:arr}).then(res => {
+        unCheckItems(arr) {
+            unAudit({ ids: arr }).then(res => {
                 if (res.data.success) {
                     this.$message.success('反审核成功')
                 } else {
@@ -199,63 +245,31 @@ export default {
             })
         },
         voucherBackCheck() {
-            if(this.voucherIdArr.length==0){
-                this.$message.warning("请先选择凭证！");return
+            if (this.voucherIdArr.length == 0) {
+                this.$message.warning("请先选择凭证！");
+                return
             }
             this.unCheckItems(this.voucherIdArr)
         },
         muchVoucherCheck() {
-            if(this.voucherIdArr.length==0){
-                this.$message.warning("请先选择凭证！");return
+            if (this.voucherIdArr.length == 0) {
+                this.$message.warning("请先选择凭证！");
+                return
             }
-            this.checkItem(this.voucherIdArr)
+            this.initAudit()
+            this.jeHeaderId = this.voucherIdArr.join(',')
+            this.dialogFormVisible = true
         },
-        handleCompile(id) {
-            this.$store.dispatch('tagsView/delView', this.$route);
-            this.$router.push('/voucher/add?id=' + id)
+        initAudit() {
+            this.auditForm.content = ''
+            this.$nextTick(() => {
+                this.$refs['dataForm'].clearValidate()
+            })
         },
-        handleDel(row) {
-            let info = "确定要删除这个凭证吗？";
-            let id = row.id;
-            let joinJeHeaderId = row.joinJeHeaderId;
-            if (joinJeHeaderId != null && joinJeHeaderId != '') {
-                getVoucherById({ id: joinJeHeaderId }).then(res => {
-                    if (res.success) {
-                        if (res.data.data != null) {
-                            var header = res.data.data.header;
-                            if (joinJeHeaderId != null) {
-                                info = "该凭证存在关联成本凭证:<b>" + header.jeDate + " " + header.jeCatogery + "-" + formatThis(header.jeSeq, 4) + "</b>号凭证,确定要删除这个凭证吗(关联凭证一并删除)？";
-                            }
-                        }
-                        this.$confirm(info, '提示', {
-                            confirmButtonText: '确定',
-                            cancelButtonText: '取消',
-                            type: 'warning'
-                        }).then(() => {
-                            this.delItem(id)
-                        });
-                    } else {
-                        this.$message.error(res.data.msg)
-                    }
-                })
-            } else {
-                this.$confirm(info, '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    this.delItem(id)
-                });
-            }
-        },
-        delItem(id) {
-            delVoucher({ id: id }).then(res => {
-                if (res.data.success) {
-                    this.$message.success("删除凭证成功")
-                    this.getList()
-                } else {
-                    this.$message.error(res.data.msg)
-                }
+        showAudit(id) {
+            auditList({jeHeaderId: id}).then(res => {
+                this.dialogFormVisible1 = true
+                this.tableData1 = res.data.data || []
             })
         }
     }

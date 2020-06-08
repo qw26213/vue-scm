@@ -157,6 +157,14 @@ export function voucherAduit(data) {
     })
 }
 
+export function auditList(data) {
+    return request({
+        url: '/drp/gl/voucherAduit/list',
+        method: 'post',
+        data
+    })
+}
+
 export function voucherSave(data, type) {
     return request({
         url: '/drp/gl/voucher/' + type,

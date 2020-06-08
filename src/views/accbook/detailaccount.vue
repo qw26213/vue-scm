@@ -34,7 +34,7 @@
             </el-table-column>
             <el-table-column label="凭证字号" align="center">
                 <template slot-scope="{row}">
-                    <span>{{row.jeSeq}}</span>
+                    <a href="javascript:" @click="$router.push('/voucher/add?id='+row.jeHeaderId)">{{row.jeCatogeryName}}</a>
                 </template>
             </el-table-column>
             <el-table-column label="摘要">
@@ -68,7 +68,7 @@
                 </template>
             </el-table-column>
         </el-table>
-        <pagination v-show="total>20" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getDataByPage" />
+        <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.limit" @pagination="getDataByPage" />
     </div>
 </template>
 <script>
@@ -80,7 +80,7 @@ export default {
     components: { Pagination },
     filters: {
         Fixed: function(num) {
-            if (!num) { return '0.00' }
+            if (!num) { return '' }
             return parseFloat(num).toFixed(2);
         }
     },
@@ -94,8 +94,7 @@ export default {
             listQuery: {
                 periodCode1: '',
                 periodCode2: '',
-                coaCode1: '',
-                coaCode2: '',
+                coaCode1: this.$route.query.coaCode,
                 isShowNetAndBalanceNotEqualToZero: '',
                 pageIndex: 1
             }
@@ -125,7 +124,7 @@ export default {
             var pageIndex = this.listQuery.pageIndex
             var arr = []
             var min = pageIndex * 20 - 20
-            var max = pageIndex * 20 <= this.total ? pageIndex * 10 : this.total
+            var max = pageIndex * 20 <= this.total ? pageIndex * 20 : this.total
             for (var i = min; i < max; i++) {
                 arr.push(this.tableData[i])
             }

@@ -19,10 +19,10 @@
                     <el-date-picker v-model="billHeader.jeDate" type="date" placeholder="日期" size="mini" :clearable="false" value-format="yyyy-MM-dd" style="width:120px" @change="getJeSeqByDate">
                     </el-date-picker>
                 </el-form-item>
-                <!-- <el-form-item label="附单据" prop="expirationDate" style="float:right;margin-bottom:10px">
+                <el-form-item label="附单据" prop="expirationDate" style="float:right;margin-bottom:10px">
                     <input type="text" class="jeSeq" v-model="billHeader.voucherAttachmentNum" style="width:40px;margin-right:6px" />
                     <span>张</span>
-                </el-form-item> -->
+                </el-form-item>
             </el-form>
         </div>
         <table class="voucher table table-condensed w1200" style="border-left:none;">
@@ -698,7 +698,7 @@ export default {
                 jeCatogeryId: this.billHeader.jeCatogeryId,
                 jeCatogeryName: this.billHeader.jeCatogeryName,
                 jeCatogeryTitle: this.billHeader.jeCatogeryTitle,
-                voucherAttachmentNum: 0,
+                voucherAttachmentNum: this.billHeader.voucherAttachmentNum,
                 baseCurrencyCode: 'CNY',
                 baseCurrencyId: '',
                 baseCurrencyName: '人民币',

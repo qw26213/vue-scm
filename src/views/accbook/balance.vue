@@ -1,56 +1,54 @@
 <template>
     <div class="app-container">
         <div class="filter-container">
-            <div class="filter-container">
-                <label class="label">期间：</label>
-                <el-select v-model="listQuery.periodCode1" size="small" style="width:120px" placeholder="开始期间">
-                    <el-option v-for="item in periodArr" :key="item.id" :label="item.text" :value="item.id"></el-option>
-                </el-select>
-                <span class="zhi">至</span>
-                <el-select v-model="listQuery.periodCode2" size="small" style="width:120px" placeholder="结束期间">
-                    <el-option v-for="item in periodArr" :key="item.id" :label="item.text" :value="item.id"></el-option>
-                </el-select>
-                <label class="label">科目：</label>
-                <el-select v-model="listQuery.coaCode1" size="small" placeholder="科目" filterable>
-                    <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode">
-                    </el-option>
-                </el-select>
-                <span class="zhi">至</span>
-                <el-select v-model="listQuery.coaCode2" size="small" placeholder="科目" filterable>
-                    <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode">
-                    </el-option>
-                </el-select>
-                <label class="label">科目级次：</label>
-                <el-select v-model="listQuery.coaLevel1" size="small" style="width:100px" placeholder="科目级次" filterable>
-                    <el-option v-for="item in [1,2,3,4,5,6,7]" :key="item" :label="item" :value="item">
-                    </el-option>
-                </el-select>
-                <span class="zhi">至</span>
-                <el-select v-model="listQuery.coaLevel2" size="small" style="width:100px" placeholder="科目级次" filterable>
-                    <el-option v-for="item in [1,2,3,4,5,6,7]" :key="item" :label="item" :value="item">
-                    </el-option>
-                </el-select>
-                <el-popover placement="bottom" title="更多" width="240" trigger="click">
-                    <div>
-                        <p>
-                            <el-checkbox v-model="listQuery.isShowAuxiliary" false-label="0" true-label="1">显示辅助核算</el-checkbox>
-                        </p>
-                        <p>
-                            <el-checkbox v-model="listQuery.isShowNetAndBalanceNotEqualToZero" false-label="0" true-label="1">发生额为0且余额为0不显示</el-checkbox>
-                        </p>
-                    </div>
-                    <el-button size="small" slot="reference">更多<i class="el-icon-arrow-right el-icon--right"></i></el-button>
-                </el-popover>
-                <el-button size="small" type="primary" @click="getList">查询</el-button>
-            </div>
+            <label class="label">期间：</label>
+            <el-select v-model="listQuery.periodCode1" size="small" style="width:120px" placeholder="开始期间">
+                <el-option v-for="item in periodArr" :key="item.id" :label="item.text" :value="item.id"></el-option>
+            </el-select>
+            <span class="zhi">至</span>
+            <el-select v-model="listQuery.periodCode2" size="small" style="width:120px" placeholder="结束期间">
+                <el-option v-for="item in periodArr" :key="item.id" :label="item.text" :value="item.id"></el-option>
+            </el-select>
+            <label class="label">科目：</label>
+            <el-select v-model="listQuery.coaCode1" size="small" placeholder="科目" filterable>
+                <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode">
+                </el-option>
+            </el-select>
+            <span class="zhi">至</span>
+            <el-select v-model="listQuery.coaCode2" size="small" placeholder="科目" filterable>
+                <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode">
+                </el-option>
+            </el-select>
+            <label class="label">科目级次：</label>
+            <el-select v-model="listQuery.coaLevel1" size="small" style="width:100px" placeholder="科目级次" filterable>
+                <el-option v-for="item in [1,2,3,4,5,6,7]" :key="item" :label="item" :value="item">
+                </el-option>
+            </el-select>
+            <span class="zhi">至</span>
+            <el-select v-model="listQuery.coaLevel2" size="small" style="width:100px" placeholder="科目级次" filterable>
+                <el-option v-for="item in [1,2,3,4,5,6,7]" :key="item" :label="item" :value="item">
+                </el-option>
+            </el-select>
+            <el-popover placement="bottom" title="更多" width="240" trigger="click">
+                <div>
+                    <p>
+                        <el-checkbox v-model="listQuery.isShowAuxiliary" false-label="0" true-label="1">显示辅助核算</el-checkbox>
+                    </p>
+                    <p>
+                        <el-checkbox v-model="listQuery.isShowNetAndBalanceNotEqualToZero" false-label="0" true-label="1">发生额为0且余额为0不显示</el-checkbox>
+                    </p>
+                </div>
+                <el-button size="small" slot="reference">更多<i class="el-icon-arrow-right el-icon--right"></i></el-button>
+            </el-popover>
+            <el-button size="small" type="primary" @click="getList">查询</el-button>
         </div>
         <el-table :key="tableKey" v-loading="listLoading" :data="pageData" border fit highlight-current-row style="width: 100%;" size="small">
-            <el-table-column label="科目编码" align="center">
+            <el-table-column label="科目编码" align="center" show-overflow-tooltip>
                 <template slot-scope="{row}">
                     <span>{{row.coaCode}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="科目名称">
+            <el-table-column label="科目名称" show-overflow-tooltip>
                 <template slot-scope="{row}">
                     <span style="padding-left:10px" v-html="row.pageCoaName"></span>
                 </template>
@@ -116,7 +114,7 @@ export default {
     components: { Pagination },
     filters: {
         Fixed: function(num) {
-            if (!num) { return '0.00' }
+            if (!num) { return '' }
             return parseFloat(num).toFixed(2);
         }
     },
@@ -136,7 +134,8 @@ export default {
                 coaLevel2: '',
                 isShowAuxiliary: '',
                 isShowNetAndBalanceNotEqualToZero: '',
-                pageIndex: 1
+                pageIndex: 1,
+                limit: 20
             }
         }
     },
@@ -164,7 +163,7 @@ export default {
             var pageIndex = this.listQuery.pageIndex
             var arr = []
             var min = pageIndex * 20 - 20
-            var max = pageIndex * 20 <= this.total ? pageIndex * 10 : this.total
+            var max = pageIndex * 20 <= this.total ? pageIndex * 20 : this.total
             for (var i = min; i < max; i++) {
                 arr.push(this.tableData[i])
             }

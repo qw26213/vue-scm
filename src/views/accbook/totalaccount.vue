@@ -1,5 +1,5 @@
 <template>
-    <div class="app-container" style="width:1300px">
+    <div class="app-container" style="width:1380px">
         <div class="filter-container">
             <label class="label">期间：</label>
             <el-select v-model="listQuery.periodCode1" size="small" style="width:120px" placeholder="开始期间">
@@ -41,11 +41,13 @@
                 <el-button size="small" slot="reference">更多<i class="el-icon-arrow-right el-icon--right"></i></el-button>
             </el-popover>
             <el-button size="small" type="primary" @click="getList">查询</el-button>
+            <el-button size="small" type="default" @click="printBook">打印</el-button>
+            <el-button size="small" type="warning" @click="exportBook">导出</el-button>
         </div>
         <el-table :key="tableKey" v-loading="listLoading" :data="pageData" cell-class-name="tpCell" border fit highlight-current-row style="width: 100%;" size="small">
             <el-table-column label="科目编码" align="center">
                 <template slot-scope="{row}">
-                    <span> {{row.coaCode}}</span>
+                    <a href="javascript:" @click="$router.push('/accbook/detailaccount?coaCode='+row.coaCode)">{{ row.coaCode }}</a>
                 </template>
             </el-table-column>
             <el-table-column label="科目名称">
@@ -88,7 +90,7 @@
     </div>
 </template>
 <script>
-import { getTotalAccount } from '@/api/accbook'
+import { getTotalAccount, printLedger, exportLedger } from '@/api/accbook'
 import { mapGetters } from 'vuex'
 import Pagination from '@/components/Pagination'
 export default {
@@ -96,7 +98,7 @@ export default {
     components: { Pagination },
     filters: {
         Fixed: function(num) {
-            if (!num) { return '0.00' }
+            if (!num) { return '' }
             return parseFloat(num).toFixed(2);
         }
     },
@@ -159,6 +161,20 @@ export default {
                 this.tableData = res.data.data
                 this.total = res.data.data.length
                 this.getDataByPage()
+            }).catch(err => {
+                this.listLoading = false
+            })
+        },
+        exportBook() {
+            exportLedger(this.listQuery).then(res => {
+                // window.open("http://"+window.location.host+res.data.data)
+            }).catch(err => {
+                this.listLoading = false
+            })
+        },
+        printBook() {
+            printLedger(this.listQuery).then(res => {
+                window.open("http://"+window.location.host+res.data.data)
             }).catch(err => {
                 this.listLoading = false
             })

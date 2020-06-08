@@ -72,7 +72,7 @@
                     <span>{{row.itemAmount|Fixed}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="返利金额" align="right">
+            <el-table-column label="销售费用" align="right">
                 <template slot-scope="{row}">
                     <span>{{row.rebateAmount|Fixed}}</span>
                 </template>

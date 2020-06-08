@@ -3,11 +3,11 @@
         <div class="filter-container">
             <div class="filter-container">
                 <label class="label">期间：</label>
-                <el-select v-model="listQuery.periodCode1" size="small" placeholder="开始期间">
+                <el-select v-model="listQuery.periodCode1" size="small" style="width:120px" placeholder="开始期间">
                     <el-option v-for="item in periodArr" :key="item.id" :label="item.text" :value="item.id"></el-option>
                 </el-select>
                 <span class="zhi">至</span>
-                <el-select v-model="listQuery.periodCode2" size="small" placeholder="结束期间">
+                <el-select v-model="listQuery.periodCode2" size="small" style="width:120px" placeholder="结束期间">
                     <el-option v-for="item in periodArr" :key="item.id" :label="item.text" :value="item.id"></el-option>
                 </el-select>
                 <label class="label">科目：</label>
@@ -47,20 +47,15 @@
                 <el-button size="mini" type="primary" @click="getList">查询</el-button>
             </div>
         </div>
-        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
-            <el-table-column label="日期" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.jeDate}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="科目编码">
+        <el-table :key="tableKey" v-loading="listLoading" :data="pageData" border fit highlight-current-row style="width: 100%;" size="small">
+            <el-table-column label="科目编码" show-overflow-tooltip>
                 <template slot-scope="{row}">
                     <span>{{row.coaCode}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="科目名称">
+            <el-table-column label="科目名称" show-overflow-tooltip>
                 <template slot-scope="{row}">
-                  <span style="padding-left:10px" v-html="row.pageCoaName"></span>
+                    <span style="padding-left:10px" v-html="row.pageCoaName"></span>
                 </template>
             </el-table-column>
             <el-table-column label="单位">
@@ -69,7 +64,7 @@
                 </template>
             </el-table-column>
             <el-table-column label="期初余额">
-                <el-table-column label="方向">
+                <el-table-column label="方向" align="center">
                     <template slot-scope="{row}">
                         <span>{{row.crDrStr}}</span>
                     </template>
@@ -139,7 +134,7 @@
                 </el-table-column>
             </el-table-column>
             <el-table-column label="期末余额">
-                <el-table-column label="方向">
+                <el-table-column label="方向" align="center">
                     <template slot-scope="{row}">
                         <span>{{row.crDrStr}}</span>
                     </template>
@@ -161,7 +156,7 @@
                 </el-table-column>
             </el-table-column>
         </el-table>
-        <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+        <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.limit" @pagination="getDataByPage" />
     </div>
 </template>
 <script>
@@ -171,16 +166,17 @@ import Pagination from '@/components/Pagination'
 export default {
     name: 'grossprofit2',
     components: { Pagination },
-  filters: {
-      Fixed: function (num) {
-          if (!num) { return '0.00' }
-          return parseFloat(num).toFixed(2);
-      }
-  },
+    filters: {
+        Fixed: function(num) {
+            if (!num) { return '' }
+            return parseFloat(num).toFixed(2);
+        }
+    },
     data() {
         return {
             tableKey: 0,
             tableData: [],
+            pageData: [],
             total: 0,
             listLoading: true,
             listQuery: {
@@ -192,7 +188,9 @@ export default {
                 coaLevel2: '',
                 isShowAuxiliary: 1,
                 isQuantity: 1,
-                isShowNetAndBalanceNotEqualToZero: 0
+                isShowNetAndBalanceNotEqualToZero: 0,
+                pageIndex: 1,
+                limit: 20
             }
         }
     },
@@ -203,7 +201,7 @@ export default {
         ])
     },
     watch: {
-        periodArr(val){
+        periodArr(val) {
             if (val.length > 0) {
                 this.listQuery.periodCode1 = val[0].id
                 this.listQuery.periodCode2 = val[0].id
@@ -216,11 +214,24 @@ export default {
         this.$store.dispatch('voucher/getCoaList')
     },
     methods: {
+        getDataByPage() {
+            var pageIndex = this.listQuery.pageIndex
+            var arr = []
+            var min = pageIndex * 20 - 20
+            var max = pageIndex * 20 <= this.total ? pageIndex * 20 : this.total
+            for (var i = min; i < max; i++) {
+                arr.push(this.tableData[i])
+            }
+            this.pageData = arr
+        },
         getList() {
             this.listLoading = true
+            this.listQuery.pageIndex = 1
             getLedgernum(this.listQuery).then(res => {
                 this.listLoading = false
                 this.tableData = res.data.data
+                this.total = res.data.data.length
+                this.getDataByPage()
             }).catch(err => {
                 this.listLoading = false
             })

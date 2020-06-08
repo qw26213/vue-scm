@@ -33,9 +33,6 @@
                 <el-form-item label="合计金额:" prop="itemAmount">
                     <el-input size="mini" v-model="temp.itemAmount" placeholder="合计金额" disabled />
                 </el-form-item>
-                <el-form-item label="抹零金额:" prop="withoutPayAmount">
-                    <el-input size="mini" v-model="temp.withoutPayAmount" placeholder="抹零金额" />
-                </el-form-item>
                 <el-form-item label="现结金额:" prop="currPayAmount">
                     <el-input size="mini" v-model="temp.currPayAmount" placeholder="现结金额" style="width:72px" disabled />
                     <el-button size="mini" style="width:44px;padding:6px" @click="showSettleType">选择</el-button>
@@ -43,7 +40,7 @@
                 <el-form-item label="返利金额:" prop="rebateAmount">
                     <el-input size="mini" v-model="temp.rebateAmount" placeholder="返利金额" />
                 </el-form-item>
-                <el-form-item label="是否开票:" prop="statusInvoice">
+                <el-form-item label="发票:" prop="statusInvoice">
                     <el-select v-model="temp.statusInvoice" size="mini">
                         <el-option label="不开票" :value="0"></el-option>
                         <el-option label="待开票" :value="1"></el-option>

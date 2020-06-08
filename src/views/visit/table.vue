@@ -60,12 +60,15 @@
 import { getCrmFileInfo, deleteFileById, deleteFileByIds } from '@/api/visit'
 import Pagination from '@/components/Pagination'
 import { getNowDate } from '@/utils/auth'
+import { parseTime } from '@/utils/index'
 import staffList from '@/components/selects/staffList'
 import custList from '@/components/selects/custList'
 export default {
     name: 'presaleData',
     components: { Pagination, custList, staffList },
     data() {
+        const end = getNowDate()
+        const start = parseTime(new Date().getTime() - 86400000 * 7)
         return {
             tableKey: 0,
             tableData: [],
@@ -79,8 +82,8 @@ export default {
                 pageIndex: 1,
                 pageNum: 20,
                 queryParam: {
-                    uploadDate1: '2020-01-01',
-                    uploadDate2: '2020-06-01',
+                    uploadDate1: start,
+                    uploadDate2: end,
                     headerId: this.$route.query.id,
                     sign: 1,
                     desc: 1

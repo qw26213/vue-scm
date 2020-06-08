@@ -29,7 +29,7 @@
                     <el-input size="mini" v-model="temp.itemAmount" placeholder="合计金额" disabled/>
                 </el-form-item>
                 <el-form-item label="使用预付:" prop="advPayAmount">
-                    <el-input size="mini" v-model="temp.advPayAmount" placeholder="使用预付" />
+                    <el-input size="mini" v-model="temp.advPayAmount" placeholder="使用预付" disabled />
                 </el-form-item>
                 <el-form-item label="现结金额:" prop="currPayAmount">
                     <el-input size="mini" v-model="temp.currPayAmount" placeholder="现结金额" style="width:72px" disabled />
