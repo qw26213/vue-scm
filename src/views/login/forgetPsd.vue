@@ -1,9 +1,13 @@
 <template>
     <div class="container">
-        <el-form ref="repForm" :model="repForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left" label-width="100px" style="width:400px;margin: 100px auto 0">
+        <el-form ref="repForm" :model="repForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="right" label-width="100px" style="width:400px;margin: 100px auto 0">
             <div class="title-container">
                 <h3 class="title">找回密码</h3>
             </div>
+            <el-form-item label="找回方式">
+                <el-radio v-model="isMobile" :label="1">手机号</el-radio>
+                <el-radio v-model="isMobile" :label="0">邮箱</el-radio>
+            </el-form-item>
             <el-form-item label="企业代码" prop="orgCode">
                 <el-input v-model="repForm.orgCode" placeholder="企业代码" />
             </el-form-item>
@@ -52,6 +56,7 @@ export default {
             }
         }
         return {
+            isMobile: 1,
             isShowTime:false,
             count: 120,
             taxList:[],
@@ -84,7 +89,8 @@ export default {
         var obj = {
             orgCode:this.repForm.orgCode,
             userAccount:this.repForm.userAccount,
-            mobile:this.repForm.mobile
+            mobile:this.repForm.mobile,
+            type: 0
         }
         forgotSentVerifyCode(obj).then((res) => {
           if(res.data.errorCode==0) {

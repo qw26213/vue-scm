@@ -50,6 +50,7 @@
             <el-table-column label="操作" align="center" width="150">
                 <template slot-scope="{row}">
                     <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status==0?'编辑':'查看'}}</span>
+                    <span v-if="row.status!=0" class="ctrl" @click="confirmBill(row.id)">确认</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
                 </template>
@@ -59,7 +60,7 @@
     </div>
 </template>
 <script>
-import { getAllocation, delAllocation, auditAllocation } from '@/api/store'
+import { getAllocation, delAllocation, auditAllocation, confirmAllocation } from '@/api/store'
 import Pagination from '@/components/Pagination'
 import warehouseList from '@/components/selects/warehouseList';
 import { getNowDate } from '@/utils/auth'
@@ -98,6 +99,24 @@ export default {
             }).catch(err => {
                 this.listLoading = false
             })
+        },
+        confirmBill(id) {
+            this.$confirm('确认接受本调拨单?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                confirmAllocation(id).then(res => {
+                    if (res.data.errorCode == 0) {
+                        this.getList();
+                        this.$message.success('确认成功')
+                    } else {
+                        this.$message.error(res.data.msg)
+                    }
+                })
+            }).catch(()=>{
+                console.log('取消')
+            });
         },
         handleCheck(id) {
             this.$confirm('确定审核通过吗?', '提示', {

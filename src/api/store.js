@@ -512,6 +512,14 @@ export function buildMovement(id) {
     })
 }
 
+export function confirmMovement(id) {
+    return request({
+        url: '/drp/ic/movement/confirmByHeaderId',
+        method: 'post',
+        data: { id: id }
+    })
+}
+
 //-----调拨单----
 export function getAllocation(data) {
     return request({
@@ -556,6 +564,14 @@ export function auditAllocation(id) {
 export function buildAllocation(id) {
     return request({
         url: '/drp/ic/allocation/buildPurchaseByHeaderId',
+        method: 'post',
+        data: { id: id }
+    })
+}
+
+export function confirmAllocation(id) {
+    return request({
+        url: '/drp/ic/allocation/confirmByHeaderId',
         method: 'post',
         data: { id: id }
     })

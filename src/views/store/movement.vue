@@ -63,6 +63,7 @@
             <el-table-column label="操作" align="center" width="160">
                 <template slot-scope="{row}">
                     <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status==0?'编辑':'查看'}}</span>
+                    <span v-if="row.status!=0" class="ctrl" @click="confirmBill(row.id)">确认</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
                 </template>
@@ -72,7 +73,7 @@
     </div>
 </template>
 <script>
-import { getMovement, delMovement, auditMovement } from '@/api/store'
+import { getMovement, delMovement, auditMovement, confirmMovement} from '@/api/store'
 import Pagination from '@/components/Pagination'
 import warehouseList from '@/components/selects/warehouseList';
 import truckList from '@/components/selects/truckList';
@@ -106,6 +107,24 @@ export default {
         this.dateTime = [this.listQuery.date1, this.listQuery.date2]
     },
     methods: {
+        confirmBill(id) {
+            this.$confirm('确认接受本移库单?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                confirmMovement(id).then(res => {
+                    if (res.data.errorCode == 0) {
+                        this.getList();
+                        this.$message.success('确认成功')
+                    } else {
+                        this.$message.error(res.data.msg)
+                    }
+                })
+            }).catch(()=>{
+                console.log('取消')
+            });
+        },
         getList() {
             this.listLoading = true
             getMovement(this.listQuery).then(res => {

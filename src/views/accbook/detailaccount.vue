@@ -34,7 +34,7 @@
             </el-table-column>
             <el-table-column label="凭证字号" align="center">
                 <template slot-scope="{row}">
-                    <a href="javascript:" @click="$router.push('/voucher/add?id='+row.jeHeaderId)">{{row.jeCatogeryName}}</a>
+                    <a href="javascript:" @click="$router.push('/voucher/add?id='+row.jeHeaderId)">{{row.catogeryNameSeq}}</a>
                 </template>
             </el-table-column>
             <el-table-column label="摘要">
