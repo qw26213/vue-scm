@@ -44,13 +44,13 @@
             </el-table-column>
             <el-table-column label="状态" align="center">
                 <template slot-scope="{row}">
-                    <span>{{row.status==1?'已审核':'待审核'}}</span>
+                    <span>{{row.status==1?'已审核':row.status==2?'已确认':'待审核'}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="操作" align="center" width="150">
                 <template slot-scope="{row}">
                     <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status==0?'编辑':'查看'}}</span>
-                    <span v-if="row.status!=0" class="ctrl" @click="confirmBill(row.id)">确认</span>
+                    <span v-if="row.status==1" class="ctrl" @click="confirmBill(row.id)">确认</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
                 </template>

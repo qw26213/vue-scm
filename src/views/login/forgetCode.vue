@@ -14,8 +14,8 @@
             <el-form-item v-if="isMobile==0" label="注册邮箱" prop="mail">
                 <el-input v-model="reqFrom.mail" placeholder="注册邮箱" />
             </el-form-item>
-            <el-form-item label="验证码" prop="verifyCode">
-                <el-input v-model="reqFrom.verifyCode" placeholder="验证码">
+            <el-form-item label="验证码" prop="inputStr">
+                <el-input v-model="reqFrom.inputStr" placeholder="验证码">
                     <img :src="imgUrl" slot="append" style="width:112px" @click="getNewCode()">
                 </el-input>
             </el-form-item>
@@ -27,7 +27,7 @@
     </div>
 </template>
 <script>
-import { forgotSentVerifyCode, forgotPSWSave, forgotOrgCode9, getVerifyImg } from '@/api/login'
+import { forgotSentVerifyCode, forgotPSWSave, forgotOrgCode9, getVerifyImg, check } from '@/api/login'
 export default {
     name: 'register',
     data() {
@@ -54,12 +54,12 @@ export default {
                 mobile: '',
                 mail: '',
                 userAccount: '',
-                verifyCode: ''
+                inputStr: ''
             },
             rules: {
                 mobile: [{ required: true, message: '注册手机号不能为空', trigger: 'change' }],
                 mail: [{ required: true, message: '注册邮箱不能为空', trigger: 'change' }],
-                verifyCode: [{ required: true, message: '验证码不能为空', trigger: 'change' }]
+                inputStr: [{ required: true, message: '验证码不能为空', trigger: 'change' }]
             },
             loading: false
         }

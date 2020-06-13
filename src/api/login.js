@@ -81,3 +81,11 @@ export function home4TopN(data){
 export function getVerifyImg() {
   return '/drp/getVerify9'
 }
+
+export function checkVerify9(data) {
+  return request({
+    url: '/drp/checkVerify9',
+    method: 'post',
+    data
+  })
+}

@@ -57,13 +57,13 @@
             </el-table-column>
             <el-table-column label="状态" align="center">
                 <template slot-scope="{row}">
-                    <span>{{row.status==1?'已审核':'未审核'}}</span>
+                    <span>{{row.status==1?'已审核':row.status==2?'已确认':'待审核'}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="操作" align="center" width="160">
                 <template slot-scope="{row}">
                     <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status==0?'编辑':'查看'}}</span>
-                    <span v-if="row.status!=0" class="ctrl" @click="confirmBill(row.id)">确认</span>
+                    <span v-if="row.status==1" class="ctrl" @click="confirmBill(row.id)">确认</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
                 </template>
@@ -174,7 +174,7 @@ export default {
             }).then(() => {
                 delMovement(id).then(res => {
                     if (res.data.errorCode == 0) {
-                        this.getList();
+                        this.getList()
                         this.dialogFormVisible = false
                         this.$message.success('删除成功')
                     } else {
