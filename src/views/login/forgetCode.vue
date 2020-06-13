@@ -73,34 +73,34 @@ export default {
         }
     },
     methods: {
-      getCode(){
-        var obj = {
-            userAccount:this.reqFrom.userAccount,
-            mobile:this.reqFrom.mobile,
-            mail: this.reqFrom.mail,
-            type: 9
-        }
-        forgotSentVerifyCode(obj).then((res) => {
-          if(res.data.errorCode==0) {
-            this.$message.success('验证码已发送至'+this.isMobile==1?'手机':'邮箱！')
-            this.timeChange()
-          } else {
-            this.$message.error(res.data.msg);
-          }
-        })
-      },
-      timeChange(){
-        if(this.count<=1){
-            this.isShowTime = false
-            this.count = 120
-        }else{
-            this.isShowTime = true
-            setTimeout(()=>{
-                this.count = this.count - 1
-                this.timeChange()
-            },1000)
-        }
-      },
+        getCode() {
+            var obj = {
+                userAccount: this.reqFrom.userAccount,
+                mobile: this.reqFrom.mobile,
+                mail: this.reqFrom.mail,
+                type: 9
+            }
+            forgotSentVerifyCode(obj).then((res) => {
+                if (res.data.errorCode == 0) {
+                    this.$message.success(res.data.msg)
+                    this.timeChange()
+                } else {
+                    this.$message.error(res.data.msg);
+                }
+            })
+        },
+        timeChange() {
+            if (this.count <= 1) {
+                this.isShowTime = false
+                this.count = 120
+            } else {
+                this.isShowTime = true
+                setTimeout(() => {
+                    this.count = this.count - 1
+                    this.timeChange()
+                }, 1000)
+            }
+        },
         toPath(path) {
             this.$router.push({ path: path })
         },

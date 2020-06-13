@@ -94,10 +94,10 @@ export default {
         }
         forgotSentVerifyCode(obj).then((res) => {
           if(res.data.errorCode==0) {
-            this.$message.success('验证码已发送至邮箱！');
+            this.$message.success(res.data.msg)
             this.timeChange()
           } else {
-            this.$message.error(res.data.msg);
+            this.$message.error(res.data.msg)
           }
         })
       },
