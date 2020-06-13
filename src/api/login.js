@@ -77,3 +77,7 @@ export function home4TopN(data){
     data
   })
 }
+
+export function getVerifyImg() {
+  return '/drp/getVerify9'
+}

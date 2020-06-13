@@ -426,7 +426,7 @@ export default {
             }
             this.tableData = res.data.data.lineList
             this.tableData.forEach(item => {
-                const curMonth = 6
+                const curMonth = new Date().getMonth() + 1
                 item.summary = item.summary.replace('{month}', curMonth)
             })
             if (this.tableData.length < 3) {

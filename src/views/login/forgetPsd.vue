@@ -14,7 +14,7 @@
             <el-form-item label="用户账号" prop="userAccount">
                 <el-input v-model="reqForm.userAccount" placeholder="用户账号" />
             </el-form-item>
-            <el-form-item label="手机号码" prop="mobile">
+            <el-form-item v-if="isMobile === 1" label="手机号码" prop="mobile">
                 <el-input v-model="reqForm.mobile" placeholder="手机号码" />
             </el-form-item>
             <el-form-item label="验证码" prop="verifyCode">

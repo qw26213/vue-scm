@@ -62,7 +62,7 @@ export default {
             nameArr: ['结转成本', '结转待摊费用', '结转未缴增值税', '计提附加税', '计提折旧', '计提工资', '计提所得税', '结转收入', '结转费用', '结转损益(合并)', '结转未分配利润'],
             codeArr: ['jzcb', 'jzdtfy', 'jzwjzzs', 'jtfjs', 'jtzj', 'jtgz', 'jtsds', 'jzsr', 'jzfy', 'jzsy', 'jzwfplr'],
             periodCode: '',
-            curMonth: 2,
+            curMonth: new Date().getMonth() + 1,
             searchPeriodId: '',
             searchPeriodYear: '',
             searchPeriodNum: 0,
@@ -148,8 +148,8 @@ export default {
             }
         },
         saveRateConfig() {
-            this.rateConfigVisiable = false,
-                this.$refs.voucherAdd.initJzVoucher(this.codeArr[this.curIndex], this.periodCode, this.rateForm)
+            this.rateConfigVisiable = false
+            this.$refs.voucherAdd.initJzVoucher(this.codeArr[this.curIndex], this.periodCode, this.rateForm)
         },
         initBillStatus(str) {
             getPeriodState(str).then(res => {

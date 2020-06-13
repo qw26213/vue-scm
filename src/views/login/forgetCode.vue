@@ -4,9 +4,6 @@
             <div class="title-container" style="margin-bottom:50px">
                 <h3 class="title">找回企业代码</h3>
             </div>
-            <el-form-item label="用户账号" prop="userAccount">
-                <el-input v-model="reqFrom.userAccount" placeholder="用户账号" />
-            </el-form-item>
             <el-form-item label="找回方式">
                 <el-radio v-model="isMobile" :label="1">手机号</el-radio>
                 <el-radio v-model="isMobile" :label="0">邮箱</el-radio>
@@ -19,16 +16,18 @@
             </el-form-item>
             <el-form-item label="验证码" prop="verifyCode">
                 <el-input v-model="reqFrom.verifyCode" placeholder="验证码">
-                    <el-button v-if="!isShowTime" slot="append" style="width:112px" @click="getCode">发送验证码</el-button>
-                    <el-button v-if="isShowTime" slot="append" style="width:112px" @click="getCode">{{count}}秒</el-button>
+                    <img :src="imgUrl" slot="append" style="width:112px" @click="getNewCode()">
                 </el-input>
+            </el-form-item>
+            <el-form-item label="用户账号" prop="userAccount">
+                <el-input v-model="reqFrom.userAccount" placeholder="用户账号" />
             </el-form-item>
             <el-button :loading="loading" type="primary" style="width:100%;margin:30px auto;" @click="handleSave">确 认</el-button>
         </el-form>
     </div>
 </template>
 <script>
-import { forgotSentVerifyCode, forgotPSWSave, forgotOrgCode9 } from '@/api/login'
+import { forgotSentVerifyCode, forgotPSWSave, forgotOrgCode9, getVerifyImg } from '@/api/login'
 export default {
     name: 'register',
     data() {
@@ -50,6 +49,7 @@ export default {
             isMobile: 1,
             count: 120,
             isShowTime: false,
+            imgUrl: getVerifyImg() + '?v=' + Math.random(),
             reqFrom: {
                 mobile: '',
                 mail: '',
@@ -73,7 +73,12 @@ export default {
             })
         }
     },
+    created() {
+    },
     methods: {
+        getNewCode() {
+            this.imgUrl = getVerifyImg() + '?v=' + Math.random()
+        },
         getCode() {
             var obj = {
                 userAccount: this.reqFrom.userAccount,
