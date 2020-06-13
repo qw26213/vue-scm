@@ -11,31 +11,27 @@
             </el-select>
             <label class="label">科目：</label>
             <el-select v-model="listQuery.coaCode1" size="small" placeholder="科目" filterable>
-                <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode">
-                </el-option>
+                <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode" />
             </el-select>
             <span class="zhi">至</span>
             <el-select v-model="listQuery.coaCode2" size="small" placeholder="科目" filterable>
-                <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode">
-                </el-option>
+                <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode" />
             </el-select>
             <label class="label">科目级次：</label>
             <el-select v-model="listQuery.coaLevel1" size="small" style="width:100px" placeholder="科目级次" filterable>
-                <el-option v-for="item in [1,2,3,4,5,6,7]" :key="item" :label="item" :value="item">
-                </el-option>
+                <el-option v-for="item in [1,2,3,4,5,6,7,8]" :key="item" :label="item" :value="item" />
             </el-select>
             <span class="zhi">至</span>
             <el-select v-model="listQuery.coaLevel2" size="small" style="width:100px" placeholder="科目级次" filterable>
-                <el-option v-for="item in [1,2,3,4,5,6,7]" :key="item" :label="item" :value="item">
-                </el-option>
+                <el-option v-for="item in [1,2,3,4,5,6,7,8]" :key="item" :label="item" :value="item" />
             </el-select>
             <el-popover placement="bottom" title="更多" width="240" trigger="click">
                 <div>
                     <p>
-                        <el-checkbox v-model="listQuery.isShowAuxiliary" false-label="0" true-label="1">显示辅助核算</el-checkbox>
+                        <el-checkbox v-model="listQuery.isShowAuxiliary" :false-label="0" :true-label="1">显示辅助核算</el-checkbox>
                     </p>
                     <p>
-                        <el-checkbox v-model="listQuery.isShowNetAndBalanceNotEqualToZero" false-label="0" true-label="1">发生额为0且余额为0不显示</el-checkbox>
+                        <el-checkbox v-model="listQuery.isShowNetAndBalanceNotEqualToZero" :false-label="0" :true-label="1">发生额为0且余额为0不显示</el-checkbox>
                     </p>
                 </div>
                 <el-button size="small" slot="reference">更多<i class="el-icon-arrow-right el-icon--right"></i></el-button>
@@ -45,12 +41,12 @@
             <el-button size="small" type="warning" @click="exportBook">导出</el-button>
         </div>
         <el-table :key="tableKey" v-loading="listLoading" :data="pageData" cell-class-name="tpCell" border fit highlight-current-row style="width: 100%;" size="small">
-            <el-table-column label="科目编码" align="center">
+            <el-table-column label="科目编码" align="left" show-overflow-tooltip>
                 <template slot-scope="{row}">
-                    <a href="javascript:" @click="$router.push('/accbook/detailaccount?coaCode='+row.coaCode)">{{ row.coaCode }}</a>
+                    <a href="javascript:" @click="$router.push('/accbook/detailaccount?coaCode='+row.coaCode)" style="padding-left:10px">{{ row.coaCode }}</a>
                 </template>
             </el-table-column>
-            <el-table-column label="科目名称">
+            <el-table-column label="科目名称" show-overflow-tooltip>
                 <template slot-scope="{row}">
                     <span style="padding-left:10px" v-html="row.pageCoaName"></span>
                 </template>
@@ -117,8 +113,8 @@ export default {
                 coaCode2: '',
                 coaLevel1: '',
                 coaLevel2: '',
-                isShowAuxiliary: '',
-                isShowNetAndBalanceNotEqualToZero: '',
+                isShowAuxiliary: 1,
+                isShowNetAndBalanceNotEqualToZero: 1,
                 pageIndex: 1
             }
         }

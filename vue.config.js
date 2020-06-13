@@ -1,4 +1,4 @@
-'use strict'   
+'use strict'
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
 const HtmlWebpackPlugin = require('html-webpack-plugin')

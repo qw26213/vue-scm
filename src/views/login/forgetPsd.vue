@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <el-form ref="repForm" :model="repForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="right" label-width="100px" style="width:400px;margin: 100px auto 0">
+        <el-form ref="reqForm" :model="reqForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="right" label-width="100px" style="width:400px;margin: 100px auto 0">
             <div class="title-container">
                 <h3 class="title">找回密码</h3>
             </div>
@@ -9,25 +9,25 @@
                 <el-radio v-model="isMobile" :label="0">邮箱</el-radio>
             </el-form-item>
             <el-form-item label="企业代码" prop="orgCode">
-                <el-input v-model="repForm.orgCode" placeholder="企业代码" />
+                <el-input v-model="reqForm.orgCode" placeholder="企业代码" />
             </el-form-item>
             <el-form-item label="用户账号" prop="userAccount">
-                <el-input v-model="repForm.userAccount" placeholder="用户账号" />
+                <el-input v-model="reqForm.userAccount" placeholder="用户账号" />
             </el-form-item>
             <el-form-item label="手机号码" prop="mobile">
-                <el-input v-model="repForm.mobile" placeholder="手机号码" />
+                <el-input v-model="reqForm.mobile" placeholder="手机号码" />
             </el-form-item>
             <el-form-item label="验证码" prop="verifyCode">
-                <el-input v-model="repForm.verifyCode" placeholder="验证码">
+                <el-input v-model="reqForm.verifyCode" placeholder="验证码">
                     <el-button v-if="!isShowTime" slot="append" style="width:112px" @click="getCode">发送验证码</el-button>
                     <el-button v-if="isShowTime" slot="append" style="width:112px" @click="getCode">{{count}}秒</el-button>
                 </el-input>
             </el-form-item>
             <el-form-item label="新密码" prop="password">
-                <el-input type="password" v-model="repForm.password" placeholder="新密码" />
+                <el-input type="password" v-model="reqForm.password" placeholder="新密码" />
             </el-form-item>
             <el-form-item label="确认新密码" prop="againPassword">
-                <el-input type="password" v-model="repForm.againPassword" placeholder="确认新密码" />
+                <el-input type="password" v-model="reqForm.againPassword" placeholder="确认新密码" />
             </el-form-item>
             <div class="bot clearfix">
               <span class="fr" @click="toPath('/login')">返回登录</span>
@@ -61,7 +61,7 @@ export default {
             count: 120,
             taxList:[],
             areaList:[],
-            repForm: {
+            reqForm: {
                 orgCode: '',
                 userAccount: '',
                 mobile: '',
@@ -87,9 +87,9 @@ export default {
       },
       getCode(){
         var obj = {
-            orgCode:this.repForm.orgCode,
-            userAccount:this.repForm.userAccount,
-            mobile:this.repForm.mobile,
+            orgCode:this.reqForm.orgCode,
+            userAccount:this.reqForm.userAccount,
+            mobile:this.reqForm.mobile,
             type: 0
         }
         forgotSentVerifyCode(obj).then((res) => {
@@ -114,10 +114,10 @@ export default {
         }
       },
       handleSave() {
-        this.$refs.repForm.validate(valid => {
+        this.$refs.reqForm.validate(valid => {
           if (valid) {
             this.loading = true
-            forgotPSWSave(this.repForm).then((res) => {
+            forgotPSWSave(this.reqForm).then((res) => {
               if(res.data.errorCode==0){
                 this.$message.success('密码设置成功！');
                 this.$router.push('/login')

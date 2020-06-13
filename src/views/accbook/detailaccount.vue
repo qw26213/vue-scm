@@ -18,7 +18,7 @@
                 <el-popover placement="bottom" title="更多" width="240" trigger="click">
                     <div>
                         <p>
-                            <el-checkbox v-model="listQuery.isShowNetAndBalanceNotEqualToZero" false-label="0" true-label="1">发生额为0且余额为0不显示</el-checkbox>
+                            <el-checkbox v-model="listQuery.isShowNetAndBalanceNotEqualToZero" :false-label="0" :true-label="1">发生额为0且余额为0不显示</el-checkbox>
                         </p>
                     </div>
                     <el-button size="small" slot="reference">更多<i class="el-icon-arrow-right el-icon--right"></i></el-button>
@@ -95,7 +95,7 @@ export default {
                 periodCode1: '',
                 periodCode2: '',
                 coaCode1: this.$route.query.coaCode,
-                isShowNetAndBalanceNotEqualToZero: '',
+                isShowNetAndBalanceNotEqualToZero: 1,
                 pageIndex: 1
             }
         }

@@ -17,10 +17,10 @@
             <el-popover placement="bottom" title="更多" width="240" trigger="click">
                 <div>
                     <p>
-                        <el-checkbox v-model="listQuery.isQuantity" false-label="0" true-label="1">只显示数量核算科目</el-checkbox>
+                        <el-checkbox v-model="listQuery.isQuantity" :false-label="0" :true-label="1">只显示数量核算科目</el-checkbox>
                     </p>
                     <p>
-                        <el-checkbox v-model="listQuery.isShowNetAndBalanceNotEqualToZero" false-label="0" true-label="1">发生额为0且余额为0不显示</el-checkbox>
+                        <el-checkbox v-model="listQuery.isShowNetAndBalanceNotEqualToZero" :false-label="0" :true-label="1">发生额为0且余额为0不显示</el-checkbox>
                     </p>
                 </div>
                 <el-button size="small" slot="reference">更多<i class="el-icon-arrow-right el-icon--right"></i></el-button>
@@ -136,7 +136,7 @@ export default {
                 coaCode1: '',
                 coaCode2: '',
                 isQuantity: 1,
-                isShowNetAndBalanceNotEqualToZero: 0,
+                isShowNetAndBalanceNotEqualToZero: 1,
                 pageIndex: 1,
                 limit: 20
             }

@@ -18,7 +18,7 @@
                 <el-input v-model="reqFrom.mail" placeholder="注册邮箱" />
             </el-form-item>
             <el-form-item label="验证码" prop="verifyCode">
-                <el-input v-model="repForm.verifyCode" placeholder="验证码">
+                <el-input v-model="reqFrom.verifyCode" placeholder="验证码">
                     <el-button v-if="!isShowTime" slot="append" style="width:112px" @click="getCode">发送验证码</el-button>
                     <el-button v-if="isShowTime" slot="append" style="width:112px" @click="getCode">{{count}}秒</el-button>
                 </el-input>
@@ -48,14 +48,17 @@ export default {
         }
         return {
             isMobile: 1,
+            isShowTime: false,
             reqFrom: {
                 mobile: '',
                 mail: '',
-                userAccount: ''
+                userAccount: '',
+                verifyCode: ''
             },
             rules: {
                 mobile: [{ required: true, message: '注册手机号不能为空', trigger: 'change' }],
-                mail: [{ required: true, message: '注册邮箱不能为空', trigger: 'change' }]
+                mail: [{ required: true, message: '注册邮箱不能为空', trigger: 'change' }],
+                verifyCode: [{ required: true, message: '验证码不能为空', trigger: 'change' }]
             },
             loading: false
         }

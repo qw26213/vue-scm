@@ -3,41 +3,39 @@
         <div class="filter-container">
             <label class="label">期间：</label>
             <el-select v-model="listQuery.periodCode1" size="small" placeholder="开始期间">
-                <el-option v-for="item in periodArr" :key="item.id" :label="item.text" :value="item.id"></el-option>
+                <el-option v-for="item in periodArr" :key="item.id" :label="item.text" :value="item.id" />
             </el-select>
             <span class="zhi">至</span>
             <el-select v-model="listQuery.periodCode2" size="small" placeholder="结束期间">
-                <el-option v-for="item in periodArr" :key="item.id" :label="item.text" :value="item.id"></el-option>
+                <el-option v-for="item in periodArr" :key="item.id" :label="item.text" :value="item.id" />
             </el-select>
             <label class="label">科目：</label>
             <el-select v-model="listQuery.coaCode1" size="small" placeholder="科目" filterable>
-                <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode">
-                </el-option>
+                <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode" />
             </el-select>
             <span class="zhi">至</span>
             <el-select v-model="listQuery.coaCode2" size="small" placeholder="科目" filterable>
-                <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode">
-                </el-option>
+                <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode" />
             </el-select>
             <el-popover placement="bottom" title="更多" width="280" trigger="click">
                 <div>
                     <p>
                         <span>辅助类别：</span>
                         <el-select v-model="listQuery.auxiliaryType" size="small" placeholder="辅助类别" @change="auxiliaryChange">
-                            <el-option v-for="item in auxiliaryArr" :key="item.auxiliaryTypeCode" :label="item.auxiliaryTypeName" :value="item.auxiliaryTypeCode"></el-option>
+                            <el-option v-for="item in auxiliaryArr" :key="item.auxiliaryTypeCode" :label="item.auxiliaryTypeName" :value="item.auxiliaryTypeCode" />
                         </el-select>
                     </p>
                     <p>
                         <span>辅助名称：</span>
                         <el-select v-model="listQuery.auxiliaryCode" size="small" placeholder="辅助名称">
-                            <el-option v-for="item in modalList" :key="item.id" :label="item.text" :value="item.id"></el-option>
+                            <el-option v-for="item in modalList" :key="item.id" :label="item.text" :value="item.id" />
                         </el-select>
                     </p>
                     <p>
-                        <el-checkbox v-model="listQuery.isShowCoa" false-label="0" true-label="1">显示末级科目</el-checkbox>
+                        <el-checkbox v-model="listQuery.isShowCoa" :false-label="0" :true-label="1">显示末级科目</el-checkbox>
                     </p>
                     <p>
-                        <el-checkbox v-model="listQuery.isShowNetAndBalanceNotEqualToZero" false-label="0" true-label="1">发生额为0且余额为0不显示</el-checkbox>
+                        <el-checkbox v-model="listQuery.isShowNetAndBalanceNotEqualToZero" :false-label="0" :true-label="1">发生额为0且余额为0不显示</el-checkbox>
                     </p>
                 </div>
                 <el-button size="small" slot="reference">更多<i class="el-icon-arrow-right el-icon--right"></i></el-button>
@@ -45,7 +43,7 @@
             <el-button size="small" type="primary" @click="getList">查询</el-button>
         </div>
         <el-table :key="tableKey" v-loading="listLoading" :data="pageData" border fit highlight-current-row style="width: 100%;" size="small">
-            <el-table-column label="项目编码" align="center">
+            <el-table-column label="项目编码" align="left">
                 <template slot-scope="{row}">
                     <span>{{row.auxiliaryCode}}</span>
                 </template>
@@ -117,7 +115,7 @@ export default {
     filters: {
         Fixed: function(num) {
             if (!num) { return '' }
-            return parseFloat(num).toFixed(2);
+            return parseFloat(num).toFixed(2)
         }
     },
     data() {
@@ -136,7 +134,7 @@ export default {
                 auxiliaryType:'',
                 auxiliaryCode:'',
                 isShowCoa: 1,
-                isShowNetAndBalanceNotEqualToZero: 0,
+                isShowNetAndBalanceNotEqualToZero: 1,
                 pageIndex: 1,
                 limit: 20
             }

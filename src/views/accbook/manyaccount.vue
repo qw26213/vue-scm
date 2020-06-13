@@ -22,10 +22,10 @@
                         <el-radio v-model="listQuery.isShowChildren" :label="0">末级</el-radio>
                     </p>
                     <p>
-                        <el-checkbox v-model="listQuery.isOnlyShowLeaf" false-label="0" true-label="1">显示明细栏余额</el-checkbox>
+                        <el-checkbox v-model="listQuery.isOnlyShowLeaf" :false-label="0" :true-label="1">显示明细栏余额</el-checkbox>
                     </p>
                     <p>
-                        <el-checkbox v-model="listQuery.isShowNetAndBalanceNotEqualToZero" false-label="0" true-label="1">发生额为0且余额为0不显示</el-checkbox>
+                        <el-checkbox v-model="listQuery.isShowNetAndBalanceNotEqualToZero" :false-label="0" :true-label="1">发生额为0且余额为0不显示</el-checkbox>
                     </p>
                 </div>
                 <el-button size="small" slot="reference">更多<i class="el-icon-arrow-right el-icon--right"></i></el-button>
@@ -96,9 +96,9 @@ export default {
                 periodCode1: '',
                 coaCode1: '',
                 periodCode2: '',
-                isShowChildren: '',
-                isShowNetAndBalanceNotEqualToZero: 0,
-                isOnlyShowLeaf: 0,
+                isShowChildren: 1,
+                isShowNetAndBalanceNotEqualToZero: 1,
+                isOnlyShowLeaf: 1,
                 pageIndex: 1
             }
         }
