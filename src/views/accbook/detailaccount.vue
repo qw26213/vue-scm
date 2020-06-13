@@ -81,7 +81,7 @@ export default {
     filters: {
         Fixed: function(num) {
             if (!num) { return '' }
-            return parseFloat(num).toFixed(2);
+            return parseFloat(num).toFixed(2)
         }
     },
     data() {

@@ -48,6 +48,7 @@ export default {
         }
         return {
             isMobile: 1,
+            count: 120,
             isShowTime: false,
             reqFrom: {
                 mobile: '',
@@ -85,7 +86,7 @@ export default {
                     this.$message.success(res.data.msg)
                     this.timeChange()
                 } else {
-                    this.$message.error(res.data.msg);
+                    this.$message.error(res.data.msg)
                 }
             })
         },
