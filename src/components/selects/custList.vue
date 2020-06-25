@@ -1,5 +1,5 @@
 <template>
-    <el-select v-model="curId" style="width:145px" filterable remote :disabled="selectDisabled" reserve-keyword :remote-method="remoteGet" size="mini" @focus="searchThis($event)" @change="changeVal" placeholder="选择客户">
+    <el-select v-model="curId" style="width:145px" filterable :remote="false" :disabled="selectDisabled" :remote-method="remoteGet" size="mini" @change="changeVal" placeholder="选择客户">
         <el-option v-for="item in custList" :key="item.id" :label="item.custName" :value="item.id">
         </el-option>
     </el-select>
@@ -32,6 +32,9 @@ export default {
             }
         }
     },
+    created() {
+        this.getCustList()
+    },
     methods: {
         changeVal(val) {
             var obj = {}
@@ -40,11 +43,7 @@ export default {
             } else {
                 obj.custId = val;
             }
-            // obj.isInvoice = 
             this.$emit('selectChange', obj)
-        },
-        searchThis(e) {
-            this.getCustList(e.target.value);
         },
         getCustList(name) {
             this.listQuery.queryParam.custName = name;

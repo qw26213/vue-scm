@@ -45,7 +45,7 @@
             </el-table-column>
             <el-table-column label="收款金额" align="right">
                 <template slot-scope="{row}">
-                    <span v-html="row.amount"></span>
+                    <input class="amount" @focus="$event.target.select()" v-model="row.amount" />
                 </template>
             </el-table-column>
         </el-table>
@@ -60,7 +60,7 @@
                 <el-date-picker :editable="false" v-model="modalQuery.billDate2" type="date" placeholder="结束日期" size="small" :clearable="false" value-format="yyyy-MM-dd" style="width:140px;"/>
                 <el-button size="mini" type="primary" @click="getSaleList">查询</el-button>
             </div>
-            <el-table :data="modalData" border fit highlight-current-row style="width: 100%;" size="small" @selection-change="handleSelectionChange">
+            <el-table ref="dataTable" :data="modalData" border fit highlight-current-row style="width: 100%;" size="small" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="50" align="center" :reserve-selection="true" />
                 <el-table-column label="单据日期" align="center">
                     <template slot-scope="{row}">
@@ -80,11 +80,6 @@
                 <el-table-column label="应收余额" align="right">
                     <template slot-scope="{row}">
                         <span v-html="row.billBalance"></span>
-                    </template>
-                </el-table-column>
-                <el-table-column label="收款金额" align="right">
-                    <template slot-scope="{row}">
-                        <span v-html="row.amount"></span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -184,6 +179,9 @@ export default {
         handleSelectionChange(selection, row) {
           this.selectedData = addNullObj(selection)
         },
+        focusThis(event) {
+            event.currentTarget.selected()
+        },
         showSaleBill() {
             this.dialogFormVisible1 = true
         },
@@ -195,7 +193,10 @@ export default {
                 this.temp[key] = obj[key]
             }
             this.getSaleList()
-            this.selectedData = []
+            if (this.selectedData.length > 0) {
+                this.$refs.dataTable.clearSelection()
+                this.selectedData = []
+            }
             this.tableData = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}]
         },
         settleTypeChange(obj) {
@@ -241,7 +242,7 @@ export default {
                     this.$store.dispatch('tagsView/delView', this.$route);
                     this.$router.replace('/rp/receipt');
                 } else {
-                    this.$message.error(res.data.msg)
+                    this.$message.warning(res.data.msg)
                 }
             }).catch(() => {
                 this.$message.error('保存失败，请稍后重试！')
@@ -250,3 +251,6 @@ export default {
     }
 }
 </script>
+<style scoped>
+.amount{width: 100%;height:30px;border:none;display: block;outline: none;text-align: right;padding-right: 5px}
+</style>
