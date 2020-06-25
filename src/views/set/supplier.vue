@@ -49,14 +49,14 @@
           <span>{{row.account}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="预付款余额">
+      <el-table-column label="预付款余额" align="right">
         <template slot-scope="{row}">
-          <span>{{row.advpBalance}}</span>
+          <span>{{row.advpBalance | fixed}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="应付款余额">
+      <el-table-column label="应付款余额" align="right">
         <template slot-scope="{row}">
-          <span>{{row.overdraftBalance}}</span>
+          <span>{{row.overdraftBalance | fixed}}</span>
         </template>
       </el-table-column>
       <el-table-column label="是否可用" width="80" align="center">
@@ -110,8 +110,8 @@
           <el-input v-model="temp.remarks" placeholder="备注" />
         </el-form-item>
         <el-form-item label="是否可用" prop="isDisable">
-          <el-radio v-model="temp.isDisable" label="0">是</el-radio>
-          <el-radio v-model="temp.isDisable" label="1">否</el-radio>
+          <el-radio v-model="temp.isDisable" :label="0">是</el-radio>
+          <el-radio v-model="temp.isDisable" :label="1">否</el-radio>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer" align="center">
@@ -131,6 +131,11 @@ import Pagination from '@/components/Pagination'
 export default {
   name: 'baseSupplier',
   components: { Pagination },
+    filters: {
+      fixed(val) {
+        return !val ? 0 : Number(val).toFixed(2)
+      }
+    },
   data() {
     return {
       tableKey: 0,
@@ -153,7 +158,7 @@ export default {
         account: '',
         addr: '',
         remarks:'',
-        isDisable: "0"
+        isDisable: 0
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -192,7 +197,7 @@ export default {
       for(var key in this.temp){
         this.temp[key] = ''
       }
-      this.temp.isDisable = '0'
+      this.temp.isDisable = 0
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
@@ -204,7 +209,7 @@ export default {
         this.temp[key] = obj[key]
       }
       this.temp.id = obj.id
-      this.temp.isDisable = String(obj.isDisable)
+      this.temp.isDisable = Number(obj.isDisable)
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
