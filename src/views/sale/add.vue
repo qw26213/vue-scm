@@ -66,7 +66,7 @@
             <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
             <el-table-column label="商品名称" width="160">
                 <template slot-scope="scope">
-                    <itemList :selectCode="scope.row.itemCode" :selectId="scope.row.itemId" :index="scope.$index" @changeVal="changeVal" />
+                    <itemList :selectCode="scope.row.itemCode" :selectId="scope.row.itemId" :index="scope.$index" :item-list="item_list" @changeVal="changeVal" />
                 </template>
             </el-table-column>
             <el-table-column label="商品代码" width="160">
@@ -91,8 +91,7 @@
             </el-table-column>
             <el-table-column label="生产日期" width="120">
                 <template slot-scope="{row}">
-                    <el-date-picker :editable="false" v-model="row.productionDate" type="date" placeholder="" size="mini" style="width:100%" :clearable="false" value-format="yyyy-MM-dd">
-                    </el-date-picker>
+                    <el-date-picker :editable="false" v-model="row.productionDate" type="date" placeholder="" size="mini" style="width:100%" :clearable="false" value-format="yyyy-MM-dd" />
                 </template>
             </el-table-column>
             <el-table-column label="保质期(天)">
@@ -190,6 +189,7 @@ import paymentTypeList from '@/components/selects/paymentTypeList'
 import itemList from '@/components/selects/saleItemList'
 import settleTypeList from "@/components/selects/settleTypeList"
 import salesTypeList from "@/components/selects/salesTypeList"
+import { getResPageByFuzzyCustId } from '@/api/store'
 import { getName, getNowDate } from '@/utils/auth'
 var userInfo = JSON.parse(sessionStorage.userInfo)
 export default {
@@ -205,6 +205,7 @@ export default {
             dialogFormVisible: false,
             tableData: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
             keys: ["itemId", "itemCode", "itemName", "norms", "uom", "subUom", "exchangeRate", "batchNo", "productionDate", "qualityName", "qualityDays", "qty", "vatPrice", "amount", "taxRate", "taxAmount", "vatAmount", "invoiceNo", "salesTypeCode"],
+            item_list: [],
             temp: {
                 billDate: getNowDate(),
                 billNo: '',
@@ -261,6 +262,7 @@ export default {
                         }
                     }
                     this.settleData = addNullObj2(res.data.data.settleTypeDetail)
+                    this.getItemList()
                 }
             })
         }
@@ -338,6 +340,21 @@ export default {
                     this.tableData[obj.index][key] = obj[key]
                 }
             }
+            if (obj.custId) {
+                this.getItemList()
+            }
+        },
+        getItemList() {
+            const obj = {
+              pageIndex: 1,
+              pageNum: 100,
+              queryParam:{
+                custId: this.temp.custId
+              }
+            }
+            getResPageByFuzzyCustId(obj).then(res => {
+                this.item_list = res.data.data;
+            })
         },
         changeVal(obj) {
             for (var key in obj) {

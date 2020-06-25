@@ -63,14 +63,14 @@
                     <salesTypeList :selectId="scope.row.salesTypeCode" :index="scope.$index" @selectChange="salesTypeChange" ></salesTypeList>
                 </template>
             </el-table-column>
-            <el-table-column label="商品代码" width="160">
+            <el-table-column label="商品名称" width="160">
                 <template slot-scope="scope">
-                    <itemList :selectCode="scope.row.itemCode" :selectId="scope.row.itemId" :index="scope.$index" @changeVal="changeVal"></itemList>
+                    <itemList :selectCode="scope.row.itemCode" :selectId="scope.row.itemId" :index="scope.$index" :item-list="item_list" @changeVal="changeVal" />
                 </template>
             </el-table-column>
-            <el-table-column label="商品名称" width="160">
+            <el-table-column label="商品代码" width="160">
                 <template slot-scope="{row}">
-                    <input type="text" class="inputCell" v-model="row.itemName" disabled>
+                    <input type="text" class="inputCell" v-model="row.itemCode" disabled>
                 </template>
             </el-table-column>
             <el-table-column label="规格">
@@ -101,7 +101,7 @@
             </el-table-column>
             <el-table-column label="含税价(元)">
                 <template slot-scope="scope">
-                    <input type="text" class="inputCell tx-r" v-model="scope.row.vatPrice" :disables="userSalePriceType + scope.row.salePriceType <= 1" @change="calculate(scope.$index)">
+                    <input type="text" class="inputCell tx-r" v-model="scope.row.vatPrice" :disables="returnPriceType + scope.row.salePriceType <= 1" @change="calculate(scope.$index)">
                 </template>
             </el-table-column>
             <el-table-column label="数量">
@@ -179,19 +179,21 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import modalTable from '@/components/modalTable/saleBill';
-import { saveSalesReturned, getSalesReturnedById, getItemPrice, getSalesReturnedBySalesHeaderId } from '@/api/store';
-import { deleteEmptyProp, addNullObj, addNullObj2 } from '@/utils';
-import staffList from '@/components/selects/staffList';
+import modalTable from '@/components/modalTable/saleBill'
+import { saveSalesReturned, getSalesReturnedById, getItemPrice, getSalesReturnedBySalesHeaderId } from '@/api/store'
+import { deleteEmptyProp, addNullObj, addNullObj2 } from '@/utils'
+import { getResPageByFuzzyCustId } from '@/api/store'
+import staffList from '@/components/selects/staffList'
 import bizTypeList from '@/components/selects/bizTypeList'
-import custList from '@/components/selects/custList';
-import truckList from '@/components/selects/truckList';
-import warehouseList from '@/components/selects/warehouseList';
-import paymentTypeList from '@/components/selects/paymentTypeList';
-import itemList from '@/components/selects/itemList';
-import settleTypeList from "@/components/selects/settleTypeList";
+import custList from '@/components/selects/custList'
+import truckList from '@/components/selects/truckList'
+import warehouseList from '@/components/selects/warehouseList'
+import paymentTypeList from '@/components/selects/paymentTypeList'
+import itemList from '@/components/selects/saleItemList'
+import settleTypeList from "@/components/selects/settleTypeList"
 import salesTypeList from "@/components/selects/salesTypeList"
 import { getName, getNowDate } from '@/utils/auth'
+var userInfo = JSON.parse(sessionStorage.userInfo)
 export default {
     name: 'saleAdd',
     components: { staffList, warehouseList, custList, truckList, bizTypeList, paymentTypeList, itemList, settleTypeList, modalTable, salesTypeList },
@@ -199,11 +201,13 @@ export default {
         return {
             id: '',
             status: this.$route.query.status,
+            returnPriceType: userInfo.returnPriceType,
             modalTableVisible: false,
             settleData: [{}, {}, {}, {}, {}],
             dialogFormVisible: false,
             tableData: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
             keys: ["itemId", "itemCode", "itemName", "norms", "uom", "subUom", "exchangeRate", "batchNo", "productionDate", "qualityName", "qualityDays", "qty", "vatPrice", "amount", "taxRate", "taxAmount", "vatAmount", "invoiceNo", "salesTypeCode"],
+            item_list: [],
             temp: {
                 billDate: getNowDate(),
                 statusInvoice: 1,
@@ -254,6 +258,7 @@ export default {
                         }
                     }
                     this.settleData = addNullObj2(res.data.data.settleTypeReturnedDetail)
+                    this.getItemList()
                 }
             })
         }
@@ -341,6 +346,21 @@ export default {
                     this.tableData[i].truckId = obj.truckId
                 }
             }
+            if (obj.custId) {
+                this.getItemList()
+            }
+        },
+        getItemList() {
+            const obj = {
+              pageIndex: 1,
+              pageNum: 100,
+              queryParam:{
+                custId: this.temp.custId
+              }
+            }
+            getResPageByFuzzyCustId(obj).then(res => {
+                this.item_list = res.data.data;
+            })
         },
         changeVal(obj) {
             for (var key in obj) {

@@ -27,9 +27,9 @@
                     <span>{{row.billNo}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="客户">
+            <el-table-column label="供应商">
                 <template slot-scope="{row}">
-                    <span>{{row.custName}}</span>
+                    <span>{{row.supplierName}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="业务员">

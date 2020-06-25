@@ -23,48 +23,41 @@
         </div>
         <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="small" max-height="600">
             <el-table-column label="序号" type="index" width="50" align="center" />
-            <el-table-column label="单据日期" width="160" align="center">
+            <el-table-column label="单据日期" align="center">
                 <template slot-scope="{row}">
-                    <span v-html="row.billDate"></span>
+                    <span>{{ row.billDate }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="单据号" width="160" align="center">
+            <el-table-column label="单据号" align="center">
                 <template slot-scope="{row}">
-                    <span v-html="row.billNo"></span>
+                    <span>{{ row.billNo }}</span>
                 </template>
             </el-table-column>
             <el-table-column label="单据金额" align="right">
                 <template slot-scope="{row}">
-                    <span v-html="row.billAmount"></span>
+                    <span>{{ row.billAmount }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="金额" align="right">
+            <el-table-column label="应收金额" align="right">
                 <template slot-scope="{row}">
-                    <span v-html="row.amount"></span>
+                    <span>{{ row.billBalance }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="余额" align="right">
+            <el-table-column label="收款金额" align="right">
                 <template slot-scope="{row}">
-                    <span v-html="row.balance"></span>
-                </template>
-            </el-table-column>
-            <el-table-column label="原单据ID" align="center">
-                <template slot-scope="{row}">
-                    <span v-html="row.billId"></span>
+                    <span>{{ row.amount }}</span>
                 </template>
             </el-table-column>
         </el-table>
         <div class="tx-c" style="margin-top:15px" v-if="status!=1&&status!=2">
             <el-button class="filter-item" type="primary" @click="save">保存</el-button>
         </div>
-        <el-dialog :close-on-click-modal="false" title="选择采购单" :visible.sync="dialogFormVisible1" width="960px">
+        <el-dialog :close-on-click-modal="false" title="选择采购单" :visible.sync="dialogFormVisible1" width="720px">
             <div class="filter-container">
                 <span class="zhi" style="font-weight:bold; margin:0 5px">起止日期</span>
-                <el-date-picker :editable="false" v-model="modalQuery.billDate1" type="date" placeholder="开始日期" size="small" :clearable="false" value-format="yyyy-MM-dd" style="width:140px;"/>
+                <el-date-picker :editable="false" v-model="modalQuery.billDate1" type="date" placeholder="开始日期" size="small" :clearable="false" value-format="yyyy-MM-dd" style="width:140px;" />
                 <span class="zhi">至</span>
-                <el-date-picker :editable="false" v-model="modalQuery.billDate2" type="date" placeholder="结束日期" size="small" :clearable="false" value-format="yyyy-MM-dd" style="width:140px;"/>
-                <span class="zhi" style="font-weight:bold; margin:0 5px">供应商</span>
-                <supplierList @selectChange="selectChange" ctrType="list"></supplierList>
+                <el-date-picker :editable="false" v-model="modalQuery.billDate2" type="date" placeholder="结束日期" size="small" :clearable="false" value-format="yyyy-MM-dd" style="width:140px;" />
                 <el-button size="mini" type="primary" @click="getPurechaseList">查询</el-button>
             </div>
             <el-table :data="modalData" border fit highlight-current-row style="width: 100%;" size="small" @selection-change="handleSelectionChange">
@@ -84,27 +77,14 @@
                         <span>{{ row.billAmount }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="开始应收金额" align="right">
+                <el-table-column label="应收金额" align="right">
+                    <template slot-scope="{row}">
+                        <span>{{ row.billBalance }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="收款金额" align="right">
                     <template slot-scope="{row}">
                         <span>{{ row.amount }}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column label="当前应收金额" align="right">
-                    <template slot-scope="{row}">
-                        <span>{{ row.balance }}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column label="核销状态" width="100" align="center">
-                    <template slot-scope="{row}">
-                        <span v-if="row.statusVerification === 0">无需核销</span>
-                        <span v-if="row.statusVerification === 1">待核销</span>
-                        <span v-if="row.statusVerification === 2">部分核销</span>
-                        <span v-if="row.statusVerification === 9">已核销</span>
-                    </template>
-                </el-table-column>
-                <el-table-column label="原单据id">
-                    <template slot-scope="{row}">
-                        <span>{{ row.billId }}</span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -190,6 +170,9 @@ export default {
         if (this.$route.query.id) {
             this.id = this.$route.query.id;
             getByHeaderId(this.id).then(res => {
+                for (var key in this.temp) {
+                    this.temp[key] = res.data.data[key]
+                }
                 this.tableData = addNullObj(res.data.data.billLine || [])
                 this.settleData = addNullObj2(res.data.data.settleTypeDetail || [])
             })
@@ -211,11 +194,9 @@ export default {
             for (var key in obj) {
                 this.temp[key] = obj[key]
             }
-        },
-        selectChange1(obj) {
-            for (var key in obj) {
-                this.modalQuery[key] = obj[key]
-            }
+            this.getPurechaseList()
+            this.tableData = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}]
+            this.selectedData = []
         },
         settleTypeChange(obj) {
             for (var key in obj) {
@@ -240,6 +221,8 @@ export default {
             this.temp.amount = parseFloat(amount).toFixed(2);
         },
         getPurechaseList() {
+          this.modalQuery.supplierId = this.temp.supplierId
+          this.modalQuery.staffId = this.temp.staffId
           getPurchaseListBySupplierId(this.modalQuery).then(res => {
             this.modalData = res.data.data || []
           })

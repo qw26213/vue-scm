@@ -291,15 +291,14 @@ export function debounce(func, wait, immediate) {
 }
 
 export function deleteEmptyProp(arr) {
-    var newArr = [];
-    for (var i = 0; i < arr.length; i++) {
-        if (arr[i].itemId && arr[i].itemId != '') {
-            newArr.push(arr[i])
-        } else if (arr[i].invCatgId && arr[i].invCatgId != '') {
-            newArr.push(arr[i])
-        }
-    }
-    return newArr;
+    var newArr = []
+    arr.forEach(item => {
+        var keys = Object.keys(item)
+        if (keys.length > 0) {
+            newArr.push(item)
+        } 
+    })
+    return newArr
 }
 
 export function deleteEmptyObj(arr) {
@@ -310,7 +309,6 @@ export function deleteEmptyObj(arr) {
             newArr.push(item)
         }
     })
-    console.log(newArr)
     return newArr
 }
 
