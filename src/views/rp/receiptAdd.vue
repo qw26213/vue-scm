@@ -67,7 +67,7 @@
                 <custList @selectChange="selectChange" ctrType="list"></custList>
                 <el-button size="mini" type="primary" @click="getSaleList">查询</el-button>
             </div>
-            <el-table :data="saleData" border fit highlight-current-row style="width: 100%;" size="small" @selection-change="handleSelectionChange">
+            <el-table :data="modalData" border fit highlight-current-row style="width: 100%;" size="small" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="50" align="center" :reserve-selection="true" />
                 <el-table-column label="单据日期" width="100" align="center">
                     <template slot-scope="{row}">
@@ -177,7 +177,7 @@ export default {
             dialogFormVisible1: false,
             selectedData: [],
             settleData: [{}, {}, {}, {}, {}],
-            saleData: []
+            modalData: []
         }
     },
     computed: {
@@ -190,8 +190,8 @@ export default {
         if (this.$route.query.id) {
             this.id = this.$route.query.id;
             getByHeaderId(this.id).then(res => {
-                this.tableData = addNullObj(res.data.data.billLine)
-                this.settleData = addNullObj2(res.data.data.settleTypeDetail)
+                this.tableData = addNullObj(res.data.data.billLine || [])
+                this.settleData = addNullObj2(res.data.data.settleTypeDetail || [])
             })
         } else {
             this.getSaleList()
@@ -241,7 +241,7 @@ export default {
         },
         getSaleList() {
           getSalesListByCustId(this.modalQuery).then(res => {
-            this.saleData = res.data.data || []
+            this.modalData = res.data.data || []
           })
         },
         save() {

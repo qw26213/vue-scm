@@ -239,7 +239,7 @@ export default {
         },
         handleCreateVouter(status,id1,id2,billDate){
           if(status==1){
-            alert('查看销售凭证')
+            this.$router.push('/voucher/add?id=' + id2)
           }else{
             this.curBillId = id1;
             this.curBillDate = billDate

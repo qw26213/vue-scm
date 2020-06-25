@@ -196,7 +196,7 @@ export default {
         },
         handleCreateVouter(status, id1, id2) {
             if (status == 1) {
-                alert('查看采购凭证')
+                this.$router.push('/voucher/add?id=' + id2)
             } else {
                 this.curBillId = id1
                 this.dialogFormVisible = true

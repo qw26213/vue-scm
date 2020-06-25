@@ -65,9 +65,9 @@
                 <el-date-picker :editable="false" v-model="modalQuery.billDate2" type="date" placeholder="结束日期" size="small" :clearable="false" value-format="yyyy-MM-dd" style="width:140px;"/>
                 <span class="zhi" style="font-weight:bold; margin:0 5px">供应商</span>
                 <supplierList @selectChange="selectChange" ctrType="list"></supplierList>
-                <el-button size="mini" type="primary" @click="getSaleList">查询</el-button>
+                <el-button size="mini" type="primary" @click="getPurechaseList">查询</el-button>
             </div>
-            <el-table :data="saleData" border fit highlight-current-row style="width: 100%;" size="small" @selection-change="handleSelectionChange">
+            <el-table :data="modalData" border fit highlight-current-row style="width: 100%;" size="small" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="50" align="center" :reserve-selection="true" />
                 <el-table-column label="单据日期" width="100" align="center">
                     <template slot-scope="{row}">
@@ -177,7 +177,7 @@ export default {
             dialogFormVisible1: false,
             selectedData: [],
             settleData: [{}, {}, {}, {}, {}],
-            saleData: []
+            modalData: []
         }
     },
     computed: {
@@ -190,8 +190,8 @@ export default {
         if (this.$route.query.id) {
             this.id = this.$route.query.id;
             getByHeaderId(this.id).then(res => {
-                this.tableData = addNullObj(res.data.data.billLine)
-                this.settleData = addNullObj2(res.data.data.settleTypeDetail)
+                this.tableData = addNullObj(res.data.data.billLine || [])
+                this.settleData = addNullObj2(res.data.data.settleTypeDetail || [])
             })
         } else {
             this.getPurechaseList()
@@ -241,7 +241,7 @@ export default {
         },
         getPurechaseList() {
           getPurchaseListBySupplierId(this.modalQuery).then(res => {
-            this.saleData = res.data.data || []
+            this.modalData = res.data.data || []
           })
         },
         save() {
@@ -256,7 +256,7 @@ export default {
                 if (res.data.errorCode == 0) {
                     this.$message.success(this.temp.id == "" ? '新增付款单成功' : '修改付款单成功');
                     this.$store.dispatch('tagsView/delView', this.$route);
-                    this.$router.replace('/rp/receipt');
+                    this.$router.replace('/rp/payment');
                 } else {
                     this.$message.error(res.data.msg)
                 }
