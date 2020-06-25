@@ -104,6 +104,11 @@
                     <input type="text" class="inputCell tx-r" v-model="row.taxAmount" disabled>
                 </template>
             </el-table-column>
+            <el-table-column label="含税价(元)">
+                <template slot-scope="scope">
+                    <input type="text" class="inputCell tx-r" v-model="scope.row.vatPrice" :disables="userSalePriceType + scope.row.salePriceType <= 1" @change="calculate(scope.$index)">
+                </template>
+            </el-table-column>
             <el-table-column label="价税合计">
                 <template slot-scope="{row}">
                     <input type="text" class="inputCell tx-r" v-model="row.vatAmount||0" disabled>
@@ -174,12 +179,15 @@ import itemList from '@/components/selects/itemList';
 import bizTypeList from "@/components/selects/bizTypeList";
 import settleTypeList from "@/components/selects/settleTypeList";
 import { getName,getNowDate } from '@/utils/auth'
+var userInfo = JSON.parse(sessionStorage.userInfo)
 export default {
     name: 'purchaseAdd',
     components: { staffList, warehouseList, supplierList, bizTypeList, paymentTypeList, itemList,settleTypeList },
     data() {
         return {
             id: '',
+            isAdmin: userInfo.isAdmin === 1,
+            userSalePriceType: userInfo.salePriceType,
             taxFilingCategoryCode: sessionStorage.taxFilingCategoryCode,
             status: this.$route.query.status,
             dialogFormVisible: false,
@@ -225,6 +233,9 @@ export default {
                 for (var i = 0; i < res.data.data.purchaseLine.length; i++) {
                     for (var j = 0; j < this.keys.length; j++) {
                         this.tableData[i][this.keys[j]] = res.data.data.purchaseLine[i][this.keys[j]]
+                        if(this.tableData[i].taxRate < 1) {
+                            this.tableData[i].taxRate = this.tableData[i].taxRate * 100
+                        }
                     }
                 }
                 this.settleData = addNullObj2(res.data.data.settleTypeDetail)
@@ -232,21 +243,26 @@ export default {
         }
     },
     methods: {
-        calculate(index) {
-            var qty = this.tableData[index].qty;
-            var price = this.tableData[index].price;
-            if(qty&&price){
-                var amount = parseFloat(Number(qty) * Number(price)).toFixed(2);
-                this.$set(this.tableData[index],'amount',amount)
-                this.$set(this.tableData[index],'vatAmount',amount)
+        calculate(index){
+            var vatPrice = this.tableData[index].vatPrice //含税价
+            var qty = this.tableData[index].qty //数量
+            if(qty&&vatPrice){
+                var vatAmount = parseFloat(Number(qty) * Number(vatPrice)).toFixed(2)
+                this.$set(this.tableData[index],'vatAmount',vatAmount)
                 var taxRate = this.tableData[index].taxRate;
                 if(taxRate){
-                    var taxAmount = parseFloat(Number(amount)*Number(taxRate)/100).toFixed(2);
-                    var vatAmount = parseFloat(Number(amount)*(Number(taxRate)/100+1)).toFixed(2);
+                    var price = parseFloat(Number(vatPrice)/(Number(taxRate)/100+1)).toFixed(2)
+                    var amount = parseFloat(Number(qty)*Number(price)).toFixed(2)
+                    var taxAmount = parseFloat(Number(vatAmount) - Number(amount)).toFixed(2)
                     this.$set(this.tableData[index],'taxAmount',taxAmount)
-                    this.$set(this.tableData[index],'vatAmount',vatAmount)
-                    this.calculateTotal();
+                    this.$set(this.tableData[index],'price',price)
+                    this.$set(this.tableData[index],'amount',amount)
+                }else{
+                    this.$set(this.tableData[index],'taxRate',0)
+                    this.$set(this.tableData[index],'price',0)
+                    this.$set(this.tableData[index],'amount',0)
                 }
+                this.calculateTotal();
             }
         },
         calculate1(index){

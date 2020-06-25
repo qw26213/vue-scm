@@ -65,8 +65,8 @@
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="110px" style="width: 460px;">
         <div class="curTit">当前品牌：{{handleObj.brandName}}({{handleObj.brandCode}})</div>
         <el-table ref="checkTable" :data="userList" border fit highlight-current-row style="width: 100%;" size="mini" @select="handleSelectionChange" @select-all="selectAll">
-          <el-table-column type="selection" width="50" align="center" :reserve-selection="true"></el-table-column>
-          <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
+          <el-table-column type="selection" width="50" align="center" :reserve-selection="true" />
+          <el-table-column label="序号" type="index" width="50" align="center" />
           <el-table-column label="用户账号">
             <template slot-scope="{row}">
               <span>{{row.userAccount}}</span>

@@ -81,7 +81,7 @@ export default {
             catogeryList:[],
             listLoading: true,
             listQuery: {
-                periodCode1: '2020-01',
+                periodCode1: '',
                 periodCode2: getNowMonth(),
                 jeCatogeryId: '',
                 coaLevel1: 1,
@@ -92,6 +92,7 @@ export default {
     created() {
         getPeriodList().then(res => {
             this.periodList = res.data.data
+            this.listQuery.periodCode1 = res.data.data[0].id
         })
         getCatogery().then(res => {
           this.catogeryList = res.data.data

@@ -2,34 +2,34 @@
     <div class="app-container">
         <div class="dataTable">
             <el-form :inline="true" label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
-                <el-form-item label="单据日期:" prop="billDate">
+                <el-form-item label="单据日期:">
                     <span>{{temp.billDate}}</span>
                 </el-form-item>
-                <el-form-item label="单据号:" prop="billNo">
+                <el-form-item label="单据号:">
                     <span>{{temp.billNo}}</span>
                 </el-form-item>
-                <el-form-item label="业务类型:" prop="bizTypeId">
+                <el-form-item label="业务类型:">
                     <span>{{temp.bizTypeName}}</span>
                 </el-form-item>
-                <el-form-item label="客户:" prop="custId">
+                <el-form-item label="客户:">
                     <span>{{temp.custName}}</span>
                 </el-form-item>
-                <el-form-item label="业务员:" prop="staffId">
+                <el-form-item label="业务员:">
                     <span>{{temp.staffName}}</span>
                 </el-form-item>
-                <el-form-item label="预收类型:" prop="presaleType">
+                <el-form-item label="预收类型:">
                     <span>{{temp.presaleType}}</span>
                 </el-form-item>
-                <el-form-item label="有效日期:" prop="expirationDate">
+                <el-form-item label="有效日期:">
                     <span>{{temp.expirationDate}}</span>
                 </el-form-item>
-                <el-form-item label="预收合计:" prop="amount">
+                <el-form-item label="预收合计:">
                     <span>{{temp.amount}}</span>
                 </el-form-item>
-                <el-form-item label="现结金额:" prop="beginBalance">
+                <el-form-item label="现结金额:">
                     <span>{{temp.beginBalance}}</span>
                 </el-form-item>
-                <el-form-item label="余额:" prop="balance" v-if="status==1">
+                <el-form-item label="余额:" v-if="status==1">
                     <span>{{temp.balance}}</span>
                 </el-form-item>
             </el-form>
@@ -111,29 +111,24 @@
                     <span>{{row.balance}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="备注">
-                <template slot-scope="{row}">
-                    <span>{{row.remarks}}</span>
-                </template>
-            </el-table-column>
         </el-table>
         <div class="dataTable" style="margin-top: 10px">
             <el-form label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
-                <el-form-item label="备 注:" prop="remarks">
+                <el-form-item label="备 注:">
                     <span>{{temp.remarks}}</span>
                 </el-form-item>
             </el-form>
             <el-form :inline="true" label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
-                <el-form-item label="制单日期:" prop="recordDate">
+                <el-form-item label="制单日期:">
                     <span>{{temp.recordDate | parseDate}}</span>
                 </el-form-item>
-                <el-form-item label="制单人:" prop="recorderId">
+                <el-form-item label="制单人:">
                     <span>{{temp.recorderName}}</span>
                 </el-form-item>
-                <el-form-item label="审核日期:" prop="auditDate">
+                <el-form-item label="审核日期:">
                     <span>{{temp.auditDate | parseDate}}</span>
                 </el-form-item>
-                <el-form-item label="审核人:" prop="auditorId">
+                <el-form-item label="审核人:">
                     <span>{{temp.auditorName}}</span>
                 </el-form-item>
             </el-form>

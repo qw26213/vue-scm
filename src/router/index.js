@@ -7,7 +7,7 @@ if (process.env.NODE_ENV === 'development') {
 import Layout from '@/layout'
 import saleRouter from './modules/saleRouter'
 import purchaseRouter from './modules/purchaseRouter'
-import arapRouter from './modules/arapRouter'
+import rpRouter from './modules/rpRouter'
 import presaleRouter from './modules/presaleRouter'
 import storeRouter from './modules/storeRouter'
 import priceRouter from './modules/priceRouter'
@@ -64,7 +64,7 @@ export const constantRoutes = [{
 export const asyncRoutes = [
     purchaseRouter,
     saleRouter,
-    arapRouter,
+    rpRouter,
     presaleRouter,
     storeRouter,
     priceRouter,

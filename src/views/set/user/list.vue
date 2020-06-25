@@ -95,7 +95,7 @@
                     <el-radio v-model="temp.queryType" :label="0">自己</el-radio>
                     <el-radio v-model="temp.queryType" :label="1">全部</el-radio>
                 </el-form-item>
-                <el-form-item label="管理员" prop="isAdmin">
+                <el-form-item label="是否管理员" prop="isAdmin">
                     <el-radio v-model="temp.isAdmin" :label="1">是</el-radio>
                     <el-radio v-model="temp.isAdmin" :label="0">否</el-radio>
                 </el-form-item>

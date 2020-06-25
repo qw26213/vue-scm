@@ -1,12 +1,15 @@
 <template>
     <div class="app-container">
         <div class="filter-container">
-            <el-date-picker :editable="false" v-model="listQuery.queryParam.billDate1" type="date" placeholder="开始日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+            <el-date-picker :editable="false" v-model="listQuery.queryParam.billDate1" type="date" placeholder="开始日期" size="mini" :clearable="false" value-format="yyyy-MM-dd" />
             <span class="zhi">至</span>
-            <el-date-picker :editable="false" v-model="listQuery.queryParam.billDate2" type="date" placeholder="结束日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+            <el-date-picker :editable="false" v-model="listQuery.queryParam.billDate2" type="date" placeholder="结束日期" size="mini" :clearable="false" value-format="yyyy-MM-dd" />
             <el-input size="mini" v-model="listQuery.queryParam.billNo" placeholder="单据号" />
             <warehouseList @selectChange="selectChange" keyType="outWarehouseId" placeTxt="调出仓库" ctrType="list":selectId="listQuery.queryParam.outWarehouseId"></warehouseList>
             <warehouseList @selectChange="selectChange" keyType="inWarehouseId" placeTxt="调入仓库" ctrType="list":selectId="listQuery.queryParam.inWarehouseId"></warehouseList>
+            <el-select v-model="listQuery.status">
+                <el-option v-for="item in statusList" :value="item.id">{{ item.label }}</el-option>
+            </el-select>
             <el-button size="mini" type="primary" @click="getList">查询</el-button>
             <el-button size="mini" type="primary" @click="handleAdd">新增</el-button>
         </div>
@@ -71,6 +74,7 @@ export default {
         return {
             tableKey: 0,
             tableData: [],
+            statusList: [{status:1, label:'已审核'}, {status:2, label:'已确认'}, {status:0,label:'待审核'}],
             total: 0,
             listLoading: true,
             listQuery: {

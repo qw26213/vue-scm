@@ -32,9 +32,6 @@
                 <el-form-item label="合计金额:">
                     <span>{{temp.itemAmount}}</span>
                 </el-form-item>
-                <!-- <el-form-item label="抹零金额:" prop="withoutPayAmount">
-                    <span>{{temp.withoutPayAmount}}</span>
-                </el-form-item> -->
                 <el-form-item label="现结金额:">
                     <span>{{temp.currPayAmount}}</span>
                 </el-form-item>
@@ -42,7 +39,9 @@
                     <span>{{temp.receivableAmount}}</span>
                 </el-form-item>
                 <el-form-item label="发票:" prop="advPayAmount">
-                    <span>{{temp.statusInvoice==0?'不开发票':temp.statusInvoice==1?'待开发票':'已开发票'}}</span>
+                    <span v-if="temp.statusInvoice === 0">不开票</span>
+                    <span v-if="temp.statusInvoice === 1">待开票</span>
+                    <span v-if="temp.statusInvoice === 9">已开发票</span>
                 </el-form-item>
                 <el-form-item label="自动匹配预收款:" prop="autoAdvr" label-width="96px">
                     <span>{{temp.autoAdvr==1?'是':'否'}}</span>

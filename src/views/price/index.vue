@@ -5,12 +5,9 @@
                 <el-input v-model="search" size="mini" placeholder="商品名称搜索" style="width:150px;margin-right: 5px" />
                 <el-button size="mini" class="filter-item" type="primary" @click="getData">搜索</el-button>
             </div>
-            <el-table :data="treeData" border fit style="width: 100%;" size="mini" :row-class-name="rowClass" :row-style="curStyle" max-height="500" @row-click="rowClick">
-                <el-table-column label="商品列表">
-                    <template slot-scope="{row}">
-                        <span>{{row.itemName}}</span>
-                    </template>
-                </el-table-column>
+            <el-table :data="treeData" border fit style="width: 100%;" size="mini" :row-class-name="rowClass" :row-style="curStyle" height="720" @row-click="rowClick">
+                <el-table-column label="商品名称" prop="itemName" align="left" show-overflow-tooltip />
+                <el-table-column label="规格" prop="norms" align="right" />
             </el-table>
         </div>
         <div class="app-container">

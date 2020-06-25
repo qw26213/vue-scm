@@ -59,8 +59,8 @@
         <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini" cell-class-name="tdCell">
             <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
             <el-table-column label="销售方式" align="center">
-                <template slot-scope="{row}">
-                    <salesTypeList :selectId="row.salesTypeCode"></salesTypeList>
+                <template slot-scope="scope">
+                    <salesTypeList :selectId="scope.row.salesTypeCode" :index="scope.$index" @selectChange="salesTypeChange" ></salesTypeList>
                 </template>
             </el-table-column>
             <el-table-column label="商品代码" width="160">
@@ -99,9 +99,9 @@
                     <input type="text" class="inputCell tx-r" v-model="row.qualityDays">
                 </template>
             </el-table-column>
-            <el-table-column label="单价(元)">
+            <el-table-column label="含税价(元)">
                 <template slot-scope="scope">
-                    <input type="text" class="inputCell tx-r" v-model="scope.row.vatPrice" @change="calculate(scope.$index)">
+                    <input type="text" class="inputCell tx-r" v-model="scope.row.vatPrice" :disables="userSalePriceType + scope.row.salePriceType <= 1" @change="calculate(scope.$index)">
                 </template>
             </el-table-column>
             <el-table-column label="数量">
@@ -275,21 +275,23 @@ export default {
             })
         },
         calculate(index) {
-            var price = this.tableData[index].price;
-            var qty = this.tableData[index].qty;
-            if (qty && price) {
-                var amount = parseFloat(Number(qty) * Number(price)).toFixed(2);
-                this.$set(this.tableData[index], 'amount', amount)
-                this.$set(this.tableData[index], 'taxAmount', 0)
-                this.$set(this.tableData[index], 'vatAmount', amount)
+            var vatPrice = this.tableData[index].vatPrice //含税价
+            var qty = this.tableData[index].qty //数量
+            if(qty&&vatPrice){
+                var vatAmount = parseFloat(Number(qty) * Number(vatPrice)).toFixed(2)
+                this.$set(this.tableData[index],'vatAmount',vatAmount)
                 var taxRate = this.tableData[index].taxRate;
-                if (taxRate) {
-                    var taxAmount = parseFloat(Number(amount) * Number(taxRate) / 100).toFixed(2);
-                    var vatAmount = parseFloat(Number(amount) * (Number(taxRate) / 100 + 1)).toFixed(2);
-                    this.$set(this.tableData[index], 'taxAmount', taxAmount)
-                    this.$set(this.tableData[index], 'vatAmount', vatAmount)
-                } else {
-                    this.$set(this.tableData[index], 'taxRate', 0)
+                if(taxRate){
+                    var price = parseFloat(Number(vatPrice)/(Number(taxRate)/100+1)).toFixed(2)
+                    var amount = parseFloat(Number(qty)*Number(price)).toFixed(2)
+                    var taxAmount = parseFloat(Number(vatAmount) - Number(amount)).toFixed(2)
+                    this.$set(this.tableData[index],'taxAmount',taxAmount)
+                    this.$set(this.tableData[index],'price',price)
+                    this.$set(this.tableData[index],'amount',amount)
+                }else{
+                    this.$set(this.tableData[index],'taxRate',0)
+                    this.$set(this.tableData[index],'price',0)
+                    this.$set(this.tableData[index],'amount',0)
                 }
                 this.calculateTotal();
             }
@@ -318,6 +320,11 @@ export default {
         settleTypeChange(obj) {
             for (var key in obj) {
                 this.settleData[obj.index][key] = obj[key];
+            }
+        },
+        salesTypeChange(obj){
+            for(var key in obj){
+                this.tableData[obj.index][key] = obj[key];
             }
         },
         selectChange(obj) {

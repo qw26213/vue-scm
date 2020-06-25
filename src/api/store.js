@@ -708,33 +708,56 @@ export function queryPurchaseSettleType() {
         method: 'post'
     })
 }
+
 export function queryPurchaseReturnedSettleType() {
     return request({
         url: '/drp/po/purchaseReturned/getSettleTypeList',
         method: 'post'
     })
 }
+
 export function querySalesSettleType() {
     return request({
         url: '/drp/so/sales/getSettleTypeList',
         method: 'post'
     })
 }
+
 export function querySalesReturnedSettleType() {
     return request({
         url: '/drp/so/salesReturned/getSettleTypeList',
         method: 'post'
     })
 }
+
 export function queryPresaleSettleType() {
     return request({
         url: '/drp/ps/presale/getSettleTypeList',
         method: 'post'
     })
 }
+
 export function queryPresaleReturnedSettleType() {
     return request({
         url: '/drp/ps/presaleReturned/getSettleTypeList',
         method: 'post'
+    })
+}
+
+export function queryReceiptSettleType(data) {
+    return request({
+        url: '/drp/rp/receiptPayment/getSettleTypeList',
+        method: 'post',
+        data
+    })
+}
+
+// 获取带价格的商品列表
+
+export function getResPageByFuzzyCustId(data) {
+    return request({
+        url: '/drp/bd/price/getResPageByFuzzyCustId',
+        method: 'post',
+        data
     })
 }

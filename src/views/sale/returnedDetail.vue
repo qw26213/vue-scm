@@ -2,53 +2,54 @@
     <div class="app-container">
         <div class="dataTable">
             <el-form :inline="true" label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
-                <el-form-item label="单据日期:" prop="billDate">
+                <el-form-item label="单据日期:">
                     <span>{{temp.billDate}}</span>
                 </el-form-item>
-                <el-form-item label="单据号:" prop="billNo">
+                <el-form-item label="单据号:">
                     <span>{{temp.billNo}}</span>
                 </el-form-item>
-                <el-form-item label="业务类型:" prop="bizTypeId">
+                <el-form-item label="业务类型:">
                     <span>{{temp.bizTypeName}}</span>
                 </el-form-item>
-                <el-form-item label="客户:" prop="custId">
+                <el-form-item label="客户:">
                     <span>{{temp.custName}}</span>
                 </el-form-item>
-                <el-form-item label="售达客户:" prop="soldToCust">
+                <el-form-item label="售达客户:">
                     <span>{{temp.soldToCust}}</span>
                 </el-form-item>
-                <el-form-item label="仓库:" prop="warehouseId">
+                <el-form-item label="仓库:">
                     <span>{{temp.warehouseName}}</span>
                 </el-form-item>
-                <el-form-item label="车辆:" prop="truckId">
+                <el-form-item label="车辆:">
                     <span>{{temp.truckName}}</span>
                 </el-form-item>
-                <el-form-item label="业务员:" prop="staffId">
+                <el-form-item label="业务员:">
                     <span>{{temp.staffName}}</span>
                 </el-form-item>
-                <el-form-item label="收款方式:" prop="paymentTypeId">
+                <el-form-item label="收款方式:">
                     <span>{{temp.paymentTypeName}}</span>
                 </el-form-item>
-                <el-form-item label="收款到期日:" prop="paymentDueDate">
+                <el-form-item label="收款到期日:">
                     <span>{{temp.paymentDueDate}}</span>
                 </el-form-item>
-                <el-form-item label="合计金额:" prop="itemAmount">
+                <el-form-item label="合计金额:">
                     <span>{{temp.itemAmount}}</span>
                 </el-form-item>
-                <el-form-item label="抹零金额:" prop="withoutPayAmount">
-                    <span>{{temp.withoutPayAmount}}</span>
-                </el-form-item>
-                <el-form-item label="现结金额:" prop="currPayAmount">
+                <el-form-item label="现结金额:">
                     <span>{{temp.currPayAmount}}</span>
                 </el-form-item>
-                <el-form-item label="返利金额:" prop="rebateAmount">
+                <el-form-item label="返利金额:">
                     <span>{{temp.rebateAmount}}</span>
                 </el-form-item>
-                <el-form-item label="使用预收:" prop="advPayAmount">
-                    <span>{{temp.advPayAmount == 1?'是':'否'}}</span>
+                <el-form-item label="发票:">
+                    <span v-if="temp.statusInvoice === 0">不开票</span>
+                    <span v-if="temp.statusInvoice === 1">待开票</span>
+                    <span v-if="temp.statusInvoice === 9">已开发票</span>
                 </el-form-item>
-                <el-form-item label="自动匹配预收款:" prop="autoAdvr" label-width="96px">
-                    <span>{{temp.autoAdvr == 1?'是':'否'}}</span>
+                <el-form-item label="退款类型:">
+                    <span v-if="temp.returnedType === 0">退款退货</span>
+                    <span v-if="temp.returnedType === 1">退换货</span>
+                    <span v-if="temp.returnedType === 2">只退款</span>
                 </el-form-item>
             </el-form>
         </div>
@@ -127,16 +128,16 @@
         </el-table>
         <div class="dataTable" style="margin-top: 10px">
             <el-form :inline="true" label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
-                <el-form-item label="制单日期:" prop="recordDate">
+                <el-form-item label="制单日期:">
                     <span>{{temp.recordDate}}</span>
                 </el-form-item>
-                <el-form-item label="制单人:" prop="recorderId">
+                <el-form-item label="制单人:">
                     <span>{{temp.recorderId}}</span>
                 </el-form-item>
-                <el-form-item label="审核日期:" prop="auditDate">
+                <el-form-item label="审核日期:">
                     <span>{{temp.auditDate}}</span>
                 </el-form-item>
-                <el-form-item label="审核人:" prop="auditorId">
+                <el-form-item label="审核人:">
                     <span>{{temp.auditorId}}</span>
                 </el-form-item>
             </el-form>

@@ -1,11 +1,11 @@
 <template>
   <el-select v-model="curId" filterable remote reserve-keyword :remote-method="remoteGet" size="mini" class="filter-item custInput" @focus="searchThis($event)" @change="changeVal" placeholder="">
-    <el-option v-for="item in itemList" :key="item.id" :label="item.itemCode" :value="item.id">
+    <el-option v-for="item in itemList" :key="item.id" :label="item.itemName" :value="item.id">
     </el-option>
   </el-select>
 </template>
 <script>
-import { getItem } from '@/api/basedata'
+import { getResPageByFuzzyCustId } from '@/api/store'
 export default {
     name: 'list',
     props: ['selectId','index','selectCode'],
@@ -32,7 +32,7 @@ export default {
       }
     },
     watch:{
-      'selectCode'(){
+      'selectCode'() {
         this.itemList=[{itemCode:this.selectCode,id:this.selectId}]
         this.curId = this.selectCode
       }
@@ -41,37 +41,32 @@ export default {
         searchThis(e){
             this.getItemList(e.target.value);
         },
-        getItemList(name){
-          this.listQuery.queryParam.itemCode = name
-          getItem(this.listQuery).then(res => {
+        getItemList(name) {
+          this.listQuery.queryParam.itemName = name
+          getResPageByFuzzyCustId(this.listQuery).then(res => {
             this.itemList = res.data.data;
           })
         },
         remoteGet(query) {
           if (query !== '') {
-            this.getItemList(query);
+            this.getItemList(query)
           } else {
-            this.itemList = [];
+            this.itemList = []
           }
         },
-        getData() {
-            getItem().then(res => {
-                this.itemList = res.data.data
-            })
-        },
-        changeVal(val){
-          this.curId = val;
-          for(var i=0;i<this.itemList.length;i++){
-            if(this.itemList[i].id==this.curId){
-              this.curCode = this.itemList[i].itemCode
-              this.curName = this.itemList[i].itemName
-              this.curNorms = this.itemList[i].norms
-              this.curUom = this.itemList[i].uom
-              this.curSubUom = this.itemList[i].subUom
-              this.curExchangeRate = this.itemList[i].exchangeRate
-              this.curSalePriceType = this.itemList[i].salePriceType
+        changeVal(val) {
+          this.curId = val
+          this.itemList.forEach(item => {
+            if(item.id == this.curId){
+              this.curCode = item.itemCode
+              this.curName = item.itemName
+              this.curNorms = item.norms
+              this.curUom = item.uom
+              this.curSubUom = item.subUom
+              this.curExchangeRate = item.exchangeRate
+              this.curSalePriceType = item.salePriceType
             }
-          }
+          })
           var obj = {
             itemCode:this.curCode,
             itemName:this.curName,

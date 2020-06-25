@@ -34,7 +34,7 @@
                     <div class="listItem"><label>手机号:</label>{{userInfo.mobile}}</div>
                     <div class="listItem"><label>邮箱:</label>{{userInfo.mail}}</div>
                     <div class="listItem"><label>管理员:</label>{{userInfo.isAdmin == 1?'是':'否'}}</div>
-                    <div class="listItem"><label style="width:100px">单据查询权限:</label>{{userInfo.queryType == 0?'自己':'全部'}}</div>
+                    <div class="listItem"><label style="width:100px">单据查询权限:</label>{{userInfo.queryType == 0?'自己':'部门'}}</div>
                     <div class="listItem"><label>角色:</label>{{userInfo.roleName}}</div>
                 </el-card>
             </el-col>
@@ -162,9 +162,9 @@
                 </el-form-item>
                 <el-form-item label="单据查询权限" prop="queryType" label-width="100px" style="margin-right:60px">
                     <el-radio v-model="temp2.queryType" :label="0" :disabled="userInfo.isAdmin == 0">自己</el-radio>
-                    <el-radio v-model="temp2.queryType" :label="1" :disabled="userInfo.isAdmin == 0">全部</el-radio>
+                    <el-radio v-model="temp2.queryType" :label="1" :disabled="userInfo.isAdmin == 0">部门</el-radio>
                 </el-form-item>
-                <el-form-item label="管理员" prop="isAdmin">
+                <el-form-item label="是否管理员" prop="isAdmin">
                     <el-radio v-model="temp2.isAdmin" :label="1" :disabled="userInfo.isAdmin == 0">是</el-radio>
                     <el-radio v-model="temp2.isAdmin" :label="0" :disabled="userInfo.isAdmin == 0">否</el-radio>
                 </el-form-item>
