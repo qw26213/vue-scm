@@ -1,12 +1,12 @@
 <template>
     <div class="app-container">
         <div class="filter-container">
-            <el-date-picker :editable="false" v-model="listQuery.queryParam.billDate1" type="date" placeholder="开始日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+            <el-date-picker :editable="false" v-model="listQuery.queryParam.billDate1" type="date" placeholder="开始日期" size="mini" :clearable="false" value-format="yyyy-MM-dd" style="width:130px"/>
             <span class="zhi">至</span>
-            <el-date-picker :editable="false" v-model="listQuery.queryParam.billDate2" type="date" placeholder="结束日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+            <el-date-picker :editable="false" v-model="listQuery.queryParam.billDate2" type="date" placeholder="结束日期" size="mini" :clearable="false" value-format="yyyy-MM-dd" style="width:130px"/>
             <el-input size="mini" v-model="listQuery.queryParam.billNo" placeholder="单据号" />
             <custList @selectChange="selectChange" ctrType="list"></custList>
-            <el-select v-model="listQuery.status" placeholder="单据状态" size="mini">
+            <el-select v-model="listQuery.queryParam.status" placeholder="单据状态" size="mini">
                 <el-option label="全部" value=""></el-option>
                 <el-option label="未审核" value="0"></el-option>
                 <el-option label="已审核" value="1"></el-option>
@@ -30,11 +30,6 @@
             <el-table-column label="客户">
                 <template slot-scope="{row}">
                     <span>{{row.custName}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="业务员">
-                <template slot-scope="{row}">
-                    <span>{{row.staffName}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="收款金额" align="right">
@@ -123,7 +118,7 @@ export default {
     methods: {
         selectChange(obj) {
             for (var key in obj) {
-                this.listQuery[key] = obj[key]
+                this.listQuery.queryParam[key] = obj[key];
             }
         },
         getList() {

@@ -49,6 +49,16 @@
           <span>{{row.account}}</span>
         </template>
       </el-table-column>
+      <el-table-column label="预付款余额">
+        <template slot-scope="{row}">
+          <span>{{row.advpBalance}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="应付款余额">
+        <template slot-scope="{row}">
+          <span>{{row.overdraftBalance}}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="是否可用" width="80" align="center">
         <template slot-scope="{row}">
           <span>{{row.isDisable==0?'是':'否'}}</span>
