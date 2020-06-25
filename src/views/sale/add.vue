@@ -178,7 +178,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import { saveSales, getSalesById, getItemPrice } from '@/api/store'
+import { saveSales, getSalesById } from '@/api/store'
 import { deleteEmptyProp, addNullObj, addNullObj2 } from '@/utils'
 import staffList from '@/components/selects/staffList'
 import bizTypeList from '@/components/selects/bizTypeList'
@@ -359,19 +359,6 @@ export default {
         changeVal(obj) {
             for (var key in obj) {
                 this.tableData[obj.index][key] = obj[key];
-            }
-            if (this.temp.custId) {
-                getItemPrice({ custId: this.temp.custId, itemId: this.tableData[obj.index].itemId }).then(res => {
-                    if (res.data.toString() == "") {
-                        this.tableData[obj.index].price = 0
-                    } else {
-                        if (res.data.price < 0) {
-                            this.$message.error("须先设定商品价格(价格-价格设定)")
-                        } else {
-                            this.tableData[obj.index].price = parseFloat(res.data.price).toFixed(4)
-                        }
-                    }
-                })
             }
         },
         save() {
