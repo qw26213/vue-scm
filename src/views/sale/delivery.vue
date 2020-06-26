@@ -97,10 +97,10 @@
             </el-table-column>
             <el-table-column label="配送状态" align="center">
                 <template slot-scope="{row}">
-                    <span v-if="row.statusDeliveryy == 0">未配送</span>
-                    <span v-if="row.statusDeliveryy == 1">配送中</span>
-                    <span v-if="row.statusDeliveryy == 9">已完成</span>
-                    <span v-if="row.statusDeliveryy == -9">订单作废</span>
+                    <span v-if="row.statusDelivery == 0">未配送</span>
+                    <span v-if="row.statusDelivery == 1">配送中</span>
+                    <span v-if="row.statusDelivery == 9">已完成</span>
+                    <span v-if="row.statusDelivery == -9">订单作废</span>
                 </template>
             </el-table-column>
             <el-table-column label="支付状态" align="center">
