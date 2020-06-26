@@ -16,7 +16,7 @@
                 <el-option label="全部" :value="null" />
                 <el-option label="未配送" :value="0" />
                 <el-option label="配送中" :value="1" />
-                <el-option label="完成" :value="9" />
+                <el-option label="已完成" :value="9" />
                 <el-option label="订单作废" :value="-9" />
             </el-select>
             <el-select v-model="listQuery.queryParam.statusPayment" placeholder="支付状态" size="mini">
@@ -99,7 +99,7 @@
                 <template slot-scope="{row}">
                     <span v-if="row.statusDeliveryy == 0">未配送</span>
                     <span v-if="row.statusDeliveryy == 1">配送中</span>
-                    <span v-if="row.statusDeliveryy == 9">完成</span>
+                    <span v-if="row.statusDeliveryy == 9">已完成</span>
                     <span v-if="row.statusDeliveryy == -9">订单作废</span>
                 </template>
             </el-table-column>

@@ -94,7 +94,7 @@
                 <template slot-scope="{row}">
                     <span v-if="row.statusDelivery == 0">未配送</span>
                     <span v-if="row.statusDelivery == 1">配送中</span>
-                    <span v-if="row.statusDelivery == 9">完成</span>
+                    <span v-if="row.statusDelivery == 9">已完成</span>
                     <span v-if="row.statusDelivery == -9">订单作废</span>
                 </template>
             </el-table-column>
