@@ -27,7 +27,7 @@ const accountRouter = {
         }, {
             path: 'modify',
             component: () => import('@/views/voucher/add'),
-            name: 'voucherAdd',
+            name: 'voucherModify',
             hidden:true,
             meta: {
                 title: '修改凭证'
@@ -35,7 +35,7 @@ const accountRouter = {
         }, {
             path: 'insert',
             component: () => import('@/views/voucher/add'),
-            name: 'voucherAdd',
+            name: 'voucherInsert',
             hidden:true,
             meta: {
                 title: '插入凭证'

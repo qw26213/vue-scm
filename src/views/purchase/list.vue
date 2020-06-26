@@ -14,7 +14,7 @@
           <span>{{row.billDate}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="单据号" width="80">
+      <el-table-column label="单据号" width="100">
         <template slot-scope="{row}">
           <span>{{row.billNo}}</span>
         </template>
@@ -49,7 +49,7 @@
           <span>{{row.status==1?'已审核':'未审核'}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="200">
+      <el-table-column label="操作" align="center" width="280">
         <template slot-scope="{row}">
           <span class="ctrl" @click="handleCompile(row.id)">编辑</span>
           <span class="ctrl" @click="handleDel(row.id)">删除</span>

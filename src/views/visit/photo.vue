@@ -45,7 +45,7 @@
             <el-table-column label="操作" align="center" width="180">
                 <template slot-scope="{row}">
                     <el-button class="ctrl" type="primary" size="mini" @click="showImg(row)">查看图片</el-button>
-                    <el-button class="ctrl" type="danger" size="mini" @click="handleDel(row.id)">删除</el-button>
+                    <el-button class="ctrl del" type="danger" size="mini" @click="handleDel(row.id)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>

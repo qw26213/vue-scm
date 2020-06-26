@@ -135,65 +135,65 @@
     </div>
 </template>
 <script>
-import {deleteEmptyProp,addNullObj,addNullObj2} from '@/utils';
-import {saveSales,getSalesById,getItemPrice} from '@/api/store';
-import { getName,getNowDate } from '@/utils/auth'
+import { deleteEmptyProp, addNullObj, addNullObj2 } from '@/utils';
+import { getSalesById } from '@/api/sale';
+import { getName, getNowDate } from '@/utils/auth'
 export default {
     name: 'saleDetail',
     data() {
         return {
-            id:'',
-            settleData:[{},{},{},{},{}],
-            dialogFormVisible:false,
-            tableData: [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}],
-            keys:["itemId","itemCode","itemName","norms","uom","subUom","exchangeRate","batchNo","productionDate","qualityName","qualityDays","qty","price","amount","taxRate","taxAmount","vatAmount","invoiceNo","salesTypeCode"],
+            id: '',
+            settleData: [{}, {}, {}, {}, {}],
+            dialogFormVisible: false,
+            tableData: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
+            keys: ["itemId", "itemCode", "itemName", "norms", "uom", "subUom", "exchangeRate", "batchNo", "productionDate", "qualityName", "qualityDays", "qty", "price", "amount", "taxRate", "taxAmount", "vatAmount", "invoiceNo", "salesTypeCode"],
             temp: {
-                billDate:getNowDate(),
-                billNo:'',
-                bizTypeId:'',
-                autoAdvr:'1',
-                custId:'',
-                custName:'',
-                soldToCust:'',
-                warehouseId:'',
-                warehouseName:'',
-                truckId:'',
-                truckName:'',
-                staffId:'',
-                paymentTypeId:'',
-                paymentDueDate:'',
-                currPayAmount:0,
-                itemAmount:0,
-                advPayAmount:0,
-                rebateAmount:0,
-                withoutPayAmount:0,
-                auditDate:"",
-                auditor:"",
-                recordDate:getNowDate()+' 00:00:00',
-                recorder:getName()
+                billDate: getNowDate(),
+                billNo: '',
+                bizTypeId: '',
+                autoAdvr: '1',
+                custId: '',
+                custName: '',
+                soldToCust: '',
+                warehouseId: '',
+                warehouseName: '',
+                truckId: '',
+                truckName: '',
+                staffId: '',
+                paymentTypeId: '',
+                paymentDueDate: '',
+                currPayAmount: 0,
+                itemAmount: 0,
+                advPayAmount: 0,
+                rebateAmount: 0,
+                withoutPayAmount: 0,
+                auditDate: "",
+                auditor: "",
+                recordDate: getNowDate() + ' 00:00:00',
+                recorder: getName()
             }
         }
     },
-    filters:{
-        parseDate: function (val){
-            return val.substr(0,10)
+    filters: {
+        parseDate: function(val) {
+            return val.substr(0, 10)
         },
-        toFixed: function (val){
+        toFixed: function(val) {
             return val || ''
         }
     },
     created() {
-        if(this.$route.query.id){
+        if (this.$route.query.id) {
             this.id = this.$route.query.id
             var date = this.$route.query.billDate
-            getSalesById(this.id, date).then(res=>{
-                if(res.data.data){
-                    for(var key in this.temp){
+            getSalesById(this.id, date).then(res => {
+                if (res.data.data) {
+                    for (var key in this.temp) {
                         this.temp[key] = res.data.data[key];
                     }
                     this.temp.autoAdvr = true;
-                    for(var i=0;i<res.data.data.salesLine.length;i++){
-                        for(var j=0;j<this.keys.length;j++){
+                    for (var i = 0; i < res.data.data.salesLine.length; i++) {
+                        for (var j = 0; j < this.keys.length; j++) {
                             this.tableData[i][this.keys[j]] = res.data.data.salesLine[i][this.keys[j]]
                             this.tableData[i].taxRate = this.tableData[i].taxRate * 100
                         }
@@ -204,27 +204,27 @@ export default {
         }
     },
     methods: {
-        calculate(index){
+        calculate(index) {
             var price = this.tableData[index].price;
             var qty = this.tableData[index].qty;
-            if(qty&&price){
+            if (qty && price) {
                 var amount = parseFloat(Number(qty) * Number(price)).toFixed(2);
-                this.$set(this.tableData[index],'amount',amount)
-                this.$set(this.tableData[index],'taxAmount',0)
-                this.$set(this.tableData[index],'vatAmount',amount)
+                this.$set(this.tableData[index], 'amount', amount)
+                this.$set(this.tableData[index], 'taxAmount', 0)
+                this.$set(this.tableData[index], 'vatAmount', amount)
                 var taxRate = this.tableData[index].taxRate;
-                if(taxRate){
-                    var taxAmount = parseFloat(Number(amount)*Number(taxRate)/100).toFixed(2);
-                    var vatAmount = parseFloat(Number(amount)*(Number(taxRate)/100+1)).toFixed(2);
-                    this.$set(this.tableData[index],'taxAmount',taxAmount)
-                    this.$set(this.tableData[index],'vatAmount',vatAmount)
-                }else{
-                    this.$set(this.tableData[index],'taxRate',0)
+                if (taxRate) {
+                    var taxAmount = parseFloat(Number(amount) * Number(taxRate) / 100).toFixed(2);
+                    var vatAmount = parseFloat(Number(amount) * (Number(taxRate) / 100 + 1)).toFixed(2);
+                    this.$set(this.tableData[index], 'taxAmount', taxAmount)
+                    this.$set(this.tableData[index], 'vatAmount', vatAmount)
+                } else {
+                    this.$set(this.tableData[index], 'taxRate', 0)
                 }
                 this.calculateTotal();
             }
         },
-        calculate1(index){
+        calculate1(index) {
             var amount = 0;
             for (var i = 0; i < this.settleData.length; i++) {
                 if (this.settleData[i] && this.settleData[i].amount) {
@@ -233,11 +233,11 @@ export default {
             }
             this.temp.currPayAmount = parseFloat(amount).toFixed(2);
         },
-        calculateTotal(){
+        calculateTotal() {
             var amount = 0;
-            for(var i=0;i<this.tableData.length;i++){
-                if(this.tableData[i]&&this.tableData[i].vatAmount){
-                    amount+=Number(this.tableData[i].vatAmount);
+            for (var i = 0; i < this.tableData.length; i++) {
+                if (this.tableData[i] && this.tableData[i].vatAmount) {
+                    amount += Number(this.tableData[i].vatAmount);
                 }
             }
             this.temp.itemAmount = parseFloat(amount).toFixed(2);
@@ -245,60 +245,30 @@ export default {
         showSettleType() {
             this.dialogFormVisible = true
         },
-        settleTypeChange(obj){
+        settleTypeChange(obj) {
             for (var key in obj) {
                 this.settleData[obj.index][key] = obj[key];
             }
         },
-        selectChange(obj){
-            for(var key in obj){
-                this.temp[key]=obj[key];
+        selectChange(obj) {
+            for (var key in obj) {
+                this.temp[key] = obj[key];
             }
-            if(obj&&obj.warehouseName){
-                for(var i=0;i<this.tableData.length;i++){
-                  this.tableData[i].warehouseId = obj.warehouseId
+            if (obj && obj.warehouseName) {
+                for (var i = 0; i < this.tableData.length; i++) {
+                    this.tableData[i].warehouseId = obj.warehouseId
                 }
             }
-            if(obj&&obj.truckName){
-                for(var i=0;i<this.tableData.length;i++){
-                  this.tableData[i].truckId = obj.truckId
+            if (obj && obj.truckName) {
+                for (var i = 0; i < this.tableData.length; i++) {
+                    this.tableData[i].truckId = obj.truckId
                 }
             }
         },
-        changeVal(obj){
-            for(var key in obj){
-                this.tableData[obj.index][key]=obj[key];
+        changeVal(obj) {
+            for (var key in obj) {
+                this.tableData[obj.index][key] = obj[key];
             }
-            if(this.temp.custId){
-                getItemPrice({custId:this.temp.custId,itemId:this.tableData[obj.index].itemId}).then(res=>{
-                    if(res.data.toString()==""){
-                        this.tableData[obj.index].price = 0
-                    }else{
-                        if(res.data.price<0){
-                            this.$message.error("须先设定商品价格(价格-价格设定)")
-                        }else{
-                            this.tableData[obj.index].price = parseFloat(res.data.price).toFixed(4)
-                        }
-                    }
-                })
-            }
-        },
-        save() {
-            this.temp.id = this.id;
-            this.temp.salesLine = deleteEmptyProp(this.tableData);
-            this.temp.advPayAmount = Number(this.temp.advPayAmount);
-            this.temp.settleTypeDetail = this.settleData;
-            saveSales(this.temp).then(res => {
-                if (res.data.errorCode == 0) {
-                    this.$message.success(this.id==""?'新增成功':'修改成功');
-                    this.$store.dispatch('tagsView/delView', this.$route);
-                    this.$router.replace('/sale/data');
-                } else {
-                    this.$message.error(res.data.msg)
-                }
-            }).catch(()=>{
-                this.$message.error('保存失败，请稍后重试！')
-            })
         }
     }
 }

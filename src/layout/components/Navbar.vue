@@ -9,22 +9,16 @@
                 <qq class="right-menu-item" title="在线客服" />
                 <screenfull id="screenfull" class="right-menu-item hover-effect" title="全屏" />
             </template>
-            <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
+            <el-dropdown class="avatar-container right-menu-item hover-effect" @command="handleCommand">
                 <div class="avatar-wrapper">
                     <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar" />
                     <span class="user-name">{{ name || userName }}</span>
                     <i style="vertical-align: middle;" class="el-icon-arrow-down" />
                 </div>
                 <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item>
-                        <span @click="$router.push('/user')">账户信息</span>
-                    </el-dropdown-item>
-                    <el-dropdown-item divided>
-                        <span @click="handlePwd">修改密码</span>
-                    </el-dropdown-item>
-                    <el-dropdown-item divided>
-                        <span style="display:block;" @click="logout">退出登录</span>
-                    </el-dropdown-item>
+                    <el-dropdown-item command="a">账户信息</el-dropdown-item>
+                    <el-dropdown-item divided command="b">修改密码</el-dropdown-item>
+                    <el-dropdown-item divided command="c">退出登录</el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
         </div>
@@ -119,6 +113,17 @@ export default {
         }    
     },
     methods: {
+        handleCommand(command) {
+            if (command === 'a') {
+                this.$router.push('/user')
+            }
+            if (command === 'b') {
+                this.handlePwd()
+            }
+            if (command === 'c') {
+                this.logout()
+            }
+        },
         closeModal() {
             if (this.isTodayShow) {
                 Cookies.set("msgModal", "1", { expires: 1, path: "/" });
@@ -144,20 +149,20 @@ export default {
         },
         handlePwd() {
             this.dialogFormVisible = true
-            this.temp.oldPsw = ""
-            this.temp.password = ""
-            this.temp.againPassword = ""
+            this.pswForm.oldPsw = ""
+            this.pswForm.password = ""
+            this.pswForm.againPassword = ""
             this.$nextTick(() => {
                 this.$refs["dataForm"].clearValidate()
             });
         },
         toggleSideBar() {
-            this.$store.dispatch("app/toggleSideBar");
+            this.$store.dispatch("app/toggleSideBar")
         },
         logout() {
             this.$store.dispatch("user/logout").then(() => {
-                this.$router.push({ path: "/login" });
-            });
+                this.$router.push({ path: "/login" })
+            })
         }
     }
 };

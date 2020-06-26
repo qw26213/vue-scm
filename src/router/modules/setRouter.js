@@ -1,4 +1,4 @@
-import Layout from '@/layout';
+import Layout from '@/layout'
 import setView from '@/layout/set'
 const setRouter = {
     path: '/set',
@@ -119,9 +119,7 @@ const setRouter = {
             path: 'coaList',
             component: () => import('@/views/set/coaList'),
             name: 'coaList',
-            meta: {
-                title: '科目'
-            }
+            meta: { title: '科目' }
         }, {
             path: 'invCurrency',
             component: () => import('@/views/set/currency'),
@@ -138,9 +136,9 @@ const setRouter = {
             name: 'baseInvTempletType',
             meta: { title: '凭证模板类型' }
         }, {
-            path: 'voucherModal',
-            component: () => import('@/views/set/voucherModal'),
-            name: 'voucherModal',
+            path: 'voucherTemplet',
+            component: () => import('@/views/set/voucherTemplet'),
+            name: 'voucherTemplet',
             meta: { title: '凭证模板' }
         }]
     }, {
@@ -169,27 +167,6 @@ const setRouter = {
             name: 'dataRole',
             meta: { title: '数据权限' }
         }]
-    // }, {
-    //     path: 'baseElse',
-    //     component: setView,
-    //     name: 'baseElse',
-    //     meta: { title: '其他' },
-    //     children: [{
-    //         path: 'feeType',
-    //         component: () => import('@/views/set/else/feeType'),
-    //         name: 'feeType',
-    //         meta: { title: '计价方式' }
-    //     }, {
-    //         path: 'payType',
-    //         component: () => import('@/views/set/else/payType'),
-    //         name: 'payType',
-    //         meta: { title: '收付类型' }
-    //     }, {
-    //         path: 'coaType',
-    //         component: () => import('@/views/set/else/coaType'),
-    //         name: 'coaType',
-    //         meta: { title: '科目分类' }
-    //     }]
     }, {
         path: 'balance',
         component: () => import('@/views/set/else/balance'),

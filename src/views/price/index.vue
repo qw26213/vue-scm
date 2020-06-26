@@ -36,12 +36,12 @@
                         <span>{{row.lastPrice|Fixed}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="生效时间" width="140" align="center">
+                <el-table-column label="生效时间" min-width="140" align="center">
                     <template slot-scope="{row}">
                         <span>{{row.effectiveDate | parseDate}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="生效" align="center">
+                <el-table-column label="生效" min-width="80" align="center">
                     <template slot-scope="{row}">
                         <span>{{row.isDisable==0?'是':'否'}}</span>
                     </template>

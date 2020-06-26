@@ -40,11 +40,27 @@ const saleRouter = {
             title: '查看销售单'
         }
     }, {
-        path: 'saleList',
-        component: () => import('@/views/sale/list'),
-        name: 'saleList',
+        path: 'saleOrder',
+        component: () => import('@/views/sale/order'),
+        name: 'saleOrder',
         meta: {
             title: '销售订单'
+        }
+    }, {
+        path: 'orderAdd',
+        component: () => import('@/views/sale/orderAdd'),
+        hidden:true,
+        name: 'orderAdd',
+        meta: {
+            title: '新增销售订单'
+        }
+    }, {
+        path: 'orderModify',
+        component: () => import('@/views/sale/orderAdd'),
+        hidden:true,
+        name: 'orderModify',
+        meta: {
+            title: '编辑销售订单'
         }
     }, {
         path: 'returned',

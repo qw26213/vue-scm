@@ -37,7 +37,7 @@
                     <span>{{row.billDate}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="单据号">
+            <el-table-column width="100" label="单据号">
                 <template slot-scope="{row}">
                     <span>{{row.billNo}}</span>
                 </template>
@@ -77,17 +77,17 @@
                     <span>{{row.rebateAmount|Fixed}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="状态" align="center">
+            <el-table-column label="状态" width="100" align="center">
                 <template slot-scope="{row}">
                     <span>{{row.status==1?'已审核':row.status==2?'已生成':'待审核'}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" width="240">
+            <el-table-column label="操作" align="center" width="280">
                 <template slot-scope="{row}">
                     <span class="ctrl" v-if="row.status==0" @click="handleCompile(row.id)">编辑</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleScan(row.id)">查看</span>
-                    <span class="ctrl" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
+                    <span class="ctrl del" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isWarehousingEntry,row.id,row.warehousingEntryHeaderId)">{{row.isWarehousingEntry==1?'查看':'生成'}}入库单</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId)">{{row.isJeHeader==1?'查看':'生成'}}采购凭证</span>
                 </template>

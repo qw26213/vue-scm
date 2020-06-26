@@ -27,7 +27,7 @@
                     <span>{{row.billDate}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="单据号">
+            <el-table-column label="单据号" min-width="120">
                 <template slot-scope="{row}">
                     <span>{{row.billNo}}</span>
                 </template>
@@ -47,7 +47,7 @@
                     <span>{{row.paymentTypeName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="收款到期日" width="100" align="center">
+            <el-table-column label="收款到期日" min-width="100" align="center">
                 <template slot-scope="{row}">
                     <span>{{row.paymentDueDate}}</span>
                 </template>
@@ -77,12 +77,28 @@
                     <span>{{row.receivableAmount|Fixed}}</span>
                 </template>
             </el-table-column>
+            <el-table-column label="配送状态" align="center">
+                <template slot-scope="{row}">
+                    <span v-if="row.statusDelivery == 0">未配送</span>
+                    <span v-if="row.statusDelivery == 1">配送中</span>
+                    <span v-if="row.statusDelivery == 9">完成</span>
+                    <span v-if="row.statusDelivery == -9">订单作废</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="支付状态" align="center">
+                <template slot-scope="{row}">
+                    <span v-if="row.statusPayment == 0">未支付</span>
+                    <span v-if="row.statusPayment == 1">预付定金</span>
+                    <span v-if="row.statusPayment == 9">已支付</span>
+                    <span v-if="row.statusPayment == -9">订单作废</span>
+                </template>
+            </el-table-column>
             <el-table-column label="状态" align="center">
                 <template slot-scope="{row}">
                     <span>{{row.status==1?'已审核':row.status==2?'已生成':'待审核'}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" width="240">
+            <el-table-column label="操作" fixed="right" align="center" width="240">
                 <template slot-scope="{row}">
                     <span class="ctrl" v-if="row.status==0" @click="handleCompile(row)">编辑</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleScan(row)">查看</span>
@@ -107,21 +123,21 @@
             </div>
         </el-dialog>
         <el-dialog :close-on-click-modal="false" title="请选择凭证日期" :visible.sync="dialogFormVisible2" width="400px">
-          <el-form style="margin-top:30px;text-align:center;">
-            <el-form-item label="" prop="isBillDate">
-              <el-radio v-model="isBillDate" label="0" style="margin-right:10px">当前日期</el-radio>
-              <el-radio v-model="isBillDate" label="1">进货单日期</el-radio>
-            </el-form-item>
-          </el-form>
-          <div slot="footer" class="dialog-footer" align="center">
-              <el-button type="default" @click="dialogFormVisible2 = false">取消</el-button>
-              <el-button type="primary" @click="createVouter">确定</el-button>
-          </div>
+            <el-form style="margin-top:30px;text-align:center;">
+                <el-form-item label="" prop="isBillDate">
+                    <el-radio v-model="isBillDate" label="0" style="margin-right:10px">当前日期</el-radio>
+                    <el-radio v-model="isBillDate" label="1">进货单日期</el-radio>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer" align="center">
+                <el-button type="default" @click="dialogFormVisible2 = false">取消</el-button>
+                <el-button type="primary" @click="createVouter">确定</el-button>
+            </div>
         </el-dialog>
     </div>
 </template>
 <script>
-import { getSales, delSales, auditSales, buildSales, buildSaleVoucherByHeaderId } from '@/api/sale'
+import { getSalesOrder, delSalesOrder, auditSalesOrder, buildSalesOrder, getItemPrice, buildSalesOrderVoucherByHeaderId } from '@/api/sale'
 import { parseTime } from '@/utils'
 import staffList from '@/components/selects/staffList';
 import custList from '@/components/selects/custList';
@@ -145,7 +161,7 @@ export default {
                 pageIndex: 1,
                 pageNum: 20,
                 queryParam: {
-                    billDate1: getNowDate(),
+                    billDate1: '2020-06-01',
                     billDate2: getNowDate(),
                     billNo: "",
                     status: '',
@@ -168,7 +184,7 @@ export default {
     methods: {
         getList() {
             this.listLoading = true
-            getSales(this.listQuery).then(res => {
+            getSalesOrder(this.listQuery).then(res => {
                 this.listLoading = false
                 this.tableData = res.data.data
                 this.total = res.data.totalNum
@@ -183,12 +199,12 @@ export default {
                 type: 'warning'
             }).then(() => {
                 this.checkItem(id, billDate)
-            }).catch(()=>{
+            }).catch(() => {
                 console.log('取消')
             })
         },
         checkItem(id, billDate) {
-            auditSales(id, billDate).then(res => {
+            auditSalesOrder(id, billDate).then(res => {
                 if (res.data.errorCode == 0) {
                     this.getList();
                     this.$message.success('审核成功')
@@ -213,7 +229,7 @@ export default {
         },
         createBill() {
             var obj = { isBillDate: this.isBillDate, id: this.curBillId, billDate: this.curBillDate }
-            buildSales(obj).then(res => {
+            buildSalesOrder(obj).then(res => {
                 if (res.data.errorCode == 0) {
                     this.dialogFormVisible1 = false;
                     this.getList();
@@ -226,36 +242,36 @@ export default {
             });
         },
         handleAdd() {
-            this.$store.dispatch('tagsView/delView', this.$route);
-            this.$router.replace('/sale/add')
+            this.$store.dispatch('tagsView/delView', this.$route)
+            this.$router.replace('/sale/orderAdd')
         },
         handleCompile(row) {
             this.$store.dispatch('tagsView/delView', this.$route);
-            this.$router.push('/sale/modify?id=' + row.id+'&billDate='+row.billDate)
+            this.$router.push('/sale/orderModify?id=' + row.id + '&billDate=' + row.billDate)
         },
         handleScan(row) {
-            this.$router.push('/sale/detail?id=' + row.id+'&billDate='+row.billDate)
+            this.$router.push('/sale/detail?id=' + row.id + '&billDate=' + row.billDate)
         },
-        handleCreateVouter(status,id1,id2,billDate){
-          if(status==1){
-            this.$router.push('/voucher/add?id=' + id2)
-          }else{
-            this.curBillId = id1;
-            this.curBillDate = billDate
-            this.dialogFormVisible2 = true;
-          }
-        },
-        createVouter(){
-          var obj = {isBillDate:this.isBillDate,id:this.curBillId,billDate: this.curBillDate}
-          buildSaleVoucherByHeaderId(obj).then(res => {
-            if(res.data.errorCode==0){
-              this.dialogFormVisible2 = false;
-              this.getList();
-              this.$message.success('生成销售凭证成功！')
-            }else{
-              this.$message.error(res.data.msg)
+        handleCreateVouter(status, id1, id2, billDate) {
+            if (status == 1) {
+                this.$router.push('/voucher/add?id=' + id2)
+            } else {
+                this.curBillId = id1
+                this.curBillDate = billDate
+                this.dialogFormVisible2 = true
             }
-          });
+        },
+        createVouter() {
+            var obj = { isBillDate: this.isBillDate, id: this.curBillId, billDate: this.curBillDate }
+            buildSalesOrderVoucherByHeaderId(obj).then(res => {
+                if (res.data.errorCode == 0) {
+                    this.dialogFormVisible2 = false;
+                    this.getList();
+                    this.$message.success('生成销售凭证成功！')
+                } else {
+                    this.$message.error(res.data.msg)
+                }
+            });
         },
         handleDel(id, date) {
             this.$confirm('确定删除吗?', '提示', {
@@ -263,11 +279,11 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                this.delItem(id,date)
+                this.delItem(id, date)
             });
         },
         delItem(id, date) {
-            delSales(id, date).then(res => {
+            delSalesOrder(id, date).then(res => {
                 if (res.data.errorCode == 0) {
                     this.getList();
                     this.dialogFormVisible1 = false

@@ -94,10 +94,14 @@ export default {
 .pagination-container {
   margin-top: 10px;
   background: #fff;
-  padding: 5px 20px;
-  text-align: center;
+  padding: 5px 0;
+  text-align: right;
 }
+.el-pagination{padding: 0}
 .pagination-container.hidden {
   display: none;
 }
+</style>
+<style lang="scss" scoped>
+/deep/ .el-pagination .btn-next {margin-right:0px}
 </style>

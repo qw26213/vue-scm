@@ -39,36 +39,6 @@
                     <span>{{row.truckName}}</span>
                 </template>
             </el-table-column>
-            <!-- <el-table-column label="付款方式">
-                <template slot-scope="{row}">
-                    <span>{{row.paymentTypeName}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="付款到期日">
-                <template slot-scope="{row}">
-                    <span>{{row.paymentDueDate}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="使用预付" align="right">
-                <template slot-scope="{row}">
-                    <span>{{row.advPayAmount|Fixed}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="现结金额" align="right">
-                <template slot-scope="{row}">
-                    <span>{{row.currPayAmount|Fixed}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="价税合计" align="right">
-                <template slot-scope="{row}">
-                    <span>{{row.itemAmount|Fixed}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="返利金额" align="right">
-                <template slot-scope="{row}">
-                    <span>{{row.rebateAmount|Fixed}}</span>
-                </template>
-            </el-table-column> -->
             <el-table-column label="状态" align="center">
                 <template slot-scope="{row}">
                     <span>{{row.status==1?'已审核':row.status==2?'已生成':'待审核'}}</span>
@@ -77,8 +47,8 @@
             <el-table-column label="操作" align="center" width="200">
                 <template slot-scope="{row}">
                     <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status==0?'编辑':'查看'}}</span>
-                    <span class="ctrl" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
+                    <span class="ctrl del" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isSales,row.id,row.salesHeaderId)">{{row.isSales==1?'查看':'生成'}}销售退货单</span>
                 </template>
             </el-table-column>

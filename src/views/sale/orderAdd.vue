@@ -8,20 +8,20 @@
                 <el-form-item label="单据号:" prop="billNo">
                     <el-input size="mini" v-model="temp.billNo" placeholder="单据号" disabled />
                 </el-form-item>
+                <el-form-item label="业务员:" prop="staffId">
+                    <staffList @selectChange="selectChange" :disabled="!isAdmin" :selectId="temp.staffId"></staffList>
+                </el-form-item>
                 <el-form-item label="客户:" prop="custId">
                     <custList @selectChange="selectChange" keyType="custId" :selectId="temp.custId" :selectName="temp.custName"></custList>
                 </el-form-item>
-                <el-form-item label="售达客户:" prop="soldToCustId">
-                    <custList @selectChange="selectChange" keyType="soldToCustId" :selectId="temp.soldToCustId"></custList>
+                <el-form-item label="售达客户:" prop="settleCustId">
+                    <custList @selectChange="selectChange" keyType="settleCustId" :selectId="temp.settleCustId"></custList>
                 </el-form-item>
                 <el-form-item label="仓库:" prop="warehouseId">
-                    <warehouseList @selectChange="selectChange" allowNull="1" keyType="warehouseId" :selectId="temp.warehouseId"></warehouseList>
+                    <warehouseList @selectChange="selectChange" keyType="warehouseId" allowNull="1" :selectId="temp.warehouseId"></warehouseList>
                 </el-form-item>
                 <el-form-item label="车辆:" prop="truckId">
-                    <truckList @selectChange="selectChange" allowNull="1" keyType="truckId" :selectId="temp.truckId"></truckList>
-                </el-form-item>
-                <el-form-item label="业务员:" prop="staffId">
-                    <staffList @selectChange="selectChange" :selectId="temp.staffId"></staffList>
+                    <truckList @selectChange="selectChange" keyType="truckId" allowNull="1" :selectId="temp.truckId"></truckList>
                 </el-form-item>
                 <el-form-item label="收款方式:" prop="paymentTypeId">
                     <paymentTypeList @selectChange="selectChange" :selectId="temp.paymentTypeId"></paymentTypeList>
@@ -33,36 +33,37 @@
                 <el-form-item label="合计金额:" prop="itemAmount">
                     <el-input size="mini" v-model="temp.itemAmount" placeholder="合计金额" disabled />
                 </el-form-item>
+                <!-- <el-form-item label="抹零金额:" prop="withoutPayAmount">
+                    <el-input size="mini" v-model="temp.withoutPayAmount" placeholder="抹零金额" />
+                </el-form-item> -->
                 <el-form-item label="现结金额:" prop="currPayAmount">
                     <el-input size="mini" v-model="temp.currPayAmount" placeholder="现结金额" style="width:72px" disabled />
                     <el-button size="mini" style="width:44px;padding:6px" @click="showSettleType">选择</el-button>
                 </el-form-item>
-                <el-form-item label="返利金额:" prop="rebateAmount">
-                    <el-input size="mini" v-model="temp.rebateAmount" placeholder="返利金额" />
+                <el-form-item label="销售费用:" prop="expensesAmount">
+                    <el-input size="mini" v-model="temp.expensesAmount" placeholder="销售费用" disabled />
+                </el-form-item>
+                <el-form-item label="使用预收:" prop="advPayAmount">
+                    <el-input size="mini" v-model="temp.advPayAmount" placeholder="使用预收" disabled />
+                </el-form-item>
+                <el-form-item label="应收金额:" prop="receivableAmount">
+                    <el-input size="mini" v-model="temp.receivableAmount" placeholder="应收金额" disabled />
                 </el-form-item>
                 <el-form-item label="发票:" prop="statusInvoice">
+                    <!-- 与当前客户的isInvoice有关系 -->
                     <el-select v-model="temp.statusInvoice" size="mini">
-                        <el-option label="不开票" :value="0"></el-option>
-                        <el-option label="待开票" :value="1"></el-option>
+                        <el-option label="不开发票" :value="0"></el-option>
+                        <el-option label="待开发票" :value="1"></el-option>
                         <el-option label="已开发票" :value="9"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="退款类型:" prop="returnedType">
-                    <el-select v-model="temp.returnedType" placeholder="退款类型" size="mini">
-                        <el-option label="退款退货" :value="0"></el-option>
-                        <el-option label="退换货" :value="1"></el-option>
-                        <el-option label="只退款" :value="2"></el-option>
-                    </el-select>
+                <el-form-item label="自动匹配预收款:" prop="autoAdvr" label-width="120px">
+                    <el-checkbox v-model="temp.autoAdvr" :false-label="0" :true-label="1"></el-checkbox>
                 </el-form-item>
             </el-form>
         </div>
         <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini" cell-class-name="tdCell">
             <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
-            <el-table-column label="销售方式" align="center">
-                <template slot-scope="scope">
-                    <salesTypeList :selectId="scope.row.salesTypeCode" :index="scope.$index" @selectChange="salesTypeChange" ></salesTypeList>
-                </template>
-            </el-table-column>
             <el-table-column label="商品名称" width="160">
                 <template slot-scope="scope">
                     <itemList :selectCode="scope.row.itemCode" :selectId="scope.row.itemId" :index="scope.$index" :item-list="item_list" @changeVal="changeVal" />
@@ -90,8 +91,7 @@
             </el-table-column>
             <el-table-column label="生产日期" width="120">
                 <template slot-scope="{row}">
-                    <el-date-picker :editable="false" v-model="row.productionDate" type="date" placeholder="" size="mini" style="width:100%" :clearable="false" value-format="yyyy-MM-dd">
-                    </el-date-picker>
+                    <el-date-picker :editable="false" v-model="row.productionDate" type="date" placeholder="" size="mini" style="width:100%" :clearable="false" value-format="yyyy-MM-dd" />
                 </template>
             </el-table-column>
             <el-table-column label="保质期(天)">
@@ -101,7 +101,7 @@
             </el-table-column>
             <el-table-column label="含税价(元)">
                 <template slot-scope="scope">
-                    <input type="text" class="inputCell tx-r" v-model="scope.row.vatPrice" :disables="returnPriceType + scope.row.salePriceType <= 1" @change="calculate(scope.$index)">
+                    <input type="text" class="inputCell tx-r" v-model="scope.row.vatPrice" :disables="userSalePriceType + scope.row.salePriceType <= 1" @change="calculate(scope.$index)">
                 </template>
             </el-table-column>
             <el-table-column label="数量">
@@ -109,9 +109,14 @@
                     <input type="text" class="inputCell tx-r" v-model="scope.row.qty" @change="calculate(scope.$index)">
                 </template>
             </el-table-column>
-            <el-table-column label="金额">
+            <el-table-column label="价税合计">
                 <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-r" v-model="row.amount" disabled>
+                    <input type="text" class="inputCell tx-r" v-model="row.vatAmount||0" disabled>
+                </template>
+            </el-table-column>
+            <el-table-column label="销售方式">
+                <template slot-scope="scope">
+                    <salesTypeList :selectId="scope.row.salesTypeCode" :index="scope.$index" @selectChange="salesTypeChange"></salesTypeList>
                 </template>
             </el-table-column>
             <el-table-column label="税率(%)">
@@ -122,11 +127,6 @@
             <el-table-column label="税额">
                 <template slot-scope="{row}">
                     <input type="text" class="inputCell tx-r" v-model="row.taxAmount" disabled>
-                </template>
-            </el-table-column>
-            <el-table-column label="价税合计">
-                <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-r" v-model="row.vatAmount||0" disabled>
                 </template>
             </el-table-column>
         </el-table>
@@ -174,15 +174,12 @@
                 <el-button type="primary" @click="dialogFormVisible = false">确定</el-button>
             </div>
         </el-dialog>
-        <modalTable :modalTableVisible="modalTableVisible"></modalTable>
     </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import modalTable from '@/components/modalTable/saleBill'
-import { saveSalesReturned, getSalesReturnedById, getSalesReturnedBySalesHeaderId } from '@/api/sale'
+import { saveSalesOrder, getSalesOrderById } from '@/api/sale'
 import { deleteEmptyProp, addNullObj, addNullObj2 } from '@/utils'
-import { getResPageByFuzzyCustId } from '@/api/store'
 import staffList from '@/components/selects/staffList'
 import bizTypeList from '@/components/selects/bizTypeList'
 import custList from '@/components/selects/custList'
@@ -192,17 +189,18 @@ import paymentTypeList from '@/components/selects/paymentTypeList'
 import itemList from '@/components/selects/saleItemList'
 import settleTypeList from "@/components/selects/settleTypeList"
 import salesTypeList from "@/components/selects/salesTypeList"
+import { getResPageByFuzzyCustId } from '@/api/store'
 import { getName, getNowDate } from '@/utils/auth'
 var userInfo = JSON.parse(sessionStorage.userInfo)
 export default {
-    name: 'saleAdd',
-    components: { staffList, warehouseList, custList, truckList, bizTypeList, paymentTypeList, itemList, settleTypeList, modalTable, salesTypeList },
+    name: 'orderAdd',
+    components: { staffList, warehouseList, custList, truckList, bizTypeList, paymentTypeList, itemList, settleTypeList, salesTypeList },
     data() {
         return {
             id: '',
+            isAdmin: userInfo.isAdmin === 1,
+            userSalePriceType: userInfo.salePriceType,
             status: this.$route.query.status,
-            returnPriceType: userInfo.returnPriceType,
-            modalTableVisible: false,
             settleData: [{}, {}, {}, {}, {}],
             dialogFormVisible: false,
             tableData: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
@@ -210,12 +208,12 @@ export default {
             item_list: [],
             temp: {
                 billDate: getNowDate(),
-                statusInvoice: 1,
                 billNo: '',
                 bizTypeId: '',
+                autoAdvr: 1,
                 custId: '',
                 custName: '',
-                soldToCustId: '',
+                settleCustId: '',
                 warehouseId: '',
                 warehouseName: '',
                 truckId: '',
@@ -225,11 +223,12 @@ export default {
                 paymentDueDate: '',
                 currPayAmount: 0,
                 itemAmount: 0,
+                statusInvoice: 1,
                 advPayAmount: 0,
+                receivableAmount: 0,
                 rebateAmount: 0,
                 withoutPayAmount: 0,
                 auditDate: "",
-                returnedType: 0,
                 auditor: "",
                 recordDate: getNowDate() + ' 00:00:00',
                 recorder: getName()
@@ -243,60 +242,50 @@ export default {
         ])
     },
     created() {
-        this.$store.dispatch('basedata/getSalesReturnedSettleType')
+        this.$store.dispatch('basedata/getSalesTypeArr')
+        this.$store.dispatch('basedata/getSalesSettleType')
         if (this.$route.query.id) {
             this.id = this.$route.query.id
-            getSalesReturnedById(this.id).then(res => {
+            var date = this.$route.query.billDate
+            getSalesOrderById(this.id, date).then(res => {
                 if (res.data.data) {
                     for (var key in this.temp) {
                         this.temp[key] = res.data.data[key];
                     }
                     this.temp.autoAdvr = true;
-                    for (var i = 0; i < res.data.data.salesReturnedLine.length; i++) {
+                    for (var i = 0; i < res.data.data.salesLine.length; i++) {
                         for (var j = 0; j < this.keys.length; j++) {
-                            this.tableData[i][this.keys[j]] = res.data.data.salesReturnedLine[i][this.keys[j]]
+                            this.tableData[i][this.keys[j]] = res.data.data.salesLine[i][this.keys[j]]
+                            if (this.tableData[i].taxRate < 1) {
+                                this.tableData[i].taxRate = this.tableData[i].taxRate * 100
+                            }
                         }
                     }
-                    this.settleData = addNullObj2(res.data.data.settleTypeReturnedDetail)
+                    this.settleData = addNullObj2(res.data.data.settleTypeDetail)
                     this.getItemList()
                 }
             })
         }
     },
-    mounted() {
-        this.$store.dispatch('basedata/getPresaleReturnedSettleType')
-        if(!this.status){
-            this.modalTableVisible = true
-        }
-    },
     methods: {
-        initTableData(id) {
-            getSalesReturnedBySalesHeaderId(id).then(res => {
-                for (var key in this.temp) {
-                    this.temp[key] = res.data.data[key]
-                }
-                this.tableData = addNullObj(res.data.data.salesReturnedLine);
-                this.settleData = addNullObj2(res.data.data.settleTypeReturnedDetail)
-            })
-        },
         calculate(index) {
             var vatPrice = this.tableData[index].vatPrice //含税价
             var qty = this.tableData[index].qty //数量
-            if(qty&&vatPrice){
+            if (qty && vatPrice) {
                 var vatAmount = parseFloat(Number(qty) * Number(vatPrice)).toFixed(2)
-                this.$set(this.tableData[index],'vatAmount',vatAmount)
+                this.$set(this.tableData[index], 'vatAmount', vatAmount)
                 var taxRate = this.tableData[index].taxRate;
-                if(taxRate){
-                    var price = parseFloat(Number(vatPrice)/(Number(taxRate)/100+1)).toFixed(2)
-                    var amount = parseFloat(Number(qty)*Number(price)).toFixed(2)
+                if (taxRate) {
+                    var price = parseFloat(Number(vatPrice) / (Number(taxRate) / 100 + 1)).toFixed(2)
+                    var amount = parseFloat(Number(qty) * Number(price)).toFixed(2)
                     var taxAmount = parseFloat(Number(vatAmount) - Number(amount)).toFixed(2)
-                    this.$set(this.tableData[index],'taxAmount',taxAmount)
-                    this.$set(this.tableData[index],'price',price)
-                    this.$set(this.tableData[index],'amount',amount)
-                }else{
-                    this.$set(this.tableData[index],'taxRate',0)
-                    this.$set(this.tableData[index],'price',0)
-                    this.$set(this.tableData[index],'amount',0)
+                    this.$set(this.tableData[index], 'taxAmount', taxAmount)
+                    this.$set(this.tableData[index], 'price', price)
+                    this.$set(this.tableData[index], 'amount', amount)
+                } else {
+                    this.$set(this.tableData[index], 'taxRate', 0)
+                    this.$set(this.tableData[index], 'price', 0)
+                    this.$set(this.tableData[index], 'amount', 0)
                 }
                 this.calculateTotal();
             }
@@ -327,8 +316,8 @@ export default {
                 this.settleData[obj.index][key] = obj[key];
             }
         },
-        salesTypeChange(obj){
-            for(var key in obj){
+        salesTypeChange(obj) {
+            for (var key in obj) {
                 this.tableData[obj.index][key] = obj[key];
             }
         },
@@ -344,6 +333,11 @@ export default {
             if (obj && obj.truckName) {
                 for (var i = 0; i < this.tableData.length; i++) {
                     this.tableData[i].truckId = obj.truckId
+                }
+            }
+            if (obj && obj.index) {
+                for (var i = 0; i < this.tableData.length; i++) {
+                    this.tableData[obj.index][key] = obj[key]
                 }
             }
             if (obj.custId) {
@@ -369,14 +363,14 @@ export default {
         },
         save() {
             this.temp.id = this.id;
-            this.temp.salesReturnedLine = deleteEmptyProp(this.tableData);
+            this.temp.salesLine = deleteEmptyProp(this.tableData);
             this.temp.advPayAmount = Number(this.temp.advPayAmount);
-            this.temp.settleTypeReturnedDetail = this.settleData;
-            saveSalesReturned(this.temp).then(res => {
+            this.temp.settleTypeDetail = this.settleData;
+            saveSalesOrder(this.temp).then(res => {
                 if (res.data.errorCode == 0) {
                     this.$message.success(this.id == "" ? '新增成功' : '修改成功');
                     this.$store.dispatch('tagsView/delView', this.$route);
-                    this.$router.replace('/sale/returned');
+                    this.$router.replace('/sale/data');
                 } else {
                     this.$message.error(res.data.msg)
                 }

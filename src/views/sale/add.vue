@@ -178,7 +178,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import { saveSales, getSalesById } from '@/api/store'
+import { saveSales, getSalesById } from '@/api/sale'
 import { deleteEmptyProp, addNullObj, addNullObj2 } from '@/utils'
 import staffList from '@/components/selects/staffList'
 import bizTypeList from '@/components/selects/bizTypeList'

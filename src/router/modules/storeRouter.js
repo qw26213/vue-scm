@@ -49,7 +49,7 @@ const storeRouter = {
         }, {
             path: 'outboundOrderReturnedModify',
             component: () => import('@/views/store/outboundOrderReturnedAdd'),
-            name: 'outboundOrderReturnedAdd',
+            name: 'outboundOrderReturnedModify',
             hidden:true,
             meta: {
                 title: '编辑销售退货入库'

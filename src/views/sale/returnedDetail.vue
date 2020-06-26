@@ -145,43 +145,43 @@
     </div>
 </template>
 <script>
-import {deleteEmptyProp,addNullObj,addNullObj2} from '@/utils';
-import { saveSalesReturned, getSalesReturnedById, getItemPrice, getSalesReturnedBySalesHeaderId } from '@/api/store';
-import { getName,getNowDate } from '@/utils/auth'
+import { deleteEmptyProp, addNullObj, addNullObj2 } from '@/utils'
+import { getSalesReturnedById, getSalesReturnedBySalesHeaderId } from '@/api/sale'
+import { getName, getNowDate } from '@/utils/auth'
 export default {
     name: 'saleReturnedDetail',
     data() {
         return {
-            id:'',
-            status:this.$route.query.status,
-            settleData:[{},{},{},{},{}],
-            dialogFormVisible:false,
-            tableData: [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}],
-            keys:["itemId","itemCode","itemName","norms","uom","subUom","exchangeRate","batchNo","productionDate","qualityName","qualityDays","qty","price","amount","taxRate","taxAmount","vatAmount","invoiceNo","salesTypeCode"],
+            id: '',
+            status: this.$route.query.status,
+            settleData: [{}, {}, {}, {}, {}],
+            dialogFormVisible: false,
+            tableData: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
+            keys: ["itemId", "itemCode", "itemName", "norms", "uom", "subUom", "exchangeRate", "batchNo", "productionDate", "qualityName", "qualityDays", "qty", "price", "amount", "taxRate", "taxAmount", "vatAmount", "invoiceNo", "salesTypeCode"],
             temp: {
-                billDate:getNowDate(),
-                billNo:'',
-                bizTypeId:'',
-                autoAdvr:'1',
-                custId:'',
-                custName:'',
-                soldToCust:'',
-                warehouseId:'',
-                warehouseName:'',
-                truckId:'',
-                truckName:'',
-                staffId:'',
-                paymentTypeId:'',
-                paymentDueDate:'',
-                currPayAmount:0,
-                itemAmount:0,
-                advPayAmount:0,
-                rebateAmount:0,
-                withoutPayAmount:0,
-                auditDate:"",
-                auditor:"",
-                recordDate:getNowDate()+' 00:00:00',
-                recorder:getName()
+                billDate: getNowDate(),
+                billNo: '',
+                bizTypeId: '',
+                autoAdvr: '1',
+                custId: '',
+                custName: '',
+                soldToCust: '',
+                warehouseId: '',
+                warehouseName: '',
+                truckId: '',
+                truckName: '',
+                staffId: '',
+                paymentTypeId: '',
+                paymentDueDate: '',
+                currPayAmount: 0,
+                itemAmount: 0,
+                advPayAmount: 0,
+                rebateAmount: 0,
+                withoutPayAmount: 0,
+                auditDate: "",
+                auditor: "",
+                recordDate: getNowDate() + ' 00:00:00',
+                recorder: getName()
             }
         }
     },
@@ -207,7 +207,7 @@ export default {
     },
     mounted() {
         this.$store.dispatch('basedata/getPresaleReturnedSettleType')
-        if(!this.status){
+        if (!this.status) {
             this.modalTableVisible = true
         }
     },
@@ -286,36 +286,6 @@ export default {
             for (var key in obj) {
                 this.tableData[obj.index][key] = obj[key];
             }
-            if (this.temp.custId) {
-                getItemPrice({ custId: this.temp.custId, itemId: this.tableData[obj.index].itemId }).then(res => {
-                    if (res.data.toString() == "") {
-                        this.tableData[obj.index].price = 0
-                    } else {
-                        if (res.data.price < 0) {
-                            this.$message.error("须先设定商品价格(价格-价格设定)")
-                        } else {
-                            this.tableData[obj.index].price = parseFloat(res.data.price).toFixed(4)
-                        }
-                    }
-                })
-            }
-        },
-        save() {
-            this.temp.id = this.id;
-            this.temp.salesReturnedLine = deleteEmptyProp(this.tableData);
-            this.temp.advPayAmount = Number(this.temp.advPayAmount);
-            this.temp.settleTypeReturnedDetail = this.settleData;
-            saveSalesReturned(this.temp).then(res => {
-                if (res.data.errorCode == 0) {
-                    this.$message.success(this.id == "" ? '新增成功' : '修改成功');
-                    this.$store.dispatch('tagsView/delView', this.$route);
-                    this.$router.replace('/sale/returned');
-                } else {
-                    this.$message.error(res.data.msg)
-                }
-            }).catch(() => {
-                this.$message.error('保存失败，请稍后重试！')
-            })
         }
     }
 }

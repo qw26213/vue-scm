@@ -2,7 +2,7 @@ import axios from 'axios'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
 import { MessageBox, Message } from 'element-ui'
-import context from '@/router'
+import router from '@/router'
 // axios 配置
 axios.defaults.timeout = 60000;
 axios.defaults.baseURL = process.env.VUE_APP_BASE_API;
@@ -15,26 +15,30 @@ axios.interceptors.request.use(
     },
     err => {
         return Promise.reject(err);
-    });
+    }
+)
+
+function redictLogin() {
+    if (!sessionStorage.modalShow) {
+        sessionStorage.modalShow = 1
+        Message.warning('登录已失效，清重新登录')
+        store.dispatch("user/logout").then(() => {
+            router.push({ path: "/login" })
+        })
+    }
+}
 
 // http response 拦截器
 axios.interceptors.response.use(
     response => {
         let res = response.data
-        if(res && !res.errorCode) {
+        if (res && !res.errorCode) {
             return response
         }
         if (res.errorCode == 0) {
             return response
         } else if (res.errorCode == 401) {
-            if (document.getElementsByClassName('el-message').length === 0){
-                MessageBox.alert(res.msg, '提示', {
-                    confirmButtonText: '确定',
-                    callback: () => {
-                      context.push('/login')
-                    }
-                })
-            }
+            redictLogin()
         } else {
             Message.warning(res.msg)
             return response
@@ -44,20 +48,14 @@ axios.interceptors.response.use(
         if (error.response) {
             switch (error.response.status) {
                 case 401:
-                    if (document.getElementsByClassName('el-message').length === 0){
-                        MessageBox.alert('登录已失效，请登录!', '提示', {
-                            confirmButtonText: '确定',
-                            callback: () => {
-                              context.push('/login')
-                            }
-                        })
-                    }
+                    redictLogin()
                     break;
                 default:
                     Message.error(error.message || "error")
             }
         }
         // return Promise.reject(error.data);
-    });
+    }
+)
 
 export default axios;

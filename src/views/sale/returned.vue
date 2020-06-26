@@ -21,8 +21,7 @@
             <el-button size="mini" type="primary" @click="getList">查询</el-button>
             <el-button size="mini" type="primary" @click="handleAdd">新增</el-button>
         </div>
-        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row>
-            <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
+        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" size="small" border fit highlight-current-row>
             <el-table-column label="单据日期" align="center" width="100">
                 <template slot-scope="{row}">
                     <span>{{row.billDate}}</span>
@@ -48,7 +47,7 @@
                     <span>{{row.paymentTypeName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="付款到期日" align="center">
+            <el-table-column label="付款到期日" width="100" align="center">
                 <template slot-scope="{row}">
                     <span>{{row.paymentDueDate}}</span>
                 </template>
@@ -82,8 +81,8 @@
                 <template slot-scope="{row}">
                     <span class="ctrl" v-if="row.status==0" @click="handleCompile(row.id)">编辑</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleScan(row.id)">查看</span>
-                    <span class="ctrl" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
+                    <span class="ctrl del" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
                     <span class="ctrl" v-if="row.status==1&&(row.returnedType==0||row.returnedType==1)" @click="handleCreateBill(row.isOutboundOrderReturned,row.id,row.outboundOrderReturnedHeaderId)">{{row.isOutboundOrderReturned==1?'查看':'生成'}}退货入库单</span>
                     <span class="ctrl" v-if="row.status==1&&(row.returnedType==2)" @click="handleCreateBill1(row.isOutboundOrderReturned,row.id,row.outboundOrderReturnedHeaderId)">{{row.isOutboundOrderReturned==1?'查看':'生成'}}报损单</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId)">{{row.isJeHeader==1?'查看':'生成'}}销售退货凭证</span>
@@ -118,7 +117,7 @@
     </div>
 </template>
 <script>
-import { getSalesReturned, delSalesReturned, auditSalesReturned, buildSalesReturned, getItemPrice, buildSaleReturnedVoucherByHeaderId } from '@/api/store'
+import { getSalesReturned, delSalesReturned, auditSalesReturned, buildSalesReturned, getItemPrice, buildSaleReturnedVoucherByHeaderId } from '@/api/sale'
 import { parseTime } from '@/utils'
 import staffList from '@/components/selects/staffList';
 import custList from '@/components/selects/custList';

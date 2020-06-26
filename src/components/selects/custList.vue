@@ -1,7 +1,6 @@
 <template>
-    <el-select v-model="curId" style="width:145px" filterable :remote="false" :disabled="selectDisabled" :remote-method="remoteGet" size="mini" @change="changeVal" placeholder="选择客户">
-        <el-option v-for="item in custList" :key="item.id" :label="item.custName" :value="item.id">
-        </el-option>
+    <el-select v-model="curId" style="width:145px" filterable :remote="isRemote" :disabled="selectDisabled" :remote-method="remoteGet" size="mini" @change="changeVal" placeholder="选择客户">
+        <el-option v-for="item in custList" :key="item.id" :label="item.custName" :value="item.id" />
     </el-select>
 </template>
 <script>
@@ -19,6 +18,7 @@ export default {
                     custName: ''
                 }
             },
+            isRemote: false,
             selectDisabled: this.disabled && this.disabled == 1 || false,
             curId: this.selectId,
             custList: []
@@ -26,7 +26,7 @@ export default {
     },
     watch: {
         'selectId'() {
-            if (this.selectId != '' && this.selectName != '') {
+            if (this.selectId && this.selectName) {
                 this.custList = [{ custName: this.selectName, id: this.selectId }]
                 this.curId = this.selectId
             }
@@ -60,7 +60,10 @@ export default {
         },
         getData() {
             getCust(this.listQuery).then(res => {
-                this.custList = res.data.data
+                if (res.data.errorCode == 0) {
+                    this.custList = res.data.data || []
+                    this.isRemote = this.custList.length === 50
+                }
             })
         }
     }

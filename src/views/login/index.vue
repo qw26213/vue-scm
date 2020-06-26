@@ -70,6 +70,7 @@ export default {
         }
     },
     created() {
+        sessionStorage.removeItem('modalShow')
         if (localStorage.orgCode) {
             this.loginForm.orgCode = localStorage.orgCode
             this.loginForm.userAccount = localStorage.userAccount
