@@ -9,6 +9,12 @@
             <staffList @selectChange="selectChange" ctrType="list"></staffList>
             <warehouseList @selectChange="selectChange" ctrType="list"></warehouseList>
             <truckList @selectChange="selectChange" ctrType="list"></truckList>
+            <el-select v-model="listQuery.queryParam.status" placeholder="单据状态" size="mini">
+                <el-option label="全部" value="" />
+                <el-option label="未审核" value="0" />
+                <el-option label="已审核" value="1" />
+                <el-option label="已生成" value="2" />
+            </el-select>
             <el-button size="mini" type="primary" @click="getList">查询</el-button>
             <el-button size="mini" type="primary" @click="handleAdd">新增</el-button>
         </div>
@@ -39,36 +45,6 @@
                     <span>{{row.truckName}}</span>
                 </template>
             </el-table-column>
-            <!-- <el-table-column label="付款方式">
-                <template slot-scope="{row}">
-                    <span>{{row.paymentTypeName}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="付款到期日">
-                <template slot-scope="{row}">
-                    <span>{{row.paymentDueDate}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="使用预付" align="right">
-                <template slot-scope="{row}">
-                    <span>{{row.advPayAmount|Fixed}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="现结金额" align="right">
-                <template slot-scope="{row}">
-                    <span>{{row.currPayAmount|Fixed}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="价税合计" align="right">
-                <template slot-scope="{row}">
-                    <span>{{row.itemAmount|Fixed}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="返利金额" align="right">
-                <template slot-scope="{row}">
-                    <span>{{row.rebateAmount|Fixed}}</span>
-                </template>
-            </el-table-column> -->
             <el-table-column label="状态" align="center">
                 <template slot-scope="{row}">
                     <span>{{row.status==1?'已审核':row.status==2?'已生成':'待审核'}}</span>
@@ -128,8 +104,9 @@ export default {
                     custId: '',
                     staffId: '',
                     truckId: '',
+                    status: '',
                     warehouseId: '',
-                    billNo: ""
+                    billNo: ''
                 }
             }
         }

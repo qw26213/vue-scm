@@ -14,11 +14,6 @@
                 <el-option label="已审核" value="1"></el-option>
                 <el-option label="已生成" value="2"></el-option>
             </el-select>
-            <el-select v-model="listQuery.iswarehousingReturnedEntry" placeholder="进货单状态" size="mini">
-                <el-option label="全部" value=""></el-option>
-                <el-option label="未生成进货单" value="0"></el-option>
-                <el-option label="已生成进货单" value="1"></el-option>
-            </el-select>
             <el-button size="mini" type="primary" @click="getList">查询</el-button>
             <el-button size="mini" type="primary" @click="handleAdd">新增</el-button>
         </div>
@@ -109,12 +104,11 @@ export default {
                 queryParam: {
                     billDate1: getNowDate(),
                     billDate2: getNowDate(),
-                    billNo:"",
+                    billNo:'',
                     supplierId:'',
                     staffId:'',
                     warehouseId:'',
                     status:'',
-                    iswarehousingReturnedEntry:'',
                     isJeHeader:''
                 }
             }

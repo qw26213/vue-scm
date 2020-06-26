@@ -9,6 +9,12 @@
             <staffList @selectChange="selectChange" ctrType="list"></staffList>
             <warehouseList @selectChange="selectChange" ctrType="list"></warehouseList>
             <truckList @selectChange="selectChange" ctrType="list"></truckList>
+            <el-select v-model="listQuery.queryParam.status" placeholder="单据状态" size="mini">
+                <el-option label="全部" value="" />
+                <el-option label="未审核" value="0" />
+                <el-option label="已审核" value="1" />
+                <el-option label="已生成" value="2" />
+            </el-select>
             <el-button size="mini" type="primary" @click="getList">查询</el-button>
             <el-button size="mini" type="primary" @click="handleAdd">新增</el-button>
         </div>
@@ -99,7 +105,8 @@ export default {
                     staffId:'',
                     truckId:'',
                     warehouseId:'',
-                    billNo: ""
+                    billNo: '',
+                    status: ''
                 }
             }
         }
