@@ -7,7 +7,7 @@
             <el-input size="mini" v-model="listQuery.queryParam.billNo" placeholder="单据号" />
             <supplierList @selectChange="selectChange" ctrType="list"></supplierList>
             <el-select v-model="listQuery.queryParam.status" placeholder="单据状态" size="mini">
-                <el-option label="全部" value=""></el-option>
+                <el-option label="全部" :value="null"></el-option>
                 <el-option label="未审核" value="0"></el-option>
                 <el-option label="已审核" value="1"></el-option>
                 <el-option label="已生成" value="2"></el-option>

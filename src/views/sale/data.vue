@@ -8,13 +8,13 @@
             <custList @selectChange="selectChange" ctrType="list"></custList>
             <staffList @selectChange="selectChange" ctrType="list" :selectId="listQuery.queryParam.staffId"></staffList>
             <el-select v-model="listQuery.queryParam.status" placeholder="单据状态" size="mini">
-                <el-option label="全部" value="null"></el-option>
+                <el-option label="全部" :value="null"></el-option>
                 <el-option label="未审核" value="0"></el-option>
                 <el-option label="已审核" value="1"></el-option>
                 <el-option label="已生成" value="2"></el-option>
             </el-select>
             <el-select v-model="listQuery.queryParam.statusPayment" placeholder="支付状态" size="mini">
-                <el-option label="全部" value="null" />
+                <el-option label="全部" :value="null" />
                 <el-option label="未支付" :value="0" />
                 <el-option label="预付定金" :value="1" />
                 <el-option label="已支付" :value="1" />
