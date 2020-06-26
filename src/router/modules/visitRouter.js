@@ -16,9 +16,9 @@ const hrRouter = {
             title: '业务员行程'
         }
     }, {
-        path: 'table',
-        component: () => import('@/views/visit/table'),
-        name: 'visitTable',
+        path: 'photo',
+        component: () => import('@/views/visit/photo'),
+        name: 'visitPhoto',
         meta: {
             title: '业务图片查询'
         }
