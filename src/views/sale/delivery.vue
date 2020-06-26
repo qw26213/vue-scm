@@ -92,6 +92,11 @@
             </el-table-column>
             <el-table-column label="单据状态" align="center">
                 <template slot-scope="{row}">
+                    <span>{{row.status==1?'已审核':row.status==2?'已生成':'待审核'}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="配送状态" align="center">
+                <template slot-scope="{row}">
                     <span v-if="row.statusDeliveryy == 0">未配送</span>
                     <span v-if="row.statusDeliveryy == 1">配送中</span>
                     <span v-if="row.statusDeliveryy == 9">完成</span>
@@ -106,11 +111,6 @@
                     <span v-if="row.statusPayment == -9">订单作废</span>
                 </template>
             </el-table-column>
-            <el-table-column label="状态" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.status==1?'已审核':row.status==2?'已生成':'待审核'}}</span>
-                </template>
-            </el-table-column>
             <el-table-column label="操作" align="center" width="240">
                 <template slot-scope="{row}">
                     <span class="ctrl" v-if="row.status==0" @click="handleCompile(row)">编辑</span>
@@ -118,7 +118,6 @@
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id, row.billDate)">审核</span>
                     <span class="ctrl del" v-if="row.status==0" @click="handleDel(row.id, row.billDate)">删除</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isOutboundOrder,row.id,row.outboundOrderHeaderId,row.billDate)">{{row.isOutboundOrder==1?'查看':'生成'}}出库单</span>
-                    <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId,row.billDate)">{{row.isJeHeader==1?'查看':'生成'}}销售凭证</span>
                 </template>
             </el-table-column>
         </el-table>
@@ -133,18 +132,6 @@
             <div slot="footer" class="dialog-footer" align="center">
                 <el-button type="default" @click="dialogFormVisible1 = false">取消</el-button>
                 <el-button type="primary" @click="createBill">确定</el-button>
-            </div>
-        </el-dialog>
-        <el-dialog :close-on-click-modal="false" title="请选择凭证日期" :visible.sync="dialogFormVisible2" width="400px">
-            <el-form style="margin-top:30px;text-align:center;">
-                <el-form-item label="" prop="isBillDate">
-                    <el-radio v-model="isBillDate" label="0" style="margin-right:10px">当前日期</el-radio>
-                    <el-radio v-model="isBillDate" label="1">进货单日期</el-radio>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer" align="center">
-                <el-button type="default" @click="dialogFormVisible2 = false">取消</el-button>
-                <el-button type="primary" @click="createVouter">确定</el-button>
             </div>
         </el-dialog>
     </div>
@@ -265,27 +252,6 @@ export default {
         },
         handleScan(row) {
             this.$router.push('/sale/detail?id=' + row.id + '&billDate=' + row.billDate)
-        },
-        handleCreateVouter(status, id1, id2, billDate) {
-            if (status == 1) {
-                this.$router.push('/voucher/add?id=' + id2)
-            } else {
-                this.curBillId = id1
-                this.curBillDate = billDate
-                this.dialogFormVisible2 = true
-            }
-        },
-        createVouter() {
-            var obj = { isBillDate: this.isBillDate, id: this.curBillId, billDate: this.curBillDate }
-            buildDeliveryVoucherByHeaderId(obj).then(res => {
-                if (res.data.errorCode == 0) {
-                    this.dialogFormVisible2 = false;
-                    this.getList();
-                    this.$message.success('生成销售凭证成功！')
-                } else {
-                    this.$message.error(res.data.msg)
-                }
-            });
         },
         handleDel(id, date) {
             this.$confirm('确定要删除吗?', '提示', {

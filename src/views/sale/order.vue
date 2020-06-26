@@ -85,6 +85,11 @@
                     <span>{{row.receivableAmount|Fixed}}</span>
                 </template>
             </el-table-column>
+            <el-table-column label="单据状态" align="center">
+                <template slot-scope="{row}">
+                    <span>{{row.status==1?'已审核':row.status==2?'已生成':'待审核'}}</span>
+                </template>
+            </el-table-column>
             <el-table-column label="配送状态" align="center">
                 <template slot-scope="{row}">
                     <span v-if="row.statusDelivery == 0">未配送</span>
@@ -99,11 +104,6 @@
                     <span v-if="row.statusPayment == 1">预付定金</span>
                     <span v-if="row.statusPayment == 9">已支付</span>
                     <span v-if="row.statusPayment == -9">订单作废</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="状态" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.status==1?'已审核':row.status==2?'已生成':'待审核'}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="操作" fixed="right" align="center" width="240">
