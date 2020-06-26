@@ -1,7 +1,7 @@
 <template>
     <div class="app-container">
         <div class="dataTable">
-            <el-form :inline="true" label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
+            <el-form :inline="true" label-position="right" label-width="60px" style="width: 100%; margin-top:0px;">
                 <el-form-item label="单据日期:" prop="billDate">
                     <el-date-picker :editable="false" v-model="temp.billDate" type="date" placeholder="单据日期" size="mini" :clearable="false" value-format="yyyy-MM-dd" />
                 </el-form-item>
@@ -9,7 +9,7 @@
                     <el-input size="mini" v-model="temp.billNo" placeholder="单据号" disabled />
                 </el-form-item>
                 <el-form-item label="业务员:" prop="staffId">
-                    <staffList @selectChange="selectChange" :disabled="!isAdmin" :selectId="temp.staffId" />
+                    <staffList @selectChange="selectChange" :disabled="!userInfo.isAdmin" :selectId="temp.staffId" />
                 </el-form-item>
                 <el-form-item label="客户:" prop="custId">
                     <custList @selectChange="selectChange" keyType="custId" :contact="1" :selectId="temp.custId" :selectName="temp.custName" />
@@ -105,7 +105,7 @@
             </el-table-column>
             <el-table-column label="含税价(元)">
                 <template slot-scope="scope">
-                    <input type="text" class="inputCell tx-r" v-model="scope.row.vatPrice" :disables="userSalePriceType + scope.row.salePriceType <= 1" @change="calculate(scope.$index)">
+                    <input type="text" class="inputCell tx-r" v-model="scope.row.vatPrice" :disables="userInfo.userSalePriceType + scope.row.salePriceType <= 1" @change="calculate(scope.$index)">
                 </template>
             </el-table-column>
             <el-table-column label="数量">
@@ -201,8 +201,6 @@ export default {
     data() {
         return {
             id: '',
-            isAdmin: userInfo.isAdmin === 1,
-            userSalePriceType: userInfo.salePriceType,
             status: this.$route.query.status,
             settleData: [{}, {}, {}, {}, {}],
             dialogFormVisible: false,
@@ -222,6 +220,8 @@ export default {
                 settleCustId: '',
                 warehouseId: '',
                 warehouseName: '',
+                statusDelivery: '',
+                statusPayment: '',
                 truckId: '',
                 truckName: '',
                 staffId: '',
@@ -244,7 +244,7 @@ export default {
     computed: {
         ...mapGetters([
             'settleTypeArr',
-            'truckList'
+            'userInfo'
         ])
     },
     created() {
@@ -267,7 +267,7 @@ export default {
                             }
                         }
                     }
-                    this.settleData = addNullObj2(res.data.data.settleTypeDetail)
+                    this.settleData = addNullObj2(res.data.data.settleTypeDetail || [])
                     this.getItemList()
                 }
             })

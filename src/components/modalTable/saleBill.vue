@@ -10,7 +10,7 @@
                 <el-button size="mini" type="primary" @click="getList">查询</el-button>
             </div>
             <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini">
-                <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
+                <el-table-column label="序号" type="index" width="50" align="center" />
                 <el-table-column label="单据日期" align="center" width="100">
                     <template slot-scope="{row}">
                         <span>{{row.billDate}}</span>
@@ -28,22 +28,22 @@
                 </el-table-column>
                 <el-table-column label="使用预收" align="right">
                     <template slot-scope="{row}">
-                        <span>{{row.advPayAmount|Fixed}}</span>
+                        <span>{{row.advPayAmount | Fixed}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="现结金额" align="right">
                     <template slot-scope="{row}">
-                        <span>{{row.currPayAmount|Fixed}}</span>
+                        <span>{{row.currPayAmount | Fixed}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="价税合计" align="right">
                     <template slot-scope="{row}">
-                        <span>{{row.itemAmount|Fixed}}</span>
+                        <span>{{row.itemAmount | Fixed}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="返利金额" align="right">
                     <template slot-scope="{row}">
-                        <span>{{row.rebateAmount|Fixed}}</span>
+                        <span>{{row.rebateAmount | Fixed}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" align="center" width="80">
@@ -52,12 +52,12 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <pagination v-show="total/10>1" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
+            <pagination v-show="total > 0" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
         </el-dialog>
     </div>
 </template>
 <script>
-import { getSales } from '@/api/store'
+import { getSales } from '@/api/sale'
 import Pagination from '@/components/Pagination'
 import custList from '@/components/selects/custList';
 import { getNowDate } from '@/utils/auth'
@@ -85,7 +85,7 @@ export default {
         }
     },
     watch: {
-        'modalTableVisible'(val) {
+        'modalTableVisible' (val) {
             this.visible = val
             if (val) {
                 this.getList()
@@ -93,7 +93,7 @@ export default {
         }
     },
     filters: {
-        Fixed: function (num) {
+        Fixed: function(num) {
             if (!num) { return '0.00' }
             return parseFloat(num).toFixed(2);
         }
@@ -126,6 +126,6 @@ export default {
     min-height: 240px;
     max-height: 480px;
     padding-top: 10px !important;
-    overflow:auto
+    overflow: auto
 }
 </style>

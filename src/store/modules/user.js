@@ -8,7 +8,12 @@ const state = {
     name: '',
     avatar: '',
     introduction: '',
-    roles: []
+    roles: [],
+    userInfo: {
+        isAdmin: 0,
+        userSalePriceType: 0,
+        returnPriceType: 0
+    }
 }
 
 const mutations = {
@@ -27,6 +32,9 @@ const mutations = {
     },
     SET_ROLES: (state, roles) => {
         state.roles = roles
+    },
+    USER_INFO: (state, data) => {
+        state.userInfo = data
     }
 }
 
@@ -35,8 +43,8 @@ const actions = {
         return new Promise((resolve, reject) => {
             loginCheck(obj).then(res => {
                 if (res.data.errorCode == 0) {
-                    const { data } = res;
-                    let token = data.data || "";
+                    const { data } = res
+                    let token = data.data || ''
                     commit('SET_TOKEN', token)
                     setToken(token)
                     resolve()
@@ -62,6 +70,7 @@ const actions = {
                 getIndexInfo(this.loginForm).then(res => {
                     const user = res.data.data.userInfo
                     sessionStorage.userInfo = JSON.stringify(user)
+                    commit('USER_INFO', user || {})
                     commit('SET_NAME', user.userName)
                     commit('SET_AVATAR', 'https://panjiachen.gitee.io/vue-element-admin-site/home.png')
                     sessionStorage.taxFilingCategoryCode = user.taxFilingCategoryCode

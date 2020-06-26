@@ -101,7 +101,7 @@
             </el-table-column>
             <el-table-column label="含税价(元)">
                 <template slot-scope="scope">
-                    <input type="text" class="inputCell tx-r" v-model="scope.row.vatPrice" :disables="returnPriceType + scope.row.salePriceType <= 1" @change="calculate(scope.$index)">
+                    <input type="text" class="inputCell tx-r" v-model="scope.row.vatPrice" :disables="userInfo.returnPriceType + scope.row.salePriceType <= 1" @change="calculate(scope.$index)">
                 </template>
             </el-table-column>
             <el-table-column label="数量">
@@ -193,7 +193,6 @@ import itemList from '@/components/selects/saleItemList'
 import settleTypeList from "@/components/selects/settleTypeList"
 import salesTypeList from "@/components/selects/salesTypeList"
 import { getName, getNowDate } from '@/utils/auth'
-var userInfo = JSON.parse(sessionStorage.userInfo)
 export default {
     name: 'saleAdd',
     components: { staffList, warehouseList, custList, truckList, bizTypeList, paymentTypeList, itemList, settleTypeList, modalTable, salesTypeList },
@@ -201,7 +200,6 @@ export default {
         return {
             id: '',
             status: this.$route.query.status,
-            returnPriceType: userInfo.returnPriceType,
             modalTableVisible: false,
             settleData: [{}, {}, {}, {}, {}],
             dialogFormVisible: false,
@@ -239,7 +237,7 @@ export default {
     computed: {
         ...mapGetters([
             'settleTypeArr',
-            'truckList'
+            'userInfo'
         ])
     },
     created() {
@@ -257,7 +255,7 @@ export default {
                             this.tableData[i][this.keys[j]] = res.data.data.salesReturnedLine[i][this.keys[j]]
                         }
                     }
-                    this.settleData = addNullObj2(res.data.data.settleTypeReturnedDetail)
+                    this.settleData = addNullObj2(res.data.data.settleTypeDetail || [])
                     this.getItemList()
                 }
             })

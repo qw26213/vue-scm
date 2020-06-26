@@ -9,7 +9,7 @@
                     <el-input size="mini" v-model="temp.billNo" placeholder="单据号" disabled />
                 </el-form-item>
                 <el-form-item label="业务员:" prop="staffId">
-                    <staffList @selectChange="selectChange" :disabled="!isAdmin" :selectId="temp.staffId"></staffList>
+                    <staffList @selectChange="selectChange" :disabled="!userInfo.isAdmin" :selectId="temp.staffId"></staffList>
                 </el-form-item>
                 <el-form-item label="客户:" prop="custId">
                     <custList @selectChange="selectChange" keyType="custId" :selectId="temp.custId" :selectName="temp.custName"></custList>
@@ -63,7 +63,7 @@
             </el-form>
         </div>
         <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini" cell-class-name="tdCell">
-            <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
+            <el-table-column label="序号" type="index" width="50" align="center" />
             <el-table-column label="商品名称" width="160">
                 <template slot-scope="scope">
                     <itemList :selectCode="scope.row.itemCode" :selectId="scope.row.itemId" :index="scope.$index" :item-list="item_list" @changeVal="changeVal" />
@@ -101,7 +101,7 @@
             </el-table-column>
             <el-table-column label="含税价(元)">
                 <template slot-scope="scope">
-                    <input type="text" class="inputCell tx-r" v-model="scope.row.vatPrice" :disables="userSalePriceType + scope.row.salePriceType <= 1" @change="calculate(scope.$index)">
+                    <input type="text" class="inputCell tx-r" v-model="scope.row.vatPrice" :disables="userInfo.userSalePriceType + scope.row.salePriceType <= 1" @change="calculate(scope.$index)">
                 </template>
             </el-table-column>
             <el-table-column label="数量">
@@ -198,8 +198,6 @@ export default {
     data() {
         return {
             id: '',
-            isAdmin: userInfo.isAdmin === 1,
-            userSalePriceType: userInfo.salePriceType,
             status: this.$route.query.status,
             settleData: [{}, {}, {}, {}, {}],
             dialogFormVisible: false,
@@ -238,7 +236,7 @@ export default {
     computed: {
         ...mapGetters([
             'settleTypeArr',
-            'truckList'
+            'userInfo'
         ])
     },
     created() {
@@ -261,7 +259,7 @@ export default {
                             }
                         }
                     }
-                    this.settleData = addNullObj2(res.data.data.settleTypeDetail)
+                    this.settleData = addNullObj2(res.data.data.settleTypeDetail || [])
                     this.getItemList()
                 }
             })

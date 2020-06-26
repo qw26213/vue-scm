@@ -27,7 +27,7 @@
                     <span>{{row.billDate}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="单据号" min-width="120" align="center">
+            <el-table-column label="销售单号" min-width="120" align="center">
                 <template slot-scope="{row}">
                     <span>{{row.billNo}}</span>
                 </template>
@@ -42,12 +42,12 @@
                     <span>{{row.contact}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="电话" align="center">
+            <el-table-column label="电话" min-width="100" align="center">
                 <template slot-scope="{row}">
                     <span>{{row.tel}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="收货地址" min-width="100" align="left">
+            <el-table-column label="收货地址" min-width="120" show-overflow-tooltip>
                 <template slot-scope="{row}">
                     <span>{{row.addr}}</span>
                 </template>
