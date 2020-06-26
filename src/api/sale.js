@@ -180,3 +180,62 @@ export function buildSaleReturnedVoucherByHeaderId(data) {
         data: data
     })
 }
+
+//-------------------------------------销售配送----------------------------------------
+
+export function getDelivery(data) {
+    return request({
+        url: '/drp/so/delivery/getResPageData',
+        method: 'post',
+        data
+    })
+}
+
+export function getDeliveryById(id, date) {
+    return request({
+        url: '/drp/so/delivery/getByHeaderId',
+        method: 'post',
+        data: { id: id, billDate: date }
+    })
+}
+
+export function saveDelivery(data) {
+    return request({
+        url: '/drp/so/delivery/save',
+        method: 'post',
+        data
+    })
+}
+
+export function delDelivery(id, date) {
+    return request({
+        url: '/drp/so/delivery/deleteByHeaderId',
+        method: 'post',
+        data: { id: id, billDate: date }
+    })
+}
+
+export function auditDelivery(id, date) {
+    return request({
+        url: '/drp/so/delivery/auditByHeaderId',
+        method: 'post',
+        data: { id: id, billDate: date }
+    })
+}
+
+export function buildDelivery(data) {
+    return request({
+        url: '/drp/so/delivery/buildOutboundOrderByHeaderId',
+        method: 'post',
+        data
+    })
+}
+
+export function buildDeliverVoucherByHeaderId(data) {
+    return request({
+        url: '/drp/so/delivery/buildVoucherByHeaderId',
+        method: 'post',
+        data: data
+    })
+}
+

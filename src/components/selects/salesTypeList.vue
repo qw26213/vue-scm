@@ -1,5 +1,5 @@
 <template>
-    <el-select v-model="salesTypeCode" style="width:100%" placeholder="" size="mini" @change="changeVal">
+    <el-select v-model="salesTypeCode" style="width:100%" placeholder="" class="custInput" size="mini" @change="changeVal">
         <el-option v-for="item in salesTypeArr" :key="item.id" :label="item.salesTypeName" :value="item.salesTypeCode"></el-option>
     </el-select>
 </template>
@@ -34,3 +34,7 @@ export default {
     }
 }
 </script>
+<style lang="scss">
+.custInput{width:100%;}
+.custInput input{border:none;width: 100%;display: block;}
+</style>

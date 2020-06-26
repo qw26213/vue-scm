@@ -12,7 +12,7 @@
                     <staffList @selectChange="selectChange" :disabled="!isAdmin" :selectId="temp.staffId" />
                 </el-form-item>
                 <el-form-item label="客户:" prop="custId">
-                    <custList @selectChange="selectChange" keyType="custId" :contact="1" :selectId="temp.custId" />
+                    <custList @selectChange="selectChange" keyType="custId" :contact="1" :selectId="temp.custId" :selectName="temp.custName" />
                 </el-form-item>
                 <el-form-item label="售达客户:" prop="settleCustId">
                     <custList @selectChange="selectChange" keyType="settleCustId" :contact="1" :selectId="temp.settleCustId" />
@@ -77,8 +77,8 @@
                         <el-option label="订单作废" :value="-9" />
                     </el-select>
                 </el-form-item>
-                <el-form-item label="自动匹配预收款:" prop="autoAdvr" label-width="110px">
-                    <el-checkbox v-model="temp.autoAdvr" :false-label="0" :true-label="1"></el-checkbox>
+                <el-form-item label="自动匹配预收款:" prop="autoAdvr" label-width="102px">
+                    <el-checkbox v-model="temp.autoAdvr" :false-label="0" :true-label="1" />
                 </el-form-item>
             </el-form>
         </div>
@@ -106,7 +106,7 @@
             </el-table-column>
             <el-table-column label="批号">
                 <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-r" v-model="row.batchNo">
+                    <input type="text" class="inputCell tx-r" v-model="row.batchNo" />
                 </template>
             </el-table-column>
             <el-table-column label="生产日期" width="120">
@@ -116,7 +116,7 @@
             </el-table-column>
             <el-table-column label="保质期(天)">
                 <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-r" v-model="row.qualityDays">
+                    <input type="text" class="inputCell tx-r" v-model="row.qualityDays" />
                 </template>
             </el-table-column>
             <el-table-column label="含税价(元)">
@@ -126,7 +126,7 @@
             </el-table-column>
             <el-table-column label="数量">
                 <template slot-scope="scope">
-                    <input type="text" class="inputCell tx-r" v-model="scope.row.qty" @change="calculate(scope.$index)">
+                    <input type="text" class="inputCell tx-r" v-model="scope.row.qty" @change="calculate(scope.$index)" />
                 </template>
             </el-table-column>
             <el-table-column label="价税合计">
@@ -136,12 +136,12 @@
             </el-table-column>
             <el-table-column label="销售方式">
                 <template slot-scope="scope">
-                    <salesTypeList :selectId="scope.row.salesTypeCode" :index="scope.$index" @selectChange="salesTypeChange"></salesTypeList>
+                    <salesTypeList :selectId="scope.row.salesTypeCode" :index="scope.$index" @selectChange="salesTypeChange" />
                 </template>
             </el-table-column>
             <el-table-column label="税率(%)">
                 <template slot-scope="scope">
-                    <input type="text" class="inputCell tx-r" v-model="scope.row.taxRate" @change="calculate(scope.$index)">
+                    <input type="text" class="inputCell tx-r" v-model="scope.row.taxRate" @change="calculate(scope.$index)" />
                 </template>
             </el-table-column>
             <el-table-column label="税额">
@@ -171,12 +171,11 @@
         <div class="tx-c" style="margin-top:15px" v-if="status!=1&&status!=2">
             <el-button class="filter-item" type="primary" @click="save">保存</el-button>
         </div>
-        <el-dialog :close-on-click-modal="false" title="结算方式" :visible.sync="dialogFormVisible" width="392px">
+        <el-dialog :close-on-click-modal="false" title="结算方式" :visible.sync="dialogFormVisible" width="420px">
             <el-table :data="settleData" border fit highlight-current-row style="width: 100%;" size="mini" cell-class-name="tdCell">
                 <el-table-column label="名称" width="146">
                     <template slot-scope="scope">
-                        <settleTypeList :settleTypeArr="settleTypeArr" :selectCode="scope.row.settleTypeCode" :selectArap="scope.row.arAp" :selectName="scope.row.settleTypeName" :index="scope.$index" @settleTypeChange="settleTypeChange">
-                        </settleTypeList>
+                        <settleTypeList :settleTypeArr="settleTypeArr" :selectCode="scope.row.settleTypeCode" :selectArap="scope.row.arAp" :selectName="scope.row.settleTypeName" :index="scope.$index" @settleTypeChange="settleTypeChange" />
                     </template>
                 </el-table-column>
                 <el-table-column label="预付应付标志" width="120">
@@ -186,7 +185,7 @@
                 </el-table-column>
                 <el-table-column label="金额">
                     <template slot-scope="scope">
-                        <input type="text" class="inputCell tx-l" v-model="scope.row.amount" @change="calculate1(scope.$index)">
+                        <input type="text" class="inputCell tx-l" v-model="scope.row.amount" @change="calculate1(scope.$index)" />
                     </template>
                 </el-table-column>
             </el-table>
@@ -198,7 +197,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import { saveSalesOrder, getSalesOrderById } from '@/api/sale'
+import { saveDeliver, getDeliverById } from '@/api/sale'
 import { deleteEmptyProp, addNullObj, addNullObj2 } from '@/utils'
 import staffList from '@/components/selects/staffList'
 import bizTypeList from '@/components/selects/bizTypeList'
@@ -267,15 +266,15 @@ export default {
         if (this.$route.query.id) {
             this.id = this.$route.query.id
             var date = this.$route.query.billDate
-            getSalesOrderById(this.id, date).then(res => {
+            getDeliverById(this.id, date).then(res => {
                 if (res.data.data) {
                     for (var key in this.temp) {
                         this.temp[key] = res.data.data[key];
                     }
                     this.temp.autoAdvr = true;
-                    for (var i = 0; i < res.data.data.salesLine.length; i++) {
+                    for (var i = 0; i < res.data.data.deliveryLine.length; i++) {
                         for (var j = 0; j < this.keys.length; j++) {
-                            this.tableData[i][this.keys[j]] = res.data.data.salesLine[i][this.keys[j]]
+                            this.tableData[i][this.keys[j]] = res.data.data.deliveryLine[i][this.keys[j]]
                             if (this.tableData[i].taxRate < 1) {
                                 this.tableData[i].taxRate = this.tableData[i].taxRate * 100
                             }
@@ -383,10 +382,10 @@ export default {
         },
         save() {
             this.temp.id = this.id;
-            this.temp.salesLine = deleteEmptyProp(this.tableData);
+            this.temp.deliveryLine = deleteEmptyProp(this.tableData);
             this.temp.advPayAmount = Number(this.temp.advPayAmount);
             this.temp.settleTypeDetail = this.settleData;
-            saveSalesOrder(this.temp).then(res => {
+            saveDeliver(this.temp).then(res => {
                 if (res.data.errorCode == 0) {
                     this.$message.success(this.id == "" ? '新增成功' : '修改成功');
                     this.$store.dispatch('tagsView/delView', this.$route);

@@ -32,9 +32,8 @@ const mutations = {
 
 const actions = {
     login({ commit }, obj) {
-        const { orgCode, userAccount, password } = obj
         return new Promise((resolve, reject) => {
-            loginCheck({ orgCode: orgCode.trim(), userAccount: userAccount.trim(), password: password }).then(res => {
+            loginCheck(obj).then(res => {
                 if (res.data.errorCode == 0) {
                     const { data } = res;
                     let token = data.data || "";

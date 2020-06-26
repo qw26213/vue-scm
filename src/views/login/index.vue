@@ -7,17 +7,25 @@
             <el-form-item prop="orgCode">
                 <span class="svg-container">
                     <svg-icon icon-class="chart" /></span>
-                <el-input clearable autocomplete="off" v-model="loginForm.orgCode" placeholder="企业代码" type="text" maxlength='6' />
+                <el-input clearable autocomplete="off" v-model.trim="loginForm.orgCode" placeholder="企业代码" type="text" maxlength='6' />
             </el-form-item>
             <el-form-item prop="userAccount">
                 <span class="svg-container">
                     <svg-icon icon-class="user" /></span>
-                <el-input clearable autocomplete="off" v-model="loginForm.userAccount" placeholder="账号" type="text" />
+                <el-input clearable autocomplete="off" v-model.trim="loginForm.userAccount" placeholder="账号" type="text" />
             </el-form-item>
             <el-form-item prop="password">
                 <span class="svg-container">
-                    <svg-icon icon-class="password" /></span>
-                <el-input clearable autocomplete="off" v-model="loginForm.password" placeholder="密码" type="password" />
+                    <svg-icon icon-class="password" />
+                </span>
+                <el-input clearable autocomplete="off" v-model.trim="loginForm.password" placeholder="密码" type="password" />
+            </el-form-item>
+            <el-form-item prop="verifyCode" style="position:realtive;overflow:hidden">
+                <span class="svg-container">
+                    <svg-icon icon-class="password" />
+                </span>
+                <el-input v-model.trim="loginForm.verifyCode" placeholder="图片验证码" />
+                <img :src="imgUrl" class="vertify" @click="getNewCode()">
             </el-form-item>
             <div class="bot clearfix">
                 <span class="fl" @click="toPath('/register')">企业注册</span>
@@ -33,8 +41,8 @@
     </div>
 </template>
 <script>
+import { getVerifyPhoto } from '@/api/login'
 import { removeToken, removeName } from '@/utils/auth'
-import { loginCheck, getIndexInfo } from '@/api/user'
 export default {
     name: 'login',
     data() {
@@ -54,10 +62,12 @@ export default {
         }
         return {
             loginUrl: '',
+            imgUrl: '',
             loginForm: {
                 orgCode: '',
                 userAccount: '',
-                password: ''
+                password: '',
+                verifyCode: ''
             },
             isRemember: true,
             loginRules: {
@@ -71,6 +81,7 @@ export default {
     },
     created() {
         sessionStorage.removeItem('modalShow')
+        this.getNewCode()
         if (localStorage.orgCode) {
             this.loginForm.orgCode = localStorage.orgCode
             this.loginForm.userAccount = localStorage.userAccount
@@ -82,6 +93,9 @@ export default {
     methods: {
         toPath(path) {
             this.$router.push({ path: path })
+        },
+        getNewCode() {
+            this.imgUrl = getVerifyPhoto() + '?v=' + Math.random()
         },
         handleLogin() {
             if (this.isRemember) {
@@ -118,6 +132,9 @@ export default {
     }
 }
 </script>
+<style scoped>
+.vertify{width:112px;position: absolute;top: 0;right: 0;height: 50px;}
+</style>
 <style lang="scss" scoped>
 $bg:#f5f5f5;
 $light_gray:#333333;

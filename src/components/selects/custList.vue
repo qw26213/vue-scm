@@ -26,10 +26,7 @@ export default {
     },
     watch: {
         'selectId'() {
-            if (this.selectId && this.selectName) {
-                this.custList = [{ custName: this.selectName, id: this.selectId }]
-                this.curId = this.selectId
-            }
+            this.curId = this.selectId
         }
     },
     created() {
@@ -46,13 +43,13 @@ export default {
             if (this.contact) {
                 this.custList.forEach(item => {
                     if(item.id === val) {
-                        obj.addr = item.addr
+                        obj.settleCustId = val
+                        obj.addr = (item.city ? item.city + '市' : '') + (item.district ? item.district + '区' : '') + item.addr
                         obj.contact = item.contact
                         obj.tel = item.tel
                     }
                 })
             }
-
             this.$emit('selectChange', obj)
         },
         getCustList(name) {

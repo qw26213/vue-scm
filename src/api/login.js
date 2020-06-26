@@ -82,6 +82,10 @@ export function getVerifyImg() {
   return '/drp/getVerify9'
 }
 
+export function getVerifyPhoto() {
+  return '/drp/getVerify'
+}
+
 export function checkVerify9(data) {
   return request({
     url: '/drp/checkVerify9',
