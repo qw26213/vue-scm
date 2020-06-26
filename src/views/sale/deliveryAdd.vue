@@ -23,20 +23,14 @@
                 <el-form-item label="联系电话:" prop="tel">
                     <el-input size="mini" v-model="temp.tel" placeholder="联系电话" />
                 </el-form-item>
-                <el-form-item label="地址:" prop="addr">
-                    <el-input size="mini" v-model="temp.addr" placeholder="地址" />
+                <el-form-item label="收货地址:" prop="addr">
+                    <el-input size="mini" v-model="temp.addr" placeholder="收货地址" />
                 </el-form-item>
                 <el-form-item label="仓库:" prop="warehouseId">
                     <warehouseList @selectChange="selectChange" keyType="warehouseId" allowNull="1" :selectId="temp.warehouseId" />
                 </el-form-item>
                 <el-form-item label="车辆:" prop="truckId">
                     <truckList @selectChange="selectChange" keyType="truckId" allowNull="1" :selectId="temp.truckId" />
-                </el-form-item>
-                <el-form-item label="收款方式:" prop="paymentTypeId">
-                    <paymentTypeList @selectChange="selectChange" :selectId="temp.paymentTypeId" />
-                </el-form-item>
-                <el-form-item label="收款到期日:" prop="paymentDueDate">
-                    <el-date-picker :editable="false" v-model="temp.paymentDueDate" type="date" placeholder="收款到期日" size="mini" :clearable="false" value-format="yyyy-MM-dd" />
                 </el-form-item>
                 <el-form-item label="合计金额:" prop="itemAmount">
                     <el-input size="mini" v-model="temp.itemAmount" placeholder="合计金额" disabled />
@@ -61,8 +55,8 @@
                         <el-option label="已开发票" :value="9" />
                     </el-select>
                 </el-form-item>
-                <el-form-item label="配送状态" prop="statusDelivery">
-                    <el-select v-model="temp.statusDelivery" size="mini">
+                <el-form-item label="配送状态" prop="statusDeliveryy">
+                    <el-select v-model="temp.statusDeliveryy" size="mini">
                         <el-option label="未配送" :value="0" />
                         <el-option label="配送中" :value="1" />
                         <el-option label="完成" :value="9" />
@@ -109,16 +103,6 @@
                     <input type="text" class="inputCell tx-r" v-model="row.batchNo" />
                 </template>
             </el-table-column>
-            <el-table-column label="生产日期" width="120">
-                <template slot-scope="{row}">
-                    <el-date-picker :editable="false" v-model="row.productionDate" type="date" placeholder="" size="small" style="width:100%" :clearable="false" value-format="yyyy-MM-dd" />
-                </template>
-            </el-table-column>
-            <el-table-column label="保质期(天)">
-                <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-r" v-model="row.qualityDays" />
-                </template>
-            </el-table-column>
             <el-table-column label="含税价(元)">
                 <template slot-scope="scope">
                     <input type="text" class="inputCell tx-r" v-model="scope.row.vatPrice" :disables="userSalePriceType + scope.row.salePriceType <= 1" @change="calculate(scope.$index)">
@@ -131,7 +115,7 @@
             </el-table-column>
             <el-table-column label="价税合计">
                 <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-r" v-model="row.vatAmount||0" disabled />
+                    <input type="text" class="inputCell tx-r" v-model="row.vatAmount || ''" disabled />
                 </template>
             </el-table-column>
             <el-table-column label="销售方式">
@@ -197,7 +181,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import { saveDeliver, getDeliverById } from '@/api/sale'
+import { saveDelivery, getDeliveryById } from '@/api/sale'
 import { deleteEmptyProp, addNullObj, addNullObj2 } from '@/utils'
 import staffList from '@/components/selects/staffList'
 import bizTypeList from '@/components/selects/bizTypeList'
@@ -266,7 +250,7 @@ export default {
         if (this.$route.query.id) {
             this.id = this.$route.query.id
             var date = this.$route.query.billDate
-            getDeliverById(this.id, date).then(res => {
+            getDeliveryById(this.id, date).then(res => {
                 if (res.data.data) {
                     for (var key in this.temp) {
                         this.temp[key] = res.data.data[key];
@@ -385,13 +369,13 @@ export default {
             this.temp.deliveryLine = deleteEmptyProp(this.tableData);
             this.temp.advPayAmount = Number(this.temp.advPayAmount);
             this.temp.settleTypeDetail = this.settleData;
-            saveDeliver(this.temp).then(res => {
+            saveDelivery(this.temp).then(res => {
                 if (res.data.errorCode == 0) {
                     this.$message.success(this.id == "" ? '新增成功' : '修改成功');
                     this.$store.dispatch('tagsView/delView', this.$route);
-                    this.$router.replace('/sale/data');
+                    this.$router.replace('/sale/delivery');
                 } else {
-                    this.$message.error(res.data.msg)
+                    this.$message.warning(res.data.msg)
                 }
             }).catch(() => {
                 this.$message.error('保存失败，请稍后重试！')

@@ -23,8 +23,8 @@
                 <el-form-item label="联系电话:" prop="tel">
                     <el-input size="mini" v-model="temp.tel" placeholder="联系电话" />
                 </el-form-item>
-                <el-form-item label="地址:" prop="addr">
-                    <el-input size="mini" v-model="temp.addr" placeholder="地址" />
+                <el-form-item label="收货地址:" prop="addr">
+                    <el-input size="mini" v-model="temp.addr" placeholder="收货地址" />
                 </el-form-item>
                 <el-form-item label="仓库:" prop="warehouseId">
                     <warehouseList @selectChange="selectChange" keyType="warehouseId" allowNull="1" :selectId="temp.warehouseId" />
@@ -390,9 +390,9 @@ export default {
                 if (res.data.errorCode == 0) {
                     this.$message.success(this.id == "" ? '新增成功' : '修改成功');
                     this.$store.dispatch('tagsView/delView', this.$route);
-                    this.$router.replace('/sale/data');
+                    this.$router.replace('/sale/order')
                 } else {
-                    this.$message.error(res.data.msg)
+                    this.$message.warning(res.data.msg)
                 }
             }).catch(() => {
                 this.$message.error('保存失败，请稍后重试！')

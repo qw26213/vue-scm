@@ -6,12 +6,14 @@
             </div>
             <el-form-item prop="orgCode">
                 <span class="svg-container">
-                    <svg-icon icon-class="chart" /></span>
+                    <svg-icon icon-class="chart" />
+                </span>
                 <el-input clearable autocomplete="off" v-model.trim="loginForm.orgCode" placeholder="企业代码" type="text" maxlength='6' />
             </el-form-item>
             <el-form-item prop="userAccount">
                 <span class="svg-container">
-                    <svg-icon icon-class="user" /></span>
+                    <svg-icon icon-class="user" />
+                </span>
                 <el-input clearable autocomplete="off" v-model.trim="loginForm.userAccount" placeholder="账号" type="text" />
             </el-form-item>
             <el-form-item prop="password">
@@ -22,7 +24,7 @@
             </el-form-item>
             <el-form-item prop="verifyCode" style="position:realtive;">
                 <span class="svg-container">
-                    <svg-icon icon-class="star" />
+                    <svg-icon icon-class="verify" />
                 </span>
                 <el-input v-model.trim="loginForm.verifyCode" placeholder="图片验证码" />
                 <img :src="imgUrl" class="vertify" @click="getNewCode()">
@@ -113,6 +115,7 @@ export default {
                         this.$router.push({ path: this.redirect || '/' })
                         this.loading = false
                     }).catch(err => {
+                        this.getNewCode()
                         this.$message.warning(err)
                         this.loading = false
                     })
