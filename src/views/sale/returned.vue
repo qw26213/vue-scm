@@ -242,7 +242,7 @@ export default {
         },
         handleAdd() {
             this.$store.dispatch('tagsView/delView', this.$route)
-            this.$router.replace('/sale/returnedAdd')
+            this.$router.push('/sale/returnedAdd')
         },
         handleCompile(id) {
             this.$store.dispatch('tagsView/delView', this.$route)
@@ -252,7 +252,7 @@ export default {
             this.$router.push('/sale/returnedDetail?id=' + id)
         },
         handleDel(id) {
-            this.$confirm('你确认要删除吗?', '提示', {
+            this.$confirm('确认要删除吗?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'

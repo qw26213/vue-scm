@@ -227,7 +227,7 @@ export default {
         },
         handleAdd() {
             this.$store.dispatch('tagsView/delView', this.$route);
-            this.$router.replace('/sale/add')
+            this.$router.push('/sale/add')
         },
         handleCompile(row) {
             this.$store.dispatch('tagsView/delView', this.$route);

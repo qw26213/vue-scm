@@ -39,16 +39,6 @@ const actions = {
                     let token = data.data || "";
                     commit('SET_TOKEN', token)
                     setToken(token)
-                    getIndexInfo(this.loginForm).then(res => {
-                        var user = res.data.data.userInfo
-                        sessionStorage.userInfo = JSON.stringify(user)
-                        commit('SET_NAME', user.userName)
-                        commit('SET_AVATAR', 'https://panjiachen.gitee.io/vue-element-admin-site/home.png')
-                        sessionStorage.bookId = user.bookId
-                        sessionStorage.taxFilingCategoryCode = user.taxFilingCategoryCode
-                    }).catch(err => {
-                        console.log(err);
-                    });
                     resolve()
                 } else {
                     reject(res.data.msg)
@@ -64,14 +54,20 @@ const actions = {
             commit('SET_NAME', getName())
             getRoles().then(res => {
                 var roles = fetchRoles(res.data.data)
-                const data = { name: '王小二', id: '123456' }
-                const { name, id } = data
                 if (!roles || roles.length <= 0) {
-                    reject('getInfo: roles must be a non-null array!')
+                    reject('roles must be a non-null array!')
                 }
                 commit('SET_ROLES', roles)
-                commit('SET_ID', id)
                 resolve(roles)
+                getIndexInfo(this.loginForm).then(res => {
+                    const user = res.data.data.userInfo
+                    sessionStorage.userInfo = JSON.stringify(user)
+                    commit('SET_NAME', user.userName)
+                    commit('SET_AVATAR', 'https://panjiachen.gitee.io/vue-element-admin-site/home.png')
+                    sessionStorage.taxFilingCategoryCode = user.taxFilingCategoryCode
+                }).catch(err => {
+                    console.log(err)
+                })
             }).catch(error => {
                 removeToken()
                 reject(error)

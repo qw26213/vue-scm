@@ -149,7 +149,7 @@ import custList from '@/components/selects/custList'
 import { getNowDate } from '@/utils/auth'
 import Pagination from '@/components/Pagination'
 export default {
-    name: 'saleData',
+    name: 'delivery',
     components: { staffList, custList, Pagination },
     data() {
         return {
@@ -248,7 +248,7 @@ export default {
         },
         handleAdd() {
             this.$store.dispatch('tagsView/delView', this.$route)
-            this.$router.replace('/sale/deliveryAdd')
+            this.$router.push('/sale/deliveryAdd')
         },
         handleCompile(row) {
             this.$store.dispatch('tagsView/delView', this.$route)
@@ -279,7 +279,7 @@ export default {
             });
         },
         handleDel(id, date) {
-            this.$confirm('确定删除吗?', '提示', {
+            this.$confirm('确定要删除吗?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'

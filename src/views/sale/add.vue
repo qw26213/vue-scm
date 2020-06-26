@@ -111,7 +111,7 @@
             </el-table-column>
             <el-table-column label="价税合计">
                 <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-r" v-model="row.vatAmount||0" disabled>
+                    <input type="text" class="inputCell tx-r" v-model="row.vatAmount||''" disabled>
                 </template>
             </el-table-column>
             <el-table-column label="销售方式">

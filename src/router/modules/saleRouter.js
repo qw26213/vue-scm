@@ -104,6 +104,7 @@ const saleRouter = {
         path: 'deliveryAdd',
         component: () => import('@/views/sale/deliveryAdd'),
         name: 'deliveryAdd',
+        hidden: true,
         meta: {
             title: '新增销售配送'
         }
@@ -111,6 +112,7 @@ const saleRouter = {
         path: 'deliveryModify',
         component: () => import('@/views/sale/deliveryAdd'),
         name: 'deliveryModify',
+        hidden: true,
         meta: {
             title: '编辑销售配送'
         }
