@@ -19,7 +19,6 @@ import hrRouter from './modules/hrRouter'
 import visitRouter from './modules/visitRouter'
 import maintainRouter from './modules/maintainRouter'
 import initRouter from './modules/initRouter'
-import userRouter from './modules/userRouter'
 
 export const constantRoutes = [{
     path: '/redirect',
@@ -58,6 +57,18 @@ export const constantRoutes = [{
         component: () => import('@/views/home/index'),
         name: 'home',
         meta: { title: '主页', icon: 'home', affix: true }
+    }, {
+        path: '/accountinfo',
+        component: () => import('@/views/home/account'),
+        name: 'accountinfo',
+        hidden: true,
+        meta: { title: '账户信息' }
+    }, {
+        path: '/help',
+        component: () => import('@/views/home/help'),
+        name: 'help',
+        hidden: true,
+        meta: { title: '帮助' }
     }]
 }]
 
@@ -76,7 +87,6 @@ export const asyncRoutes = [
     setRouter,
     initRouter,
     maintainRouter,
-    userRouter, 
     {
         path: '*',
         edirect: '/404',

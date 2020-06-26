@@ -7,7 +7,7 @@
 import { getCust } from '@/api/basedata'
 export default {
     name: 'list',
-    props: ['selectId', 'selectName', 'keyType', 'disabled'],
+    props: ['selectId', 'selectName', 'keyType', 'disabled', 'contact'],
     data() {
         return {
             listQuery: {
@@ -43,6 +43,16 @@ export default {
             } else {
                 obj.custId = val;
             }
+            if (this.contact) {
+                this.custList.forEach(item => {
+                    if(item.id === val) {
+                        obj.addr = item.addr
+                        obj.contact = item.contact
+                        obj.tel = item.tel
+                    }
+                })
+            }
+
             this.$emit('selectChange', obj)
         },
         getCustList(name) {

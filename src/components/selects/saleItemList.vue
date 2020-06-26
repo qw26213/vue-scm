@@ -7,7 +7,7 @@
 <script>
 export default {
     name: 'list',
-    props: ['selectId','index','selectCode', 'itemList'],
+    props: ['selectId','index', 'itemList'],
     data(){
       return {
         curIndex:this.index,
@@ -20,6 +20,11 @@ export default {
         curNorms:"",
         curUom:"",
         curPrice: ''
+      }
+    },
+    watch: {
+      selectId(){
+        this.curId = this.selectId
       }
     },
     methods: {
@@ -55,6 +60,6 @@ export default {
 }
 </script>
 <style lang="scss">
-.custInput{width:100%;}
+.custInput{width:100%}
 .custInput input{border:none;width: 100%;display: block;}
 </style>

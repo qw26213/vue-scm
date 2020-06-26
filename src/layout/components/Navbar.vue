@@ -115,7 +115,7 @@ export default {
     methods: {
         handleCommand(command) {
             if (command === 'a') {
-                this.$router.push('/user')
+                this.$router.push('/accountinfo')
             }
             if (command === 'b') {
                 this.handlePwd()

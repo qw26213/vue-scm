@@ -88,8 +88,8 @@ export default {
                 localStorage.orgCode = this.loginForm.orgCode
                 localStorage.userAccount = this.loginForm.userAccount
             } else {
-                localStorage.removeItem('orgCode');
-                localStorage.removeItem('userAccount');
+                localStorage.removeItem('orgCode')
+                localStorage.removeItem('userAccount')
             }
             this.$refs.loginForm.validate(valid => {
                 if (valid) {

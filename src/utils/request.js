@@ -50,6 +50,8 @@ axios.interceptors.response.use(
                 case 401:
                     redictLogin()
                     break;
+                case 404:
+                    break;
                 default:
                     Message.error(error.message || "error")
             }

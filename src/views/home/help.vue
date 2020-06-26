@@ -22,7 +22,7 @@
                         <p class="size-12">核算项数据，自定义辅助核算项</p>
                     </div>
                 </div>
-                <div class="steps step3 cf" data-index="3"> 
+                <div class="steps step3 cf" data-index="3">
                     <span class="step-num">3</span>
                     <div class="step-dtl">
                         <p class="bold pointer" @click="toPath('/set/balance')">期初余额</p>
@@ -31,7 +31,7 @@
                         <p class="size-12">录入年初至截止启用期间的借贷发生额度</p>
                     </div>
                 </div>
-                <div class="steps step4 cf" data-index="4"> 
+                <div class="steps step4 cf" data-index="4">
                     <span class="step-num">4</span>
                     <div class="step-dtl">
                         <p class="bold pointer" @click="toPath('/voucher/add')">凭证</p>
@@ -42,7 +42,7 @@
                         <p class="size-12" @click="toPath('/voucher/table')">4.凭证汇总表</p>
                     </div>
                 </div>
-                <div class="steps step5 cf" data-index="5"> 
+                <div class="steps step5 cf" data-index="5">
                     <span class="step-num">5</span>
                     <div class="step-dtl">
                         <p class="bold pointer" @click="toPath('/accbook/totalaccount')">账簿</p>
@@ -52,7 +52,7 @@
                         <p class="size-12">企业常用账簿</p>
                     </div>
                 </div>
-                <div class="steps step6 cf" data-index="6"> 
+                <div class="steps step6 cf" data-index="6">
                     <span class="step-num">6</span>
                     <div class="step-dtl">
                         <p class="bold pointer" @click="toPath('/account/closePeriod')">结账</p>
@@ -60,7 +60,7 @@
                         <p class="size-12">结账，进入下一个会计期间</p>
                     </div>
                 </div>
-                <div class="steps step7 cf" data-index="7"> 
+                <div class="steps step7 cf" data-index="7">
                     <span class="step-num">7</span>
                     <div class="step-dtl">
                         <p class="bold pointer" @click="toPath('/report/debt')">报表</p>

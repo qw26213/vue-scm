@@ -3,32 +3,40 @@
         <div class="dataTable">
             <el-form :inline="true" label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
                 <el-form-item label="单据日期:" prop="billDate">
-                    <el-date-picker :editable="false" v-model="temp.billDate" type="date" placeholder="单据日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+                    <el-date-picker :editable="false" v-model="temp.billDate" type="date" placeholder="单据日期" size="mini" :clearable="false" value-format="yyyy-MM-dd" />
                 </el-form-item>
                 <el-form-item label="单据号:" prop="billNo">
                     <el-input size="mini" v-model="temp.billNo" placeholder="单据号" disabled />
                 </el-form-item>
                 <el-form-item label="业务员:" prop="staffId">
-                    <staffList @selectChange="selectChange" :disabled="!isAdmin" :selectId="temp.staffId"></staffList>
+                    <staffList @selectChange="selectChange" :disabled="!isAdmin" :selectId="temp.staffId" />
                 </el-form-item>
                 <el-form-item label="客户:" prop="custId">
-                    <custList @selectChange="selectChange" keyType="custId" :selectId="temp.custId" :selectName="temp.custName"></custList>
+                    <custList @selectChange="selectChange" keyType="custId" :selectId="temp.custId" :selectName="temp.custName" />
                 </el-form-item>
                 <el-form-item label="售达客户:" prop="settleCustId">
-                    <custList @selectChange="selectChange" keyType="settleCustId" :selectId="temp.settleCustId"></custList>
+                    <custList @selectChange="selectChange" keyType="settleCustId" :contact="1" :selectId="temp.settleCustId" />
+                </el-form-item>
+                <el-form-item label="联系人:" prop="contact">
+                    <el-input size="mini" v-model="temp.contact" placeholder="联系人" />
+                </el-form-item>
+                <el-form-item label="联系电话:" prop="tel">
+                    <el-input size="mini" v-model="temp.tel" placeholder="联系电话" />
+                </el-form-item>
+                <el-form-item label="地址:" prop="addr">
+                    <el-input size="mini" v-model="temp.addr" placeholder="地址" />
                 </el-form-item>
                 <el-form-item label="仓库:" prop="warehouseId">
-                    <warehouseList @selectChange="selectChange" keyType="warehouseId" allowNull="1" :selectId="temp.warehouseId"></warehouseList>
+                    <warehouseList @selectChange="selectChange" keyType="warehouseId" allowNull="1" :selectId="temp.warehouseId" />
                 </el-form-item>
                 <el-form-item label="车辆:" prop="truckId">
-                    <truckList @selectChange="selectChange" keyType="truckId" allowNull="1" :selectId="temp.truckId"></truckList>
+                    <truckList @selectChange="selectChange" keyType="truckId" allowNull="1" :selectId="temp.truckId" />
                 </el-form-item>
                 <el-form-item label="收款方式:" prop="paymentTypeId">
-                    <paymentTypeList @selectChange="selectChange" :selectId="temp.paymentTypeId"></paymentTypeList>
+                    <paymentTypeList @selectChange="selectChange" :selectId="temp.paymentTypeId" />
                 </el-form-item>
                 <el-form-item label="收款到期日:" prop="paymentDueDate">
-                    <el-date-picker :editable="false" v-model="temp.paymentDueDate" type="date" placeholder="收款到期日" size="mini" :clearable="false" value-format="yyyy-MM-dd">
-                    </el-date-picker>
+                    <el-date-picker :editable="false" v-model="temp.paymentDueDate" type="date" placeholder="收款到期日" size="mini" :clearable="false" value-format="yyyy-MM-dd" />
                 </el-form-item>
                 <el-form-item label="合计金额:" prop="itemAmount">
                     <el-input size="mini" v-model="temp.itemAmount" placeholder="合计金额" disabled />
@@ -50,23 +58,38 @@
                     <el-input size="mini" v-model="temp.receivableAmount" placeholder="应收金额" disabled />
                 </el-form-item>
                 <el-form-item label="发票:" prop="statusInvoice">
-                    <!-- 与当前客户的isInvoice有关系 -->
                     <el-select v-model="temp.statusInvoice" size="mini">
                         <el-option label="不开发票" :value="0"></el-option>
                         <el-option label="待开发票" :value="1"></el-option>
                         <el-option label="已开发票" :value="9"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="自动匹配预收款:" prop="autoAdvr" label-width="120px">
+                <el-form-item label="配送状态" prop="statusDelivery">
+                    <el-select v-model="temp.statusDelivery" size="mini">
+                        <el-option label="未配送" :value="0"></el-option>
+                        <el-option label="配送中" :value="1"></el-option>
+                        <el-option label="完成" :value="9"></el-option>
+                        <el-option label="订单作废" :value="-9"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="支付状态" prop="statusPayment">
+                    <el-select v-model="temp.statusPayment" size="mini">
+                        <el-option label="未支付" :value="0"></el-option>
+                        <el-option label="预付定金" :value="1"></el-option>
+                        <el-option label="已支付" :value="9"></el-option>
+                        <el-option label="订单作废" :value="-9"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="自动匹配预收款:" prop="autoAdvr" label-width="102px">
                     <el-checkbox v-model="temp.autoAdvr" :false-label="0" :true-label="1"></el-checkbox>
                 </el-form-item>
             </el-form>
         </div>
-        <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini" cell-class-name="tdCell">
-            <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
+        <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="small" cell-class-name="tdCell">
+            <el-table-column label="序号" type="index" width="50" align="center" />
             <el-table-column label="商品名称" width="160">
                 <template slot-scope="scope">
-                    <itemList :selectCode="scope.row.itemCode" :selectId="scope.row.itemId" :index="scope.$index" :item-list="item_list" @changeVal="changeVal" />
+                    <itemList :selectId="scope.row.itemId" :index="scope.$index" :item-list="item_list" @changeVal="changeVal" />
                 </template>
             </el-table-column>
             <el-table-column label="商品代码" width="160">

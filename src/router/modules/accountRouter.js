@@ -84,17 +84,10 @@ const accountRouter = {
             meta: {
                 title: '明细账'
             }
-            // }, {
-            //     path: 'subsidiary',
-            //     component: () => import('@/views/accbook/subsidiary'),
-            //     name: 'subsidiary',
-            //     meta: {
-            //         title: '明细账(分录)'
-            //     }
         }, {
-            path: 'balance',
+            path: 'coabalance',
             component: () => import('@/views/accbook/balance'),
-            name: 'balance',
+            name: 'coabalance',
             meta: {
                 title: '科目余额表'
             }
@@ -119,13 +112,6 @@ const accountRouter = {
             meta: {
                 title: '数量明细账'
             }
-            // }, {
-            //     path: 'subsidiarynum',
-            //     component: () => import('@/views/accbook/subsidiarynum'),
-            //     name: 'subsidiarynum',
-            //     meta: {
-            //         title: '数量明细账(分录)'
-            //     }
         }, {
             path: 'checkbalance',
             component: () => import('@/views/accbook/checkbalance'),
@@ -140,13 +126,6 @@ const accountRouter = {
             meta: {
                 title: '项目明细表'
             }
-            // }, {
-            //     path: 'projsubsidiary',
-            //     component: () => import('@/views/accbook/projsubsidiary'),
-            //     name: 'projsubsidiary',
-            //     meta: {
-            //         title: '项目明细表(分录)'
-            //     }
         }]
     }, {
         path: 'closePeriod',
