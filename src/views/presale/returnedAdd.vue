@@ -17,7 +17,7 @@
                 </el-form-item>
                 <el-form-item label="预收类型:" prop="presaleType">
                     <el-select v-model="temp.presaleType" placeholder="预收类型" disabled size="mini" @change="initTable">
-                      <el-option label="按钱" value="0"></el-option>
+                      <el-option label="按现金" value="0"></el-option>
                       <el-option label="按商品" value="1"></el-option>
                       <el-option label="按品类" value="2"></el-option>
                     </el-select>

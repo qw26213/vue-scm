@@ -40,7 +40,7 @@
             </el-table-column>
             <el-table-column label="预收类型" align="center">
                 <template slot-scope="{row}">
-                    <span>{{row.presaleType==0?'按钱':row.presaleType==1?'按商品':'按品类'}}</span>
+                    <span>{{row.presaleType==0?'按现金':row.presaleType==1?'按商品':'按品类'}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="有效日期" align="center">

@@ -27,34 +27,39 @@
                     <span>{{row.billDate}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="单据号" min-width="120">
+            <el-table-column label="单据号" min-width="120" align="center">
                 <template slot-scope="{row}">
                     <span>{{row.billNo}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="客户">
+            <el-table-column label="配送单号" align="center">
                 <template slot-scope="{row}">
-                    <span>{{row.custName}}</span>
+                    <span>{{row.deliveryNo}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="车辆">
+            <el-table-column label="联系人" align="center">
                 <template slot-scope="{row}">
-                    <span>{{row.truckName}}</span>
+                    <span>{{row.contact}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="收款方式" align="center">
+            <el-table-column label="电话" align="center">
                 <template slot-scope="{row}">
-                    <span>{{row.paymentTypeName}}</span>
+                    <span>{{row.tel}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="收款到期日" min-width="100" align="center">
+            <el-table-column label="收货地址" min-width="100" align="left">
                 <template slot-scope="{row}">
-                    <span>{{row.paymentDueDate}}</span>
+                    <span>{{row.addr}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="价税合计" align="right">
+            <el-table-column label="合计金额" align="right">
                 <template slot-scope="{row}">
                     <span>{{row.itemAmount|Fixed}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="费用金额" align="right">
+                <template slot-scope="{row}">
+                    <span>{{row.expensesAmount|Fixed}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="使用预收" align="right">
@@ -67,22 +72,22 @@
                     <span>{{row.currPayAmount|Fixed}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="销售费用" align="right">
-                <template slot-scope="{row}">
-                    <span>{{row.expensesAmount|Fixed}}</span>
-                </template>
-            </el-table-column>
             <el-table-column label="应收金额" align="right">
                 <template slot-scope="{row}">
                     <span>{{row.receivableAmount|Fixed}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="配送状态" align="center">
+            <el-table-column label="箱数" align="right">
                 <template slot-scope="{row}">
-                    <span v-if="row.statusDelivery == 0">未配送</span>
-                    <span v-if="row.statusDelivery == 1">配送中</span>
-                    <span v-if="row.statusDelivery == 9">完成</span>
-                    <span v-if="row.statusDelivery == -9">订单作废</span>
+                    <span>{{ row.numPackage }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="单据状态" align="center">
+                <template slot-scope="{row}">
+                    <span v-if="row.statusDeliveryy == 0">未配送</span>
+                    <span v-if="row.statusDeliveryy == 1">配送中</span>
+                    <span v-if="row.statusDeliveryy == 9">完成</span>
+                    <span v-if="row.statusDeliveryy == -9">订单作废</span>
                 </template>
             </el-table-column>
             <el-table-column label="支付状态" align="center">
@@ -98,7 +103,7 @@
                     <span>{{row.status==1?'已审核':row.status==2?'已生成':'待审核'}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" fixed="right" align="center" width="240">
+            <el-table-column label="操作" align="center" width="240">
                 <template slot-scope="{row}">
                     <span class="ctrl" v-if="row.status==0" @click="handleCompile(row)">编辑</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleScan(row)">查看</span>
@@ -137,7 +142,7 @@
     </div>
 </template>
 <script>
-import { getDeliver, delDeliver, auditDeliver, buildDeliver, buildDeliverVoucherByHeaderId } from '@/api/sale'
+import { getDelivery, delDelivery, auditDelivery, buildDelivery, buildDeliveryVoucherByHeaderId } from '@/api/sale'
 import { parseTime } from '@/utils'
 import staffList from '@/components/selects/staffList'
 import custList from '@/components/selects/custList'
@@ -184,7 +189,7 @@ export default {
     methods: {
         getList() {
             this.listLoading = true
-            getDeliver(this.listQuery).then(res => {
+            getDelivery(this.listQuery).then(res => {
                 this.listLoading = false
                 this.tableData = res.data.data
                 this.total = res.data.totalNum
@@ -204,7 +209,7 @@ export default {
             })
         },
         checkItem(id, billDate) {
-            auditDeliver(id, billDate).then(res => {
+            auditDelivery(id, billDate).then(res => {
                 if (res.data.errorCode == 0) {
                     this.getList();
                     this.$message.success('审核成功')
@@ -229,7 +234,7 @@ export default {
         },
         createBill() {
             var obj = { isBillDate: this.isBillDate, id: this.curBillId, billDate: this.curBillDate }
-            buildDeliver(obj).then(res => {
+            buildDelivery(obj).then(res => {
                 if (res.data.errorCode == 0) {
                     this.dialogFormVisible1 = false
                     this.getList();
@@ -243,11 +248,11 @@ export default {
         },
         handleAdd() {
             this.$store.dispatch('tagsView/delView', this.$route)
-            this.$router.replace('/sale/deliverAdd')
+            this.$router.replace('/sale/deliveryAdd')
         },
         handleCompile(row) {
             this.$store.dispatch('tagsView/delView', this.$route)
-            this.$router.push('/sale/deliverModify?id=' + row.id + '&billDate=' + row.billDate)
+            this.$router.push('/sale/deliveryModify?id=' + row.id + '&billDate=' + row.billDate)
         },
         handleScan(row) {
             this.$router.push('/sale/detail?id=' + row.id + '&billDate=' + row.billDate)
@@ -263,7 +268,7 @@ export default {
         },
         createVouter() {
             var obj = { isBillDate: this.isBillDate, id: this.curBillId, billDate: this.curBillDate }
-            buildDeliverVoucherByHeaderId(obj).then(res => {
+            buildDeliveryVoucherByHeaderId(obj).then(res => {
                 if (res.data.errorCode == 0) {
                     this.dialogFormVisible2 = false;
                     this.getList();
@@ -283,7 +288,7 @@ export default {
             });
         },
         delItem(id, date) {
-            delDeliver(id, date).then(res => {
+            delDelivery(id, date).then(res => {
                 if (res.data.errorCode == 0) {
                     this.getList();
                     this.dialogFormVisible1 = false

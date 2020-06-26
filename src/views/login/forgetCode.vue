@@ -27,7 +27,7 @@
     </div>
 </template>
 <script>
-import { forgotSentVerifyCode, forgotPSWSave, forgotOrgCode9, getVerifyImg, check } from '@/api/login'
+import { forgotSentVerifyCode, forgotPSWSave, forgotOrgCode9, getVerifyImg } from '@/api/login'
 export default {
     name: 'register',
     data() {

@@ -29,7 +29,7 @@ export default {
             this.$emit('selectChange',obj)
         },
         getData() {
-            var arr = [];
+            var arr = []
             getStaff().then(res => {
                 if(this.ctrType=="list"){
                     arr = [{staffName:'全部业务员',id:'null'}]

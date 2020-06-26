@@ -94,11 +94,25 @@ const saleRouter = {
             title: '查看销售退货'
         }
     }, {
-        path: 'saleDeliver',
-        component: () => import('@/views/sale/deliver'),
-        name: 'saleDeliver',
+        path: 'delivery',
+        component: () => import('@/views/sale/delivery'),
+        name: 'delivery',
         meta: {
             title: '销售配送'
+        }
+    }, {
+        path: 'deliveryAdd',
+        component: () => import('@/views/sale/deliveryAdd'),
+        name: 'deliveryAdd',
+        meta: {
+            title: '新增销售配送'
+        }
+    }, {
+        path: 'deliveryModify',
+        component: () => import('@/views/sale/deliveryAdd'),
+        name: 'deliveryModify',
+        meta: {
+            title: '编辑销售配送'
         }
     }, {
         path: 'saleInvoice',
@@ -109,4 +123,5 @@ const saleRouter = {
         }
     }]
 }
-export default saleRouter;
+
+export default saleRouter

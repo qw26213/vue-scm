@@ -20,9 +20,9 @@
                 </span>
                 <el-input clearable autocomplete="off" v-model.trim="loginForm.password" placeholder="密码" type="password" />
             </el-form-item>
-            <el-form-item prop="verifyCode" style="position:realtive;overflow:hidden">
+            <el-form-item prop="verifyCode" style="position:realtive;">
                 <span class="svg-container">
-                    <svg-icon icon-class="password" />
+                    <svg-icon icon-class="star" />
                 </span>
                 <el-input v-model.trim="loginForm.verifyCode" placeholder="图片验证码" />
                 <img :src="imgUrl" class="vertify" @click="getNewCode()">
@@ -72,8 +72,9 @@ export default {
             isRemember: true,
             loginRules: {
                 orgCode: [{ required: true, trigger: 'blur', validator: validateOrcode }],
-                userAccount: [{ required: true, message: '账号不能为空', trigger: 'blur' }],
-                password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+                userAccount: [{ required: true, trigger: 'blur', message: '账号不能为空' }],
+                password: [{ required: true, trigger: 'blur', validator: validatePassword }],
+                verifyCode: [{ required: true, trigger: 'blur', message: '图片验证码不能为空' }]
             },
             loading: false,
             redirect: '/home' // this.$route.query.redirect
@@ -112,7 +113,7 @@ export default {
                         this.$router.push({ path: this.redirect || '/' })
                         this.loading = false
                     }).catch(err => {
-                        this.$message.error(err)
+                        this.$message.warning(err)
                         this.loading = false
                     })
                 } else {
@@ -133,7 +134,7 @@ export default {
 }
 </script>
 <style scoped>
-.vertify{width:112px;position: absolute;top: 0;right: 0;height: 50px;}
+.vertify{width:112px;position: absolute;top: 2px;right: 0;height: 42px;border-radius: 4px;}
 </style>
 <style lang="scss" scoped>
 $bg:#f5f5f5;
