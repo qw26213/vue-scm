@@ -16,14 +16,14 @@
                 <el-option label="全部" :value="null" />
                 <el-option label="未配送" :value="0" />
                 <el-option label="配送中" :value="1" />
-                <el-option label="完成" :value="1" />
+                <el-option label="完成" :value="9" />
                 <el-option label="订单作废" :value="-9" />
             </el-select>
             <el-select v-model="listQuery.queryParam.statusPayment" placeholder="支付状态" size="mini">
                 <el-option label="全部" :value="null" />
                 <el-option label="未支付" :value="0" />
                 <el-option label="预付定金" :value="1" />
-                <el-option label="已支付" :value="1" />
+                <el-option label="已支付" :value="9" />
                 <el-option label="订单作废" :value="-9" />
             </el-select>
             <el-button size="mini" type="primary" @click="getList">查询</el-button>

@@ -323,20 +323,15 @@ export default {
             for (var key in obj) {
                 this.temp[key] = obj[key];
             }
-            if (obj && obj.warehouseName) {
-                for (var i = 0; i < this.tableData.length; i++) {
-                    this.tableData[i].warehouseId = obj.warehouseId
-                }
+            if (obj && obj.warehouseId) {
+                this.temp.warehouseName = obj.warehouseName
+                this.temp.truckId = ''
+                this.temp.truckName = ''
             }
-            if (obj && obj.truckName) {
-                for (var i = 0; i < this.tableData.length; i++) {
-                    this.tableData[i].truckId = obj.truckId
-                }
-            }
-            if (obj && obj.index) {
-                for (var i = 0; i < this.tableData.length; i++) {
-                    this.tableData[obj.index][key] = obj[key]
-                }
+            if (obj && obj.truckId) {
+                this.temp.truckName = obj.truckName
+                this.temp.warehouseName = ''
+                this.temp.warehouseId = ''
             }
             if (obj.custId) {
                 this.getItemList()

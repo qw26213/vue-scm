@@ -159,6 +159,18 @@ export default {
             for (var key in obj) {
                 this.temp[key] = obj[key];
             }
+            if (obj && obj.outWarehouseId) {
+                this.temp.outTruckId = ''
+            }
+            if (obj && obj.inWarehouseId) {
+                this.temp.inTruckId = ''
+            }
+            if (obj && obj.outTruckId) {
+                this.temp.outWarehouseId = ''
+            }
+            if (obj && obj.inTruckId) {
+                this.temp.inWarehouseId = ''
+            }
         },
         changeVal(obj) {
             for (var key in obj) {

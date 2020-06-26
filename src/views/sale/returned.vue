@@ -9,8 +9,8 @@
             <staffList @selectChange="selectChange" ctrType="list" :selectId="listQuery.queryParam.staffId"></staffList>
             <el-select v-model="listQuery.queryParam.status" placeholder="单据状态" size="mini">
                 <el-option label="全部" :value="null"></el-option>
-                <el-option label="未审核" value="0"></el-option>
-                <el-option label="已审核" value="1"></el-option>
+                <el-option label="未审核" :value="0"></el-option>
+                <el-option label="已审核" :value="1"></el-option>
             </el-select>
             <el-button size="mini" type="primary" @click="getList">查询</el-button>
             <el-button size="mini" type="primary" @click="handleAdd">新增</el-button>

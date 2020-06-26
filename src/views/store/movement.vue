@@ -6,14 +6,14 @@
             <el-date-picker :editable="false" v-model="listQuery.queryParam.billDate2" type="date" placeholder="结束日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
             <el-input size="mini" v-model="listQuery.queryParam.billNo" placeholder="单据号" />
             <warehouseList @selectChange="selectChange" keyType="outWarehouseId" placeTxt="移出仓库" ctrType="list" :selectId="listQuery.queryParam.outWarehouseId"></warehouseList>
-            <warehouseList @selectChange="selectChange" keyType="inWarehouseId" placeTxt="移入仓库" ctrType="list" :selectId="listQuery.queryParam.inWarehouseId"></warehouseList>
             <truckList @selectChange="selectChange" keyType="outTruckId" placeTxt="移出车辆" ctrType="list" :selectId="listQuery.queryParam.outTruckId"></truckList>
+            <warehouseList @selectChange="selectChange" keyType="inWarehouseId" placeTxt="移入仓库" ctrType="list" :selectId="listQuery.queryParam.inWarehouseId"></warehouseList>
             <truckList @selectChange="selectChange" keyType="inTruckId" placeTxt="移入车辆" ctrType="list" :selectId="listQuery.queryParam.inTruckId"></truckList>
             <el-select v-model="listQuery.queryParam.status" placeholder="单据状态" size="mini">
                 <el-option label="全部" :value="null" />
-                <el-option label="未审核" value="0" />
-                <el-option label="已审核" value="1" />
-                <el-option label="已确认" value="2" />
+                <el-option label="未审核" :value="0" />
+                <el-option label="已审核" :value="1" />
+                <el-option label="已确认" :value="2" />
             </el-select>
             <el-button size="mini" type="primary" @click="getList">查询</el-button>
             <el-button size="mini" type="primary" @click="handleAdd">新增</el-button>

@@ -202,9 +202,13 @@ export default {
             }
             if (obj && obj.warehouseName) {
                 this.temp.warehouseName = obj.warehouseName
+                this.temp.truckId = ''
+                this.temp.truckName = ''
             }
             if (obj && obj.truckName) {
                 this.temp.truckName = obj.truckName
+                this.temp.warehouseName = ''
+                this.temp.warehouseId = ''
             }
         },
         changeVal(obj) {

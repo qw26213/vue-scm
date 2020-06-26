@@ -16,7 +16,7 @@
                 <el-option label="全部" :value="null" />
                 <el-option label="未支付" :value="0" />
                 <el-option label="预付定金" :value="1" />
-                <el-option label="已支付" :value="1" />
+                <el-option label="已支付" :value="9" />
                 <el-option label="订单作废" :value="-9" />
             </el-select>
             <el-button size="mini" type="primary" @click="getList">查询</el-button>
