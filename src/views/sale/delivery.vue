@@ -11,7 +11,6 @@
                 <el-option label="全部" :value="null" />
                 <el-option label="未审核" value="0" />
                 <el-option label="已审核" value="1" />
-                <el-option label="已生成" value="2" />
             </el-select>
             <el-select v-model="listQuery.queryParam.statusDelivery" placeholder="配送状态" size="mini">
                 <el-option label="全部" :value="null" />

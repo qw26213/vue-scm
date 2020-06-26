@@ -22,8 +22,7 @@
                     <paymentTypeList @selectChange="selectChange" :selectId="temp.paymentTypeId"></paymentTypeList>
                 </el-form-item>
                 <el-form-item label="付款到期日:" prop="paymentDueDate">
-                    <el-date-picker :editable="false" v-model="temp.paymentDueDate" type="date" placeholder="付款到期日" size="mini" :clearable="false" value-format="yyyy-MM-dd">
-                    </el-date-picker>
+                    <el-date-picker :editable="false" v-model="temp.paymentDueDate" type="date" placeholder="付款到期日" size="mini" :clearable="false" value-format="yyyy-MM-dd" />
                 </el-form-item>
                 <el-form-item label="合计金额:" prop="itemAmount">
                     <el-input size="mini" v-model="temp.itemAmount" placeholder="合计金额" disabled/>
