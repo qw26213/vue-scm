@@ -19,9 +19,9 @@
             <el-input size="mini" v-model="listQuery.queryParam.summary" placeholder="摘要" style="width: 120px;" />
             <el-select v-model="listQuery.queryParam.jeStatus" placeholder="状态" size="mini">
                 <el-option label="全部状态" value=""></el-option>
-                <el-option label="制单完成" value="0"></el-option>
-                <el-option label="审核通过" value="5"></el-option>
-                <el-option label="退回" value="-1"></el-option>
+                <el-option label="制单完成" :value="0"></el-option>
+                <el-option label="审核通过" :value="5"></el-option>
+                <el-option label="退回" :value="-1"></el-option>
             </el-select>
             <el-button size="mini" type="primary" @click="getList">查询</el-button>
             <el-button size="mini" type="primary" @click="muchVoucherCheck">批量审核</el-button>
@@ -74,15 +74,19 @@
                     <span>{{row.sign2}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" width="150">
+            <el-table-column label="操作" align="center" width="100">
                 <template slot-scope="{row}">
-                    <span v-if="row.jeStatus > 0 && row.jeStatus < 5" class="ctrl" @click="handleCheck(row.id)">审核</span>
+                    <span v-if="row.jeStatus == 0" class="ctrl" @click="handleCheck(row.id)">审核</span>
                     <span v-if="row.jeStatus == -1">已退回</span>
                     <span v-if="row.jeStatus == 5" class="ctrl" @click="handleUnCheck(row.id)">反审核</span>
-                    <span class="ctrl" @click="showAudit(row.id)">查看审核</span>
                 </template>
             </el-table-column>
-        </el-table>
+            <el-table-column label="审核记录" align="center" width="100">
+                <template slot-scope="{row}">
+                    <span class="ctrl" @click="showAudit(row.id)">查看</span>
+                </template>
+            </el-table-column>
+        </el-table>                    
         <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
         <el-dialog :close-on-click-modal="false" title="请输入审核意见" :visible.sync="dialogFormVisible" width="420px">
             <el-form ref="dataForm" :rules="rules" :model="auditForm" label-position="top" label-width="100px" style="width: 380px; margin-left:10px;">

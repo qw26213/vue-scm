@@ -81,7 +81,7 @@ export const asyncRoutes = [
     priceRouter,
     visitRouter,
     accountRouter,
-    reportRouter,
+    // reportRouter,
     hrRouter,
     grossprofitRouter,
     setRouter,
