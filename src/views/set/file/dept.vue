@@ -11,7 +11,7 @@
     </div>
 
     <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini" row-key="id">
-      <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
+      <el-table-column label="序号" type="index" width="50" align="center" />
       <el-table-column label="部门代码">
         <template slot-scope="{row}">
           <span>{{row.deptCode}}</span>

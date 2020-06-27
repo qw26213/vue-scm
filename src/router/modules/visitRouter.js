@@ -1,4 +1,4 @@
-import Layout from '@/layout';
+import Layout from '@/layout'
 const hrRouter = {
     path: '/visit',
     component: Layout,
@@ -27,4 +27,5 @@ const hrRouter = {
         }
     }]
 }
-export default hrRouter;
+
+export default hrRouter

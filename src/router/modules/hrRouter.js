@@ -5,7 +5,7 @@ const hrRouter = {
         redirect: '/hr/group',
         name: 'hr',
         meta: {
-            roles: ['10'],
+            roles: ['4210', '4220'],
             title: '薪酬',
             icon: 'people'
         },
@@ -14,7 +14,7 @@ const hrRouter = {
             component: () => import('@/views/hr/employee'),
             name: 'employee',
             meta: {
-                roles: ['10'],
+                roles: ['4210'],
                 title: '人员管理'
             }
         }, {
@@ -22,7 +22,7 @@ const hrRouter = {
             component: () => import('@/views/hr/pay'),
             name: 'pay',
             meta: {
-                roles: ['10'],
+                roles: ['4220'],
                 title: '薪酬管理'
             }
         }]
