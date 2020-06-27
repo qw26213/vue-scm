@@ -23,11 +23,7 @@ export default {
         return {
             loading: false,
             expandedKeys: ['APPS11', 'APPS12'],
-            curItemId: '',
-            dialogStatus: '',
-            listLoading: false,
             permissionIdList: [],
-            dialogFormVisible: false,
             defaultProps: {
                 children: 'children',
                 label: 'funcName'
@@ -58,12 +54,12 @@ export default {
                 funcButtonIdList: this.getCheckedNodes(),
                 roleId: this.option.roleId
             };
-            obj.id = this.curItemId
             this.loading = true
             updateRoleIdByFuncButtonIdList(obj).then(res => {
                 this.loading = false
                 if (res.data.errorCode == 0) {
-                    this.$emit('update:showModal', false)
+                    this.option.show = false
+                    this.$store.dispatch('user/changeRoles', 'admin')
                     this.$message.success('该角色权限已更新')
                 } else {
                     this.$message.error(res.data.message)

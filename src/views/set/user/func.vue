@@ -24,7 +24,7 @@
   </div>
 </template>
 <script>
-import { getFuncs } from '@/api/user'
+import { getFuncsTree } from '@/api/user'
 export default {
   name: 'FuncList',
   data() {
@@ -88,7 +88,7 @@ export default {
     },
     async getData(){
       this.listLoading = true
-      const { data } = await getFuncs()
+      const { data } = await getFuncsTree()
       this.tableData = data.data
       this.listLoading = false
     }
