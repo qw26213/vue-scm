@@ -73,7 +73,7 @@
                     <span>{{row.advrBalance|Fixed}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="赊销额度" align="right" width="100">
+            <el-table-column label="赊销金额" align="right" width="100">
                 <template slot-scope="{row}">
                     <span>{{row.creditLimit|Fixed}}</span>
                 </template>
@@ -100,7 +100,7 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="280">
                 <template slot-scope="{row}">
-                    <el-button type="default" size="mini" @click="handleUpdate(row.overdraftBalance, row.id)">改已赊销额度</el-button>
+                    <el-button type="default" size="mini" @click="handleUpdate(row.overdraftBalance, row.id)">改已赊销金额</el-button>
                     <el-button type="primary" size="mini" @click="handleCompile(row)">编辑</el-button>
                     <el-button type="danger" size="mini" @click="handleDel(row.id)">删除</el-button>
                     <el-button type="warning" size="mini" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
@@ -148,8 +148,8 @@
                 <el-form-item label="地址" prop="addr">
                     <el-input v-model="temp.addr" placeholder="地址" />
                 </el-form-item>
-                <el-form-item label="赊销额度" prop="creditLimit">
-                    <el-input v-model="temp.creditLimit" placeholder="赊销额度" />
+                <el-form-item label="赊销金额" prop="creditLimit">
+                    <el-input v-model="temp.creditLimit" placeholder="赊销金额" />
                 </el-form-item>
                 <el-form-item label="拜访周期(天)" prop="visitCycle">
                     <el-input v-model="temp.visitCycle" placeholder="拜访周期" />
@@ -441,7 +441,7 @@ export default {
             })
         },
         handleUpdate(val, id) {
-            this.$prompt('已赊销额度', '修改已赊销额度', {
+            this.$prompt('已赊销金额', '修改已赊销金额', {
                 confirmButtonText: '确定',
                 closeOnClickModal: false,
                 cancelButtonText: '取消',
@@ -459,7 +459,7 @@ export default {
             updateOverdraftBalanceById1(obj).then(res => {
                 if (res.data.errorCode == 0) {
                     this.getList();
-                    this.$message.success('修改已赊销额度成功')
+                    this.$message.success('修改已赊销金额成功')
                 } else {
                     this.$message.error(res.data.msg)
                 }

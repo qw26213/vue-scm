@@ -6,174 +6,261 @@ const setRouter = {
     redirect: '/set/index',
     name: 'set',
     meta: {
+        roles: ['6010', '6020', '6030'],
         title: '设置',
         icon: 'setting'
     },
     children: [{
-        path: 'baseData',
+        path: 'data',
         component: setView,
         name: 'baseData',
-        meta: { title: '基础数据' },
+        meta: {
+            roles: ['6010'],
+            title: '基础数据'
+        },
         children: [{
             path: 'meas',
-            component: () => import('@/views/set/meas'),
+            component: () => import ('@/views/set/data/meas'),
             name: 'baseMeas',
-            meta: { title: '计量单位' }
+            meta: {
+                roles: ['601018'],
+                title: '计量单位'
+            }
         }, {
             path: 'bizType',
-            component: () => import('@/views/set/bizType'),
+            component: () => import ('@/views/set/data/bizType'),
             name: 'baseBizType',
-            meta: { title: '业务类型' }
+            meta: {
+                roles: ['601022'],
+                title: '业务类型'
+            }
         }, {
             path: 'bizProc',
-            component: () => import('@/views/set/bizProc'),
+            component: () => import ('@/views/set/data/bizProc'),
             name: 'baseBizProc',
-            meta: { title: '业务流程' }
+            meta: {
+                roles: ['601026'],
+                title: '业务流程'
+            }
         }, {
             path: 'salesType',
-            component: () => import('@/views/set/salesType'),
+            component: () => import ('@/views/set/data/salesType'),
             name: 'baseSalesType',
-            meta: { title: '销售类型' }
+            meta: {
+                roles: ['601030'],
+                title: '销售类型'
+            }
         }, {
             path: 'settleType',
-            component: () => import('@/views/set/settleType'),
+            component: () => import ('@/views/set/data/settleType'),
             name: 'baseSettleType',
-            meta: { title: '结算方式' }
+            meta: {
+                roles: ['601034'],
+                title: '结算方式'
+            }
         }, {
             path: 'paymentType',
-            component: () => import('@/views/set/paymentType'),
+            component: () => import ('@/views/set/data/paymentType'),
             name: 'basePaymentType',
-            meta: { title: '付款方式' }
+            meta: {
+                roles: ['601038'],
+                title: '付款方式'
+            }
         }, ]
     }, {
-        path: 'baseFile',
+        path: 'file',
         component: setView,
         name: 'baseFile',
-        meta: { title: '基础档案' },
+        meta: {
+            roles: ['6020'],
+            title: '基础档案'
+        },
         children: [{
             path: 'supplier',
-            component: () => import('@/views/set/supplier'),
+            component: () => import ('@/views/set/file/supplier'),
             name: 'baseSupplier',
-            meta: { title: '供应商' }
+            meta: {
+                roles: ['602010'],
+                title: '供应商'
+            }
         }, {
             path: 'channel',
-            component: () => import('@/views/set/channelType'),
+            component: () => import ('@/views/set/file/channelType'),
             name: 'baseChannel',
-            meta: { title: '渠道类型' }
+            meta: {
+                roles: ['602014'],
+                title: '渠道类型'
+            }
         }, {
             path: 'custType',
-            component: () => import('@/views/set/custType'),
+            component: () => import ('@/views/set/file/custType'),
             name: 'baseCustType',
-            meta: { title: '客户类别', }
+            meta: {
+                roles: ['602022'],
+                title: '客户类别',
+            }
         }, {
             path: 'cust',
-            component: () => import('@/views/set/cust'),
+            component: () => import ('@/views/set/file/cust'),
             name: 'baseCust',
-            meta: { title: '客户' }
+            meta: {
+                roles: ['602026'],
+                title: '客户'
+            }
         }, {
             path: 'warehouse',
-            component: () => import('@/views/set/warehouse'),
+            component: () => import ('@/views/set/file/warehouse'),
             name: 'baseWarehouse',
-            meta: { title: '仓库' }
+            meta: {
+                roles: ['602030'],
+                title: '仓库'
+            }
         }, {
             path: 'truck',
-            component: () => import('@/views/set/truck'),
+            component: () => import ('@/views/set/file/truck'),
             name: 'baseTruck',
-            meta: { title: '车辆' }
+            meta: {
+                roles: ['602034'],
+                title: '车辆'
+            }
         }, {
             path: 'invCatg',
-            component: () => import('@/views/set/invCatg'),
+            component: () => import ('@/views/set/file/invCatg'),
             name: 'baseInvCatg',
-            meta: { title: '商品分类' }
+            meta: {
+                roles: ['602038'],
+                title: '商品分类'
+            }
         }, {
             path: 'item',
-            component: () => import('@/views/set/item'),
+            component: () => import ('@/views/set/file/item'),
             name: 'baseItem',
-            meta: { title: '商品' }
+            meta: {
+                roles: ['602042'],
+                title: '商品'
+            }
         }, {
             path: 'route',
-            component: () => import('@/views/set/route'),
+            component: () => import ('@/views/set/file/route'),
             name: 'baseRoute',
-            meta: { title: '线路' }
+            meta: {
+                roles: ['602046'],
+                title: '线路'
+            }
         }, {
             path: 'brand',
-            component: () => import('@/views/set/brand'),
+            component: () => import ('@/views/set/file/brand'),
             name: 'baseBrand',
-            meta: { title: '品牌' }
+            meta: {
+                roles: ['602050'],
+                title: '品牌'
+            }
         }, {
             path: 'dept',
-            component: () => import('@/views/set/dept'),
+            component: () => import ('@/views/set/file/dept'),
             name: 'baseDept',
-            meta: { title: '部门', }
+            meta: {
+                roles: ['602058'],
+                title: '部门',
+            }
         }, {
             path: 'staff',
-            component: () => import('@/views/set/staff'),
+            component: () => import ('@/views/set/file/staff'),
             name: 'baseStaff',
-            meta: { title: '员工', }
+            meta: {
+                roles: ['602062'],
+                title: '员工',
+            }
         }, {
             path: 'proj',
-            component: () => import('@/views/set/proj'),
+            component: () => import ('@/views/set/file/proj'),
             name: 'baseProj',
-            meta: { title: '项目' }
+            meta: {
+                roles: ['602066'],
+                title: '项目'
+            }
         }, {
             path: 'coaList',
-            component: () => import('@/views/set/coaList'),
+            component: () => import ('@/views/set/file/coaList'),
             name: 'coaList',
-            meta: { title: '科目' }
+            meta: {
+                roles: ['602078'],
+                title: '科目'
+            }
         }, {
             path: 'invCurrency',
-            component: () => import('@/views/set/currency'),
+            component: () => import ('@/views/set/file/currency'),
             name: 'baseInvCurrency',
-            meta: { title: '币种' }
+            meta: {
+                roles: ['602070'],
+                title: '币种'
+            }
         }, {
             path: 'invCatogery',
-            component: () => import('@/views/set/catogery'),
+            component: () => import ('@/views/set/file/catogery'),
             name: 'baseInvCatogery',
-            meta: { title: '凭证字' }
+            meta: {
+                roles: ['602074'],
+                title: '凭证字'
+            }
         }, {
             path: 'invTempletType',
-            component: () => import('@/views/set/templetType'),
+            component: () => import ('@/views/set/file/templetType'),
             name: 'baseInvTempletType',
-            meta: { title: '凭证模板类型' }
+            meta: {
+                roles: ['602082'],
+                title: '凭证模板类型'
+            }
         }, {
             path: 'voucherTemplet',
-            component: () => import('@/views/set/voucherTemplet'),
+            component: () => import ('@/views/set/file/voucherTemplet'),
             name: 'voucherTemplet',
-            meta: { title: '凭证模板' }
+            meta: {
+                roles: ['602084'],
+                title: '凭证模板'
+            }
         }]
     }, {
         path: 'user',
         component: setView,
         name: 'user',
-        meta: { title: '用户权限' },
-        children: [{
-            path: 'userList',
-            component: () => import('@/views/set/user/list'),
-            name: 'userList',
-            meta: { title: '用户' }
-        }, {
-            path: 'userRole',
-            component: () => import('@/views/set/user/role'),
-            name: 'userRole',
-            meta: { title: '角色' }
-        }, {
-            path: 'userFunc',
-            component: () => import('@/views/set/user/func'),
-            name: 'userFunc',
-            meta: { title: '功能权限' }
-        }, {
-            path: 'dataRole',
-            component: () => import('@/views/set/user/data'),
-            name: 'dataRole',
-            meta: { title: '数据权限' }
-        }]
-    }, {
-        path: 'balance',
-        component: () => import('@/views/set/else/balance'),
-        name: 'balanceset',
         meta: {
-            title: '期初余额'
-        }
+            roles: ['6030'],
+            title: '用户权限'
+        },
+        children: [{
+            path: 'list',
+            component: () => import ('@/views/set/user/list'),
+            name: 'userList',
+            meta: {
+                roles: ['603010'],
+                title: '用户'
+            }
+        }, {
+            path: 'role',
+            component: () => import ('@/views/set/user/role'),
+            name: 'userRole',
+            meta: {
+                roles: ['603020'],
+                title: '角色'
+            }
+        }, {
+            path: 'funcs',
+            component: () => import ('@/views/set/user/func'),
+            name: 'userFunc',
+            meta: {
+                roles: ['603030'],
+                title: '功能'
+            }
+        }, {
+            path: 'data',
+            component: () => import ('@/views/set/user/data'),
+            name: 'dataRole',
+            meta: {
+                roles: ['603040'],
+                title: '数据'
+            }
+        }]
     }]
 }
 

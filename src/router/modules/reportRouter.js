@@ -5,6 +5,7 @@ const accountRouter = {
     redirect: '/report/debt',
     name: 'report',
     meta: {
+        roles: ['10'],
         title: '报表',
         icon:'report'
     },
@@ -13,6 +14,7 @@ const accountRouter = {
         component: () => import('@/views/report/debt'),
         name: 'debt',
         meta: {
+            roles: ['10'],
             title: '资产负债表'
         }
     }, {
@@ -20,6 +22,7 @@ const accountRouter = {
         component: () => import('@/views/report/profit'),
         name: 'profit',
         meta: {
+            roles: ['10'],
             title: '利润表'
         }
     }, {
@@ -27,6 +30,7 @@ const accountRouter = {
         component: () => import('@/views/report/flow'),
         name: 'flow',
         meta: {
+            roles: ['10'],
             title: '现金流量表'
         }
     }]

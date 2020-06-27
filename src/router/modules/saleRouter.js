@@ -5,6 +5,7 @@ const saleRouter = {
     redirect: '/sale/data',
     name: 'sale',
     meta: {
+        roles: ['1410', '1420', '1430', '1440', '1450'],
         title: '销售',
         icon: 'certificate'
     },
@@ -13,6 +14,7 @@ const saleRouter = {
         component: () => import('@/views/sale/data'),
         name: 'saleData',
         meta: {
+            roles: ['1420'],
             title: '销售单'
         }
     }, {
@@ -21,6 +23,7 @@ const saleRouter = {
         name: 'saleAdd',
         hidden: true,
         meta: {
+            roles: ['142010'],
             title: '新增销售单'
         }
     }, {
@@ -29,6 +32,7 @@ const saleRouter = {
         name: 'saleModify',
         hidden: true,
         meta: {
+            roles: ['142020'],
             title: '编辑销售单'
         }
     }, {
@@ -37,6 +41,7 @@ const saleRouter = {
         name: 'saleDetail',
         hidden: true,
         meta: {
+            roles: ['1420'],
             title: '查看销售单'
         }
     }, {
@@ -44,6 +49,7 @@ const saleRouter = {
         component: () => import('@/views/sale/order'),
         name: 'saleOrder',
         meta: {
+            roles: ['1410'],
             title: '销售订单'
         }
     }, {
@@ -52,6 +58,7 @@ const saleRouter = {
         hidden:true,
         name: 'orderAdd',
         meta: {
+            roles: ['141010'],
             title: '新增销售订单'
         }
     }, {
@@ -60,6 +67,7 @@ const saleRouter = {
         hidden:true,
         name: 'orderModify',
         meta: {
+            roles: ['141020'],
             title: '编辑销售订单'
         }
     }, {
@@ -67,6 +75,7 @@ const saleRouter = {
         component: () => import('@/views/sale/returned'),
         name: 'saleReturned',
         meta: {
+            roles: ['1430'],
             title: '销售退货'
         }
     }, {
@@ -75,6 +84,7 @@ const saleRouter = {
         name: 'saleReturnedAdd',
         hidden:true,
         meta: {
+            roles: ['143010'],
             title: '新增销售退货'
         }
     }, {
@@ -83,6 +93,7 @@ const saleRouter = {
         name: 'saleReturnedModify',
         hidden:true,
         meta: {
+            roles: ['143020'],
             title: '编辑销售退货'
         }
     }, {
@@ -91,6 +102,7 @@ const saleRouter = {
         name: 'saleReturnedDetail',
         hidden:true,
         meta: {
+            roles: ['1430'],
             title: '查看销售退货'
         }
     }, {
@@ -98,6 +110,7 @@ const saleRouter = {
         component: () => import('@/views/sale/delivery'),
         name: 'delivery',
         meta: {
+            roles: ['1440'],
             title: '销售配送'
         }
     }, {
@@ -106,6 +119,7 @@ const saleRouter = {
         name: 'deliveryAdd',
         hidden: true,
         meta: {
+            roles: ['144010'],
             title: '新增销售配送'
         }
     }, {
@@ -114,6 +128,7 @@ const saleRouter = {
         name: 'deliveryModify',
         hidden: true,
         meta: {
+            roles: ['144020'],
             title: '编辑销售配送'
         }
     }, {
@@ -121,6 +136,7 @@ const saleRouter = {
         component: () => import('@/views/sale/invoice'),
         name: 'saleInvoice',
         meta: {
+            roles: ['1450'],
             title: '销售发票'
         }
     }]

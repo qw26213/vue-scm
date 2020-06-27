@@ -1,4 +1,4 @@
-import { loginCheck, getIndexInfo, getRoles, toLogout } from '@/api/user'
+import { loginCheck, getIndexInfo, getFuncData, toLogout } from '@/api/user'
 import { getToken, setToken, removeToken, setName, getName } from '@/utils/auth'
 import { fetchRoles } from '@/utils/index'
 import router, { resetRouter } from '@/router'
@@ -60,7 +60,7 @@ const actions = {
     getInfo({ commit, state }) {
         return new Promise((resolve, reject) => {
             commit('SET_NAME', getName())
-            getRoles().then(res => {
+            getFuncData().then(res => {
                 var roles = fetchRoles(res.data.data)
                 if (!roles || roles.length <= 0) {
                     reject('roles must be a non-null array!')

@@ -26,11 +26,11 @@
                     <span>{{row.isDisable?'否':'是'}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" width="200">
+            <el-table-column label="操作" align="center">
                 <template slot-scope="{row}">
-                    <el-button type="primary" size="mini" @click="showFunc(row.id)">查看权限</el-button>
-                    <el-button type="default" size="mini" :disabled="row.isSystem==1" @click="handleCompile(row)">编辑</el-button>
-                    <el-button type="danger" size="mini" :disabled="row.isSystem==1" @click="handleDel(row.id)">删除</el-button>
+                    <el-button type="primary" size="mini" @click="showAssign(row)">查看权限</el-button>
+                    <el-button v-if="row.isSystem !=1" type="default" size="mini" @click="handleCompile(row)">编辑</el-button>
+                    <el-button v-if="row.isSystem !=1" type="danger" size="mini" @click="handleDel(row.id)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -66,18 +66,23 @@
                 </el-table-column>
             </el-table>
         </el-dialog>
+        <funcAssign ref="assign" :tree-data="treeData" :option="assignOption" />
     </div>
 </template>
 <script>
-import { getRole, saveRole, delRole, getFuncByRoleId} from '@/api/user'
+import { getRole, saveRole, delRole, getFuncsTree, getFuncByRoleId } from '@/api/user'
+import funcAssign from './funcAssign.vue'
 export default {
     name: 'userRole',
+    components: { funcAssign },
     data() {
         return {
             tableKey: 0,
             tableData: [],
             funcList: [],
+            treeData: [],
             total: 0,
+            assignOption:{ show: false, roleName: '', roleId: '' },
             listLoading: true,
             listQuery: {
                 page: 1,
@@ -101,6 +106,9 @@ export default {
     },
     created() {
         this.getList()
+        getFuncsTree().then(res => {
+            this.treeData = res.data.data
+        })
     },
     methods: {
         getList() {
@@ -111,6 +119,13 @@ export default {
             }).catch(err => {
                 this.listLoading = false
             })
+        },
+        showAssign(row) {
+            this.assignOption = {
+                show: true,
+                roleId: row.id,
+                roleName: row.roleName
+            }
         },
         showFunc(id) {
           getFuncByRoleId({roleId: id}).then(res => {
@@ -148,7 +163,7 @@ export default {
             }).then(() => {
                 delRole({id:id}).then(res => {
                     if (res.data.errorCode == 0) {
-                        this.getList();
+                        this.getList()
                         this.$message.success('删除角色成功')
                     } else {
                         this.$message.error(res.data.msg)
@@ -161,7 +176,7 @@ export default {
                 if (valid) {
                     saveRole(this.temp).then(res => {
                         if (res.data.errorCode == 0) {
-                            this.getList();
+                            this.getList()
                             this.dialogFormVisible1 = false
                             this.$message.success(this.dialogStatus == 'create' ? '新增成功' : '修改成功')
                         } else {

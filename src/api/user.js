@@ -42,17 +42,9 @@ export function delUser(data) {
     })
 }
 
-export function getRoles(data) {
+export function getFuncData(data) {
     return request({
-        url: '/drp/getFuncListS',
-        method: 'post',
-        data
-    })
-}
-
-export function getFuncs(data) {
-    return request({
-        url: '/drp/sys/func/treeData',
+        url: '/drp/sys/roleFuncButton/getFuncButtonListByUserIdAppsId',
         method: 'post',
         data
     })
@@ -433,5 +425,39 @@ export function getOpeningBalanceStatus() {
     return request({
         url: '/drp/gl/period/getOpeningBalanceStatus',
         method: 'post'
+    })
+}
+
+// ---------------------------------权限管理---------------------------------
+export function getFuncs(data) {
+    return request({
+        url: '/drp/sys/funcButton/datatables',
+        method: 'post',
+        data
+    })
+}
+
+// ---------------------------------权限管理---------------------------------
+export function getFuncsTree(data) {
+    return request({
+        url: '/drp/sys/funcButton/treeData',
+        method: 'post',
+        data
+    })
+}
+
+export function getFuncButtonListByRoleId(data) {
+    return request({
+        url: '/drp/sys/roleFuncButton/getFuncButtonListByRoleId',
+        method: 'post',
+        data
+    })
+}
+
+export function updateRoleIdByFuncButtonIdList(data) {
+    return request({
+        url: '/drp/sys/roleFuncButton/updateRoleIdByFuncButtonIdList',
+        method: 'post',
+        data
     })
 }

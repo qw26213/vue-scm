@@ -5,6 +5,7 @@ const priceRouter = {
         redirect: '/price/group',
         name: 'price',
         meta: {
+            roles: ['3010', '3020'],
             title: '价格',
             icon: 'price'
         },
@@ -13,6 +14,7 @@ const priceRouter = {
             component: () => import('@/views/price/index'),
             name: 'priceIndex',
             meta: {
+                roles: ['3020'],
                 title: '价格设定'
             }
         }, {
@@ -20,6 +22,7 @@ const priceRouter = {
             component: () => import('@/views/price/group'),
             name: 'priceGroup',
             meta: {
+                roles: ['3010'],
                 title: '价格组'
             }
         }]

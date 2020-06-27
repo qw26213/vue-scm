@@ -38,13 +38,14 @@
                 <span style="float:left;">记住企业代码</span>
                 <span class="fr" @click="toPath('/forgetCode')">忘记企业代码?</span>
             </div>
-            <el-button :loading="loading" type="primary" style="width:100%;margin:10px auto;" @click="handleLogin">登录</el-button>
+            <el-button :loading="loading" type="primary" style="width:100%;margin:10px auto;" @click="loginFun">登录</el-button>
         </el-form>
     </div>
 </template>
 <script>
 import { getVerifyPhoto } from '@/api/login'
 import { removeToken, removeName } from '@/utils/auth'
+import { debounce } from '@/utils/index'
 export default {
     name: 'login',
     data() {
@@ -65,6 +66,7 @@ export default {
         return {
             loginUrl: '',
             imgUrl: '',
+            loginFun: debounce(this.handleLogin, 1000, true),
             loginForm: {
                 orgCode: '',
                 userAccount: '',
@@ -130,7 +132,7 @@ export default {
         removeName()
         document.onkeydown = () => {
             if (window.event.keyCode == 13 && document.getElementsByClassName('login-container').length > 0) {
-                this.handleLogin()
+                this.loginFun()
             }
         }
     }
