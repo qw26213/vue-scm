@@ -8,9 +8,33 @@ export function getGoodsData(data) {
     })
 }
 
+export function delGoodsById(data) {
+    return request({
+        url: '/drp/mm/goods/deleteById',
+        method: 'post',
+        data
+    })
+}
+
 export function getOrderData(data) {
     return request({
         url: '/drp/mm/salesOrder/getResPageData',
+        method: 'post',
+        data
+    })
+}
+
+export function delOrder(data) {
+    return request({
+        url: '/drp/mm/salesOrder/deleteByHeaderId',
+        method: 'post',
+        data
+    })
+}
+
+export function getOrderInfo(data) {
+    return request({
+        url: '/drp/mm/salesOrder/getByHeaderId',
         method: 'post',
         data
     })
