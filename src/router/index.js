@@ -19,6 +19,7 @@ import hrRouter from './modules/hrRouter'
 import visitRouter from './modules/visitRouter'
 import maintainRouter from './modules/maintainRouter'
 import initRouter from './modules/initRouter'
+import mallRouter from './modules/mallRouter'
 
 export const constantRoutes = [{
     path: '/redirect',
@@ -87,6 +88,7 @@ export const asyncRoutes = [
     setRouter,
     initRouter,
     maintainRouter,
+    mallRouter,
     {
         path: '*',
         edirect: '/404',
