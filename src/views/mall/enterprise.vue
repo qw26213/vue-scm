@@ -8,10 +8,7 @@
             <div class="clearfix">
                 <div style="width: 50%; float:left">
                     <div class="listItem">
-                        <label>企业代码:</label>{{enterpriseInfo.orgCode}}
-                    </div>
-                    <div class="listItem">
-                        <label>企业名称:</label>{{enterpriseInfo.name}}
+                        <label>企业名称:</label>{{enterpriseInfo.name}}(代码:{{enterpriseInfo.orgCode}})
                     </div>
                     <div class="listItem">
                         <label>联系电话:</label>{{enterpriseInfo.tel}}
@@ -27,6 +24,15 @@
                     </div>
                     <div class="listItem">
                         <label>正式上线日期:</label>{{enterpriseInfo.onlineDate}}
+                    </div>
+                    <div class="listItem">
+                        <label>仓库:</label>{{enterpriseInfo.warehouseName}}
+                    </div>
+                    <div class="listItem">
+                        <label>管理员:</label>{{enterpriseInfo.staffName}}
+                    </div>
+                    <div class="listItem">
+                        <label>虚拟客户:</label>{{enterpriseInfo.custName}}
                     </div>
                 </div>
                 <div style="width: 50%; float:left">
