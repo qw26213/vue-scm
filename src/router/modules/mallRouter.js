@@ -40,7 +40,25 @@ const mallRouter = {
         hidden: true,
         meta: {
             roles: ['4220'],
-            title: '商品新增'
+            title: '新增商品'
+        }
+    }, {
+        path: 'modifygood',
+        component: () => import('@/views/mall/addgood'),
+        name: 'modifygood',
+        hidden: true,
+        meta: {
+            roles: ['4220'],
+            title: '编辑商品'
+        }
+    }, {
+        path: 'deline',
+        component: () => import('@/views/mall/deline'),
+        name: 'goodDeline',
+        hidden: true,
+        meta: {
+            roles: ['4220'],
+            title: '商品明细管理'
         }
     }, {
         path: 'order',

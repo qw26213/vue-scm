@@ -1,28 +1,80 @@
 <template>
     <div class="formDiv">
-        <el-form ref="dataForm" label-width="100px" :rules="rules" :model="temp">
-            <el-form-item label="商品名称" prop="name">
-                <el-input v-model="temp.itemName"></el-input>
+        <el-form ref="dataForm" label-width="120px" :rules="rules" :model="goodForm">
+            <el-form-item label="商品名称" prop="itemName">
+                <el-input v-model="goodForm.itemName"></el-input>
             </el-form-item>
-            <el-form-item label="单价" prop="price">
-                <el-input v-model="temp.price"></el-input>
+            <el-form-item label="单价(元)" prop="price1">
+                <el-input v-model="goodForm.price1" style="width:120px"></el-input><span style="padding:0 5px">至</span>
+                <el-input v-model="goodForm.price2" style="width:120px"></el-input>
+            </el-form-item>
+            <el-form-item label="单位" prop="uom">
+                <el-input v-model="goodForm.uom"></el-input>
+            </el-form-item>
+            <el-form-item label="销量" prop="soldQty">
+                <el-input v-model="goodForm.soldQty"></el-input>
             </el-form-item>
             <el-form-item label="库存" prop="remainingQty">
-                <el-input v-model="temp.remainingQty"></el-input>
+                <el-input v-model="goodForm.remainingQty"></el-input>
             </el-form-item>
-            <el-form-item label="销售区域">
-                <Areas @giveData="areaData" :addressCode="addressCode"></Areas>
+            <el-form-item label="规格" prop="norms">
+                <el-input v-model="goodForm.norms"></el-input>
             </el-form-item>
-            <el-form-item label="商品图片" prop="contactName">
-                <div v-for="url in srcList1" :key="url" class="itemUrl" :style="{'background-image': 'url('+url+')'}"></div>
-                <div v-if="srcList1.length < 6" class="itemUrl"><i class="el-icon-plus" style="color:#999;font-size:20px"></i>
-                    <input type="file"accept="image/gif, image/jpeg, image/jpg, image/png" @change="upLoad($event, 1)">
+            <el-form-item label="支付类型" prop="paymentType">
+                <el-radio v-model="goodForm.paymentType" :label="0">在线支付</el-radio>
+                <el-radio v-model="goodForm.paymentType" :label="1">货到付款</el-radio>
+            </el-form-item>
+            <el-form-item label="配送类型" prop="deliveryType">
+                <el-radio v-model="goodForm.deliveryType" :label="0">快递</el-radio>
+                <el-radio v-model="goodForm.deliveryType" :label="1">自取</el-radio>
+            </el-form-item>
+            <el-form-item label="配送费(元)" prop="freightAmount1">
+                <el-input v-model="goodForm.freightAmount1" style="width:120px"></el-input><span style="padding:0 5px">至</span>
+                <el-input v-model="goodForm.freightAmount2" style="width:120px"></el-input>
+            </el-form-item>
+            <el-form-item label="商品分类" prop="tabCode">
+                <el-select v-model="goodForm.tabCode">
+                    <el-option v-for="item in tabs" :key="item.id" :value="item.id" :label="item.tabName"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="是否生效" prop="isDisable">
+                <el-radio v-model="goodForm.isDisable" :label="0">是</el-radio>
+                <el-radio v-model="goodForm.isDisable" :label="1">否</el-radio>
+            </el-form-item>
+            <el-form-item label="商品状态" prop="status">
+                <el-radio v-model="goodForm.status" :label="0">在售</el-radio>
+                <el-radio v-model="goodForm.status" :label="1">未开始</el-radio>
+                <el-radio v-model="goodForm.status" :label="2">已下架</el-radio>
+            </el-form-item>
+            <el-form-item label="生产日期" prop="productionDate">
+                <el-date-picker :editable="false" v-model="goodForm.productionDate" type="date" placeholder="生产日期" style="width:225px" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+            </el-form-item>
+            <el-form-item label="保质期(中文)" prop="qualityName">
+                <el-input v-model="goodForm.qualityName"></el-input>
+            </el-form-item>
+            <el-form-item label="保质期(天数)" prop="qualityDays">
+                <el-input v-model="goodForm.qualityDays"></el-input>
+            </el-form-item>
+            <el-form-item label="上架日期" prop="effectiveDate">
+                <el-date-picker :editable="false" v-model="goodForm.effectiveDate" type="date" placeholder="上架日期" style="width:225px" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+            </el-form-item>
+            <el-form-item label="下架日期" prop="offlineDate">
+                <el-date-picker :editable="false" v-model="goodForm.offlineDate" type="date" placeholder="下架日期" style="width:225px" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+            </el-form-item>
+            <el-form-item label="销售区域" prop="saleArea">
+                <el-input v-model="goodForm.saleArea"></el-input>
+            </el-form-item>
+            <el-form-item label="商品图片" prop="attachment">
+                <div v-for="url in srcList1" :key="url.fileUrl" class="itemUrl" :style="{'background-image': 'url('+url.fileUrl+')'}"></div>
+                <div v-if="srcList1.length < 6" class="itemUrl">
+                    <i class="el-icon-plus" style="color:#999;font-size:20px"></i>
+                    <input type="file" accept="image/gif, image/jpeg, image/jpg, image/png" @change="upLoad($event, 1)">
                 </div>
             </el-form-item>
-            <el-form-item label="内容图片" prop="contactName">
-                <div v-for="url in srcList2" :key="url" class="itemUrl" :style="{'background-image': 'url('+url+')'}"></div>
+            <el-form-item label="内容图片" prop="attachment">
+                <div v-for="url in srcList2" :key="url.fileUrl" class="itemUrl" :style="{'background-image': 'url('+url.fileUrl+')'}"></div>
                 <div v-if="srcList2.length < 6" class="itemUrl"><i class="el-icon-plus" style="color:#999;font-size:20px"></i>
-                    <input type="file"accept="image/gif, image/jpeg, image/jpg, image/png" @change="upLoad($event, 2)">
+                    <input type="file" accept="image/gif, image/jpeg, image/jpg, image/png" @change="upLoad($event, 2)">
                 </div>
             </el-form-item>
         </el-form>
@@ -34,48 +86,107 @@
 </template>
 <script>
 import COS from 'cos-js-sdk-v5'
-import Areas from "@/components/areas"
+import { getItem } from '@/api/basedata'
+import { getTabs, saveGood, getGood } from '@/api/mall'
+import { deepClone } from '@/utils/index'
 export default {
-    components: { Areas },
     data() {
         return {
             url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+            itemId: this.$route.query.item_id || '',
+            goodId: this.$route.query.id || '',
             srcList1: [],
             srcList2: [],
-            temp: {
-                contactPhone: "",
-                address: "",
-                bizLicenseNo: "",
-                bizLicensePic: '',
-                name: '',
-                contactEmail: '',
-                contactPhone: '',
-                managerName: '',
-                managerIdcard: '',
-                frontImg: '',
-                premisesImg: '',
-                province: '',
-                city: "",
-                area: ""
+            goodForm: {
+                itemId: '',
+                itemName: '',
+                price1: '',
+                uom: '',
+                soldQty: '',
+                remainingQty: '',
+                paymentType: '',
+                deliveryType: '',
+                freightAmount1: '',
+                tabCode: '',
+                isDisable: '',
+                status: '',
+                effectiveDate: '',
+                qualityName: '',
+                qualityDays: '',
+                offlineDate: '',
+                saleArea: '',
+                def1: '',
+                multi: 1,
+                attachment: []
             },
+            tabs: [],
             addressCode: {},
             rules: {
-                name: [{ required: true, message: '门店名称不能为空', trigger: 'change' }],
-                contactPhone: [{ required: true, message: '手机号不能为空', trigger: 'change' }],
-                area: [{ required: true, message: '请选择所在区域', trigger: 'change' }],
-                address: [{ required: true, message: '详细地址不能为空', trigger: 'change' }],
-                contactName: [{ required: true, message: '负责人姓名不能为空', trigger: 'change' }]
+                itemName: [{ required: true, trigger: 'change' }],
+                price1: [{ required: true, trigger: 'change' }],
+                uom: [{ required: true, trigger: 'change' }],
+                soldQty: [{ required: true, trigger: 'change' }],
+                remainingQty: [{ required: true, trigger: 'change' }],
+                paymentType: [{ required: true, trigger: 'change' }],
+                deliveryType: [{ required: true, trigger: 'change' }],
+                freightAmount1: [{ required: true, trigger: 'change' }],
+                tabCode: [{ required: true, trigger: 'change' }],
+                qualityName: [{ required: true, trigger: 'change' }],
+                qualityDays: [{ required: true, trigger: 'change' }],
+                isDisable: [{ required: true, trigger: 'change' }],
+                status: [{ required: true, trigger: 'change' }],
+                effectiveDate: [{ required: true, trigger: 'change' }],
+                offlineDate: [{ required: true, trigger: 'change' }],
+                saleArea: [{ required: true, trigger: 'change' }],
+                attachment: [{ required: true, trigger: 'change' }]
             },
-
+            itemQuery: {
+                pageIndex: 1,
+                pageNum: 10,
+                queryParam: { itemCode: '', itemName: '' }
+            }
         }
     },
+    created() {
+        if (this.$route.query.item_id) {
+            this.getItemData()
+        }
+        if (this.$route.query.id) {
+            this.getGoodInfo()
+        }
+        getTabs().then(res => {
+            if (res.data.errorCode == 0) {
+                this.tabs = res.data.data || []
+            }
+        })
+    },
     methods: {
-        areaData(data) {
-            this.temp.province = data.split("-")[0]
-            this.temp.city = data.split("-")[1]
-            this.temp.area = data.split("-")[2]
+        getGoodInfo() {
+            getGood({id: this.goodId}).then(res => {
+                this.goodForm = res.data.data || {}
+                if (this.goodForm.attachmentLine) {
+                    this.srcList1 = this.goodForm.attachmentLine.filter(item => item.verticalDirection === 0)
+                    this.srcList2 = this.goodForm.attachmentLine.filter(item => item.verticalDirection === 1)
+                }
+                this.$nextTick(() => {
+                    this.$refs['dataForm'].clearValidate()
+                })
+            })
         },
-        //获取签名
+        getItemData() {
+            getItem(this.itemQuery).then(res => {
+                var info = res.data.data || []
+                var goodData = info.find(item => item.id === this.itemId)
+                this.goodForm.itemId = goodData.id
+                this.goodForm.itemName = goodData.itemName
+                this.goodForm.uom = goodData.uom
+                this.goodForm.norms = goodData.norms
+                this.goodForm.attachment = []
+                this.$nextTick(() => {
+                    this.$refs['dataForm'].clearValidate()
+                })
+            })
+        },
         upLoad(event, type) {
             var fileObj = event.currentTarget.files[0];
             var imgSize = fileObj.size / 1024;
@@ -90,10 +201,26 @@ export default {
             })
         },
         saveData() {
-          this.$router.replace('/mall/goodlist')
+            this.goodForm.paymentType = 1
+            this.goodForm.attachment = this.srcList1.concat(this.srcList2)
+            this.goodForm.attachment.forEach((item,index) => {
+                item.seq = index
+            })
+            this.goodForm.multi = 1
+            this.$refs.dataForm.validate(valid => {
+                if (valid) {
+                    var obj = this.goodForm
+                    saveGood(obj).then(res => {
+                        if (res.data.errorCode == 0) {
+                            this.$message.success('商品添加成功！')
+                            this.$router.replace('/mall/goodlist')
+                        }
+                    })
+                }
+            })
         },
         backpage() {
-          this.$router.replace('/mall/goodlist')
+            this.$router.replace('/mall/goodlist')
         },
         //上传腾讯云
         uploadFile(obj, file, filetype, imgSize, type) {
@@ -137,13 +264,23 @@ export default {
                         //上传成功得到的资源地址
                         const url = 'https://' + bucket + '.cos.ap-beijing.myqcloud.com/' + imgName
                         if (type == 1) {
-                          that.srcList1.push(url)
+                            var obj = {
+                                fileType: 0,
+                                verticalDirection: 0,
+                                fileUrl: url
+                            }
+                            that.srcList1.push(obj)
                         }
                         if (type == 2) {
-                          that.srcList2.push(url)
+                            var obj = {
+                                fileType: 0,
+                                verticalDirection: 1,
+                                fileUrl: url
+                            }
+                            that.srcList2.push(obj)
                         }
                         var lastIndex = imgName.lastIndexOf('/')
-                        var filename = imgName.slice(0-lastIndex)
+                        var filename = imgName.slice(0 - lastIndex)
                         that.saveImg(filename, imgName, imgSize)
                         loading.close()
                     }
@@ -153,25 +290,33 @@ export default {
         },
         //DataURL转Blob
         dataURLtoBlob(fileObj) {
-            console.log(fileObj.size)
             return new Blob([fileObj], { type: fileObj.type });
         },
-        saveImg(fileName, fileUrl, fileSizeCategory) {
-          this.$axios({
-              method: 'post',
-              url: '/drp/file/cosFileInfo/save',
-              data: {
-                fileName: fileName,
-                fileUrl: fileUrl,
-                fileSizeCategory: fileSizeCategory
-              }
-          }).then(res => {
-            console.log('save img success')
-          })
-      },
+        saveImg(fileName, attachment, fileSizeCategory) {
+            this.$axios({
+                method: 'post',
+                url: '/drp/file/cosFileInfo/save',
+                data: {
+                    fileName: fileName,
+                    fileUrl: attachment,
+                    fileSizeCategory: fileSizeCategory
+                }
+            }).then(res => {
+                console.log('save img success')
+            })
+        }
     }
 }
 </script>
+<style lang="scss" scoped>
+/deep/ .el-form-item__label {
+    line-height: 30px;
+}
+
+/deep/ .el-form-item {
+    margin-bottom: 16px;
+}
+</style>
 <style scoped>
 .formDiv {
     width: 800px;

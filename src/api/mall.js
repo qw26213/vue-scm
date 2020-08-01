@@ -8,9 +8,57 @@ export function getGoodsData(data) {
     })
 }
 
+export function getGood(data) {
+    return request({
+        url: '/drp/mm/goods/getById',
+        method: 'post',
+        data
+    })
+}
+
+export function saveGood(data) {
+    return request({
+        url: '/drp/mm/goods/save',
+        method: 'post',
+        data
+    })
+}
+
 export function delGoodsById(data) {
     return request({
         url: '/drp/mm/goods/deleteById',
+        method: 'post',
+        data
+    })
+}
+
+export function getGoodsDetailData(data) {
+    return request({
+        url: '/drp/mm/goodsDetail/getByHeaderId',
+        method: 'post',
+        data
+    })
+}
+
+export function getGoodDetail(data) {
+    return request({
+        url: '/drp/mm/goodsDetail/getById',
+        method: 'post',
+        data
+    })
+}
+
+export function delGoodDetail(data) {
+    return request({
+        url: '/drp/mm/goodsDetail/deleteById',
+        method: 'post',
+        data
+    })
+}
+
+export function saveGoodDetail(data) {
+    return request({
+        url: '/drp/mm/goodsDetail/save',
         method: 'post',
         data
     })

@@ -43,9 +43,6 @@
                         <label>小程序缩写:</label>{{enterpriseInfo.appAbbr}}
                     </div>
                     <div class="listItem">
-                        <label>小程序介绍:</label>{{enterpriseInfo.intro}}
-                    </div>
-                    <div class="listItem">
                         <label style="width:80px">一级类目:</label>{{enterpriseInfo.serviceType1}}
                     </div>
                     <div class="listItem">
@@ -56,6 +53,9 @@
                     </div>
                     <div class="listItem">
                         <label style="width:80px">开发密码:</label>{{enterpriseInfo.devSecret}}
+                    </div>
+                    <div class="listItem">
+                        <label>小程序介绍:</label>{{enterpriseInfo.intro}}
                     </div>
                 </div>
             </div>
@@ -251,6 +251,7 @@ export default {
             getEnterpriseInfo().then(res => {
                 if (res.data.errorCode == 0) {
                     this.enterpriseInfo = res.data.data || {}
+                    this.enterpriseInfo.defaultTaxRate = this.enterpriseInfo.defaultTaxRate || 0
                 }
             })
         },
@@ -324,7 +325,6 @@ export default {
                             this.getTabsData()
                             this.$nextTick(() => {
                                 this.dialogFormVisible2 = false;
-                                this.getTabsData()
                             })
                         }
                     })

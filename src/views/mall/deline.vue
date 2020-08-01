@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div style="margin-bottom:15px;float:right;">
-      <el-button type="primary" size="small" @click="handAdd">新增商品</el-button>
+      <el-button type="primary" size="small" @click="handAdd">新增明细</el-button>
     </div>
     <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;">
       <el-table-column label="序号" type="index" width="50" align="center">
@@ -44,7 +44,6 @@
       <el-table-column label="操作" align="center" width="230">
         <template slot-scope="{row}">
           <el-button type="default" size="mini" @click="toModify(row.id)">编辑</el-button>
-          <el-button type="primary" size="mini" @click="toDeline(row.id)">明细管理</el-button>
           <el-button type="danger" size="mini" @click="handleDelete(row.id)">删除</el-button>
         </template>
       </el-table-column>
@@ -77,7 +76,7 @@
   </div>
 </template>
 <script>
-import { getGoodsData, delGoodsById } from '@/api/mall'
+import { getGoodsDetailData, delGoodsDetailById } from '@/api/mall'
 import { getItem } from '@/api/basedata'
 import Pagination from '@/components/Pagination'
 export default {
@@ -92,13 +91,10 @@ export default {
       listLoading: false,
       dialogFormVisible: false,
       listQuery: {
-        page: 1,
-        pageSize:100
+        headerId: this.$route.query.id
       },
       itemQuery: {
-          pageIndex: 1,
-          pageNum: 10,
-          queryParam: { itemCode: '', itemName: '' }
+          headId: this.$route.query.id
       }
     }
   },
@@ -109,7 +105,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      getGoodsData(this.listQuery).then(response => {
+      getGoodsDetailData(this.listQuery).then(response => {
         this.listLoading = false
         this.tableData = response.data.data || []
       })
@@ -136,7 +132,7 @@ export default {
             cancelButtonText: '取消',
             type: 'warning'
         }).then(() => {
-            delGoodsById({ id: row.id }).then(res => {
+            delGoodsDetailById({ id: row.id }).then(res => {
                 if (res.data.errorCode == 0) {
                     this.$message.success('商品删除成功')
                     this.getTabsData()
@@ -147,7 +143,7 @@ export default {
         })
     },
     toModify(id) {
-      this.$router.push('/mall/modifygood?id=' + id)
+      this.$router.push('/mall/addgood?id=' + id)
     }
   }
 }
