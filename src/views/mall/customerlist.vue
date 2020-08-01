@@ -14,34 +14,24 @@
           <span>{{row.gender==1?'男':row.gener==2?'女':'未知'}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="appId" min-width="100" align="center">
+      <el-table-column label="注册地" min-width="100" align="center">
         <template slot-scope="{row}">
-          <span>{{row.appId}}</span>
+          <span>{{row.province}}{{row.city}}{{row.district}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="省" min-width="100" align="center">
+      <el-table-column label="我的分享码" min-width="100" align="center">
         <template slot-scope="{row}">
-          <span>{{row.province}}</span>
+          <span>{{row.myShareCode}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="市" min-width="100" align="center">
+      <el-table-column label="分享者码" min-width="100" align="center">
         <template slot-scope="{row}">
-          <span>{{row.city}}</span>
+          <span>{{row.shareCode}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="区" min-width="100" align="center">
+      <el-table-column label="操作" align="center" width="100">
         <template slot-scope="{row}">
-          <span>{{row.district}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="orgCode" align="center">
-        <template slot-scope="{row}">
-          <span>{{row.orgCode}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" align="center" width="230">
-        <template slot-scope="{row}">
-          <el-button type="primary" size="mini" @click="showDetail(row.id)">查看详情</el-button>
+          <el-button type="text" size="mini" @click="showDetail(row.id)">查看详情</el-button>
         </template>
       </el-table-column>
     </el-table>

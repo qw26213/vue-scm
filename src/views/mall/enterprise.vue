@@ -59,7 +59,7 @@
                 </el-table-column>
             </el-table>
         </el-card>
-        <el-dialog :close-on-click-modal="false" :title="dialogType==='create'?'添加页签':'编辑页签'" :visible.sync="dialogFormVisible2" width="450px">
+        <el-dialog :close-on-click-modal="false" :title="dialogType==='create'?'添加页签':'编辑页签'" :visible.sync="dialogFormVisible2" width="460px">
             <el-form ref="tabForm" :rules="rules1" :model="tabForm" inline label-position="top" label-width="120px" style="width:420px;">
                 <el-form-item label="页签代码" prop="tabCode">
                     <el-input v-model="tabForm.tabCode" style="width:420px" size="small" placeholder="页签代码" />
@@ -224,20 +224,20 @@ export default {
             for (var key in this.tabForm) {
                 this.tabForm[key] = row[key]
             }
+            this.dialogFormVisible2 = true
             this.$nextTick(() => {
                 this.$refs['tabForm'].clearValidate()
             })
-            this.dialogFormVisible2 = true
         },
         showAdd() {
             this.dialogType = 'create'
             for (var key in this.tabForm) {
                 this.tabForm[key] = ''
             }
+            this.dialogFormVisible2 = true
             this.$nextTick(() => {
                 this.$refs['tabForm'].clearValidate()
             })
-            this.dialogFormVisible2 = true
         },
         getTabsData() {
             getTabs().then(res => {

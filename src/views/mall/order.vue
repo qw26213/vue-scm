@@ -1,5 +1,5 @@
 <template>
-    <div class="app-container">
+    <div class="app-container" v-loading="listLoading">
         <div v-for="(item,index) in tableData" :key="index" class="orderItem">
             <div class="clearfix toper" style="height:28px">
                 <span>订单号：{{item.billNo}}</span>
@@ -38,6 +38,9 @@
                     </template>
                 </el-table-column>
             </el-table>
+        </div>
+        <div v-show="tableData.length===0 && !listLoading" style="width:100%;height:300px;line-height:300px;border:1px solid #eee;text-align:center">
+            暂无订单
         </div>
         <el-dialog :close-on-click-modal="false" title="订单详情" :visible.sync="dialogFormVisible" width="960px">
             <div style="width:100%;border:1px #eee solid;">
@@ -98,7 +101,7 @@ export default {
     data() {
         return {
             tableKey: 0,
-            tableData: null,
+            tableData: [],
             total: 0,
             listLoading: false,
             orderInfo: {},
