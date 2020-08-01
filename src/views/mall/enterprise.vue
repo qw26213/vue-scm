@@ -5,29 +5,53 @@
                 <span style="display:inline-block;line-height:28px">企业信息</span>
                 <el-button type="primary" style="float: right;" size="mini" @click="showCompile">编辑</el-button>
             </div>
-            <div class="listItem">
-                <label>企业代码:</label>{{enterpriseInfo.orgCode}}
-            </div>
-            <div class="listItem">
-                <label>企业名称:</label>{{enterpriseInfo.name}}
-            </div>
-            <div class="listItem">
-                <label>小程序名称:</label>{{enterpriseInfo.appName}}
-            </div>
-            <div class="listItem">
-                <label>小程序介绍:</label>{{enterpriseInfo.intro}}
-            </div>
-            <div class="listItem">
-                <label>联系电话:</label>{{enterpriseInfo.tel}}
-            </div>
-            <div class="listItem">
-                <label>服务类型:</label>{{enterpriseInfo.serviceType1}}
-            </div>
-            <div class="listItem">
-                <label>纳税识别号:</label>{{enterpriseInfo.taxRegistrationCertificateNo}}
-            </div>
-            <div class="listItem">
-                <label>申请日期:</label>{{enterpriseInfo.applicationDate}}
+            <div class="clearfix">
+                <div style="width: 50%; float:left">
+                    <div class="listItem">
+                        <label>企业代码:</label>{{enterpriseInfo.orgCode}}
+                    </div>
+                    <div class="listItem">
+                        <label>企业名称:</label>{{enterpriseInfo.name}}
+                    </div>
+                    <div class="listItem">
+                        <label>联系电话:</label>{{enterpriseInfo.tel}}
+                    </div>
+                    <div class="listItem">
+                        <label>企业识别码:</label>{{enterpriseInfo.taxRegistrationCertificateNo}}
+                    </div>
+                    <div class="listItem">
+                        <label>默认税率:</label>{{enterpriseInfo.defaultTaxRate * 100}}%
+                    </div>
+                    <div class="listItem">
+                        <label>申请日期:</label>{{enterpriseInfo.applicationDate}}
+                    </div>
+                    <div class="listItem">
+                        <label>正式上线日期:</label>{{enterpriseInfo.onlineDate}}
+                    </div>
+                </div>
+                <div style="width: 50%; float:left">
+                    <div class="listItem">
+                        <label>小程序名称:</label>{{enterpriseInfo.appName}}
+                    </div>
+                    <div class="listItem">
+                        <label>小程序缩写:</label>{{enterpriseInfo.appAbbr}}
+                    </div>
+                    <div class="listItem">
+                        <label>小程序介绍:</label>{{enterpriseInfo.intro}}
+                    </div>
+                    <div class="listItem">
+                        <label style="width:80px">一级类目:</label>{{enterpriseInfo.serviceType1}}
+                    </div>
+                    <div class="listItem">
+                        <label style="width:80px">二级类目:</label>{{enterpriseInfo.serviceType2}}
+                    </div>
+                    <div class="listItem">
+                        <label style="width:80px">正式密码:</label>{{enterpriseInfo.appSecret}}
+                    </div>
+                    <div class="listItem">
+                        <label style="width:80px">开发密码:</label>{{enterpriseInfo.devSecret}}
+                    </div>
+                </div>
             </div>
         </el-card>
         <el-card class="box-card" style="margin-top:15px">
@@ -79,9 +103,9 @@
         <el-dialog :close-on-click-modal="false" title="编辑企业信息" :visible.sync="dialogFormVisible1" width="750px">
             <el-form ref="dataForm" :rules="rules" :model="enterpriseForm" inline label-position="top" label-width="120px" style="width:720px;">
                 <div class="formTit">企业信息</div>
-                <el-form-item label="企业代码" prop="orgCode">
+                <!-- <el-form-item label="企业代码" prop="orgCode">
                     <el-input v-model="enterpriseForm.orgCode" style="width:225px" size="small" placeholder="企业代码" />
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item label="企业名称" prop="name">
                     <el-input v-model="enterpriseForm.name" style="width:225px" size="small" placeholder="企业名称" />
                 </el-form-item>
@@ -91,7 +115,10 @@
                 <el-form-item label="企业识别码" prop="taxRegistrationCertificateNo">
                     <el-input v-model="enterpriseForm.taxRegistrationCertificateNo" style="width:225px" size="small" placeholder="企业识别码" />
                 </el-form-item>
-                <el-form-item label="管理员" prop="staffId">
+                <el-form-item label="默认税率(%)" prop="defaultTaxRate">
+                    <el-input v-model="enterpriseForm.defaultTaxRate" style="width:225px" size="small" placeholder="默认税率" />
+                </el-form-item>
+                <el-form-item label="商城管理员" prop="staffId">
                     <staffList @selectChange="selectChange" :selectId="enterpriseForm.staffId"></staffList>
                 </el-form-item>
                 <el-form-item label="虚拟客户" prop="custId">
@@ -99,9 +126,6 @@
                 </el-form-item>
                 <el-form-item label="选择仓库" prop="warehouseId">
                     <warehouseList @selectChange="selectChange" :selectId="enterpriseForm.warehouseId"></warehouseList>
-                </el-form-item>
-                <el-form-item label="默认税率" prop="defaultTaxRate">
-                    <el-input v-model="enterpriseForm.defaultTaxRate" style="width:225px" size="small" placeholder="默认税率" />
                 </el-form-item>
                 <el-form-item label="申请日期" prop="applicationDate">
                     <el-date-picker :editable="false" v-model="enterpriseForm.applicationDate" type="date" placeholder="申请日期" style="width:225px" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
@@ -113,8 +137,8 @@
                 <el-form-item label="小程序名称" prop="appName">
                     <el-input v-model="enterpriseForm.appName" style="width:225px" size="small" placeholder="小程序名称" />
                 </el-form-item>
-                <el-form-item label="小程序介绍" prop="intro">
-                    <el-input v-model="enterpriseForm.intro" style="width:225px" size="small" placeholder="小程序介绍" />
+                <el-form-item label="小程序缩写" prop="appAbbr">
+                    <el-input v-model="enterpriseForm.appAbbr" style="width:225px" size="small" placeholder="小程序缩写" />
                 </el-form-item>
                 <el-form-item label="小程序一级类目" prop="serviceType1">
                     <el-input v-model="enterpriseForm.serviceType1" style="width:225px" size="small" placeholder="小程序一级类目" />
@@ -127,6 +151,9 @@
                 </el-form-item>
                 <el-form-item label="小程序开发密码" prop="devSecret">
                     <el-input v-model="enterpriseForm.devSecret" style="width:225px" size="small" placeholder="小程序开发密码" />
+                </el-form-item>
+                <el-form-item label="小程序介绍" prop="intro">
+                    <el-input v-model="enterpriseForm.intro" style="width:705px" size="small" placeholder="小程序介绍" />
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer" align="center">
@@ -178,7 +205,8 @@ export default {
                 custId: '',
                 warehouseId: '',
                 appSecret: '',
-                devSecret: ''
+                devSecret: '',
+                appAbbr: ''
             },
             dialogType: 'create',
             inputVisible: false,
@@ -192,6 +220,7 @@ export default {
                 tel: [{ required: true, message: '联系电话不能为空', trigger: 'change' }],
                 taxRegistrationCertificateNo: [{ required: true, message: '企业识别码不能为空', trigger: 'change' }],
                 serviceType1: [{ required: true }],
+                appAbbr: [{ required: true }],
                 serviceType2: [{ required: true }],
                 defaultTaxRate: [{ required: true }],
                 staffId: [{ required: true }],
@@ -299,11 +328,14 @@ export default {
         showCompile() {
             this.dialogFormVisible1 = true
             this.enterpriseForm = deepClone(this.enterpriseInfo)
+            this.enterpriseForm.defaultTaxRate = this.enterpriseForm.defaultTaxRate * 100
         },
         saveInfo() {
             this.$refs.dataForm.validate(valid => {
                 if (valid) {
-                    updateEnterpriseInfo(this.enterpriseForm).then(res => {
+                    var form = deepClone(this.enterpriseForm)
+                    form.defaultTaxRate = form.defaultTaxRate / 100
+                    updateEnterpriseInfo(form).then(res => {
                         this.$message.success('修改成功！')
                         this.getData()
                         this.dialogFormVisible1 = false
@@ -338,6 +370,9 @@ export default {
 /deep/ .el-form-item__label {
     line-height: 30px;
     padding: 0
+}
+/deep/ .el-form-item {
+    margin-bottom: 16px;
 }
 </style>
 <style scoped>
@@ -380,6 +415,6 @@ export default {
     display: inline-block;
     vertical-align: middle;
     margin-right: 3px;
-    width: 80px;
+    width: 100px;
 }
 </style>
