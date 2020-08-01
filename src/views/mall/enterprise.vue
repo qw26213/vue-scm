@@ -61,7 +61,7 @@
         </el-card>
         <el-dialog :close-on-click-modal="false" :title="dialogType==='create'?'添加页签':'编辑页签'" :visible.sync="dialogFormVisible2" width="460px">
             <el-form ref="tabForm" :rules="rules1" :model="tabForm" inline label-position="top" label-width="120px" style="width:420px;">
-                <el-form-item label="页签代码" prop="tabCode">
+                <el-form-item label="页签编码" prop="tabCode">
                     <el-input v-model="tabForm.tabCode" style="width:420px" size="small" placeholder="页签代码" />
                 </el-form-item>
                 <el-form-item label="页签名称" prop="tabName">
@@ -288,8 +288,8 @@ export default {
                             this.$message.success(this.tabForm.id ? '修改成功' : '添加成功')
                             this.getTabsData()
                             this.$nextTick(() => {
-                                this.inputVisible = false;
-                                this.inputValue = '';
+                                this.dialogFormVisible2 = false;
+                                this.getTabsData()
                             })
                         }
                     })
