@@ -104,10 +104,10 @@
                     <el-input v-model="enterpriseForm.defaultTaxRate" style="width:225px" size="small" placeholder="默认税率" />
                 </el-form-item>
                 <el-form-item label="申请日期" prop="applicationDate">
-                    <el-input v-model="enterpriseForm.applicationDate" style="width:225px" size="small" placeholder="申请日期" />
+                    <el-date-picker :editable="false" v-model="enterpriseForm.applicationDate" type="date" placeholder="申请日期" style="width:225px" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
                 </el-form-item>
                 <el-form-item label="正式上线日期" prop="onlineDate">
-                    <el-input v-model="enterpriseForm.onlineDate" style="width:225px" size="small" placeholder="正式上线日期" />
+                    <el-date-picker :editable="false" v-model="enterpriseForm.onlineDate" type="date" placeholder="正式上线日期" style="width:225px" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
                 </el-form-item>
                 <div class="formTit">小程序信息</div>
                 <el-form-item label="小程序名称" prop="appName">
