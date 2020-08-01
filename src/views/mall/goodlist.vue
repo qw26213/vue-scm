@@ -13,7 +13,7 @@
       </el-table-column>
       <el-table-column label="商品图片" min-width="200" align="center">
         <template slot-scope="{row}">
-          <div class="itemUrl":style="{'background-image': 'url('+row.photoUrl+')'}"></div>
+          <div class="itemUrl":style="{'background-image': 'url(' + row.fileUrl + ')'}"></div>
         </template>
       </el-table-column>
       <el-table-column label="规格" align="center">
