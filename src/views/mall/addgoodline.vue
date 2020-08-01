@@ -1,12 +1,14 @@
 <template>
     <div class="formDiv">
         <el-form ref="dataForm" label-width="120px" :rules="rules" :model="goodForm">
-            <el-form-item label="商品名称" prop="itemName">
+            <el-form-item label="商品明细名称" prop="itemName">
                 <el-input v-model="goodForm.itemName"></el-input>
             </el-form-item>
-            <el-form-item label="单价(元)" prop="price1">
-                <el-input v-model="goodForm.price1" style="width:120px"></el-input><span style="padding:0 5px">至</span>
-                <el-input v-model="goodForm.price2" style="width:120px"></el-input>
+            <el-form-item label="原价(元)" prop="stdPrice">
+                <el-input v-model="goodForm.stdPrice" />
+            </el-form-item>
+            <el-form-item label="单价(元)" prop="price">
+                <el-input v-model="goodForm.price" />
             </el-form-item>
             <el-form-item label="单位" prop="uom">
                 <el-input v-model="goodForm.uom"></el-input>
@@ -20,32 +22,17 @@
             <el-form-item label="规格" prop="norms">
                 <el-input v-model="goodForm.norms"></el-input>
             </el-form-item>
-            <el-form-item label="支付类型" prop="paymentType">
-                <el-radio v-model="goodForm.paymentType" :label="0">在线支付</el-radio>
-                <el-radio v-model="goodForm.paymentType" :label="1">货到付款</el-radio>
-            </el-form-item>
-            <el-form-item label="配送类型" prop="deliveryType">
-                <el-radio v-model="goodForm.deliveryType" :label="0">快递</el-radio>
-                <el-radio v-model="goodForm.deliveryType" :label="1">自取</el-radio>
-            </el-form-item>
-            <el-form-item label="配送费(元)" prop="freightAmount1">
-                <el-input v-model="goodForm.freightAmount1" style="width:120px"></el-input><span style="padding:0 5px">至</span>
-                <el-input v-model="goodForm.freightAmount2" style="width:120px"></el-input>
-            </el-form-item>
-            <el-form-item label="所属页签" prop="tabCode">
-                <el-select v-model="goodForm.tabCode">
-                    <el-option v-for="item in tabs" :key="item.id" :value="item.id" :label="item.tabName"></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="商品特性(口味)" prop="def1">
+            <el-form-item label="商品口味(特性)" prop="def1">
                 <el-input v-model="goodForm.def1"></el-input>
             </el-form-item>
-            <el-form-item label="是否主图轮播" prop="isRotate">
-                <el-radio v-model="goodForm.isRotate" :label="1">是</el-radio>
-                <el-radio v-model="goodForm.isRotate" :label="0">否</el-radio>
+            <el-form-item label="商品倍数" prop="multi">
+                <el-input v-model="goodForm.multi"></el-input>
             </el-form-item>
             <el-form-item label="商品序号" prop="seq">
                 <el-input v-model="goodForm.seq"></el-input>
+            </el-form-item>
+            <el-form-item label="配送费(元)" prop="freightAmount">
+                <el-input v-model="goodForm.freightAmount"></el-input>
             </el-form-item>
             <el-form-item label="是否生效" prop="isDisable">
                 <el-radio v-model="goodForm.isDisable" :label="0">是</el-radio>
@@ -74,22 +61,22 @@
             <el-form-item label="销售区域" prop="saleArea">
                 <el-input v-model="goodForm.saleArea"></el-input>
             </el-form-item>
-            <el-form-item label="商品图片" prop="attachment">
+            <el-form-item label="备注" prop="remarks">
+                <el-input v-model="goodForm.remarks"></el-input>
+            </el-form-item>
+            <!-- <el-form-item label="商品图片" prop="attachment">
                 <div v-for="url in srcList1" :key="url.fileUrl" class="itemUrl" :style="{'background-image': 'url('+url.fileUrl+')'}"></div>
                 <div v-if="srcList1.length < 6" class="itemUrl">
                     <i class="el-icon-plus" style="color:#999;font-size:20px"></i>
                     <input type="file" accept="image/gif, image/jpeg, image/jpg, image/png" @change="upLoad($event, 1)">
                 </div>
             </el-form-item>
-            <el-form-item label="详情图片" prop="attachment">
+            <el-form-item label="内容图片" prop="attachment">
                 <div v-for="url in srcList2" :key="url.fileUrl" class="itemUrl" :style="{'background-image': 'url('+url.fileUrl+')'}"></div>
                 <div v-if="srcList2.length < 6" class="itemUrl"><i class="el-icon-plus" style="color:#999;font-size:20px"></i>
                     <input type="file" accept="image/gif, image/jpeg, image/jpg, image/png" @change="upLoad($event, 2)">
                 </div>
-            </el-form-item>
-            <el-form-item label="备注" prop="remarks">
-                <el-input v-model="goodForm.remarks"></el-input>
-            </el-form-item>
+            </el-form-item> -->
         </el-form>
         <div class="tx-c w1200" style="margin-top:20px">
             <el-button class="filter-item" type="default" style="width:90px;" @click="backpage()">取消</el-button>
@@ -100,30 +87,26 @@
 <script>
 import COS from 'cos-js-sdk-v5'
 import { getItemById } from '@/api/basedata'
-import { getTabs, saveGood, getGood } from '@/api/mall'
+import { saveGoodDetail, getGoodDetail } from '@/api/mall'
 import { deepClone } from '@/utils/index'
 export default {
     data() {
         return {
             url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-            itemId: this.$route.query.item_id || '',
+            headerId: this.$route.query.header_id || '',
             goodId: this.$route.query.id || '',
+            itemId: this.$route.query.item_id || '',
             srcList1: [],
             srcList2: [],
             goodForm: {
                 itemId: '',
                 itemName: '',
-                price1: '',
-                price2: '',
+                stdPrice: '',
+                price: '',
                 uom: '',
                 soldQty: '',
                 remainingQty: '',
-                isRotate: 0,
-                paymentType: 1,
-                deliveryType: 0,
-                freightAmount1: '',
-                freightAmount2: '',
-                tabCode: '',
+                freightAmount: '',
                 isDisable: 0,
                 status: 0,
                 effectiveDate: '',
@@ -132,49 +115,35 @@ export default {
                 offlineDate: '',
                 saleArea: '',
                 def1: '',
-                seq: 0,
+                seq: '',
+                multi: 1,
                 remarks: ''
             },
-            tabs: [],
             addressCode: {},
             rules: {
                 itemName: [{ required: true, trigger: 'change' }],
-                price1: [{ required: true, trigger: 'change' }],
+                stdPrice: [{ required: true, trigger: 'change' }],
+                price: [{ required: true, trigger: 'change' }],
                 uom: [{ required: true, trigger: 'change' }],
                 soldQty: [{ required: true, trigger: 'change' }],
                 remainingQty: [{ required: true, trigger: 'change' }],
-                paymentType: [{ required: true, trigger: 'change' }],
-                deliveryType: [{ required: true, trigger: 'change' }],
-                freightAmount1: [{ required: true, trigger: 'change' }],
-                tabCode: [{ required: true, trigger: 'change' }],
+                freightAmount: [{ required: true, trigger: 'change' }],
                 isDisable: [{ required: true, trigger: 'change' }],
                 status: [{ required: true, trigger: 'change' }],
-                isRotate: [{ required: true, trigger: 'change' }],
-                seq: [{ required: true, trigger: 'change' }]
-            },
-            itemQuery: {
-                pageIndex: 1,
-                pageNum: 10,
-                queryParam: { itemCode: '', itemName: '' }
+                seq: [{required:true,trigger:'change'}]
             }
         }
     },
     created() {
-        if (this.$route.query.item_id) {
+        if (this.$route.query.id) {
+            this.getGoodDetailInfo()
+        } else if (this.$route.query.item_id) {
             this.getItemData()
         }
-        if (this.$route.query.id) {
-            this.getGoodInfo()
-        }
-        getTabs().then(res => {
-            if (res.data.errorCode == 0) {
-                this.tabs = res.data.data || []
-            }
-        })
     },
     methods: {
-        getGoodInfo() {
-            getGood({id: this.goodId}).then(res => {
+        getGoodDetailInfo() {
+            getGoodDetail({id: this.goodId}).then(res => {
                 this.goodForm = res.data.data || {}
                 if (this.goodForm.attachmentLine) {
                     this.srcList1 = this.goodForm.attachmentLine.filter(item => item.verticalDirection === 0)
@@ -186,8 +155,8 @@ export default {
             })
         },
         getItemData() {
-            getItemById({id:this.itemId}).then(res => {
-                var goodData = res.data.data || {}
+            getItemById({id: this.$route.query.item_id}).then(res => {
+                var goodData = res.data.data
                 this.goodForm.itemId = goodData.id
                 this.goodForm.itemName = goodData.itemName
                 this.goodForm.uom = goodData.uom
@@ -219,17 +188,18 @@ export default {
             this.$refs.dataForm.validate(valid => {
                 if (valid) {
                     var obj = this.goodForm
-                    saveGood(obj).then(res => {
+                    obj.headerId = this.headerId
+                    saveGoodDetail(obj).then(res => {
                         if (res.data.errorCode == 0) {
-                            this.$message.success('商品添加成功！')
-                            this.$router.replace('/mall/goodlist')
+                            this.$message.success('商品明细添加成功！')
+                            this.$router.replace('/mall/deline?id='+this.$route.query.header_id + '&item_id='+this.$route.query.item_id)
                         }
                     })
                 }
             })
         },
         backpage() {
-            this.$router.replace('/mall/goodlist')
+            this.$router.replace('/mall/deline')
         },
         //上传腾讯云
         uploadFile(obj, file, filetype, imgSize, type) {

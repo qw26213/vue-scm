@@ -13,7 +13,8 @@
       </el-table-column>
       <el-table-column label="商品图片" min-width="200" align="center">
         <template slot-scope="{row}">
-          <div class="itemUrl":style="{'background-image': 'url(' + row.fileUrl + ')'}"></div>
+          <div v-if="row.fileUrl" class="itemUrl":style="{'background-image': 'url(' + row.fileUrl + ')'}"></div>
+          <div v-else class="itemUrl":style="{'background-image': 'url(' + nullImg + ')'}"></div>
         </template>
       </el-table-column>
       <el-table-column label="规格" align="center">
@@ -23,7 +24,7 @@
       </el-table-column>
       <el-table-column label="单价(元)" min-width="100" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.price1 }}</span>
+          <span>{{ row.price1 | Fixed}}~{{row.price2 | Fixed}}</span>
         </template>
       </el-table-column>
       <el-table-column label="单位" align="center">
@@ -44,14 +45,14 @@
       <el-table-column label="操作" align="center" width="230">
         <template slot-scope="{row}">
           <el-button type="default" size="mini" @click="toModify(row.id)">编辑</el-button>
-          <el-button type="primary" size="mini" @click="toDeline(row.id)">明细管理</el-button>
+          <el-button type="primary" size="mini" @click="toDeline(row)">明细管理</el-button>
           <el-button type="danger" size="mini" @click="handleDelete(row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog :close-on-click-modal="false" title="选择商品" :visible.sync="dialogFormVisible" width="540px">
+    <el-dialog :close-on-click-modal="false" title="选择商品" :visible.sync="dialogFormVisible" width="640px">
         <el-table :data="itemData" border fit highlight-current-row style="width: 100%;margin-bottom:10px" size="mini" cell-class-name="trCell">
-            <el-table-column label="商品名称" width="150" align="center">
+            <el-table-column label="商品名称" min-width="150" show-overflow-tooltip>
                 <template slot-scope="{row}">
                     <span>{{row.itemName}}</span>
                 </template>
@@ -80,11 +81,19 @@
 import { getGoodsData, delGoodsById } from '@/api/mall'
 import { getItem } from '@/api/basedata'
 import Pagination from '@/components/Pagination'
+import nullImg from '@/assets/null.png'
 export default {
   name: 'merchantList',
   components: { Pagination },
+  filters: {
+      Fixed(num) {
+          if (!num) { return '0.00' }
+          return parseFloat(num).toFixed(2);
+      }
+  },
   data() {
     return {
+      nullImg: nullImg,
       tableKey: 0,
       itemData: [],
       tableData: null,
@@ -120,8 +129,8 @@ export default {
           this.total = res.data.totalNum
       })
     },
-    toDeline(id) {
-      this.$router.push('/mall/deline?id='+id)
+    toDeline(row) {
+      this.$router.push('/mall/deline?id='+row.id + '&item_id='+row.itemId)
     },
     handAdd() {
       this.dialogFormVisible = true
@@ -139,7 +148,7 @@ export default {
             delGoodsById({ id: row.id }).then(res => {
                 if (res.data.errorCode == 0) {
                     this.$message.success('商品删除成功')
-                    this.getTabsData()
+                    this.getList()
                 } else {
                     this.$message.warning(res.data.msg)
                 }

@@ -61,6 +61,24 @@ const mallRouter = {
             title: '商品明细管理'
         }
     }, {
+        path: 'addgoodline',
+        component: () => import('@/views/mall/addgoodline'),
+        name: 'addgoodline',
+        hidden: true,
+        meta: {
+            roles: ['4220'],
+            title: '新增商品明细'
+        }
+    }, {
+        path: 'modifygoodline',
+        component: () => import('@/views/mall/addgoodline'),
+        name: 'modifygoodline',
+        hidden: true,
+        meta: {
+            roles: ['4220'],
+            title: '编辑商品明细'
+        }
+    }, {
         path: 'order',
         component: () => import('@/views/mall/order'),
         name: 'order',

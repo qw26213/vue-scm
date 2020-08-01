@@ -768,6 +768,14 @@ export function getItem(data) {
   })
 }
 
+export function getItemById(data) {
+  return request({
+    url: '/drp/bd/item/getById',
+    method: 'post',
+    data
+  })
+}
+
 export function saveItem(data) {
   return request({
     url: '/drp/bd/item/save',

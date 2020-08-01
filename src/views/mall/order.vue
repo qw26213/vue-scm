@@ -7,9 +7,10 @@
                 <el-button size="mini" type="text" style="float:right;color:#409EFF;margin-right:15px;" @click="showOrder(item)">查看订单</el-button>
             </div>
             <el-table :key="tableKey" :data="item.salesDetail" fit highlight-current-row :show-header="false" style="width: 100%;">
-                <el-table-column label="商品名称" width="190">
+                <el-table-column label="商品图片" width="190">
                     <template slot-scope="{row}">
-                        <div class="itemUrl" :style="{'background-image': 'url('+row.fileUrl+')'}"></div>
+                        <div v-if="row.fileUrl" class="itemUrl" :style="{'background-image': 'url(' + row.fileUrl + ')'}"></div>
+                        <div v-else class="itemUrl" :style="{'background-image': 'url(' + nullImg + ')'}"></div>
                     </template>
                 </el-table-column>
                 <el-table-column label="商品名称" min-width="120">
@@ -90,6 +91,7 @@
 </template>
 <script>
 import { getOrderData, delOrder, getOrderInfo } from '@/api/mall'
+import nullImg from '@/assets/null.png'
 export default {
     name: 'merchantList',
     filters: {
@@ -100,6 +102,7 @@ export default {
     },
     data() {
         return {
+            nullImg,
             tableKey: 0,
             tableData: [],
             total: 0,
@@ -158,7 +161,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 /deep/.el-dialog__body {
-  padding: 10px 20px 20px!important;
+    padding: 10px 20px 20px!important;
 }
 </style>
 <style scoped>
