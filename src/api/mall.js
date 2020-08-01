@@ -88,6 +88,22 @@ export function getOrderInfo(data) {
     })
 }
 
+export function auditOrder(data) {
+    return request({
+        url: '/drp/mm/salesOrder/auditByHeaderId',
+        method: 'post',
+        data
+    })
+}
+
+export function buildOutboundOrderByHeaderId(data) {
+    return request({
+        url: '/drp/mm/salesOrder/buildOutboundOrderByHeaderId',
+        method: 'post',
+        data
+    })
+}
+
 export function getCustomerData(data) {
     return request({
         url: '/drp/mm/customer/getAll',
