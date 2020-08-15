@@ -132,12 +132,30 @@ const saleRouter = {
             title: '编辑销售配送'
         }
     }, {
-        path: 'saleInvoice',
+        path: 'invoice',
         component: () => import('@/views/sale/invoice'),
         name: 'saleInvoice',
         meta: {
             roles: ['1450'],
             title: '销售发票'
+        }
+    }, {
+        path: 'invoiceAdd',
+        component: () => import('@/views/sale/invoiceAdd'),
+        name: 'invoiceAdd',
+        hidden: true,
+        meta: {
+            roles: ['145010'],
+            title: '新增销售发票'
+        }
+    }, {
+        path: 'invoiceModify',
+        component: () => import('@/views/sale/invoiceAdd'),
+        name: 'invoiceAdd',
+        hidden: true,
+        meta: {
+            roles: ['145020'],
+            title: '编辑销售发票'
         }
     }]
 }

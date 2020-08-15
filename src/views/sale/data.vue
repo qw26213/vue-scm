@@ -78,9 +78,9 @@
                     <span>{{row.receivableAmount|Fixed}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="状态" align="center">
+            <el-table-column label="发票状态" align="center">
                 <template slot-scope="{row}">
-                    <span>{{row.status==1?'已审核':row.status==2?'已生成':'待审核'}}</span>
+                    <span>{{row.statusInvoice==0?'无发票':row.statusInvoice==1?'待开':row.statusInvoice==9?'完成':'订单作废'}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="操作" align="center" width="240">

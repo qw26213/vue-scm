@@ -239,3 +239,61 @@ export function buildDeliverVoucherByHeaderId(data) {
     })
 }
 
+
+//-------------------------------------销售发票----------------------------------------
+
+export function getInvoice(data) {
+    return request({
+        url: '/drp/so/invoice/getResPageData',
+        method: 'post',
+        data
+    })
+}
+
+export function getInvoiceById(id) {
+    return request({
+        url: '/drp/so/invoice/getByHeaderId',
+        method: 'post',
+        data: { id: id }
+    })
+}
+
+export function saveInvoice(data) {
+    return request({
+        url: '/drp/so/invoice/save',
+        method: 'post',
+        data
+    })
+}
+
+export function delInvoice(id) {
+    return request({
+        url: '/drp/so/invoice/deleteByHeaderId',
+        method: 'post',
+        data: { id: id }
+    })
+}
+
+export function auditInvoice(id, date) {
+    return request({
+        url: '/drp/so/invoice/auditByHeaderId',
+        method: 'post',
+        data: { id: id, billDate: date }
+    })
+}
+
+export function buildInvoice(data) {
+    return request({
+        url: '/drp/so/invoice/buildOutboundOrderByHeaderId',
+        method: 'post',
+        data
+    })
+}
+
+export function buildInvoiceVoucherByHeaderId(data) {
+    return request({
+        url: '/drp/so/invoice/buildVoucherByHeaderId',
+        method: 'post',
+        data: data
+    })
+}
