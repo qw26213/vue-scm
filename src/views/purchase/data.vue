@@ -82,8 +82,8 @@
                     <span class="ctrl" v-if="row.status==1" @click="handleScan(row.id)">查看</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
                     <span class="ctrl del" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
-                    <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isWarehousingEntry,row.id,row.warehousingEntryHeaderId)">{{row.isWarehousingEntry==1?'查看':'生成'}}入库单</span>
-                    <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId)">{{row.isJeHeader==1?'查看':'生成'}}采购凭证</span>
+                    <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isWarehousingEntry,row.id,row.warehousingEntryHeaderId)">{{row.isWarehousingEntry==0?'生成':'查看'}}入库单</span>
+                    <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId)">{{row.isJeHeader==0?'生成':'查看'}}采购凭证</span>
                 </template>
             </el-table-column>
         </el-table>
@@ -190,7 +190,7 @@ export default {
         checkItem(id) {
             auditPurchase(id).then(res => {
                 if (res.data.errorCode == 0) {
-                    this.getList();
+                    this.getList()
                     this.$message.success('审核成功！')
                 } else {
                     this.$message.error(res.data.msg)
@@ -198,19 +198,19 @@ export default {
             })
         },
         handleCreateBill(status, id1, id2) {
-            if (status == 1) {
+            if (status !== 0) {
                 this.$router.push('/store/warehousingModify?id=' + id2)
             } else {
-                this.curBillId = id1;
-                this.dialogFormVisible1 = true;
+                this.curBillId = id1
+                this.dialogFormVisible1 = true
             }
         },
         createBill() {
             var obj = { isBillDate: this.isBillDate, id: this.curBillId }
             buildPurchaseEntry(obj).then(res => {
                 if (res.data.errorCode == 0) {
-                    this.dialogFormVisible1 = false;
-                    this.getList();
+                    this.dialogFormVisible1 = false
+                    this.getList()
                     this.$message.success('生成入库单成功！')
                 } else {
                     this.$message.error(res.data.msg)
@@ -220,7 +220,7 @@ export default {
             })
         },
         handleCreateVouter(status, id1, id2) {
-            if (status == 1) {
+            if (status !== 0) {
                 this.$router.push('/voucher/add?id=' + id2)
             } else {
                 this.curBillId = id1;

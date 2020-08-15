@@ -77,9 +77,9 @@
                     <span class="ctrl" v-if="row.status==1" @click="handleScan(row.id)">查看</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
                     <span class="ctrl del" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
-                    <span class="ctrl" v-if="row.status==1&&(row.returnedType==0||row.returnedType==1)" @click="handleCreateBill(row.isOutboundOrderReturned,row.id,row.outboundOrderReturnedHeaderId)">{{row.isOutboundOrderReturned==1?'查看':'生成'}}退货入库单</span>
-                    <span class="ctrl" v-if="row.status==1&&(row.returnedType==2)" @click="handleCreateBill1(row.isOutboundOrderReturned,row.id,row.outboundOrderReturnedHeaderId)">{{row.isOutboundOrderReturned==1?'查看':'生成'}}报损单</span>
-                    <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId)">{{row.isJeHeader==1?'查看':'生成'}}销售退货凭证</span>
+                    <span class="ctrl" v-if="row.status==1&&(row.returnedType==0||row.returnedType==1)" @click="handleCreateBill(row.isOutboundOrderReturned,row.id,row.outboundOrderReturnedHeaderId)">{{row.isOutboundOrderReturned==0?'生成':'查看'}}退货入库单</span>
+                    <span class="ctrl" v-if="row.status==1&&(row.returnedType==2)" @click="handleCreateBill1(row.isOutboundOrderReturned,row.id,row.outboundOrderReturnedHeaderId)">{{row.isOutboundOrderReturned==0?'生成':'查看'}}报损单</span>
+                    <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId)">{{row.isJeHeader==0?'生成':'查看'}}销售退货凭证</span>
                 </template>
             </el-table-column>
         </el-table>
@@ -191,7 +191,7 @@ export default {
             }
         },
         handleCreateBill(status, id1, id2) {
-            if (status == 1) {
+            if (status !== 0) {
                 this.$router.push('/store/outboundOrderReturnedModify?id=' + id2 + '&status=' + status)
             } else {
                 this.curBillId = id1;
@@ -214,7 +214,7 @@ export default {
             });
         },
         handleCreateVouter(status,id1,id2){
-          if(status==1){
+        if (status !== 0) {
             this.$router.push('/voucher/add?id=' + id)
           }else{
             this.curBillId = id1;

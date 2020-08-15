@@ -137,12 +137,14 @@ export default {
                         this.$message.warning("新密码两次输入不一致");
                         return;
                     }
-                    this.pswForm.id = this.id;
+                    this.pswForm.id = this.id
                     updatePSW(this.pswForm).then(res => {
                         if (res.data.errorCode == 0) {
-                            this.dialogFormVisible = false;
-                            this.$message.success("密码修改成功");
-                        } else this.$message.error(res.data.msg);
+                            this.dialogFormVisible = false
+                            this.$message.success("密码修改成功")
+                        } else {
+                            this.$message.error(res.data.msg)
+                        }
                     });
                 }
             });

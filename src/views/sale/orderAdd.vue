@@ -169,7 +169,7 @@
             </el-form>
         </div>
         
-        <div class="tx-c" style="margin-top:15px" v-if="status!=1&&status!=2">
+        <div class="tx-c" style="margin-top:15px" v-if="status!=1 && status!=2">
             <el-button class="filter-item" type="primary" @click="save">保存</el-button>
         </div>
         <el-dialog :close-on-click-modal="false" title="结算方式" :visible.sync="dialogFormVisible" width="392px">
@@ -386,7 +386,7 @@ export default {
                 if (res.data.errorCode == 0) {
                     this.$message.success(this.id == "" ? '新增成功' : '修改成功');
                     this.$store.dispatch('tagsView/delView', this.$route);
-                    this.$router.replace('/sale/order')
+                    this.$router.replace('/sale/saleOrder')
                 } else {
                     this.$message.warning(res.data.msg)
                 }

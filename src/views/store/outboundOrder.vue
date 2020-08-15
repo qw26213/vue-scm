@@ -49,17 +49,19 @@
                     <span>{{row.status==1?'已审核':row.status==2?'已生成':'待审核'}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" width="200">
+            <el-table-column label="操作" align="center" width="240">
                 <template slot-scope="{row}">
                     <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status==0?'编辑':'查看'}}</span>
+                    <span class="ctrl" v-if="row.status==0" @click="handleCompile(row.id,3)">拆分</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
                     <span class="ctrl del" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
-                    <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isSales,row.id,row.salesHeaderId)">{{row.isSales==1?'查看':'生成'}}销售单</span>
+                    <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isSales, row.id, row.salesHeaderId, 1, row.billDate)">{{row.isSales==0?'生成':'查看'}}销售单</span>
+                    <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isDelivery, row.id, row.deliveryHeaderId, 2, row.billDate)">{{row.isDelivery==0?'生成':'查看'}}配送单</span>
                 </template>
             </el-table-column>
         </el-table>
         <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
-        <el-dialog :close-on-click-modal="false" title="请选择销售单日期" :visible.sync="dialogFormVisible" width="400px">
+        <el-dialog :close-on-click-modal="false" :title="type==1?'选择销售单日期':'选择配送单日期'" :visible.sync="dialogFormVisible" width="400px">
             <el-form style="margin-top:30px;text-align:center;">
                 <el-form-item label="" prop="isBillDate">
                     <el-radio v-model="isBillDate" label="0" style="margin-right:10px">当前日期</el-radio>
@@ -68,19 +70,19 @@
             </el-form>
             <div slot="footer" class="dialog-footer" align="center">
                 <el-button type="default" @click="dialogFormVisible = false">取消</el-button>
-                <el-button type="primary" @click="createBill">确定</el-button>
+                <el-button type="primary" @click="type==1 ? createBill() : createBill1()">确定</el-button>
             </div>
         </el-dialog>
     </div>
 </template>
 <script>
-import { getOutboundOrder, delOutboundOrder, auditOutboundOrder, buildOutboundOrder } from '@/api/store';
-import { getNowDate } from '@/utils/auth';
-import staffList from '@/components/selects/staffList';
+import { getOutboundOrder, delOutboundOrder, auditOutboundOrder, buildOutboundOrder, buildDeliveryByHeaderId } from '@/api/store'
+import { getNowDate } from '@/utils/auth'
+import staffList from '@/components/selects/staffList'
 import custList from '@/components/selects/custList';
-import warehouseList from '@/components/selects/warehouseList';
-import truckList from '@/components/selects/truckList';
-import Pagination from '@/components/Pagination';
+import warehouseList from '@/components/selects/warehouseList'
+import truckList from '@/components/selects/truckList'
+import Pagination from '@/components/Pagination'
 export default {
     name: 'outboundOrder',
     components: { Pagination, staffList, custList, warehouseList, truckList },
@@ -88,7 +90,9 @@ export default {
         return {
             tableKey: 0,
             tableData: [],
+            type: 1,
             dialogFormVisible: false,
+            billDate: '',
             total: 0,
             listLoading: true,
             curBillId: '',
@@ -151,12 +155,18 @@ export default {
                 })
             }).catch(()=>{
                 console.log('取消')
-            });
+            })
         },
-        handleCreateBill(status, id1, id2) {
-            if (status == 1) {
-                this.$router.push('/sale/modify?id=' + id2 + '&status=' + status)
+        handleCreateBill(status, id1, id2, type, date) {
+            if (status !== 0) {
+                if (type === 1) {
+                    this.$router.push('/sale/modify?id=' + id2 + '&status=' + status)
+                } else {
+                    this.$router.push('/sale/deliveryModify?id=' + id2 + '&status=' + status)
+                }
             } else {
+                this.type = type
+                this.billDate = date
                 this.curBillId = id1;
                 this.dialogFormVisible = true;
             }
@@ -165,8 +175,8 @@ export default {
             var obj = { isBillDate: this.isBillDate, id: this.curBillId }
             buildOutboundOrder(obj).then(res => {
                 if (res.data.errorCode == 0) {
-                    this.dialogFormVisible = false;
-                    this.getList();
+                    this.dialogFormVisible = false
+                    this.getList()
                     this.$message.success('生成销售单成功')
                 } else {
                     this.$message.error(res.data.msg)
@@ -175,12 +185,26 @@ export default {
                 this.$message.error('生成失败，请稍后重试！')
             });
         },
+        createBill1() {
+            var obj = { isBillDate: this.isBillDate, id: this.curBillId, billDate: this.billDate }
+            buildDeliveryByHeaderId(obj).then(res => {
+                if (res.data.errorCode == 0) {
+                    this.dialogFormVisible = false
+                    this.getList()
+                    this.$message.success('生成配送单成功')
+                } else {
+                    this.$message.error(res.data.msg)
+                }
+            }).catch(() => {
+                this.$message.error('生成失败，请稍后重试！')
+            });
+        },
         handleAdd() {
-            this.$store.dispatch('tagsView/delView', this.$route);
+            this.$store.dispatch('tagsView/delView', this.$route)
             this.$router.push('/store/outboundOrderAdd')
         },
         handleCompile(id, status) {
-            this.$store.dispatch('tagsView/delView', this.$route);
+            this.$store.dispatch('tagsView/delView', this.$route)
             this.$router.push('/store/outboundOrderModify?id=' + id + '&status=' + status)
         },
         handleDel(id) {

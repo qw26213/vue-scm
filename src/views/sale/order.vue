@@ -112,8 +112,8 @@
                     <span class="ctrl" v-if="row.status==1" @click="handleScan(row)">查看</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id, row.billDate)">审核</span>
                     <span class="ctrl del" v-if="row.status==0" @click="handleDel(row.id, row.billDate)">删除</span>
-                    <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isOutboundOrder,row.id,row.outboundOrderHeaderId,row.billDate)">{{row.isOutboundOrder==1?'查看':'生成'}}出库单</span>
-                    <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId,row.billDate)">{{row.isJeHeader==1?'查看':'生成'}}销售凭证</span>
+                    <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isOutboundOrder,row.id,row.outboundOrderHeaderId,row.billDate)">{{row.isOutboundOrder==0?'生成':'查看'}}出库单</span>
+                    <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId,row.billDate)">{{row.isJeHeader==0?'生成':'查看'}}销售凭证</span>
                 </template>
             </el-table-column>
         </el-table>
@@ -169,7 +169,7 @@ export default {
                 pageIndex: 1,
                 pageNum: 20,
                 queryParam: {
-                    billDate1: '2020-06-01',
+                    billDate1: getNowDate(),
                     billDate2: getNowDate(),
                     billNo: '',
                     status: '',
@@ -228,7 +228,7 @@ export default {
             }
         },
         handleCreateBill(status, id1, id2, billDate) {
-            if (status == 1) {
+            if (status !== 0) {
                 this.$router.push('/store/outboundOrderModify?id=' + id2 + '&status=' + status)
             } else {
                 this.curBillId = id1;
@@ -262,7 +262,7 @@ export default {
             this.$router.push('/sale/detail?id=' + row.id + '&billDate=' + row.billDate)
         },
         handleCreateVouter(status, id1, id2, billDate) {
-            if (status == 1) {
+            if (status !== 0) {
                 this.$router.push('/voucher/add?id=' + id2)
             } else {
                 this.curBillId = id1

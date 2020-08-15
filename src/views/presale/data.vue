@@ -75,7 +75,7 @@
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
                     <span class="ctrl del" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
                     <span class="ctrl" v-if="row.status==1&&row.balance>0" @click="handBuildBill(row.id)">退款</span>
-                    <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId)">{{row.isJeHeader==1?'查看':'生成'}}预收凭证</span>
+                    <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId)">{{row.isJeHeader==0?'生成':'查看'}}预收凭证</span>
                 </template>
             </el-table-column>
         </el-table>
@@ -195,7 +195,7 @@ export default {
             })
         },
         handleCreateVouter(status, id1, id2) {
-            if (status == 1) {
+            if (status !== 0) {
                 this.$router.push('/voucher/add?id=' + id2)
             } else {
                 this.curBillId = id1

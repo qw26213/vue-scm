@@ -5,7 +5,8 @@
                 <span>订单号：{{item.billNo}}</span>
                 <el-button size="mini" type="text" style="float:right;color:#F56C6C;" @click="deleteOrder(item)">删除</el-button>
                 <el-button size="mini" type="text" style="float:right;color:#409EFF;margin-right:15px;" @click="showOrder(item)">查看订单</el-button>
-                <el-button v-if="item.status===1" size="mini" type="text" style="float:right;color:#409EFF;margin-right:5px;" @click="toBuildBill(item)">{{item.isOutboundOrder==1?'查看':'生成'}}出库单</el-button>
+                <el-button v-if="item.status===1" size="mini" type="text" style="float:right;color:#409EFF;margin-right:5px;" @click="toBuildBill(item.deliveryType, item, 2)">{{item.deliveryType==0?'生成':'查看'}}配送单</el-button>
+                <el-button v-if="item.status===1" size="mini" type="text" style="float:right;color:#409EFF;margin-right:5px;" @click="toBuildBill(item.isOutboundOrder, item, 1)">{{item.isOutboundOrder==0?'生成':'查看'}}出库单</el-button>
                 <el-button v-if="item.status===0" size="mini" type="text" style="float:right;color:#409EFF;margin-right:5px;" @click="toAuditOrder(item)">审核</el-button>
             </div>
             <el-table :key="tableKey" :data="item.salesDetail" fit highlight-current-row :show-header="false" style="width: 100%;">
@@ -98,13 +99,13 @@
             </el-form>
             <div slot="footer" class="dialog-footer" align="center">
                 <el-button type="default" @click="dialogFormVisible2 = false">取消</el-button>
-                <el-button type="primary" @click="createBill">确定</el-button>
+                <el-button type="primary" @click="type === 1 ? createBill() : createBill1()">确定</el-button>
             </div>
         </el-dialog>
     </div>
 </template>
 <script>
-import { getOrderData, delOrder, getOrderInfo, auditOrder, buildOutboundOrderByHeaderId } from '@/api/mall'
+import { getOrderData, delOrder, getOrderInfo, auditOrder, buildOutboundOrderByHeaderId, buildDeliveryByHeaderId } from '@/api/mall'
 import nullImg from '@/assets/null.png'
 export default {
     name: 'merchantList',
@@ -119,6 +120,7 @@ export default {
             nullImg,
             tableKey: 0,
             isBillDate: 0,
+            type: 1,
             curBillId: '',
             curBillDate: '',
             tableData: [],
@@ -192,10 +194,29 @@ export default {
                 this.$message.error('生成失败，请稍后重试！')
             });
         },
-        toBuildBill(row) {
-            if (row.isOutboundOrder==1) {
-                this.$router.push('/store/outboundOrderModify?id=' + row.outboundOrderHeaderId + '&status=1')
+        createBill1() {
+            var obj = { isBillDate: this.isBillDate, id: this.curBillId, billDate: this.curBillDate }
+            buildDeliveryByHeaderId(obj).then(res => {
+                if (res.data.errorCode == 0) {
+                    this.dialogFormVisible2 = false;
+                    this.getList();
+                    this.$message.success('生成配送单成功')
+                } else {
+                    this.$message.warning(res.data.msg)
+                }
+            }).catch(() => {
+                this.$message.error('生成失败，请稍后重试！')
+            });
+        },
+        toBuildBill(row, type) {
+            if (row.isOutboundOrder !==0 ) {
+                if (type === 1) {
+                    this.$router.push('/store/outboundOrderModify?id=' + row.outboundOrderHeaderId + '&status=1')
+                } else {
+                    this.$router.push('/sale/deliveryModify?id=' + row.deliveryHeaderId + '&status=1')
+                }
             } else {
+                this.type = type
                 this.dialogFormVisible2 = true
                 this.curBillId = row.id
                 this.curBillDate = row.billDate

@@ -28,7 +28,7 @@
             </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="{row}">
-                    <el-button type="primary" size="mini" @click="showAssign(row)">查看权限</el-button>
+                    <el-button type="primary" size="mini" @click="showAssign(row)">编辑权限</el-button>
                     <el-button v-if="row.isSystem !=1" type="default" size="mini" @click="handleCompile(row)">编辑</el-button>
                     <el-button v-if="row.isSystem !=1" type="danger" size="mini" @click="handleDel(row.id)">删除</el-button>
                 </template>
@@ -51,20 +51,6 @@
                 <el-button @click="dialogFormVisible1 = false">取消</el-button>
                 <el-button type="primary" @click="save()">确定</el-button>
             </div>
-        </el-dialog>
-        <el-dialog :close-on-click-modal="false" title="" :visible.sync="dialogFormVisible2" width="500px">
-            <el-table ref="dataForm" :data="funcList" border fit highlight-current-row size="mini">
-                <el-table-column label="权限代码">
-                    <template slot-scope="{row}">
-                        <span>{{ row.funcCode }}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column label="权限名称">
-                    <template slot-scope="{row}">
-                        <span>{{ row.funcName }}</span>
-                    </template>
-                </el-table-column>
-            </el-table>
         </el-dialog>
         <funcAssign ref="assign" :tree-data="treeData" :option="assignOption" />
     </div>
@@ -95,7 +81,6 @@ export default {
                 isDisable: 0
             },
             dialogFormVisible1: false,
-            dialogFormVisible2: false,
             dialogStatus: '',
             rules: {
                 roleName: [{ required: true, message: '角色名称不能为空', trigger: 'change' }],

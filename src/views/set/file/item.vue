@@ -156,6 +156,12 @@
                     <el-form-item label="特性" prop="def1" style="margin-right:20px">
                         <el-input v-model="temp.def1" placeholder="如口味" />
                     </el-form-item>
+                    <el-form-item label="主条码" prop="barcode">
+                        <el-input v-model="temp.barcode" placeholder="主条码" />
+                    </el-form-item>
+                    <el-form-item label="辅条码" prop="subBarcode" style="margin-right:20px">
+                        <el-input v-model="temp.subBarcode" placeholder="辅条码" />
+                    </el-form-item>
                     <el-form-item label="显示用计量单位" prop="measSale" label-width="120px">
                         <el-select v-model="temp.measSale" style="width:175px" class="filter-item">
                             <el-option label="主单位" :value="0"></el-option>

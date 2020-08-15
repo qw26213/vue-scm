@@ -65,6 +65,11 @@
                     <input type="text" class="inputCell tx-r" v-model="scope.row.qty" @change="calculate(scope.$index)">
                 </template>
             </el-table-column>
+            <el-table-column v-if="status==3" label="拆分数量" width="90">
+                <template slot-scope="scope">
+                    <input type="text" class="inputCell tx-r" v-model="scope.row.qty1" @change="calculate(scope.$index)">
+                </template>
+            </el-table-column>
             <el-table-column label="单价(元)">
                 <template slot-scope="scope">
                     <input type="text" class="inputCell tx-r" v-model="scope.row.price" @change="calculate(scope.$index)">
@@ -122,6 +127,18 @@
         <div class="tx-c" style="margin-top:15px" v-if="status!=1&&status!=2">
             <el-button class="filter-item" type="primary" @click="save">保存</el-button>
         </div>
+        <el-dialog :close-on-click-modal="false" title="选择拆分方式" :visible.sync="dialogFormVisible" width="400px">
+            <el-form style="margin-top:30px;text-align:center;">
+                <el-form-item label="">
+                    <el-radio v-model="splitBillType" :label="0" style="margin-right:10px">拆分</el-radio>
+                    <el-radio v-model="splitBillType" :label="1">复制</el-radio>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer" align="center">
+                <el-button type="default" @click="dialogFormVisible = false">取消</el-button>
+                <el-button type="primary" @click="saveAndFen">确定</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -142,6 +159,8 @@ export default {
             id: '',
             status: this.$route.query.status,
             tableData: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
+            splitBillType: 0,
+            dialogFormVisible: false,
             temp: {
                 remarks:'',
                 billDate:getNowDate(),
@@ -171,7 +190,10 @@ export default {
                     this.tableData = addNullObj(res.data.data.outboundOrderLine);
                     for(var i=0;i<this.tableData.length;i++) {
                         if(this.tableData[i].taxRate < 1) {
-                            this.tableData[i].taxRate = this.tableData[i].taxRate * 100
+                            this.$set(this.tableData[i], 'taxRate', this.tableData[i].taxRate * 100)
+                        }
+                        if (this.status == 3) {
+                            this.$set(this.tableData[i], 'qty1', this.tableData[i].qty)
                         }
                     }
                     
@@ -228,19 +250,31 @@ export default {
             }
         },
         save() {
+            if (this.status == 3) {
+                this.dialogFormVisible = true
+                return
+            }
+            this.saveAndUpdate()
+        },
+        saveAndUpdate() {
             this.temp.id = this.id;
             this.temp.outboundOrderLine = deleteEmptyProp(this.tableData);
             saveOutboundOrder(this.temp).then(res => {
                 if (res.data.errorCode == 0) {
-                    this.$message.success(this.temp.id==""?'新增成功':'修改成功');
-                    this.$store.dispatch('tagsView/delView', this.$route);
-                    this.$router.replace('/store/outboundOrder');
+                    this.dialogFormVisible = false
+                    this.$message.success(this.temp.id==''?'新增成功':'保存成功')
+                    this.$store.dispatch('tagsView/delView', this.$route)
+                    this.$router.replace('/store/outboundOrder')
                 } else {
                     this.$message.error(res.data.msg)
                 }
             }).catch(()=>{
                 this.$message.error('保存失败，请稍后重试！')
             })
+        },
+        saveAndFen() {
+            this.temp.splitBillType = this.splitBillType
+            this.saveAndUpdate()
         }
     }
 }

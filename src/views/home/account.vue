@@ -136,10 +136,7 @@
                 </el-form-item>
                 <el-form-item label="角色" prop="roleId">
                     <el-select v-model="temp2.roleId" style="width:185px" :disabled="userInfo.isAdmin == 0">
-                        <el-option value="888888" label="审核会计"></el-option>
-                        <el-option value="888887" label="制单会计"></el-option>
-                        <el-option value="888889" label="企业出纳"></el-option>
-                        <el-option value="888890" label="企业老板"></el-option>
+                        <el-option v-for="v in rolelist" :key="v.id" :label="v.roleName" :value="v.roleCode" />
                     </el-select>
                 </el-form-item>
                 <el-form-item label="状态" prop="status">
@@ -195,7 +192,8 @@
 </template>
 <script>
 import CountTo from 'vue-count-to'
-import { getmanagementInfo, getMapById, getUserList, registerLoadArea, registerLoadIndustry, registerLoadTaxfilingcategory, updateInfo, closeAccount, resetBook, saveUser, updatePSW } from '@/api/user'
+import { getmanagementInfo, getMapById, getUserList, registerLoadArea, registerLoadIndustry, registerLoadTaxfilingcategory } from '@/api/user'
+import { updateInfo, closeAccount, resetBook, saveUser, updatePSW, getRole } from '@/api/user'
 import { getStaff } from '@/api/basedata'
 import { getNowDate } from '@/utils/index'
 export default {
@@ -208,6 +206,7 @@ export default {
             dialogStatus: 'create',
             managementInfo: {},
             staffList: [],
+            rolelist: [],
             userInfo: {},
             temp1: {},
             rules1: {
@@ -287,6 +286,9 @@ export default {
         })
         getStaff().then(res => {
             this.staffList = res.data.data
+        })
+        getRole({ page: 1}).then(res => {
+            this.rolelist = res.data.data
         })
     },
     methods: {

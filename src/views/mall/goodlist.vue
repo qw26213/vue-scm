@@ -22,6 +22,11 @@
           <span>{{ row.norms }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="特性(口味)" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.def1 }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="单价(元)" min-width="100" align="center">
         <template slot-scope="{row}">
           <span>{{ row.price1 | Fixed}}~{{row.price2 | Fixed}}</span>

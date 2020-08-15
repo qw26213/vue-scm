@@ -82,8 +82,8 @@
                     <span class="ctrl" v-if="row.status==1" @click="handleScan(row.id)">查看</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
                     <span class="ctrl del" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
-                    <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isWarehousingEntryReturned,row.id,row.warehousingEntryReturnedHeaderId)">{{row.isWarehousingEntryReturned==1?'查看':'生成'}}退货出库单</span>
-                    <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId)">{{row.isJeHeader==1?'查看':'生成'}}退货凭证</span>
+                    <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isWarehousingEntryReturned,row.id,row.warehousingEntryReturnedHeaderId)">{{row.isWarehousingEntryReturned==0?'生成':'查看'}}退货出库单</span>
+                    <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId)">{{row.isJeHeader==0?'生成':'查看'}}退货凭证</span>
                 </template>
             </el-table-column>
         </el-table>
@@ -198,7 +198,7 @@ export default {
             })
         },
         handleCreateBill(status, id1, id2) {
-            if (status == 1) {
+            if (status !== 0) {
                 this.$router.push('/store/warehousingReturnedModify?id=' + id2)
             } else {
                 this.curBillId = id1;
@@ -218,7 +218,7 @@ export default {
             })
         },
         handleCreateVouter(status, id1, id2) {
-            if (status == 1) {
+            if (status !== 0) {
                 this.$router.push('/voucher/add?id=' + id2)
             } else {
                 this.curBillId = id1;

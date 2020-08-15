@@ -264,6 +264,14 @@ export function buildOutboundOrder(data) {
     })
 }
 
+export function buildDeliveryByHeaderId(data) {
+    return request({
+        url: '/drp/ic/outboundOrder/buildDeliveryByHeaderId',
+        method: 'post',
+        data
+    })
+}
+
 // ------采购退货入库----
 export function getOutboundOrderReturned(data) {
     return request({

@@ -58,7 +58,7 @@
                     <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status==0?'编辑':'查看'}}</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
                     <span class="ctrl del" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
-                    <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isPurchase,row.id,row.purchaseHeaderId)">{{row.isPurchase==1?'查看':'生成'}}进货单</span>
+                    <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isPurchase,row.id,row.purchaseHeaderId)">{{row.isPurchase==0?'生成':'查看'}}进货单</span>
                 </template>
             </el-table-column>
         </el-table>
@@ -151,7 +151,7 @@ export default {
             });
         },
         handleCreateBill(status, id1, id2) {
-            if (status == 1) {
+          if (status !== 0) {
                 this.$router.push('/purchase/modify?id=' + id2 + '&status=' + status)
             } else {
                 this.curBillId = id1;

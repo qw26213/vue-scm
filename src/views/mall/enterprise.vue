@@ -159,7 +159,7 @@
                     <el-input v-model="enterpriseForm.devSecret" style="width:225px" size="small" placeholder="小程序开发密码" />
                 </el-form-item>
                 <el-form-item label="小程序介绍" prop="intro">
-                    <el-input v-model="enterpriseForm.intro" style="width:705px" size="small" placeholder="小程序介绍" />
+                    <el-input v-model="enterpriseForm.intro" type="textarea" rows="2" resize="none" style="width:705px" size="small" placeholder="小程序介绍" />
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer" align="center">

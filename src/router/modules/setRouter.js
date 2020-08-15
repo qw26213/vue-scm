@@ -73,7 +73,7 @@ const setRouter = {
         name: 'baseFile',
         meta: {
             roles: ['6020'],
-            title: '基础档案'
+            title: '基本档案'
         },
         children: [{
             path: 'supplier',
