@@ -24,7 +24,9 @@ module.exports = {
   assetsDir: 'static',
   // lintOnSave: process.env.NODE_ENV !== 'production',
   lintOnSave: false,
-  productionSourceMap: false,
+  // productionSourceMap: false,
+  // productionGzip: true,
+  productionGzipExtensions: ['js', 'css'],
   devServer: {
     port: '8000',
     open: true,
@@ -34,8 +36,8 @@ module.exports = {
     },
     proxy: {
       '/drp': {
-        target: 'http://49.232.47.16/',
-        // target: 'http://192.168.10.24/',
+        // target: 'http://49.232.47.16/',
+        target: 'http://192.168.10.24/',
         ws: true,
         changeOrigin: true,// 如果接口跨域，需要进行这个参数配置
         // secure: false,// 如果是https接口，需要配置这个参数
@@ -54,6 +56,17 @@ module.exports = {
         template: process.env.NODE_ENV === 'development'?'public/index.dev.html':'public/index.html',
         inject: true
       })
+      // new CompressionWebpackPlugin({
+      //   asset: '[path].gz[query]',
+      //   algorithm: 'gzip',
+      //   test: new RegExp(
+      //     '\\.(' +
+      //     config.build.productionGzipExtensions.join('|') +
+      //     ')$'
+      //   ),
+      //   threshold: 10240,
+      //   minRatio: 0.8
+      // })
     ],
     resolve: {
       alias: {
@@ -65,24 +78,13 @@ module.exports = {
     config.plugins.delete('preload') // TODO: need test
     config.plugins.delete('prefetch') // TODO: need test
     config.module.rule('svg').exclude.add(resolve('src/icons')).end()
-    config.module
-      .rule('icons')
-      .test(/\.svg$/)
-      .include.add(resolve('src/icons'))
-      .end()
-      .use('svg-sprite-loader')
-      .loader('svg-sprite-loader')
-      .options({
+    config.module.rule('icons').test(/\.svg$/).include.add(resolve('src/icons')).end().use('svg-sprite-loader').loader('svg-sprite-loader').options({
         symbolId: 'icon-[name]'
-      })
-      .end()
+      }).end()
     config.module.rule('vue').use('vue-loader').loader('vue-loader').tap(options => {
         options.compilerOptions.preserveWhitespace = true
         return options
       }).end()
-    config
-      .when(process.env.NODE_ENV === 'development',
-        config => config.devtool('cheap-source-map')
-      )
+    config.when(process.env.NODE_ENV === 'development', config => config.devtool('cheap-source-map'))
   }
 }

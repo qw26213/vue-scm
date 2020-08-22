@@ -157,6 +157,32 @@ const saleRouter = {
             roles: ['145020'],
             title: '编辑销售发票'
         }
+    }, {
+        path: 'everyday',
+        component: () => import('@/views/sale/everyday'),
+        name: 'saleInvoice',
+        meta: {
+            roles: ['1450'],
+            title: '销售日结'
+        }
+    }, {
+        path: 'everydayAdd',
+        component: () => import('@/views/sale/everydayAdd'),
+        name: 'everydayAdd',
+        hidden: true,
+        meta: {
+            roles: ['145010'],
+            title: '新增销售日结'
+        }
+    }, {
+        path: 'everydayModify',
+        component: () => import('@/views/sale/everydayAdd'),
+        name: 'everydayAdd',
+        hidden: true,
+        meta: {
+            roles: ['145020'],
+            title: '编辑销售日结'
+        }
     }]
 }
 

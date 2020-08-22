@@ -241,7 +241,6 @@ export function buildDeliverVoucherByHeaderId(data) {
 
 
 //-------------------------------------销售发票----------------------------------------
-
 export function getInvoice(data) {
     return request({
         url: '/drp/so/invoice/getResPageData',
@@ -284,16 +283,73 @@ export function auditInvoice(id, date) {
 
 export function buildInvoice(data) {
     return request({
-        url: '/drp/so/invoice/buildOutboundOrderByHeaderId',
+        url: '/drp/so/invoice/buildInvoiceByHeaderId',
         method: 'post',
         data
     })
 }
 
-export function buildInvoiceVoucherByHeaderId(data) {
+//-------------------------------------销售日结----------------------------------------
+export function getEverydayTotal(data) {
     return request({
-        url: '/drp/so/invoice/buildVoucherByHeaderId',
+        url: '/drp/so/everydayTotal/getResPageData',
         method: 'post',
-        data: data
+        data
+    })
+}
+
+export function getEverydayTotalById(id) {
+    return request({
+        url: '/drp/so/everydayTotal/getById',
+        method: 'post',
+        data: { id: id }
+    })
+}
+
+export function queryDataByStaffId(data) {
+    return request({
+        url: '/drp/so/everydayTotal/queryDataByStaffId',
+        method: 'post',
+        data
+    })
+}
+
+export function saveEverydayTotal(data) {
+    return request({
+        url: '/drp/so/everydayTotal/save',
+        method: 'post',
+        data
+    })
+}
+
+export function delEverydayTotal(id) {
+    return request({
+        url: '/drp/so/everydayTotal/deleteByHeaderId',
+        method: 'post',
+        data: { id }
+    })
+}
+
+export function auditEverydayTotal(id) {
+    return request({
+        url: '/drp/so/everydayTotal/auditByHeaderId',
+        method: 'post',
+        data: { id }
+    })
+}
+
+export function confirmEverydayTotal(id) {
+    return request({
+        url: '/drp/so/everydayTotal/confirmByHeaderId',
+        method: 'post',
+        data: { id }
+    })
+}
+
+export function buildEverydayTotal(data) {
+    return request({
+        url: '/drp/so/everydayTotal/buildeverydayTotalByHeaderId',
+        method: 'post',
+        data
     })
 }
