@@ -24,9 +24,9 @@ module.exports = {
   assetsDir: 'static',
   // lintOnSave: process.env.NODE_ENV !== 'production',
   lintOnSave: false,
-  // productionSourceMap: false,
+  productionSourceMap: false,
   // productionGzip: true,
-  productionGzipExtensions: ['js', 'css'],
+  // productionGzipExtensions: ['js', 'css'],
   devServer: {
     port: '8000',
     open: true,
