@@ -8,9 +8,6 @@
                 <el-form-item label="单据号:" prop="billNo">
                     <el-input size="mini" v-model="temp.billNo" placeholder="单据号" disabled />
                 </el-form-item>
-                <el-form-item label="客户:" prop="custId">
-                    <custList @selectChange="selectChange" keyType="custId" :selectId="temp.custId" :selectName="temp.custName"></custList>
-                </el-form-item>
                 <el-form-item label="盘点类型:" prop="inventoryType">
                     <el-select v-model="temp.inventoryType" size="mini">
                         <el-option label="报损" :value="0"></el-option>
@@ -39,6 +36,13 @@
         </div>
         <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini" cell-class-name="tdCell">
             <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
+            <el-table-column label="仓库选择" width="160">
+                <template slot-scope="scope">
+                  <el-select v-model="scope.row.warehouseId" style="border:none;width: 100%;display: block;" disabled placeholder="" size="mini">
+                      <el-option v-for="item in warehouseList" :label="item.warehouseName" :value="item.id"></el-option>
+                  </el-select>
+                </template>
+            </el-table-column>
             <el-table-column label="商品名称" width="160">
                 <template slot-scope="scope">
                     <itemList :selectCode="scope.row.itemCode" :selectId="scope.row.itemId" :index="scope.$index" :item-list="item_list" @changeVal="changeVal" />
@@ -47,13 +51,6 @@
             <el-table-column label="商品代码" width="160">
                 <template slot-scope="{row}">
                     <input type="text" class="inputCell" v-model="row.itemCode" disabled>
-                </template>
-            </el-table-column>
-            <el-table-column label="仓库" width="160">
-                <template slot-scope="scope">
-                  <el-select v-model="scope.row.warehouseId" style="border:none;width: 100%;display: block;" placeholder="" size="mini">
-                      <el-option v-for="item in warehouseList" :label="item.warehouseName" :value="item.id"></el-option>
-                  </el-select>
                 </template>
             </el-table-column>
             <el-table-column label="规格">
@@ -68,17 +65,7 @@
             </el-table-column>
             <el-table-column label="批号">
                 <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-r" v-model="row.batchNo">
-                </template>
-            </el-table-column>
-            <el-table-column label="数量">
-                <template slot-scope="scope">
-                    <input type="text" class="inputCell tx-r" v-model="scope.row.qty" @change="calculate(scope.$index)">
-                </template>
-            </el-table-column>
-            <el-table-column label="实际数量">
-                <template slot-scope="scope">
-                    <input type="text" class="inputCell tx-r" v-model="scope.row.actualQty" @change="calculate(scope.$index)">
+                    <input type="text" class="inputCell tx-r" v-model="row.batchNo" disabled>
                 </template>
             </el-table-column>
             <el-table-column label="账簿数量">
@@ -86,19 +73,14 @@
                     <input type="text" class="inputCell tx-r" v-model="scope.row.bookQty" disabled>
                 </template>
             </el-table-column>
-            <el-table-column label="税前单价(元)">
+            <el-table-column label="实际数量">
                 <template slot-scope="scope">
-                    <input type="text" class="inputCell tx-r" v-model="scope.row.price" @change="calculate(scope.$index)">
+                    <input type="text" class="inputCell tx-r" v-model="scope.row.actualQty" disabled @change="calculate(scope.$index)">
                 </template>
             </el-table-column>
-            <el-table-column label="税前金额">
-                <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-r" v-model="row.amount" disabled>
-                </template>
-            </el-table-column>
-            <el-table-column label="价税合计">
-                <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-r" v-model="row.vatAmount" disabled>
+            <el-table-column label="盘盈盘亏数量">
+                <template slot-scope="scope">
+                    <input type="text" class="inputCell tx-r" v-model="scope.row.qty" @change="calculate(scope.$index)">
                 </template>
             </el-table-column>
         </el-table>
@@ -127,6 +109,7 @@
             <el-form ref="dataForm" :rules="rules" :model="form" label-position="right" label-width="88px" style="width:400px; margin:10px 25px;">
                 <el-form-item label="选择仓库:" prop="warehouseId">
                     <el-select v-model="form.warehouseId" style="width:240px" placeholder="选择仓库" size="small">
+                        <el-option label="全部" value="null"></el-option>
                         <el-option v-for="item in warehouseList" :label="item.warehouseName" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
@@ -177,9 +160,7 @@ export default {
                 statusInvoice: 1,
                 billNo: '',
                 bizTypeId: '',
-                custId: '',
-                custName: '',
-                soldToCustId: '',
+                inventoryType: 1,
                 warehouseId: '',
                 warehouseName: '',
                 truckId: '',

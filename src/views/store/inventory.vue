@@ -26,11 +26,6 @@
                     <span>{{row.billNo}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="客户">
-                <template slot-scope="{row}">
-                    <span>{{row.custName}}</span>
-                </template>
-            </el-table-column>
             <el-table-column label="业务员">
                 <template slot-scope="{row}">
                     <span>{{row.staffName}}</span>
@@ -39,11 +34,6 @@
             <el-table-column label="仓库">
                 <template slot-scope="{row}">
                     <span>{{row.warehouseName}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="车辆">
-                <template slot-scope="{row}">
-                    <span>{{row.truckName}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="成本金额" align="center">
@@ -69,11 +59,6 @@
             <el-table-column label="价税合计" align="right">
                 <template slot-scope="{row}">
                     <span>{{row.itemAmount|Fixed}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="返利金额" align="right">
-                <template slot-scope="{row}">
-                    <span>{{row.rebateAmount|Fixed}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="状态" align="center">
