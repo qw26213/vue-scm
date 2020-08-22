@@ -183,32 +183,6 @@ const saleRouter = {
             roles: ['145020'],
             title: '编辑销售日结'
         }
-    }, {
-        path: 'inventory',
-        component: () => import('@/views/sale/inventory'),
-        name: 'saleInventory',
-        meta: {
-            roles: ['1450'],
-            title: '盘点单'
-        }
-    }, {
-        path: 'inventoryAdd',
-        component: () => import('@/views/sale/inventoryAdd'),
-        name: 'inventoryAdd',
-        hidden: true,
-        meta: {
-            roles: ['145010'],
-            title: '新增销售日结'
-        }
-    }, {
-        path: 'inventoryModify',
-        component: () => import('@/views/sale/inventoryAdd'),
-        name: 'inventoryAdd',
-        hidden: true,
-        meta: {
-            roles: ['145020'],
-            title: '编辑销售日结'
-        }
     }]
 }
 

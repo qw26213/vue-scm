@@ -1,13 +1,13 @@
 <template>
-  <el-select v-model="curId" filterable remote reserve-keyword :remote-method="remoteGet" size="mini" class="filter-item custInput" @focus="searchThis($event)" @change="changeVal" placeholder="">
-    <el-option v-for="item in itemList" :key="item.id" :label="item.itemCode" :value="item.id" />
+  <el-select v-model="curId" style="border:none;width: 100%;display: block;" placeholder="" size="mini" @change="changeVal">
+      <el-option v-for="item in datalist" :label="item.warehouseName" :value="item.id"></el-option>
   </el-select>
 </template>
 <script>
 import { getItem } from '@/api/basedata'
 export default {
     name: 'list',
-    props: ['selectId','index','selectCode'],
+    props: ['selectId','index','selectCode', 'datalist'],
     data(){
       return {
         listQuery: {

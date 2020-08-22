@@ -8,9 +8,6 @@
                 <el-form-item label="单据号:">
                     <span>{{temp.billNo}}</span>
                 </el-form-item>
-                <el-form-item label="业务类型:">
-                    <span>{{temp.bizTypeName}}</span>
-                </el-form-item>
                 <el-form-item label="客户:">
                     <span>{{temp.custName}}</span>
                 </el-form-item>
@@ -42,14 +39,10 @@
                     <span>{{temp.rebateAmount}}</span>
                 </el-form-item>
                 <el-form-item label="发票:">
-                    <span v-if="temp.statusInvoice === 0">不开票</span>
-                    <span v-if="temp.statusInvoice === 1">待开票</span>
-                    <span v-if="temp.statusInvoice === 9">已开发票</span>
+                    <span>{{ temp.statusInvoice == '0' ? '不开票' : temp.statusInvoice == '1' ? '待开票' : temp.statusInvoice == '9' ? '已开发票' : '' }}</span>
                 </el-form-item>
                 <el-form-item label="退款类型:">
-                    <span v-if="temp.returnedType === 0">退款退货</span>
-                    <span v-if="temp.returnedType === 1">退换货</span>
-                    <span v-if="temp.returnedType === 2">只退款</span>
+                    <span>{{ temp.returnedType == '0' ? '退款退货' : temp.returnedType == '1' ? '退换货' : temp.returnedType == '2' ? '只退款' : '' }}</span>
                 </el-form-item>
             </el-form>
         </div>
@@ -172,6 +165,8 @@ export default {
                 truckName: '',
                 staffId: '',
                 paymentTypeId: '',
+                returnedType: '',
+                statusInvoice: '',
                 paymentDueDate: '',
                 currPayAmount: 0,
                 itemAmount: 0,

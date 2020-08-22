@@ -7,7 +7,7 @@
 import { getItem } from '@/api/basedata'
 export default {
     name: 'list',
-    props: ['selectId','index','selectCode'],
+    props: ['selectId','index','selectCode', 'itemList'],
     data(){
       return {
         listQuery: {
@@ -26,8 +26,7 @@ export default {
         curSalePriceType: '',
         curCode: "",
         curNorms: "",
-        curUom: "",
-        itemList: []
+        curUom: ""
       }
     },
     watch:{

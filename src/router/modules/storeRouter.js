@@ -165,38 +165,32 @@ const storeRouter = {
                 roles: ['263020'],
                 title: '编辑采购退货出库'
             }
-        // }, {
-        //     path: 'storeAbolish',
-        //     component: () => import('@/views/store/turnover0'),
-        //     name: 'storeAbolish',
-        //     meta: {
-        //         roles: ['2634'],
-        //         title: '报废'
-        //     }
-        // }, {
-        //     path: 'storeTurnover1',
-        //     component: () => import('@/views/store/turnover1'),
-        //     name: 'storeTurnover1',
-        //     meta: {
-        //         roles: ['26'],
-        //         title: '盘亏'
-        //     }
-        // }, {
-        //     path: 'storeTurnover2',
-        //     component: () => import('@/views/store/turnover2'),
-        //     name: 'storeTurnover2',
-        //     meta: {
-        //         roles: ['26'],
-        //         title: '盘盈'
-        //     }
-        // }, {
-        //     path: 'storeTurnover3',
-        //     component: () => import('@/views/store/turnover3'),
-        //     name: 'storeTurnover3',
-        //     meta: {
-        //         roles: ['26'],
-        //         title: '盘点'
-        //     }
+        }, {
+            path: 'inventory',
+            component: () => import ('@/views/store/inventory'),
+            name: 'saleInventory',
+            meta: {
+                roles: ['1450'],
+                title: '盘点单'
+            }
+        }, {
+            path: 'inventoryAdd',
+            component: () => import ('@/views/store/inventoryAdd'),
+            name: 'inventoryAdd',
+            hidden: true,
+            meta: {
+                roles: ['145010'],
+                title: '新增盘点单'
+            }
+        }, {
+            path: 'inventoryModify',
+            component: () => import ('@/views/store/inventoryAdd'),
+            name: 'inventoryAdd',
+            hidden: true,
+            meta: {
+                roles: ['145020'],
+                title: '编辑盘点单'
+            }
         }]
     }
 export default storeRouter;

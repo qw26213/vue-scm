@@ -16,8 +16,7 @@ function getProdExternals() {
   };
 }
 
-const name = defaultSettings.title || 'vue';
-
+const name = defaultSettings.title || 'vue'
 module.exports = {
   publicPath: '',
   outputDir: 'dist',

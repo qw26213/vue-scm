@@ -31,29 +31,39 @@
                     <span>{{row.custName}}</span>
                 </template>
             </el-table-column>
+            <el-table-column label="业务员">
+                <template slot-scope="{row}">
+                    <span>{{row.staffName}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="仓库">
+                <template slot-scope="{row}">
+                    <span>{{row.warehouseName}}</span>
+                </template>
+            </el-table-column>
             <el-table-column label="车辆">
                 <template slot-scope="{row}">
                     <span>{{row.truckName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="付款方式" align="center">
+            <el-table-column label="成本金额" align="center">
                 <template slot-scope="{row}">
-                    <span>{{row.paymentTypeName}}</span>
+                    <span>{{row.wmapAmount}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="付款到期日" width="100" align="center">
+            <el-table-column label="商品金额" width="100" align="center">
                 <template slot-scope="{row}">
-                    <span>{{row.paymentDueDate}}</span>
+                    <span>{{row.itemAmount}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="使用预付" align="right">
+            <el-table-column label="运费" align="right">
                 <template slot-scope="{row}">
-                    <span>{{row.advPayAmount|Fixed}}</span>
+                    <span>{{row.freightAmount|Fixed}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="现结金额" align="right">
+            <el-table-column label="金额合计" align="right">
                 <template slot-scope="{row}">
-                    <span>{{row.currPayAmount|Fixed}}</span>
+                    <span>{{row.sumAmount|Fixed}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="价税合计" align="right">
@@ -71,31 +81,17 @@
                     <span>{{row.status==1?'已审核':row.status==2?'已生成':'待审核'}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" align="left" width="260">
+            <el-table-column label="操作" align="center" width="200">
                 <template slot-scope="{row}">
                     <span class="ctrl" v-if="row.status==0" @click="handleCompile(row.id)">编辑</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleScan(row.id)">查看</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
                     <span class="ctrl del" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
-                    <span class="ctrl" v-if="row.status==1&&(row.returnedType==0||row.returnedType==1)" @click="handleCreateBill(row.isOutboundOrderReturned,row.id,row.outboundOrderReturnedHeaderId)">{{row.isOutboundOrderReturned==0?'生成':'查看'}}退货入库单</span>
-                    <span class="ctrl" v-if="row.status==1&&(row.returnedType==2)" @click="handleCreateBill1(row.isInventory,row.id,row.inventoryId)">{{row.isInventory==0?'生成':'查看'}}报损单</span>
-                    <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId)">{{row.isJeHeader==0?'生成':'查看'}}销售退货凭证</span>
+                    <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId)">{{!row.isJeHeader?'生成':'查看'}}盘点凭证</span>
                 </template>
             </el-table-column>
         </el-table>
         <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
-        <el-dialog :close-on-click-modal="false" title="选择销售退货单日期" :visible.sync="dialogFormVisible1" width="400px">
-            <el-form style="margin-top:30px;text-align:center;">
-                <el-form-item label="" prop="isBillDate">
-                    <el-radio v-model="isBillDate" label="0" style="margin-right:10px">当前日期</el-radio>
-                    <el-radio v-model="isBillDate" label="1">预收单日期</el-radio>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer" align="center">
-                <el-button type="default" @click="dialogFormVisible1 = false">取消</el-button>
-                <el-button type="primary" @click="createBill">确定</el-button>
-            </div>
-        </el-dialog>
         <el-dialog :close-on-click-modal="false" title="请选择凭证日期" :visible.sync="dialogFormVisible2" width="400px">
           <el-form style="margin-top:30px;text-align:center;">
             <el-form-item label="" prop="isBillDate">
@@ -108,22 +104,10 @@
               <el-button type="primary" @click="createVouter">确定</el-button>
           </div>
         </el-dialog>
-        <el-dialog :close-on-click-modal="false" title="请选择报损单日期" :visible.sync="dialogFormVisible3" width="400px">
-          <el-form style="margin-top:30px;text-align:center;">
-            <el-form-item label="" prop="isBillDate">
-              <el-radio v-model="isBillDate" label="0" style="margin-right:10px">当前日期</el-radio>
-              <el-radio v-model="isBillDate" label="1">退货单日期</el-radio>
-            </el-form-item>
-          </el-form>
-          <div slot="footer" class="dialog-footer" align="center">
-              <el-button type="default" @click="dialogFormVisible3 = false">取消</el-button>
-              <el-button type="primary" @click="createBill1">确定</el-button>
-          </div>
-        </el-dialog>
     </div>
 </template>
 <script>
-import { getSalesReturned, delSalesReturned, auditSalesReturned, buildSalesReturned, getItemPrice, buildSaleReturnedVoucherByHeaderId, buildInventoryByHeaderId } from '@/api/sale'
+import { getInventory, delInventory, auditInventory, buildInventory, buildInventoryVoucher } from '@/api/sale'
 import { parseTime } from '@/utils'
 import staffList from '@/components/selects/staffList';
 import custList from '@/components/selects/custList';
@@ -140,7 +124,6 @@ export default {
             listLoading: true,
             dialogFormVisible1: false,
             dialogFormVisible2: false,
-            dialogFormVisible3: false,
             curBillId: '',
             isBillDate: '0',
             listQuery: {
@@ -169,7 +152,7 @@ export default {
     methods: {
         getList() {
             this.listLoading = true
-            getSalesReturned(this.listQuery).then(res => {
+            getInventory(this.listQuery).then(res => {
                 this.listLoading = false
                 this.tableData = res.data.data
                 this.total = res.data.totalNum
@@ -189,7 +172,7 @@ export default {
             });
         },
         checkItem(id) {
-            auditSalesReturned(id).then(res => {
+            auditInventory(id).then(res => {
                 if (res.data.errorCode == 0) {
                     this.getList();
                     this.$message.success('审核成功')
@@ -200,51 +183,11 @@ export default {
         },
         selectChange(obj) {
             for (var key in obj) {
-                this.listQuery.queryParam[key] = obj[key];
+                this.listQuery.queryParam[key] = obj[key]
             }
-        },
-        handleCreateBill(status, id1, id2) {
-            if (status !== 0) {
-                this.$router.push('/store/outboundOrderReturnedModify?id=' + id2 + '&status=' + status)
-            } else {
-                this.curBillId = id1
-                this.dialogFormVisible1 = true
-            }
-        },
-        createBill() {
-            var obj = { isBillDate: this.isBillDate, id: this.curBillId }
-            buildSalesReturned(obj).then(res => {
-                if (res.data.errorCode == 0) {
-                    this.dialogFormVisible1 = false
-                    this.getList()
-                    this.$message.success('生成退货入库单成功')
-                } else {
-                    this.$message.error(res.data.msg)
-                }
-            })
-        },
-        handleCreateBill1(status, id1, id2){
-            if (status !== 0) {
-                this.$router.push('/store/inventoryModify?id=' + id2 + '&status=' + status)
-            } else {
-                this.curBillId = id1
-                this.dialogFormVisible3 = true
-            }
-        },
-        createBill1() {
-            var obj = { isBillDate: this.isBillDate, id: this.curBillId }
-            buildInventoryByHeaderId(obj).then(res => {
-                if (res.data.errorCode == 0) {
-                    this.dialogFormVisible3 = false
-                    this.getList()
-                    this.$message.success('生成报损单成功')
-                } else {
-                    this.$message.error(res.data.msg)
-                }
-            })
         },
         handleCreateVouter(status,id1,id2){
-        if (status !== 0) {
+        if (status == 1) {
             this.$router.push('/voucher/add?id=' + id2)
           }else{
             this.curBillId = id1;
@@ -253,11 +196,11 @@ export default {
         },
         createVouter(){
           var obj = {isBillDate:this.isBillDate,id:this.curBillId}
-          buildSaleReturnedVoucherByHeaderId(obj).then(res => {
+          buildInventoryVoucher(obj).then(res => {
             if(res.data.errorCode==0){
-              this.dialogFormVisible2 = false
-              this.getList()
-              this.$message.success('生成销售退货凭证成功！')
+              this.dialogFormVisible2 = false;
+              this.getList();
+              this.$message.success('生成盘点凭证成功！')
             }else{
               this.$message.error(res.data.msg)
             }
@@ -265,14 +208,14 @@ export default {
         },
         handleAdd() {
             this.$store.dispatch('tagsView/delView', this.$route)
-            this.$router.push('/sale/returnedAdd')
+            this.$router.push('/store/inventoryAdd')
         },
         handleCompile(id) {
             this.$store.dispatch('tagsView/delView', this.$route)
-            this.$router.push('/sale/returnedModify?id=' + id)
+            this.$router.push('/store/inventoryModify?id=' + id)
         },
         handleScan(id) {
-            this.$router.push('/sale/returnedDetail?id=' + id)
+            this.$router.push('/store/inventoryModify?id=' + id)
         },
         handleDel(id) {
             this.$confirm('确认要删除吗?', '提示', {
@@ -284,7 +227,7 @@ export default {
             })
         },
         delItem(id) {
-            delSalesReturned(id).then(res => {
+            delInventory(id).then(res => {
                 if (res.data.errorCode == 0) {
                     this.getList();
                     this.dialogFormVisible1 = false

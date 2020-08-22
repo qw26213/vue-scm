@@ -181,6 +181,14 @@ export function buildSaleReturnedVoucherByHeaderId(data) {
     })
 }
 
+export function buildInventoryByHeaderId(data) {
+    return request({
+        url: '/drp/so/salesReturned/buildInventoryByHeaderId',
+        method: 'post',
+        data: data
+    })
+}
+
 //-------------------------------------销售配送----------------------------------------
 
 export function getDelivery(data) {
@@ -346,9 +354,58 @@ export function confirmEverydayTotal(id) {
     })
 }
 
-export function buildEverydayTotal(data) {
+//-------------------------------------盘点单----------------------------------------
+export function getInventory(data) {
     return request({
-        url: '/drp/so/everydayTotal/buildeverydayTotalByHeaderId',
+        url: '/drp/ic/inventory/getResPageData',
+        method: 'post',
+        data
+    })
+}
+
+export function getInventoryById(id) {
+    return request({
+        url: '/drp/ic/inventory/getByHeaderId',
+        method: 'post',
+        data: { id: id }
+    })
+}
+
+export function saveInventory(data) {
+    return request({
+        url: '/drp/ic/inventory/save',
+        method: 'post',
+        data
+    })
+}
+
+export function delInventory(id) {
+    return request({
+        url: '/drp/ic/inventory/deleteByHeaderId',
+        method: 'post',
+        data: { id }
+    })
+}
+
+export function buildInventoryVoucher(data) {
+    return request({
+        url: '/drp/ic/inventory/buildVoucherByHeaderId',
+        method: 'post',
+        data
+    })
+}
+
+export function auditInventory(id) {
+    return request({
+        url: '/drp/ic/inventory/auditByHeaderId',
+        method: 'post',
+        data: { id }
+    })
+}
+
+export function queryBookQtyList(data) {
+    return request({
+        url: '/drp/ic/inventory/queryBookQtyList',
         method: 'post',
         data
     })
