@@ -7,7 +7,7 @@ const mallRouter = {
     meta: {
         roles: ['4210', '4220'],
         title: '微商城',
-        icon: 'people'
+        icon: 'mall'
     },
     children: [{
         path: 'enterprise',

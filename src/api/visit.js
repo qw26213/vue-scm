@@ -31,3 +31,11 @@ export function deleteFileByIds(data) {
         data
     })
 }
+
+export function deleteFile(data) {
+    return request({
+        url: '/drp/crm/crmFileInfo/deleteFileByIds',
+        method: 'post',
+        data
+    })
+}

@@ -145,9 +145,9 @@ const accountRouter = {
             }
         }]
     }, {
-        path: '/report',
+        path: '/account/report',
         component: account,
-        redirect: '/report/debt',
+        redirect: '/account/report/debt',
         name: 'report',
         meta: {
             roles: ['383010', '383020'],
@@ -155,7 +155,7 @@ const accountRouter = {
         },
         children: [{
             path: 'debt',
-            component: () => import ('@/views/report/debt'),
+            component: () => import ('@/views/voucher/report/debt'),
             name: 'debt',
             meta: {
                 roles: ['383010'],
@@ -163,7 +163,7 @@ const accountRouter = {
             }
         }, {
             path: 'profit',
-            component: () => import ('@/views/report/profit'),
+            component: () => import ('@/views/voucher/report/profit'),
             name: 'profit',
             meta: {
                 roles: ['383020'],

@@ -7,7 +7,7 @@ const storeRouter = {
         meta: {
             roles: ['2610','2614','2626','2618','2622','2630'],
             title: '库存',
-            icon: 'table'
+            icon: 'store'
         },
         children: [{
             path: 'warehousing',

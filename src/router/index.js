@@ -12,7 +12,6 @@ import presaleRouter from './modules/presaleRouter'
 import storeRouter from './modules/storeRouter'
 import priceRouter from './modules/priceRouter'
 import setRouter from './modules/setRouter'
-import grossprofitRouter from './modules/grossprofitRouter'
 import accountRouter from './modules/accountRouter'
 import reportRouter from './modules/reportRouter'
 import hrRouter from './modules/hrRouter'
@@ -82,9 +81,8 @@ export const asyncRoutes = [
     priceRouter,
     visitRouter,
     accountRouter,
-    // reportRouter,
+    reportRouter,
     hrRouter,
-    grossprofitRouter,
     setRouter,
     initRouter,
     maintainRouter,

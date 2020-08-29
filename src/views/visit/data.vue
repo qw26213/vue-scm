@@ -7,6 +7,7 @@
             <custList @selectChange="selectChange" ctrType="list"></custList>
             <staffList @selectChange="selectChange" ctrType="list" :selectId="listQuery.queryParam.staffId"></staffList>
             <el-button size="mini" type="primary" @click="getList">查询</el-button>
+            <el-button size="mini" type="primary" @click="showLine">查看路线</el-button>
         </div>
         <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
             <el-table-column label="日期" align="center" width="100">
@@ -29,7 +30,7 @@
                     <span>{{row.checkInTime}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="偏差(米)" width="100" right="right">
+            <el-table-column label="偏差(米)" width="100" right="center">
                 <template slot-scope="{row}">
                     <span>{{row.distanceM}}</span>
                 </template>
@@ -39,7 +40,7 @@
                     <span>{{row.checkOutTime}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="偏差(米)" width="100" right="right">
+            <el-table-column label="偏差(米)" width="100" right="center">
                 <template slot-scope="{row}">
                     <span>{{row.distanceOutM}}</span>
                 </template>
@@ -64,13 +65,16 @@
                     <span>{{row.skipReason}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="关联图片" align="center">
+            <el-table-column label="操作" align="center">
                 <template slot-scope="{row}">
-                    <el-button size="mini" type="primary" @click="handleLink(row.id)">查看</el-button>
+                    <el-button size="mini" type="default" @click="handleLink(row.id)">关联图片</el-button>
                 </template>
             </el-table-column>
         </el-table>
         <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
+        <el-dialog :close-on-click-modal="false" title="业务员轨迹" :visible.sync="dialogFormVisible" width="1000px" top="5%">
+            <baidu-map id="allmap" :zoom="13" :center="center" :scroll-wheel-zoom="true" @ready="mapReady" />
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -89,11 +93,13 @@ export default {
         return {
             tableKey: 0,
             tableData: [],
+            points: [],
             total: 0,
             isBillDate: '0',
             dialogFormVisible: false,
             listLoading: true,
             curBillId: '',
+            center: {lng: 114.00000, lat: 22.55},
             listQuery: {
                 pageIndex: 1,
                 pageNum: 20,
@@ -116,11 +122,39 @@ export default {
         this.getList();
     },
     methods: {
+        mapReady({BMap, map}) {
+            var points = [
+                { lng: 114.00100, lat: 22.550000 },
+                { lng: 114.00200, lat: 22.550000 },
+                { lng: 114.00300, lat: 22.550000 },
+                { lng: 114.00400, lat: 22.550000 },
+                { lng: 114.00500, lat: 22.550000 },
+                { lng: 114.00600, lat: 22.550000 },
+                { lng: 114.00700, lat: 22.550000 },
+                { lng: 114.00800, lat: 22.550000 },
+                { lng: 114.00900, lat: 22.550000 },
+            ];
+            points.forEach(item => {
+                var point = new BMap.Point(item.lng, item.lat)
+                var marker = new BMap.Marker(point)
+                map.addOverlay(marker)
+            })
+            
+        },
+        showLine() {
+            this.dialogFormVisible = true
+        },
         getList() {
             this.listLoading = true
             getVisitData(this.listQuery).then(res => {
                 this.listLoading = false
                 this.tableData = res.data.data
+                this.points = this.tableData.map(it => {
+                    return {
+                        lng: it.longitude,
+                        lat: it.latitude
+                    }
+                })
                 this.total = res.data.totalNum
             }).catch(err => {
                 this.listLoading = false
@@ -133,10 +167,13 @@ export default {
             for (var key in obj) {
                 this.listQuery.queryParam[key] = obj[key];
             }
-        },
-        handleDel() {
-
         }
     }
 }
 </script>
+<style lang="scss">
+>>>.anchorBL{display:none}
+</style>
+<style scoped>
+#allmap{width: 960px; height: 600px; margin: 0 auto;}
+</style>

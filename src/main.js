@@ -10,9 +10,9 @@ if (process.env.NODE_ENV === 'development') {
 	require('element-ui/lib/theme-chalk/index.css')
 }
 
-import './styles/element-variables.scss';
+import './styles/element-variables.scss'
 
-import axios from "./utils/request";
+import axios from "./utils/request"
 
 import '@/styles/index.scss'
 
@@ -29,12 +29,15 @@ Vue.use(ELEMENT, {
   size: Cookies.get('size') || 'medium'
 })
 
+import BaiduMap from'vue-baidu-map'
+Vue.use(BaiduMap,{ak:'izacIyDzFKeyrjsMZjEfTouTUpLsKWnv'})
+
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
 
-Vue.config.productionTip = false;
-Vue.prototype.$axios = axios;
+Vue.config.productionTip = false
+Vue.prototype.$axios = axios
 
 new Vue({
   el: '#app',
