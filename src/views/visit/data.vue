@@ -7,7 +7,7 @@
             <custList @selectChange="selectChange" ctrType="list"></custList>
             <staffList @selectChange="selectChange" ctrType="list" :selectId="listQuery.queryParam.staffId"></staffList>
             <el-button size="mini" type="primary" @click="getList">查询</el-button>
-            <el-button size="mini" type="primary" @click="showLine">查看路线</el-button>
+            <el-button size="mini" style="float:right" type="primary" @click="showLine">地图轨迹</el-button>
         </div>
         <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
             <el-table-column label="日期" align="center" width="100">
@@ -72,7 +72,7 @@
             </el-table-column>
         </el-table>
         <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
-        <el-dialog :close-on-click-modal="false" title="业务员轨迹" :visible.sync="dialogFormVisible" width="1000px" top="5%">
+        <el-dialog :close-on-click-modal="false" title="地图轨迹" :visible.sync="dialogFormVisible" width="1000px" top="5%">
             <baidu-map id="allmap" :zoom="13" :center="center" :scroll-wheel-zoom="true" @ready="mapReady" />
         </el-dialog>
     </div>
@@ -86,7 +86,7 @@ import staffList from '@/components/selects/staffList'
 import custList from '@/components/selects/custList'
 export default {
     name: 'presaleData',
-    components: { Pagination,custList,staffList },
+    components: { Pagination, custList, staffList },
     data() {
         const end = getNowDate()
         const start = parseTime(new Date().getTime() - 86400000 * 7)
@@ -99,7 +99,7 @@ export default {
             dialogFormVisible: false,
             listLoading: true,
             curBillId: '',
-            center: {lng: 114.00000, lat: 22.55},
+            center: { lng: 114.00000, lat: 22.55 },
             listQuery: {
                 pageIndex: 1,
                 pageNum: 20,
@@ -113,7 +113,7 @@ export default {
         }
     },
     filters: {
-        Fixed: function (num) {
+        Fixed: function(num) {
             if (!num) { return '0.00' }
             return parseFloat(num).toFixed(2);
         }
@@ -122,7 +122,7 @@ export default {
         this.getList();
     },
     methods: {
-        mapReady({BMap, map}) {
+        mapReady({ BMap, map }) {
             var points = [
                 { lng: 114.00100, lat: 22.550000 },
                 { lng: 114.00200, lat: 22.550000 },
@@ -134,12 +134,16 @@ export default {
                 { lng: 114.00800, lat: 22.550000 },
                 { lng: 114.00900, lat: 22.550000 },
             ];
-            points.forEach(item => {
+            points.forEach((item,index) => {
                 var point = new BMap.Point(item.lng, item.lat)
-                var marker = new BMap.Marker(point)
+                var  myIcon  =  new  BMap.Icon("http://api.map.baidu.com/img/markers.png",  new BMap.Size(23,  25), {
+                    offset: new BMap.Size(10,  25),
+                    imageOffset: new BMap.Size(0, 0 - index * 25)
+               });
+                var marker = new BMap.Marker(point,   { icon:  myIcon })
                 map.addOverlay(marker)
             })
-            
+
         },
         showLine() {
             this.dialogFormVisible = true
@@ -161,7 +165,7 @@ export default {
             })
         },
         handleLink(id) {
-            this.$router.push('/visit/table?id='+id)
+            this.$router.push('/visit/table?id=' + id)
         },
         selectChange(obj) {
             for (var key in obj) {
@@ -172,8 +176,14 @@ export default {
 }
 </script>
 <style lang="scss">
->>>.anchorBL{display:none}
+>>>.anchorBL {
+    display: none
+}
 </style>
 <style scoped>
-#allmap{width: 960px; height: 600px; margin: 0 auto;}
+#allmap {
+    width: 960px;
+    height: 600px;
+    margin: 0 auto;
+}
 </style>

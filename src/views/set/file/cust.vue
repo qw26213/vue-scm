@@ -24,6 +24,7 @@
             </el-dropdown>
             <el-button size="small" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
             <el-button size="small" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
+            <el-button size="mini" style="float:right" type="primary" @click="showLine">客户地图</el-button>
         </div>
         <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
             <el-table-column label="序号" type="index" width="50" align="center">
@@ -204,6 +205,9 @@
                 <el-button type="primary" @click="dialogStatus == 'create' ? handleCreate() : handleModify()">确定</el-button>
             </div>
         </el-dialog>
+        <el-dialog :close-on-click-modal="false" title="客户地图" :visible.sync="dialogVisible" width="1000px" top="5%">
+            <baidu-map id="allmap" :zoom="15" :center="center" :scroll-wheel-zoom="true" @ready="mapReady" />
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -285,7 +289,9 @@ export default {
                 isDisable: 0
             },
             dialogFormVisible: false,
+            dialogVisible: false,
             dialogStatus: '',
+            center: { lng: 114.00000, lat: 22.55 },
             rules: {
                 custCode: [{ required: true, message: '代码不能为空', trigger: 'change' }],
                 custName: [{ required: true, message: '名称不能为空', trigger: 'change' }],
@@ -305,6 +311,32 @@ export default {
         }
     },
     methods: {
+        mapReady({ BMap, map }) {
+            var points = [
+                { lng: 114.00100, lat: 22.550000 },
+                { lng: 114.00200, lat: 22.550000 },
+                { lng: 114.00300, lat: 22.550000 },
+                { lng: 114.00400, lat: 22.550000 },
+                { lng: 114.00500, lat: 22.550000 },
+                { lng: 114.00600, lat: 22.550000 },
+                { lng: 114.00700, lat: 22.550000 },
+                { lng: 114.00800, lat: 22.550000 },
+                { lng: 114.00900, lat: 22.550000 },
+            ];
+            points.forEach((item,index) => {
+                var point = new BMap.Point(item.lng, item.lat)
+                var  myIcon  =  new  BMap.Icon("http://api.map.baidu.com/img/markers.png",  new BMap.Size(23,  25), {
+                    offset: new BMap.Size(10,  25),
+                    imageOffset: new BMap.Size(0, 0 - index * 25)
+               });
+                var marker = new BMap.Marker(point,   { icon:  myIcon })
+                map.addOverlay(marker)
+            })
+
+        },
+        showLine() {
+            this.dialogVisible = true
+        },
         areaData(data) {
             this.temp.province = data.split("-")[0]
             this.temp.city = data.split("-")[1]
@@ -482,5 +514,12 @@ export default {
 <style lang="scss" scoped>
 /deep/.el-form-item {
     margin-bottom: 16px
+}
+</style>
+<style scoped>
+#allmap {
+    width: 960px;
+    height: 600px;
+    margin: 0 auto;
 }
 </style>

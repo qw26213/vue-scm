@@ -60,7 +60,7 @@ export default {
     data() {
         return {
             tableKey: 0,
-            qtyList: [{ label: '全部', val: '' }, { label: '库存大于0', val: '1' }, { label: '库存等于0', val: '0' }, { label: '库存不为0', val: '2' }, { label: '库存小于0', val: '-1' }],
+            qtyList: [{ label: '全部', val: '' }, { label: '库存大于0', val: '1' }, { label: '库存不为0', val: '2' }, { label: '库存小于0', val: '-1' }, { label: '库存等于0', val: '0' }],
             tableData: [],
             total: 0,
             listLoading: true,
