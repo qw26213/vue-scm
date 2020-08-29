@@ -7,7 +7,7 @@
             <el-date-picker :editable="false" v-model="listQuery.billDate2" type="date" placeholder="结束日期" size="mini" :clearable="false" value-format="yyyy-MM-dd" />
             <label class="label ml10">统计方式</label>
             <el-select v-model="listQuery.group_type" placeholder="统计方式" size="mini">
-                <el-option v-for="item in methodList" :label="item.label" :value="item.val" :key="item.val"></el-option>
+                <el-option v-for="item in methodList" :label="item.label" :value="item.val" :key="item.val" />
             </el-select>
             <label class="label ml10">品类级次</label>
             <el-select v-model="listQuery.invCatgLevel" placeholder="品类级次" size="mini">
