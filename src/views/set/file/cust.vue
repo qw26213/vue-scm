@@ -49,7 +49,7 @@
                     <span>{{row.abbr}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="地址">
+            <el-table-column label="地址" show-overflow-tooltip>
                 <template slot-scope="{row}">
                     <span>{{row.addr}}</span>
                 </template>
