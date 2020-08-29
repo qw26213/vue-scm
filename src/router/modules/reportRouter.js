@@ -174,6 +174,14 @@ const reportRouter = {
                 roles: ['603020'],
                 title: '销售退货'
             }
+        }, {
+            path: 'graph',
+            component: () => import ('@/views/table/sale/graph'),
+            name: 'graph',
+            meta: {
+                roles: ['603020'],
+                title: '销售统计表'
+            }
         }]
     }]
 }
