@@ -55,3 +55,10 @@ export function getSaletable(data) {
         data
     })
 }
+
+export function getConf0002() {
+  return request({
+    url: '/drp/rpt/sales/getConf0002',
+    method: 'post'
+  })
+}

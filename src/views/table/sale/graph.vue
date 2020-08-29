@@ -18,34 +18,34 @@
                 <el-option label="五级" value="5" />
                 <el-option label="末级" value="" />
             </el-select>
-            <el-checkbox v-model="listQuery.isBatch" :false-label="0" :true-label="1" class="ml10">显示合计</el-checkbox>
+            <el-checkbox v-model="listQuery.rollUp" :false-label="0" :true-label="1" class="ml10">显示合计</el-checkbox>
             <el-checkbox v-model="listQuery.saveConf" :false-label="0" :true-label="1">保存选择</el-checkbox>
-            <el-checkbox v-model="listQuery.isBatch" :false-label="0" :true-label="1">横向打印</el-checkbox>
+            <el-checkbox v-model="listQuery.rotate" :false-label="0" :true-label="1">横向打印</el-checkbox>
             <br/>
             <label class="label">一级汇总</label>
             <el-select v-model="listQuery.param1" style="width:100px" placeholder="一级汇总" size="mini">
-                <el-option v-for="item in ['日期','品类','产品','部门','客户','业务员']" :label="item" :value="item" :key="item" />
+                <el-option v-for="item in ['日期','品类','商品','部门','客户','业务员']" :label="item" :value="item" :key="item" />
             </el-select>
             <label class="label ml10">二级汇总</label>
             <el-select v-model="listQuery.param2" style="width:100px" placeholder="二级汇总" size="mini">
-                <el-option v-for="item in ['日期','品类','产品','部门','客户','业务员']" :label="item" :value="item" :key="item" />
+                <el-option v-for="item in ['日期','品类','商品','部门','客户','业务员']" :label="item" :value="item" :key="item" />
             </el-select>
             <label class="label ml10">三级汇总</label>
             <el-select v-model="listQuery.param3" style="width:100px" placeholder="三级汇总" size="mini">
-                <el-option v-for="item in ['日期','品类','产品','部门','客户','业务员']" :label="item" :value="item" :key="item" />
+                <el-option v-for="item in ['日期','品类','商品','部门','客户','业务员']" :label="item" :value="item" :key="item" />
             </el-select>
             <label class="label ml10">四级汇总</label>
             <el-select v-model="listQuery.param4" style="width:100px" placeholder="四级汇总" size="mini">
-                <el-option v-for="item in ['日期','品类','产品','部门','客户','业务员']" :label="item" :value="item" :key="item" />
+                <el-option v-for="item in ['日期','品类','商品','部门','客户','业务员']" :label="item" :value="item" :key="item" />
             </el-select>
             <label class="label ml10">五级汇总</label>
             <el-select v-model="listQuery.param5" style="width:100px" placeholder="五级汇总" size="mini">
-                <el-option v-for="item in ['日期','品类','产品','部门','客户','业务员']" :label="item" :value="item" :key="item" />
+                <el-option v-for="item in ['日期','品类','商品','部门','客户','业务员']" :label="item" :value="item" :key="item" />
             </el-select>
             <el-button size="mini" type="primary" @click="getList">查询</el-button>
         </div>
         <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini">
-            <el-table-column v-for="(v,i) in columns" :key="i" :label="v.title" :align="v.align">
+            <el-table-column v-for="(v,i) in columns" :key="i" :label="v" :align="v.align">
                 <template slot-scope="{row}">
                     <span>{{row[i]}}</span>
                 </template>
@@ -55,7 +55,7 @@
     </div>
 </template>
 <script>
-import { getSaletable} from '@/api/table'
+import { getSaletable, getConf0002} from '@/api/table'
 import { getPeriodList } from '@/api/user'
 import { getNowDate } from '@/utils/index'
 import Pagination from '@/components/Pagination'
@@ -79,16 +79,16 @@ export default {
             listQuery: {
                 billDate1: getNowDate(),
                 billDate2: getNowDate(),
-                group_type: '',
-                invCatgLevel: '',
-                param5: '',
-                param4: '',
-                param3: '',
-                param2: '',
-                param1: '',
-                saveConf: '',
-                rotate: '',
-                rollUp: '',
+                group_type: 'day',
+                invCatgLevel: '1',
+                param5: '业务员',
+                param4: '客户',
+                param3: '商品',
+                param2: '品类',
+                param1: '日期',
+                saveConf: 0,
+                rotate: 0,
+                rollUp: 0,
                 isJson: 1,
                 pageIndex: 1,
                 pageNum: 20
@@ -97,6 +97,9 @@ export default {
     },
     created() {
       this.getList()
+      getConf0002().then(res => {
+        this.listQuery = res.data.data
+      })
     },
     methods: {
         getList() {
@@ -106,7 +109,7 @@ export default {
                 const aligns = res.data.align
                 this.columns = res.data.columns
                 this.columns.forEach((item,index) => {
-                    item.align = aligns[index].title == 0 ? 'center' : aligns[index].title == 1 ? 'left' : aligns[index].title == 2 ? 'right' : ''
+                    item.align = aligns[index] == 0 ? 'center' : aligns[index] == 1 ? 'left' : aligns[index] == 2 ? 'right' : ''
                 })
                 this.tableData = res.data.dataSet || []
                 this.total = res.data.dataSize

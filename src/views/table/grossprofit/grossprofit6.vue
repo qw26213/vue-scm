@@ -18,9 +18,9 @@
                 <el-option label="五级" value="5" />
                 <el-option label="末级" value="" />
             </el-select>
-            <el-checkbox v-model="listQuery.isBatch" :false-label="0" :true-label="1" class="ml10">显示合计</el-checkbox>
+            <el-checkbox v-model="listQuery.rollUp" :false-label="0" :true-label="1" class="ml10">显示合计</el-checkbox>
             <el-checkbox v-model="listQuery.saveConf" :false-label="0" :true-label="1">保存选择</el-checkbox>
-            <el-checkbox v-model="listQuery.isBatch" :false-label="0" :true-label="1">横向打印</el-checkbox>
+            <el-checkbox v-model="listQuery.rotate" :false-label="0" :true-label="1">横向打印</el-checkbox>
             <br/>
             <label class="label">一级汇总</label>
             <el-select v-model="listQuery.param1" style="width:100px" placeholder="一级汇总" size="mini">
