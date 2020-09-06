@@ -410,3 +410,12 @@ export function queryBookQtyList(data) {
         data
     })
 }
+
+// 查看审核意见
+export function getAuditInfoByHeaderId(id) {
+    return request({
+        url: '/drp/log/aduitInfo/getByHeaderId',
+        method: 'post',
+        data: {id: id}
+    })
+}

@@ -78,7 +78,8 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="280">
                 <template slot-scope="{row}">
-                    <span class="ctrl" v-if="row.status==0" @click="handleCompile(row.id)">编辑</span>
+                    <span class="ctrl" v-if="row.status<=0" @click="handleCompile(row.id)">编辑</span>
+                    <span class="ctrl" v-if="row.status==-1" @click="showAuditInfo(row.id)">查看审核意见</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleScan(row.id)">查看</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
                     <span class="ctrl del" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
@@ -116,7 +117,7 @@
     </div>
 </template>
 <script>
-import { getPurchase, delPurchase, auditPurchase, buildPurchaseEntry, buildVoucherByHeaderId } from '@/api/store'
+import { getPurchase, delPurchase, auditPurchase, buildPurchaseEntry, buildVoucherByHeaderId, getAuditInfoByHeaderId } from '@/api/store'
 import { parseTime } from '@/utils'
 import staffList from '@/components/selects/staffList'
 import Auditconfirm from '@/components/Auditconfirm/index'
@@ -164,6 +165,13 @@ export default {
         this.getList()
     },
     methods: {
+        showAuditInfo(id){
+            getAuditInfoByHeaderId(id).then(res => {
+                if(res.data.errorCode == 0) {
+                    this.$alert('审核意见', '审核意见')
+                }
+            })
+        },
         getList() {
             this.listLoading = true
             getPurchase(this.listQuery).then(res => {
@@ -192,7 +200,7 @@ export default {
                     this.auditModalVisible = false
                     this.$message.success('审核成功！')
                 } else {
-                    this.$message.error(res.data.msg)
+                    this.$message.warning(res.data.msg)
                 }
             })
         },
@@ -212,7 +220,7 @@ export default {
                     this.getList()
                     this.$message.success('生成入库单成功！')
                 } else {
-                    this.$message.error(res.data.msg)
+                    this.$message.warning(res.data.msg)
                 }
             }).catch(() => {
                 this.$message.error('生成失败，请稍后重试！')
@@ -234,7 +242,7 @@ export default {
                     this.getList();
                     this.$message.success('生成采购凭证成功！')
                 } else {
-                    this.$message.error(res.data.msg)
+                    this.$message.warning(res.data.msg)
                 }
             });
         },
@@ -260,7 +268,7 @@ export default {
                         this.getList();
                         this.$message.success('删除成功')
                     } else {
-                        this.$message.error(res.data.msg)
+                        this.$message.warning(res.data.msg)
                     }
                 })
             });

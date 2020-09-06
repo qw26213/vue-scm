@@ -1,12 +1,12 @@
 <template>
   <el-dialog :close-on-click-modal="false" title="确认审核" :visible.sync="visible" width="400px">
-      <el-form label-position="right" label-width="72px" style="width: 360px; margin-lef:10px;">
-        <el-form-item label="审核结果">
+      <el-form ref="dataForm" label-position="right" label-width="80px" :model="form" style="width: 360px; margin-lef:10px;">
+        <el-form-item label="审核结果" prop="status" required>
             <el-radio v-model="form.status" label="1" style="margin-right:10px">通过</el-radio>
             <el-radio v-model="form.status" label="-1">不通过</el-radio>
         </el-form-item>
-        <el-form-item label="审核意见">
-            <el-input v-model="form.remarks" style="width:100%" />
+        <el-form-item label="审核意见" prop="remarks" :rules="form.status==-1 ? {required: true, message: '审核意见不能为空', trigger: 'change'} : {}">
+            <el-input type="textarea" v-model.trim="form.remarks" style="width:100%" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer" align="center">
@@ -35,6 +35,9 @@ export default {
         this.visible = true
         this.form.status = '1'
         this.form.remarks = ''
+        this.$nextTick(() => {
+          this.$refs['dataForm'].clearValidate()
+        })
       } else {
         this.visible = false
       }
@@ -45,7 +48,11 @@ export default {
   },
   methods: {
     saveAudit() {
-      this.$emit('auditBill', this.form)
+      this.$refs['dataForm'].validate((valid) => {
+        if (valid) {
+          this.$emit('auditBill', this.form)
+        }
+      })
     }
   }
 }

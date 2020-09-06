@@ -85,7 +85,8 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="240">
                 <template slot-scope="{row}">
-                    <span class="ctrl" v-if="row.status==0" @click="handleCompile(row)">编辑</span>
+                    <span class="ctrl" v-if="row.status<=0" @click="handleCompile(row)">编辑</span>
+                    <span class="ctrl" v-if="row.status==-1" @click="showAuditInfo(row.id)">查看审核意见</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleScan(row)">查看</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id, row.billDate)">审核</span>
                     <span class="ctrl del" v-if="row.status==0" @click="handleDel(row.id, row.billDate)">删除</span>
@@ -124,7 +125,7 @@
     </div>
 </template>
 <script>
-import { getSales, delSales, auditSales, buildSales, buildSaleVoucherByHeaderId, buildInvoice } from '@/api/sale'
+import { getSales, delSales, auditSales, buildSales, buildSaleVoucherByHeaderId, buildInvoice, getAuditInfoByHeaderId } from '@/api/sale'
 import { parseTime } from '@/utils'
 import staffList from '@/components/selects/staffList'
 import Auditconfirm from '@/components/Auditconfirm/index'
@@ -171,6 +172,13 @@ export default {
         this.getList()
     },
     methods: {
+        showAuditInfo(id){
+            getAuditInfoByHeaderId(id).then(res => {
+                if(res.data.errorCode == 0) {
+                    this.$alert('审核意见', '审核意见')
+                }
+            })
+        },
         getList() {
             this.listLoading = true
             getSales(this.listQuery).then(res => {

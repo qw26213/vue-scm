@@ -611,11 +611,19 @@ export function queryReceiptSettleType(data) {
 }
 
 // 获取带价格的商品列表
-
 export function getResPageByFuzzyCustId(data) {
     return request({
         url: '/drp/bd/price/getResPageByFuzzyCustId',
         method: 'post',
         data
+    })
+}
+
+// 查看审核意见
+export function getAuditInfoByHeaderId(id) {
+    return request({
+        url: '/drp/log/aduitInfo/getByHeaderId',
+        method: 'post',
+        data: {id: id}
     })
 }
