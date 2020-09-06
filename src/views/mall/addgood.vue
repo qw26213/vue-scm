@@ -105,7 +105,7 @@ import { deepClone } from '@/utils/index'
 export default {
     data() {
         return {
-            url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+            url: '',
             itemId: this.$route.query.item_id || '',
             goodId: this.$route.query.id || '',
             srcList1: [],
@@ -198,19 +198,6 @@ export default {
                 })
             })
         },
-        upLoad(event, type) {
-            var fileObj = event.currentTarget.files[0];
-            var imgSize = fileObj.size / 1024;
-            var blobFile = this.$options.methods.dataURLtoBlob.bind(this)(fileObj)
-            var filetype = fileObj.type
-            this.$axios({
-                method: 'get',
-                url: '/drp/file/cosFileInfo/getCOSTempKey',
-            }).then(res => {
-                const obj = res.data
-                this.uploadFile(obj, blobFile, filetype, imgSize, type)
-            })
-        },
         saveData() {
             this.goodForm.attachment = this.srcList1.concat(this.srcList2)
             this.goodForm.attachment.forEach((item,index) => {
@@ -230,6 +217,19 @@ export default {
         },
         backpage() {
             this.$router.replace('/mall/goodlist')
+        },
+        upLoad(event, type) {
+            var fileObj = event.currentTarget.files[0];
+            var imgSize = fileObj.size / 1024;
+            var blobFile = this.$options.methods.dataURLtoBlob.bind(this)(fileObj)
+            var filetype = fileObj.type
+            this.$axios({
+                method: 'get',
+                url: '/drp/file/cosFileInfo/getCOSTempKey',
+            }).then(res => {
+                const obj = res.data
+                this.uploadFile(obj, blobFile, filetype, imgSize, type)
+            })
         },
         //上传腾讯云
         uploadFile(obj, file, filetype, imgSize, type) {
@@ -251,7 +251,7 @@ export default {
             });
             const loading = this.$loading({
                 lock: true,
-                text: '资源正在上传,请耐心等待...',
+                text: '正在上传...',
                 spinner: 'el-icon-loading',
                 background: 'rgba(0, 0, 0, 0.7)'
             })
@@ -339,29 +339,6 @@ export default {
     height: 120px;
     line-height: 120px;
     text-align: center;
-}
-
-.uploadDiv {
-    border: 1px #eee solid;
-    background-color: #fff;
-    width: 180px;
-    height: 120px;
-    border-radius: 6px;
-    overflow: hidden;
-    background: #f7f7f7;
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    overflow: hidden;
-    position: relative;
-}
-
-.uploadDiv input {
-    opacity: 0;
-    position: absolute;
-    top: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
 }
 
 .itemUrl {
