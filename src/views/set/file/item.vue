@@ -21,7 +21,7 @@
                         <span>{{row.itemName}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="规格" width="80" align="center">
+                <el-table-column label="规格" width="90" align="center">
                     <template slot-scope="{row}">
                         <span>{{row.norms}}</span>
                     </template>
@@ -46,14 +46,10 @@
                         <span>{{row.qualityDays}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="主单位" width="70" align="center">
+                <el-table-column label="主(辅)单位" width="100" align="center">
                     <template slot-scope="{row}">
                         <span>{{row.uom}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column label="辅助单位" width="72" align="center">
-                    <template slot-scope="{row}">
-                        <span>{{row.subUom}}</span>
+                        <span v-if="row.subUom">({{row.subUom}})</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="换算率" width="70" align="center">
