@@ -51,9 +51,10 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="200">
                 <template slot-scope="{row}">
-                    <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status==0?'编辑':'查看'}}</span>
+                    <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status<=0?'编辑':'查看'}}</span>
+                    <span v-if="row.status==-1" class="ctrl" @click="showAuditInfo(row.id)">查看审核意见</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
-                    <span class="ctrl del" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
+                    <span class="ctrl del" v-if="row.status<=0" @click="handleDel(row.id)">删除</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isSales,row.id,row.salesHeaderId)">{{row.isSales==0?'生成':'查看'}}销售退货单</span>
                 </template>
             </el-table-column>
@@ -71,11 +72,11 @@
               <el-button type="primary" @click="createBill">确定</el-button>
           </div>
         </el-dialog>
-        <Auditconfirm :dialogvisible.sync="auditModalVisible" @auditBill="checkItem" />
+        <Auditconfirm :dialogvisible.sync="auditModalVisible" :type="auditType" :remarklist="remarklist" @auditBill="checkItem" />
     </div>
 </template>
 <script>
-import { getOutboundOrderReturned, delOutboundOrderReturned, auditOutboundOrderReturned, buildOutboundOrderReturned } from '@/api/store';
+import { getOutboundOrderReturned, delOutboundOrderReturned, auditOutboundOrderReturned, buildOutboundOrderReturned,getAuditInfoByHeaderId } from '@/api/store';
 import { getNowDate } from '@/utils/auth';
 import staffList from '@/components/selects/staffList';
 import custList from '@/components/selects/custList';
@@ -85,7 +86,7 @@ import Pagination from '@/components/Pagination';
 import Auditconfirm from '@/components/Auditconfirm/index'
 export default {
     name: 'outboundOrderReturned',
-    components: { Pagination,staffList,custList,warehouseList,truckList,Auditconfirm },
+    components: { Pagination, staffList, custList, warehouseList, truckList, Auditconfirm },
     data() {
         return {
             tableKey: 0,
@@ -95,6 +96,8 @@ export default {
             listLoading: true,
             auditModalVisible: false,
             curBillId:'',
+            auditType: '',
+            remarklist: [],
             isBillDate:'0',
             listQuery: {
                 pageIndex: 1,
@@ -123,6 +126,15 @@ export default {
         this.getList();
     },
     methods: {
+        showAuditInfo(id){
+            this.auditType = 'record'
+            getAuditInfoByHeaderId(id).then(res => {
+                if(res.data.errorCode == 0) {
+                    this.auditModalVisible = true
+                    this.remarklist = res.data.data || []
+                }
+            })
+        },
         selectChange(obj) {
             for (var key in obj) {
                 this.listQuery.queryParam[key] = obj[key];
@@ -139,6 +151,7 @@ export default {
             })
         },
         handleCheck(id) {
+            this.auditType = 'create'
             this.auditModalVisible = true
             this.curBillId = id
         },

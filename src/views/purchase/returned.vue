@@ -78,10 +78,11 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="240">
                 <template slot-scope="{row}">
-                    <span class="ctrl" v-if="row.status==0" @click="handleCompile(row.id)">编辑</span>
+                    <span class="ctrl" v-if="row.status<=0" @click="handleCompile(row.id)">编辑</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleScan(row.id)">查看</span>
+                    <span class="ctrl" v-if="row.status==-1" @click="showAuditInfo(row.id)">查看审核意见</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
-                    <span class="ctrl del" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
+                    <span class="ctrl del" v-if="row.status<=0" @click="handleDel(row.id)">删除</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isWarehousingEntryReturned,row.id,row.warehousingEntryReturnedHeaderId)">{{row.isWarehousingEntryReturned==0?'生成':'查看'}}退货出库单</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId)">{{row.isJeHeader==0?'生成':'查看'}}退货凭证</span>
                 </template>
@@ -112,11 +113,11 @@
                 <el-button type="primary" @click="createVouter">确定</el-button>
             </div>
         </el-dialog>
-        <Auditconfirm :dialogvisible.sync="auditModalVisible" @auditBill="checkItem" />
+        <Auditconfirm :dialogvisible.sync="auditModalVisible" :type="auditType" :remarklist="remarklist" @auditBill="checkItem" />
     </div>
 </template>
 <script>
-import { getPurchaseReturned, delPurchaseReturned, auditPurchaseReturned, buildPurchaseReturnedEntry, buildVoucherReturnedByHeaderId } from '@/api/store'
+import { getPurchaseReturned, delPurchaseReturned, auditPurchaseReturned, buildPurchaseReturnedEntry, buildVoucherReturnedByHeaderId, getAuditInfoByHeaderId } from '@/api/store'
 import { parseTime } from '@/utils'
 import staffList from '@/components/selects/staffList'
 import supplierList from '@/components/selects/supplierList'
@@ -126,7 +127,7 @@ import { getNowDate } from '@/utils/auth'
 import Pagination from '@/components/Pagination'
 export default {
     name: 'purseReturned',
-    components: { staffList, warehouseList, Auditconfirm, supplierList, Pagination },
+    components: { staffList, warehouseList, Auditconfirm, supplierList, Pagination,getAuditInfoByHeaderId },
     data() {
         return {
             tableKey: 0,
@@ -135,6 +136,8 @@ export default {
             listLoading: true,
             dialogFormVisible1: false,
             dialogFormVisible2: false,
+            auditType: '',
+            remarklist: [],
             isBillDate: '0',
             curBillId: '',
             auditModalVisible: false,
@@ -164,6 +167,15 @@ export default {
         this.getList()
     },
     methods: {
+        showAuditInfo(id){
+            this.auditType = 'record'
+            getAuditInfoByHeaderId(id).then(res => {
+                if(res.data.errorCode == 0) {
+                    this.auditModalVisible = true
+                    this.remarklist = res.data.data || []
+                }
+            })
+        },
         getList() {
             this.listLoading = true
             getPurchaseReturned(this.listQuery).then(res => {
@@ -180,6 +192,7 @@ export default {
             }
         },
         handleCheck(id) {
+            this.auditType = 'create'
             this.auditModalVisible = true
             this.curBillId = id
         },

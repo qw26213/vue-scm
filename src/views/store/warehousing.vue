@@ -55,9 +55,10 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="200">
                 <template slot-scope="{row}">
-                    <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status==0?'编辑':'查看'}}</span>
+                    <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status<=0?'编辑':'查看'}}</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
-                    <span class="ctrl del" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
+                    <span v-if="row.status==-1" class="ctrl" @click="showAuditInfo(row.id)">查看审核意见</span>
+                    <span class="ctrl del" v-if="row.status<=0" @click="handleDel(row.id)">删除</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isPurchase,row.id,row.purchaseHeaderId)">{{row.isPurchase==0?'生成':'查看'}}进货单</span>
                 </template>
             </el-table-column>
@@ -79,7 +80,7 @@
     </div>
 </template>
 <script>
-import { getWarehousing, saveWarehousing, delWarehousing, auditWarehousing, buildWarehousingEntry } from '@/api/store'
+import { getWarehousing, saveWarehousing, delWarehousing, auditWarehousing, buildWarehousingEntry, getAuditInfoByHeaderId } from '@/api/store'
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
 import staffList from '@/components/selects/staffList';
@@ -89,7 +90,7 @@ import { getNowDate } from '@/utils/auth'
 import Auditconfirm from '@/components/Auditconfirm/index'
 export default {
     name: 'warehousing',
-    components: { staffList, warehouseList, supplierList, Pagination,Auditconfirm },
+    components: { staffList, warehouseList, supplierList, Pagination, Auditconfirm },
     data() {
         return {
             tableKey: 0,
@@ -99,6 +100,8 @@ export default {
             curBillId: '',
             isBillDate: '0',
             total: 0,
+            auditType: '',
+            remarklist: [],
             listLoading: true,
             listQuery: {
                 pageIndex: 1,
@@ -120,6 +123,15 @@ export default {
         this.getList();
     },
     methods: {
+        showAuditInfo(id){
+            this.auditType = 'record'
+            getAuditInfoByHeaderId(id).then(res => {
+                if(res.data.errorCode == 0) {
+                    this.auditModalVisible = true
+                    this.remarklist = res.data.data || []
+                }
+            })
+        },
         selectChange(obj) {
             for (var key in obj) {
                 this.listQuery[key] = obj[key];
@@ -136,6 +148,7 @@ export default {
             })
         },
         handleCheck(id) {
+            this.auditType = 'create'
             this.auditModalVisible = true
             this.curBillId = id
         },

@@ -73,10 +73,11 @@
             </el-table-column>
             <el-table-column label="操作" align="left" width="260">
                 <template slot-scope="{row}">
-                    <span class="ctrl" v-if="row.status==0" @click="handleCompile(row.id)">编辑</span>
+                    <span class="ctrl" v-if="row.status<=0" @click="handleCompile(row.id)">编辑</span>
+                    <span class="ctrl" v-if="row.status==-1" @click="showAuditInfo(row.id)">查看审核意见</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleScan(row.id)">查看</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
-                    <span class="ctrl del" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
+                    <span class="ctrl del" v-if="row.status<=0" @click="handleDel(row.id)">删除</span>
                     <span class="ctrl" v-if="row.status==1&&(row.returnedType==0||row.returnedType==1)" @click="handleCreateBill(row.isOutboundOrderReturned,row.id,row.outboundOrderReturnedHeaderId)">{{row.isOutboundOrderReturned==0?'生成':'查看'}}退货入库单</span>
                     <span class="ctrl" v-if="row.status==1&&(row.returnedType==2)" @click="handleCreateBill1(row.isInventory,row.id,row.inventoryId)">{{row.isInventory==0?'生成':'查看'}}报损单</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId)">{{row.isJeHeader==0?'生成':'查看'}}销售退货凭证</span>
@@ -120,11 +121,11 @@
               <el-button type="primary" @click="createBill1">确定</el-button>
           </div>
         </el-dialog>
-        <Auditconfirm :dialogvisible.sync="auditModalVisible" @auditBill="checkItem" />
+        <Auditconfirm :dialogvisible.sync="auditModalVisible" :type="auditType" :remarklist="remarklist" @auditBill="checkItem" />
     </div>
 </template>
 <script>
-import { getSalesReturned, delSalesReturned, auditSalesReturned, buildSalesReturned, getItemPrice, buildSaleReturnedVoucherByHeaderId, buildInventoryByHeaderId } from '@/api/sale'
+import { getSalesReturned, delSalesReturned, auditSalesReturned, buildSalesReturned, getItemPrice, buildSaleReturnedVoucherByHeaderId, buildInventoryByHeaderId, getAuditInfoByHeaderId } from '@/api/sale'
 import { parseTime } from '@/utils'
 import staffList from '@/components/selects/staffList';
 import Auditconfirm from '@/components/Auditconfirm/index';
@@ -140,6 +141,8 @@ export default {
             tableData: [],
             total: 0,
             listLoading: true,
+            auditType: '',
+            remarklist: [],
             dialogFormVisible1: false,
             dialogFormVisible2: false,
             dialogFormVisible3: false,
@@ -170,6 +173,15 @@ export default {
         this.getList()
     },
     methods: {
+        showAuditInfo(id){
+            this.auditType = 'record'
+            getAuditInfoByHeaderId(id).then(res => {
+                if(res.data.errorCode == 0) {
+                    this.auditModalVisible = true
+                    this.remarklist = res.data.data || []
+                }
+            })
+        },
         getList() {
             this.listLoading = true
             getSalesReturned(this.listQuery).then(res => {
@@ -181,6 +193,7 @@ export default {
             })
         },
         handleCheck(id) {
+            this.auditType = 'create'
             this.curBillId = id
             this.auditModalVisible = true
         },

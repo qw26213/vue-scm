@@ -74,12 +74,12 @@
         <el-button type="primary" @click="dialogStatus == 'create'?handleCreate():handleModify()">确定</el-button>
       </div>
     </el-dialog>
-    <Auditconfirm :dialogvisible.sync="auditModalVisible" @auditBill="checkItem" />
+    <Auditconfirm :dialogvisible.sync="auditModalVisible" :type="auditType" :remarklist="remarklist" @auditBill="checkItem" />
   </div>
 </template>
 
 <script>
-import { getWarehousing,saveWarehousing,delWarehousing,auditWarehousing,buildWarehousingEntry} from '@/api/store'
+import { getWarehousing,saveWarehousing,delWarehousing,auditWarehousing,buildWarehousingEntry,getAuditInfoByHeaderId} from '@/api/store'
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
 import Auditconfirm from '@/components/Auditconfirm/index';
@@ -118,6 +118,15 @@ export default {
     this.getList()
   },
   methods: {
+    showAuditInfo(id){
+        this.auditType = 'record'
+        getAuditInfoByHeaderId(id).then(res => {
+            if(res.data.errorCode == 0) {
+                this.auditModalVisible = true
+                this.remarklist = res.data.data || []
+            }
+        })
+    },
     getList() {
       this.listLoading = true
       getWarehousing(this.listQuery).then(response => {
@@ -135,6 +144,7 @@ export default {
       }
     },
     handleCheck(id){
+      this.auditType = 'create'
       this.auditModalVisible = true
       this.curBillid = id
     },

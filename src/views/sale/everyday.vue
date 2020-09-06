@@ -67,20 +67,21 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="200">
                 <template slot-scope="{row}">
-                    <span class="ctrl" v-if="row.status==0" @click="handleCompile(row.id)">编辑</span>
+                    <span class="ctrl" v-if="row.status<=0" @click="handleCompile(row.id)">编辑</span>
+                    <span class="ctrl" v-if="row.status==-1" @click="showAuditInfo(row.id)">查看审核意见</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleScan(row.id)">查看</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleConfirm(row.id)">确认</span>
-                    <span class="ctrl del" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
+                    <span class="ctrl del" v-if="row.status<=0" @click="handleDel(row.id)">删除</span>
                 </template>
             </el-table-column>
         </el-table>
         <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
-        <Auditconfirm :dialogvisible.sync="auditModalVisible" @auditBill="checkItem" />
+        <Auditconfirm :dialogvisible.sync="auditModalVisible" :type="auditType" :remarklist="remarklist" @auditBill="checkItem" />
     </div>
 </template>
 <script>
-import { getEverydayTotal, delEverydayTotal, auditEverydayTotal, confirmEverydayTotal } from '@/api/sale'
+import { getEverydayTotal, delEverydayTotal, auditEverydayTotal, confirmEverydayTotal, getAuditInfoByHeaderId } from '@/api/sale'
 import Pagination from '@/components/Pagination'
 import staffList from '@/components/selects/staffList'
 import Auditconfirm from '@/components/Auditconfirm/index'
@@ -97,6 +98,8 @@ export default {
             dialogFormVisible: false,
             auditModalVisible: false,
             listLoading: true,
+            auditType: '',
+            remarklist: [],
             curBillId: '',
             listQuery: {
                 pageIndex: 1,
@@ -124,6 +127,15 @@ export default {
         this.getList();
     },
     methods: {
+        showAuditInfo(id){
+            this.auditType = 'record'
+            getAuditInfoByHeaderId(id).then(res => {
+                if(res.data.errorCode == 0) {
+                    this.auditModalVisible = true
+                    this.remarklist = res.data.data || []
+                }
+            })
+        },
         getList() {
             this.listLoading = true
             getEverydayTotal(this.listQuery).then(res => {
@@ -140,6 +152,7 @@ export default {
             }
         },
         handleCheck(id) {
+            this.auditType = 'create'
             this.auditModalVisible = true
             this.curBillId = id
         },

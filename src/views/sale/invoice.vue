@@ -6,7 +6,7 @@
             <el-date-picker :editable="false" v-model="listQuery.queryParam.invoiceDate2" type="date" placeholder="结束日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
             <el-input size="mini" v-model="listQuery.invoiceNo" placeholder="发票号" style="width: 120px;" />
             <custList @selectChange="selectChange" ctrType="list" />
-            <el-select v-model="listQuery.queryParam.statusInvoice" placeholder="发票状态" size="mini">
+            <el-select v-model="listQuery.queryParam.status" placeholder="发票状态" size="mini">
                 <el-option label="全部" :value="null" />
                 <el-option label="未审核" :value="0" />
                 <el-option label="已审核" :value="1" />
@@ -63,7 +63,7 @@
             </el-table-column>
             <el-table-column label="发票状态" align="center">
                 <template slot-scope="{row}">
-                    <span>{{row.statusInvoice==0?'未审核':row.statusInvoice==1?'已审核':row.statusInvoice==9?'已完成':row.statusInvoice==-1?'审核不通过':'已开发票作废'}}</span>
+                    <span>{{row.status==0?'未审核':row.status==1?'已审核':row.status==9?'已完成':row.status==-1?'审核不通过':'已开发票作废'}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="未开票余额" align="center">
@@ -73,15 +73,16 @@
             </el-table-column>
             <el-table-column label="操作" fixed="right" align="center" width="150">
                 <template slot-scope="{row}">
-                    <span class="ctrl" v-if="row.statusInvoice==0" @click="handleCompile(row)">编辑</span>
-                    <span class="ctrl" v-if="row.statusInvoice==1" @click="handleScan(row)">查看</span>
-                    <span class="ctrl" v-if="row.statusInvoice==0" @click="handleCheck(row.id, row.invoiceDate)">审核</span>
-                    <span class="ctrl del" v-if="row.statusInvoice==0" @click="handleDel(row.id, row.invoiceDate)">删除</span>
+                    <span class="ctrl" v-if="row.status<=0" @click="handleCompile(row)">编辑</span>
+                    <span class="ctrl" v-if="row.status==-1" @click="showAuditInfo(row.id)">查看审核意见</span>
+                    <span class="ctrl" v-if="row.status==1" @click="handleScan(row)">查看</span>
+                    <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id, row.invoiceDate)">审核</span>
+                    <span class="ctrl del" v-if="row.status<=0" @click="handleDel(row.id, row.invoiceDate)">删除</span>
                 </template>
             </el-table-column>
         </el-table>
         <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
-        <Auditconfirm :dialogvisible.sync="auditModalVisible" @auditBill="checkItem" />
+        <Auditconfirm :dialogvisible.sync="auditModalVisible" :type="auditType" :remarklist="remarklist" @auditBill="checkItem" />
     </div>
 </template>
 <script>
@@ -103,6 +104,8 @@ export default {
             dialogFormVisible1: false,
             dialogFormVisible2: false,
             auditModalVisible: false,
+            auditType: '',
+            remarklist: [],
             curBillId: '',
             isinvoiceDate: '0',
             curinvoiceDate: '',
@@ -113,7 +116,7 @@ export default {
                     invoiceDate1: getNowDate(),
                     invoiceDate2: getNowDate(),
                     invoiceNo: '',
-                    statusInvoice: '',
+                    status: '',
                     custId: ''
                 }
             }
@@ -129,6 +132,15 @@ export default {
         this.getList()
     },
     methods: {
+        showAuditInfo(id){
+            this.auditType = 'record'
+            getAuditInfoByHeaderId(id).then(res => {
+                if(res.data.errorCode == 0) {
+                    this.auditModalVisible = true
+                    this.remarklist = res.data.data || []
+                }
+            })
+        },
         getList() {
             this.listLoading = true
             getInvoice(this.listQuery).then(res => {
@@ -140,6 +152,7 @@ export default {
             })
         },
         handleCheck(id, billDate) {
+            this.auditType = 'create'
             this.auditModalVisible = true
             this.curBillId = id
             this.curBillDate = billDate

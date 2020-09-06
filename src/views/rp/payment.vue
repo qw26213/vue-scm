@@ -51,9 +51,10 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="200">
                 <template slot-scope="{row}">
-                    <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status==0?'编辑':'查看'}}</span>
+                    <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status<=0?'编辑':'查看'}}</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
-                    <span class="ctrl del" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
+                    <span class="ctrl" v-if="row.status==-1" @click="showAuditInfo(row.id)">查看审核意见</span>
+                    <span class="ctrl del" v-if="row.status<=0" @click="handleDel(row.id)">删除</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader, row.id, row.jeHeaderId)">{{row.isJeHeader==1?'查看':'生成'}}凭证</span>
                 </template>
             </el-table-column>
@@ -71,14 +72,16 @@
                 <el-button type="primary" @click="createVouter">确定</el-button>
             </div>
         </el-dialog>
+        <Auditconfirm :dialogvisible.sync="auditModalVisible" :type="auditType" :remarklist="remarklist" @auditBill="checkItem" />
     </div>
 </template>
 <script>
-import { getReceiptPayment, delReceiptPayment, auditReceiptPayment, buildReceiptPayment } from '@/api/rp'
+import { getReceiptPayment, delReceiptPayment, auditReceiptPayment, buildReceiptPayment, getAuditInfoByHeaderId } from '@/api/rp'
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
 import supplierList from '@/components/selects/supplierList';
 import { getNowDate } from '@/utils/auth'
+import Auditconfirm from '@/components/Auditconfirm/index'
 export default {
     name: 'ReceiptPayment',
     components: { supplierList, Pagination },
@@ -92,6 +95,9 @@ export default {
             tableKey: 0,
             tableData: [],
             dialogFormVisible: false,
+            auditModalVisible: false,
+            remarklist: [],
+            auditType: '',
             curBillId: '',
             isBillDate: '0',
             total: 0,
@@ -131,21 +137,21 @@ export default {
             })
         },
         handleCheck(id) {
-            this.$confirm('确定审核通过吗?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                auditReceiptPayment(id).then(res => {
-                    if (res.data.errorCode == 0) {
-                        this.getList()
-                        this.$message.success('审核成功')
-                    } else {
-                        this.$message.error(res.data.msg)
-                    }
-                })
-            }).catch(()=>{
-                console.log('取消')
+            this.auditType = 'create'
+            this.auditModalVisible = true
+            this.curBillId = id
+        },
+        checkItem(obj) {
+            let data = obj
+            data.id = this.curBillId
+            auditReceiptPayment(data).then(res => {
+                if (res.data.errorCode == 0) {
+                    this.getList()
+                    this.auditModalVisible = false
+                    this.$message.success('审核成功')
+                } else {
+                    this.$message.error(res.data.msg)
+                }
             })
         },
         handleCreateVouter(status, id1, id2) {

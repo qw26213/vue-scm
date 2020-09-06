@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :close-on-click-modal="false" title="确认审核" :visible.sync="visible" width="400px">
+  <el-dialog v-if="type==='create'" :close-on-click-modal="false" title="确认审核" :visible.sync="visible" width="400px">
       <el-form ref="dataForm" label-position="right" label-width="80px" :model="form" style="width: 360px; margin-lef:10px;">
         <el-form-item label="审核结果" prop="status" required>
             <el-radio v-model="form.status" label="1" style="margin-right:10px">通过</el-radio>
@@ -14,12 +14,19 @@
         <el-button type="primary" @click="saveAudit">确定</el-button>
       </div>
   </el-dialog>
+  <el-dialog v-else :close-on-click-modal="false" title="查看审核意见" :visible.sync="visible" width="600px">
+      <el-table style="width: 100%;" :data="remarklist" size="mini" border resize>
+          <el-table-column label="审核日期" prop="auditDate" width="140" align="center" />
+          <el-table-column label="审核人" prop="auditorName" width="120" align="center" />
+          <el-table-column label="审核意见" prop="remarks" />
+      </el-table>
+  </el-dialog>
 </template>
 
 <script>
 export default {
   name: 'auditConfirm',
-  props: ['dialogvisible'],
+  props: ['dialogvisible', 'remarklist', 'type'],
   data() {
     return {
       visible: false,
@@ -35,9 +42,11 @@ export default {
         this.visible = true
         this.form.status = '1'
         this.form.remarks = ''
-        this.$nextTick(() => {
-          this.$refs['dataForm'].clearValidate()
-        })
+        if (this.type==='create') {
+          this.$nextTick(() => {
+            this.$refs['dataForm'].clearValidate()
+          })
+        }
       } else {
         this.visible = false
       }
@@ -65,4 +74,7 @@ export default {
   font-weight: bold;
   padding-right: 8px;
 }
+</style>
+<style lang="scss" scoped>
+>>>.el-dialog__body{padding-bottom:20px!important}
 </style>

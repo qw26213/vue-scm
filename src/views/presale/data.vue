@@ -70,10 +70,11 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="200">
                 <template slot-scope="{row}">
-                    <span class="ctrl" v-if="row.status==0" @click="handleCompile(row.id)">编辑</span>
+                    <span class="ctrl" v-if="row.status<=0" @click="handleCompile(row.id)">编辑</span>
+                    <span class="ctrl" v-if="row.status==-1" @click="handleScan(row.id,1)">查看审核意见</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleScan(row.id)">查看</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
-                    <span class="ctrl del" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
+                    <span class="ctrl del" v-if="row.status<=0" @click="handleDel(row.id)">删除</span>
                     <span class="ctrl" v-if="row.status==1&&row.balance>0" @click="handBuildBill(row.id)">退款</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId)">{{row.isJeHeader==0?'生成':'查看'}}预收凭证</span>
                 </template>
@@ -92,11 +93,11 @@
                 <el-button type="primary" @click="createVouter">确定</el-button>
             </div>
         </el-dialog>
-        <Auditconfirm :dialogvisible.sync="auditModalVisible" @auditBill="checkItem" />
+        <Auditconfirm :dialogvisible.sync="auditModalVisible" :type="auditType" :remarklist="remarklist" @auditBill="checkItem" />
     </div>
 </template>
 <script>
-import { getPresale, delPresale, auditPresale, buildPresaleVoucher, buildReturnedBill } from '@/api/store'
+import { getPresale, delPresale, auditPresale, buildPresaleVoucher, buildReturnedBill, getAuditInfoByHeaderId } from '@/api/store'
 import Pagination from '@/components/Pagination'
 import Auditconfirm from '@/components/Auditconfirm/index'
 import staffList from '@/components/selects/staffList'
@@ -115,6 +116,8 @@ export default {
             dialogFormVisible: false,
             auditModalVisible: false,
             listLoading: true,
+            auditType: '',
+            remarklist: [],
             curBillId: '',
             listQuery: {
                 pageIndex: 1,
@@ -142,6 +145,15 @@ export default {
         this.getList();
     },
     methods: {
+        showAuditInfo(id){
+            this.auditType = 'record'
+            getAuditInfoByHeaderId(id).then(res => {
+                if(res.data.errorCode == 0) {
+                    this.auditModalVisible = true
+                    this.remarklist = res.data.data || []
+                }
+            })
+        },
         getList() {
             this.listLoading = true
             getPresale(this.listQuery).then(res => {
@@ -177,6 +189,7 @@ export default {
             })
         },
         handleCheck(id) {
+            this.auditType = 'create'
             this.auditModalVisible = true
             this.curBillId = id
         },

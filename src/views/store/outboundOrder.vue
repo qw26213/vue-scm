@@ -51,10 +51,11 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="240">
                 <template slot-scope="{row}">
-                    <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status==0?'编辑':'查看'}}</span>
+                    <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status<=0?'编辑':'查看'}}</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCompile(row.id,3)">拆分</span>
+                    <span v-if="row.status==-1" class="ctrl" @click="showAuditInfo(row.id)">查看审核意见</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
-                    <span class="ctrl del" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
+                    <span class="ctrl del" v-if="row.status<=0" @click="handleDel(row.id)">删除</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isSales, row.id, row.salesHeaderId, 1, row.billDate)">{{row.isSales==0?'生成':'查看'}}销售单</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isDelivery, row.id, row.deliveryHeaderId, 2, row.billDate)">{{row.isDelivery==0?'生成':'查看'}}配送单</span>
                 </template>
@@ -73,11 +74,11 @@
                 <el-button type="primary" @click="type==1 ? createBill() : createBill1()">确定</el-button>
             </div>
         </el-dialog>
-        <Auditconfirm :dialogvisible.sync="auditModalVisible" @auditBill="checkItem" />
+        <Auditconfirm :dialogvisible.sync="auditModalVisible" :type="auditType" :remarklist="remarklist" @auditBill="checkItem" />
     </div>
 </template>
 <script>
-import { getOutboundOrder, delOutboundOrder, auditOutboundOrder, buildOutboundOrder, buildDeliveryByHeaderId } from '@/api/store'
+import { getOutboundOrder, delOutboundOrder, auditOutboundOrder, buildOutboundOrder, buildDeliveryByHeaderId, getAuditInfoByHeaderId } from '@/api/store'
 import { getNowDate } from '@/utils/auth'
 import staffList from '@/components/selects/staffList'
 import custList from '@/components/selects/custList';
@@ -95,6 +96,8 @@ export default {
             type: 1,
             dialogFormVisible: false,
             auditModalVisible: false,
+            auditType: '',
+            remarklist: [],
             billDate: '',
             total: 0,
             listLoading: true,
@@ -127,6 +130,15 @@ export default {
         this.getList();
     },
     methods: {
+        showAuditInfo(id){
+            this.auditType = 'record'
+            getAuditInfoByHeaderId(id).then(res => {
+                if(res.data.errorCode == 0) {
+                    this.auditModalVisible = true
+                    this.remarklist = res.data.data || []
+                }
+            })
+        },
         selectChange(obj) {
             for (var key in obj) {
                 this.listQuery.queryParam[key] = obj[key];
@@ -143,6 +155,7 @@ export default {
             })
         },
         handleCheck(id) {
+            this.auditType = 'create'
             this.auditModalVisible = true
             this.curBillId = id
         },

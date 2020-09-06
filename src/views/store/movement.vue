@@ -68,19 +68,20 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="160">
                 <template slot-scope="{row}">
-                    <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status==0?'编辑':'查看'}}</span>
+                    <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status<=0?'编辑':'查看'}}</span>
+                    <span v-if="row.status==-1" class="ctrl" @click="showAuditInfo(row.id)">查看审核意见</span>
                     <span v-if="row.status==1" class="ctrl" @click="confirmBill(row.id)">确认</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
-                    <span class="ctrl del" v-if="row.status==0" @click="handleDel(row.id)">删除</span>
+                    <span class="ctrl del" v-if="row.status<=0" @click="handleDel(row.id)">删除</span>
                 </template>
             </el-table-column>
         </el-table>
         <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
-        <Auditconfirm :dialogvisible.sync="auditModalVisible" @auditBill="checkItem" />
+        <Auditconfirm :dialogvisible.sync="auditModalVisible" :type="auditType" :remarklist="remarklist" @auditBill="checkItem" />
     </div>
 </template>
 <script>
-import { getMovement, delMovement, auditMovement, confirmMovement} from '@/api/store'
+import { getMovement, delMovement, auditMovement, confirmMovement, getAuditInfoByHeaderId } from '@/api/store'
 import Pagination from '@/components/Pagination'
 import warehouseList from '@/components/selects/warehouseList'
 import truckList from '@/components/selects/truckList'
@@ -96,6 +97,8 @@ export default {
             total: 0,
             listLoading: true,
             auditModalVisible: false,
+            auditType: '',
+            remarklist: [],
             listQuery: {
                 pageIndex: 1,
                 pageNum: 20,
@@ -117,6 +120,15 @@ export default {
         this.dateTime = [this.listQuery.date1, this.listQuery.date2]
     },
     methods: {
+        showAuditInfo(id){
+            this.auditType = 'record'
+            getAuditInfoByHeaderId(id).then(res => {
+                if(res.data.errorCode == 0) {
+                    this.auditModalVisible = true
+                    this.remarklist = res.data.data || []
+                }
+            })
+        },
         confirmBill(id) {
             this.$confirm('确认接受本移库单?', '提示', {
                 confirmButtonText: '确定',
@@ -151,6 +163,7 @@ export default {
             }
         },
         handleCheck(id) {
+            this.auditType = 'create'
             this.auditModalVisible = true
             this.curBillId = id
         },
