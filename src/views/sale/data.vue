@@ -89,7 +89,7 @@
                     <span class="ctrl" v-if="row.status==1" @click="handleScan(row)">查看</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id, row.billDate)">审核</span>
                     <span class="ctrl del" v-if="row.status==0" @click="handleDel(row.id, row.billDate)">删除</span>
-                    <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isOutboundOrder,row.id,row.outboundOrderHeaderId,row.billDate)">{{row.isOutboundOrder==0?'生成':'查看'}}出库单</span>
+                    <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isOutboundOrder,row.id,row.outboundOrderHeaderId,row.billDate)">{{ row.isOutboundOrder==0 ? '生成' : '查看' }}出库单</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isDelivery,row.id,row.jeHeaderId,row.billDate)">{{row.isDelivery==0?'生成':'查看'}}发票</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId,row.billDate)">{{row.isJeHeader==0?'生成':'查看'}}销售凭证</span>
                 </template>
@@ -120,18 +120,20 @@
               <el-button type="primary" @click="createVouter">确定</el-button>
           </div>
         </el-dialog>
+        <Auditconfirm :dialogvisible.sync="auditModalVisible" @auditBill="checkItem" />
     </div>
 </template>
 <script>
 import { getSales, delSales, auditSales, buildSales, buildSaleVoucherByHeaderId, buildInvoice } from '@/api/sale'
 import { parseTime } from '@/utils'
-import staffList from '@/components/selects/staffList';
-import custList from '@/components/selects/custList';
+import staffList from '@/components/selects/staffList'
+import Auditconfirm from '@/components/Auditconfirm/index'
+import custList from '@/components/selects/custList'
 import { getNowDate } from '@/utils/auth'
-import Pagination from '@/components/Pagination';
+import Pagination from '@/components/Pagination'
 export default {
     name: 'saleData',
-    components: { staffList, custList, Pagination },
+    components: { staffList, custList, Pagination, Auditconfirm },
     data() {
         return {
             tableKey: 0,
@@ -140,6 +142,7 @@ export default {
             listLoading: true,
             dialogFormVisible1: false,
             dialogFormVisible2: false,
+            auditModalVisible: false,
             curBillId: '',
             isBillDate: '0',
             curBillDate: '',
@@ -179,20 +182,18 @@ export default {
             })
         },
         handleCheck(id, billDate) {
-            this.$confirm('确定审核通过吗?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                this.checkItem(id, billDate)
-            }).catch(()=>{
-                console.log('取消')
-            })
+            this.curBillId = id
+            this.curBillDate = billDate
+            this.auditModalVisible = true
         },
-        checkItem(id, billDate) {
-            auditSales(id, billDate).then(res => {
+        checkItem(obj) {
+            let data = obj
+            data.id = this.curBillId
+            data.billDate = this.curBillDate
+            auditSales(data).then(res => {
                 if (res.data.errorCode == 0) {
                     this.getList();
+                    this.auditModalVisible = false
                     this.$message.success('审核成功')
                 } else {
                     this.$message.error(res.data.msg)

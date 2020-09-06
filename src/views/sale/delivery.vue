@@ -134,18 +134,20 @@
                 <el-button type="primary" @click="createBill">确定</el-button>
             </div>
         </el-dialog>
+        <Auditconfirm :dialogvisible.sync="auditModalVisible" @auditBill="checkItem" />
     </div>
 </template>
 <script>
 import { getDelivery, delDelivery, auditDelivery, buildDelivery, buildDeliveryVoucherByHeaderId } from '@/api/sale'
 import { parseTime } from '@/utils'
 import staffList from '@/components/selects/staffList'
+import Auditconfirm from '@/components/Auditconfirm/index'
 import custList from '@/components/selects/custList'
 import { getNowDate } from '@/utils/auth'
 import Pagination from '@/components/Pagination'
 export default {
     name: 'delivery',
-    components: { staffList, custList, Pagination },
+    components: { staffList, custList, Pagination, Auditconfirm },
     data() {
         return {
             tableKey: 0,
@@ -194,20 +196,18 @@ export default {
             })
         },
         handleCheck(id, billDate) {
-            this.$confirm('确定审核通过吗?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                this.checkItem(id, billDate)
-            }).catch(() => {
-                console.log('取消')
-            })
+            this.auditModalVisible = true
+            this.curBillId = id
+            this.curBillDate = billDate
         },
-        checkItem(id, billDate) {
-            auditDelivery(id, billDate).then(res => {
+        checkItem(obj) {
+            let data = obj
+            data.id = this.curBillId
+            data.billDate = this.curBillDate
+            auditDelivery(data).then(res => {
                 if (res.data.errorCode == 0) {
                     this.getList();
+                    this.auditModalVisible = false
                     this.$message.success('审核成功')
                 } else {
                     this.$message.error(res.data.msg)

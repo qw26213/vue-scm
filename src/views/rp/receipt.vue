@@ -71,6 +71,7 @@
                 <el-button type="primary" @click="createVouter">确定</el-button>
             </div>
         </el-dialog>
+        <Auditconfirm :dialogvisible.sync="auditModalVisible" @auditBill="checkItem" />
     </div>
 </template>
 <script>
@@ -79,9 +80,10 @@ import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
 import custList from '@/components/selects/custList';
 import { getNowDate } from '@/utils/auth'
+import Auditconfirm from '@/components/Auditconfirm/index'
 export default {
     name: 'ReceiptPayment',
-    components: { custList, Pagination },
+    components: { custList, Pagination,Auditconfirm },
     filters: {
       fixed(val) {
         return !val ? 0 : Number(val).toFixed(2)
@@ -92,6 +94,7 @@ export default {
             tableKey: 0,
             tableData: [],
             dialogFormVisible: false,
+            auditModalVisible: false,
             curBillId: '',
             isBillDate: '0',
             total: 0,
@@ -131,21 +134,20 @@ export default {
             })
         },
         handleCheck(id) {
-            this.$confirm('确定审核通过吗?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                auditReceiptPayment(id).then(res => {
-                    if (res.data.errorCode == 0) {
-                        this.getList()
-                        this.$message.success('审核成功')
-                    } else {
-                        this.$message.error(res.data.msg)
-                    }
-                })
-            }).catch(()=>{
-                console.log('取消')
+            this.auditModalVisible = true
+            this.curBillId = id
+        },
+        checkItem(obj) {
+            let data = obj
+            data.id = this.curBillId
+            auditReceiptPayment(data).then(res => {
+                if (res.data.errorCode == 0) {
+                    this.getList()
+                    this.auditModalVisible = false
+                    this.$message.success('审核成功')
+                } else {
+                    this.$message.error(res.data.msg)
+                }
             })
         },
         handleCreateVouter(status, id1, id2) {

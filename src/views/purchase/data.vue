@@ -112,23 +112,26 @@
                 <el-button type="primary" @click="createVouter">确定</el-button>
             </div>
         </el-dialog>
+        <Auditconfirm :dialogvisible.sync="auditModalVisible" @auditBill="checkItem" />
     </div>
 </template>
 <script>
-import { getPurchase, delPurchase, auditPurchase, buildPurchaseEntry, buildVoucherByHeaderId } from '@/api/store';
-import { parseTime } from '@/utils';
-import staffList from '@/components/selects/staffList';
-import supplierList from '@/components/selects/supplierList';
-import warehouseList from '@/components/selects/warehouseList';
+import { getPurchase, delPurchase, auditPurchase, buildPurchaseEntry, buildVoucherByHeaderId } from '@/api/store'
+import { parseTime } from '@/utils'
+import staffList from '@/components/selects/staffList'
+import Auditconfirm from '@/components/Auditconfirm/index'
+import supplierList from '@/components/selects/supplierList'
+import warehouseList from '@/components/selects/warehouseList'
 import { getNowDate } from '@/utils/auth'
-import Pagination from '@/components/Pagination';
+import Pagination from '@/components/Pagination'
 export default {
     name: 'purchaseData',
-    components: { staffList, warehouseList, supplierList, Pagination },
+    components: { staffList, warehouseList, supplierList, Pagination, Auditconfirm },
     data() {
         return {
             tableKey: 0,
             tableData: [],
+            auditModalVisible: false,
             total: 0,
             listLoading: true,
             dialogFormVisible1: false,
@@ -177,20 +180,16 @@ export default {
             }
         },
         handleCheck(id) {
-            this.$confirm('确定审核通过吗?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                this.checkItem(id)
-            }).catch(() => {
-                console.log('取消')
-            });
+            this.curBillId = id
+            this.auditModalVisible = true
         },
-        checkItem(id) {
-            auditPurchase(id).then(res => {
+        checkItem(obj) {
+            let data = obj
+            data.id = this.curBillId
+            auditPurchase(data).then(res => {
                 if (res.data.errorCode == 0) {
                     this.getList()
+                    this.auditModalVisible = false
                     this.$message.success('审核成功！')
                 } else {
                     this.$message.error(res.data.msg)

@@ -120,18 +120,20 @@
               <el-button type="primary" @click="createBill1">确定</el-button>
           </div>
         </el-dialog>
+        <Auditconfirm :dialogvisible.sync="auditModalVisible" @auditBill="checkItem" />
     </div>
 </template>
 <script>
 import { getSalesReturned, delSalesReturned, auditSalesReturned, buildSalesReturned, getItemPrice, buildSaleReturnedVoucherByHeaderId, buildInventoryByHeaderId } from '@/api/sale'
 import { parseTime } from '@/utils'
 import staffList from '@/components/selects/staffList';
+import Auditconfirm from '@/components/Auditconfirm/index';
 import custList from '@/components/selects/custList';
 import { getNowDate } from '@/utils/auth'
 import Pagination from '@/components/Pagination';
 export default {
     name: 'saleData',
-    components: { staffList, custList, Pagination },
+    components: { staffList, custList, Pagination, Auditconfirm },
     data() {
         return {
             tableKey: 0,
@@ -141,6 +143,7 @@ export default {
             dialogFormVisible1: false,
             dialogFormVisible2: false,
             dialogFormVisible3: false,
+            auditModalVisible: false,
             curBillId: '',
             isBillDate: '0',
             listQuery: {
@@ -178,20 +181,16 @@ export default {
             })
         },
         handleCheck(id) {
-            this.$confirm('你确认要审核通过吗?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                this.checkItem(id)
-            }).catch(()=>{
-                console.log('取消')
-            });
+            this.curBillId = id
+            this.auditModalVisible = true
         },
-        checkItem(id) {
-            auditSalesReturned(id).then(res => {
+        checkItem(obj) {
+            let data = obj
+            data.id = this.curBillId
+            auditSalesReturned(data).then(res => {
                 if (res.data.errorCode == 0) {
                     this.getList();
+                    this.auditModalVisible = false
                     this.$message.success('审核成功')
                 } else {
                     this.$message.error(res.data.msg)
@@ -244,7 +243,7 @@ export default {
             })
         },
         handleCreateVouter(status,id1,id2){
-        if (status !== 0) {
+          if (status !== 0) {
             this.$router.push('/voucher/add?id=' + id2)
           }else{
             this.curBillId = id1;

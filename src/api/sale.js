@@ -34,11 +34,11 @@ export function delSales(id, date) {
     })
 }
 
-export function auditSales(id, date) {
+export function auditSales(data) {
     return request({
         url: '/drp/so/sales/auditByHeaderId',
         method: 'post',
-        data: { id: id, billDate: date }
+        data
     })
 }
 
@@ -92,11 +92,11 @@ export function delSalesOrder(id) {
     })
 }
 
-export function auditSalesOrder(id, date) {
+export function auditSalesOrder(data) {
     return request({
         url: '/drp/so/salesOrder/auditByHeaderId',
         method: 'post',
-        data: { id: id, billDate: date }
+        data
     })
 }
 
@@ -157,11 +157,11 @@ export function delSalesReturned(id) {
     })
 }
 
-export function auditSalesReturned(id) {
+export function auditSalesReturned(data) {
     return request({
         url: '/drp/so/salesReturned/auditByHeaderId',
         method: 'post',
-        data: { id: id }
+        data
     })
 }
 
@@ -223,11 +223,11 @@ export function delDelivery(id, date) {
     })
 }
 
-export function auditDelivery(id, date) {
+export function auditDelivery(data) {
     return request({
         url: '/drp/so/delivery/auditByHeaderId',
         method: 'post',
-        data: { id: id, billDate: date }
+        data
     })
 }
 
@@ -281,11 +281,11 @@ export function delInvoice(id) {
     })
 }
 
-export function auditInvoice(id, date) {
+export function auditInvoice(data) {
     return request({
         url: '/drp/so/invoice/auditByHeaderId',
         method: 'post',
-        data: { id: id, billDate: date }
+        data
     })
 }
 
@@ -338,11 +338,11 @@ export function delEverydayTotal(id) {
     })
 }
 
-export function auditEverydayTotal(id) {
+export function auditEverydayTotal(data) {
     return request({
         url: '/drp/so/everydayTotal/auditByHeaderId',
         method: 'post',
-        data: { id }
+        data
     })
 }
 
@@ -395,11 +395,11 @@ export function buildInventoryVoucher(data) {
     })
 }
 
-export function auditInventory(id) {
+export function auditInventory(data) {
     return request({
         url: '/drp/ic/inventory/auditByHeaderId',
         method: 'post',
-        data: { id }
+        data
     })
 }
 

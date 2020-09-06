@@ -76,16 +76,18 @@
             </el-table-column>
         </el-table>
         <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
+        <Auditconfirm :dialogvisible.sync="auditModalVisible" @auditBill="checkItem" />
     </div>
 </template>
 <script>
 import { getEverydayTotal, delEverydayTotal, auditEverydayTotal, confirmEverydayTotal } from '@/api/sale'
 import Pagination from '@/components/Pagination'
-import staffList from '@/components/selects/staffList';
+import staffList from '@/components/selects/staffList'
+import Auditconfirm from '@/components/Auditconfirm/index'
 import { getNowDate } from '@/utils/auth'
 export default {
     name: 'EverydayTotalData',
-    components: { Pagination, staffList },
+    components: { Pagination, staffList, Auditconfirm },
     data() {
         return {
             tableKey: 0,
@@ -93,6 +95,7 @@ export default {
             total: 0,
             isBillDate: '0',
             dialogFormVisible: false,
+            auditModalVisible: false,
             listLoading: true,
             curBillId: '',
             listQuery: {
@@ -137,22 +140,21 @@ export default {
             }
         },
         handleCheck(id) {
-            this.$confirm('确定审核通过吗?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                auditEverydayTotal(id).then(res => {
-                    if (res.data.errorCode == 0) {
-                        this.getList();
-                        this.$message.success('审核成功')
-                    } else {
-                        this.$message.error(res.data.msg)
-                    }
-                })
-            }).catch(() => {
-                console.log('取消')
-            });
+            this.auditModalVisible = true
+            this.curBillId = id
+        },
+        checkItem(obj) {
+            let data = obj
+            data.id = this.curBillId
+            auditEverydayTotal(data).then(res => {
+                if (res.data.errorCode == 0) {
+                    this.getList();
+                    this.auditModalVisible = false
+                    this.$message.success('审核成功')
+                } else {
+                    this.$message.error(res.data.msg)
+                }
+            })
         },
         handleAdd(obj) {
             this.$store.dispatch('tagsView/delView', this.$route)

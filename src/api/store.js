@@ -33,11 +33,11 @@ export function delPurchase(id) {
     })
 }
 
-export function auditPurchase(id) {
+export function auditPurchase(data) {
     return request({
         url: '/drp/po/purchase/auditByHeaderId',
         method: 'post',
-        data: { id: id }
+        data
     })
 }
 
@@ -91,11 +91,11 @@ export function delPurchaseReturned(id) {
     })
 }
 
-export function auditPurchaseReturned(id) {
+export function auditPurchaseReturned(data) {
     return request({
         url: '/drp/po/purchaseReturned/auditByHeaderId',
         method: 'post',
-        data: { id: id }
+        data
     })
 }
 
@@ -149,11 +149,11 @@ export function delWarehousing(id) {
     })
 }
 
-export function auditWarehousing(id) {
+export function auditWarehousing(data) {
     return request({
         url: '/drp/ic/warehousingEntry/auditByHeaderId',
         method: 'post',
-        data: { id: id }
+        data
     })
 }
 
@@ -199,11 +199,11 @@ export function delWarehousingReturned(id) {
     })
 }
 
-export function auditWarehousingReturned(id) {
+export function auditWarehousingReturned(data) {
     return request({
         url: '/drp/ic/warehousingEntryReturned/auditByHeaderId',
         method: 'post',
-        data: { id: id }
+        data
     })
 }
 
@@ -248,11 +248,11 @@ export function delOutboundOrder(id) {
     })
 }
 
-export function auditOutboundOrder(id) {
+export function auditOutboundOrder(data) {
     return request({
         url: '/drp/ic/outboundOrder/auditByHeaderId',
         method: 'post',
-        data: { id: id }
+        data
     })
 }
 
@@ -305,11 +305,11 @@ export function delOutboundOrderReturned(id) {
     })
 }
 
-export function auditOutboundOrderReturned(id) {
+export function auditOutboundOrderReturned(data) {
     return request({
         url: '/drp/ic/outboundOrderReturned/auditByHeaderId',
         method: 'post',
-        data: { id: id }
+        data
     })
 }
 
@@ -354,11 +354,11 @@ export function delMovement(id) {
     })
 }
 
-export function auditMovement(id) {
+export function auditMovement(data) {
     return request({
         url: '/drp/ic/movement/auditByHeaderId',
         method: 'post',
-        data: { id: id }
+        data
     })
 }
 

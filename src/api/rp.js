@@ -40,11 +40,11 @@ export function buildReceiptPayment(obj) {
     })
 }
 
-export function auditReceiptPayment(id) {
+export function auditReceiptPayment(data) {
     return request({
         url: '/drp/rp/receiptPayment/auditByHeaderId',
         method: 'post',
-        data: { id: id }
+        data
     })
 }
 

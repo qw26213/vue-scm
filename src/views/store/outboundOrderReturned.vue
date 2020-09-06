@@ -71,6 +71,7 @@
               <el-button type="primary" @click="createBill">确定</el-button>
           </div>
         </el-dialog>
+        <Auditconfirm :dialogvisible.sync="auditModalVisible" @auditBill="checkItem" />
     </div>
 </template>
 <script>
@@ -81,9 +82,10 @@ import custList from '@/components/selects/custList';
 import warehouseList from '@/components/selects/warehouseList';
 import truckList from '@/components/selects/truckList';
 import Pagination from '@/components/Pagination';
+import Auditconfirm from '@/components/Auditconfirm/index'
 export default {
     name: 'outboundOrderReturned',
-    components: { Pagination,staffList,custList,warehouseList,truckList },
+    components: { Pagination,staffList,custList,warehouseList,truckList,Auditconfirm },
     data() {
         return {
             tableKey: 0,
@@ -91,6 +93,7 @@ export default {
             dialogFormVisible:false,
             total: 0,
             listLoading: true,
+            auditModalVisible: false,
             curBillId:'',
             isBillDate:'0',
             listQuery: {
@@ -136,22 +139,21 @@ export default {
             })
         },
         handleCheck(id) {
-            this.$confirm('确定审核通过吗?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                auditOutboundOrderReturned(id).then(res => {
-                    if (res.data.errorCode == 0) {
-                        this.getList();
-                        this.$message.success('审核成功')
-                    } else {
-                        this.$message.error(res.data.msg)
-                    }
-                })
-            }).catch(()=>{
-                console.log('取消')
-            });
+            this.auditModalVisible = true
+            this.curBillId = id
+        },
+        checkItem(obj) {
+            let data = obj
+            data.id = this.curBillId
+            auditOutboundOrderReturned(data).then(res => {
+                if (res.data.errorCode == 0) {
+                    this.getList()
+                    this.auditModalVisible = false
+                    this.$message.success('审核成功')
+                } else {
+                    this.$message.error(res.data.msg)
+                }
+            })
         },
         handleCreateBill(status,id1,id2){
           if (status !== 0) {

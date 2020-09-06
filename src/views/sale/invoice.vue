@@ -81,17 +81,19 @@
             </el-table-column>
         </el-table>
         <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
+        <Auditconfirm :dialogvisible.sync="auditModalVisible" @auditBill="checkItem" />
     </div>
 </template>
 <script>
 import { getInvoice, delInvoice, auditInvoice } from '@/api/sale'
 import { parseTime } from '@/utils'
-import custList from '@/components/selects/custList';
+import custList from '@/components/selects/custList'
+import Auditconfirm from '@/components/Auditconfirm/index'
 import { getNowDate } from '@/utils/auth'
-import Pagination from '@/components/Pagination';
+import Pagination from '@/components/Pagination'
 export default {
     name: 'saleData',
-    components: { custList, Pagination },
+    components: { custList, Pagination, Auditconfirm },
     data() {
         return {
             tableKey: 0,
@@ -100,7 +102,8 @@ export default {
             listLoading: true,
             dialogFormVisible1: false,
             dialogFormVisible2: false,
-            curinvoiceId: '',
+            auditModalVisible: false,
+            curBillId: '',
             isinvoiceDate: '0',
             curinvoiceDate: '',
             listQuery: {
@@ -136,21 +139,19 @@ export default {
                 this.listLoading = false
             })
         },
-        handleCheck(id, invoiceDate) {
-            this.$confirm('确定审核通过吗?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                this.checkItem(id, invoiceDate)
-            }).catch(() => {
-                console.log('取消')
-            })
+        handleCheck(id, billDate) {
+            this.auditModalVisible = true
+            this.curBillId = id
+            this.curBillDate = billDate
         },
-        checkItem(id, invoiceDate) {
-            auditInvoice(id, invoiceDate).then(res => {
+        checkItem(obj) {
+            let data = obj
+            data.id = this.curBillId
+            data.billDate = this.curBillDate
+            auditInvoice(data).then(res => {
                 if (res.data.errorCode == 0) {
                     this.getList();
+                    this.auditModalVisible = false
                     this.$message.success('审核成功')
                 } else {
                     this.$message.error(res.data.msg)
@@ -177,7 +178,7 @@ export default {
             if (status !== 0) {
                 this.$router.push('/voucher/add?id=' + id2)
             } else {
-                this.curinvoiceId = id1
+                this.curBillId = id1
                 this.curinvoiceDate = invoiceDate
                 this.dialogFormVisible2 = true
             }

@@ -74,23 +74,25 @@
         <el-button type="primary" @click="dialogStatus == 'create'?handleCreate():handleModify()">确定</el-button>
       </div>
     </el-dialog>
-
+    <Auditconfirm :dialogvisible.sync="auditModalVisible" @auditBill="checkItem" />
   </div>
 </template>
 
 <script>
 import { getWarehousing,saveWarehousing,delWarehousing,auditWarehousing,buildWarehousingEntry} from '@/api/store'
-
 import { parseTime } from '@/utils'
-import Pagination from '@/components/Pagination' 
+import Pagination from '@/components/Pagination'
+import Auditconfirm from '@/components/Auditconfirm/index';
 export default {
   name: 'checkList',
-  components: { Pagination },
+  components: { Pagination,Auditconfirm },
   data() {
     return {
       tableKey: 0,
       dateTime:"",
       tableData: [],
+      curBillid: '',
+      auditModalVisible: false,
       total: 0,
       listLoading: true,
       listQuery: {
@@ -133,17 +135,15 @@ export default {
       }
     },
     handleCheck(id){
-      this.$confirm('你确认要审核通过吗?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.checkItem(id)
-      });
+      this.auditModalVisible = true
+      this.curBillid = id
     },
-    checkItem(id){
-      auditWarehousing(id).then(res => {
+    checkItem(obj){
+      let data = obj
+      data.id = this.curBillid
+      auditWarehousing(data).then(res => {
         if(res.data.errorCode==0){
+        this.auditModalVisible = false
           this.getList();
           this.$message.success('审核成功')
         }else{

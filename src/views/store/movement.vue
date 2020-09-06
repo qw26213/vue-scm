@@ -76,23 +76,26 @@
             </el-table-column>
         </el-table>
         <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
+        <Auditconfirm :dialogvisible.sync="auditModalVisible" @auditBill="checkItem" />
     </div>
 </template>
 <script>
 import { getMovement, delMovement, auditMovement, confirmMovement} from '@/api/store'
 import Pagination from '@/components/Pagination'
-import warehouseList from '@/components/selects/warehouseList';
-import truckList from '@/components/selects/truckList';
+import warehouseList from '@/components/selects/warehouseList'
+import truckList from '@/components/selects/truckList'
+import Auditconfirm from '@/components/Auditconfirm/index'
 import { getNowDate } from '@/utils/auth'
 export default {
     name: 'movement',
-    components: { Pagination,warehouseList,truckList },
+    components: { Pagination, warehouseList, truckList, Auditconfirm },
     data() {
         return {
             tableKey: 0,
             tableData: [],
             total: 0,
             listLoading: true,
+            auditModalVisible: false,
             listQuery: {
                 pageIndex: 1,
                 pageNum: 20,
@@ -148,22 +151,21 @@ export default {
             }
         },
         handleCheck(id) {
-            this.$confirm('确定审核通过吗?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                auditMovement(id).then(res => {
-                    if (res.data.errorCode == 0) {
-                        this.getList();
-                        this.$message.success('审核成功')
-                    } else {
-                        this.$message.error(res.data.msg)
-                    }
-                })
-            }).catch(()=>{
-                console.log('取消')
-            });
+            this.auditModalVisible = true
+            this.curBillId = id
+        },
+        checkItem(obj) {
+            let data = obj
+            data.id = this.curBillId
+            auditMovement(data).then(res => {
+                if (res.data.errorCode == 0) {
+                    this.getList()
+                    this.auditModalVisible = false
+                    this.$message.success('审核成功')
+                } else {
+                    this.$message.error(res.data.msg)
+                }
+            })
         },
         handleAdd(obj) {
             this.$store.dispatch('tagsView/delView', this.$route);

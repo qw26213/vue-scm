@@ -62,16 +62,18 @@
             </el-table-column>
         </el-table>
         <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
+        <Auditconfirm :dialogvisible.sync="auditModalVisible" @auditBill="checkItem" />
     </div>
 </template>
 <script>
 import { getAllocation, delAllocation, auditAllocation, confirmAllocation } from '@/api/store'
 import Pagination from '@/components/Pagination'
 import warehouseList from '@/components/selects/warehouseList';
+import Auditconfirm from '@/components/Auditconfirm/index';
 import { getNowDate } from '@/utils/auth'
 export default {
     name: 'allocation',
-    components: { Pagination,warehouseList },
+    components: { Pagination, warehouseList, Auditconfirm },
     data() {
         return {
             tableKey: 0,
@@ -79,6 +81,7 @@ export default {
             statusList: [{status:1, label:'已审核'}, {status:2, label:'已确认'}, {status:0,label:'待审核'}],
             total: 0,
             listLoading: true,
+            auditModalVisible: false,
             listQuery: {
                 pageIndex: 1,
                 pageNum: 20,
@@ -126,22 +129,21 @@ export default {
             });
         },
         handleCheck(id) {
-            this.$confirm('确定审核通过吗?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                auditAllocation(id).then(res => {
-                    if (res.data.errorCode == 0) {
-                        this.getList();
-                        this.$message.success('审核成功')
-                    } else {
-                        this.$message.error(res.data.msg)
-                    }
-                })
-            }).catch(()=>{
-                console.log('取消')
-            });
+            this.curBillId = id
+            this.auditModalVisible = true
+        },
+        checkItem(obj) {
+            let data = obj
+            data.id = this.curBillId
+            auditAllocation(data).then(res => {
+                if (res.data.errorCode == 0) {
+                    this.getList();
+                    this.auditModalVisible = false
+                    this.$message.success('审核成功')
+                } else {
+                    this.$message.error(res.data.msg)
+                }
+            })
         },
         selectChange(obj) {
             for (var key in obj) {

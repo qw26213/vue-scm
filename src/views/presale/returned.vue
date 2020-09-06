@@ -84,18 +84,20 @@
                 <el-button type="primary" @click="createVouter">确定</el-button>
             </div>
         </el-dialog>
+        <Auditconfirm :dialogvisible.sync="auditModalVisible" @auditBill="checkItem" />
     </div>
 </template>
 <script>
 import { getPresaleReturned, delPresaleReturned, auditPresaleReturned, buildPresaleReturnedVoucher } from '@/api/store'
 import Pagination from '@/components/Pagination'
 import staffList from '@/components/selects/staffList';
+import Auditconfirm from '@/components/Auditconfirm/index';
 import supplierList from '@/components/selects/supplierList';
 import custList from '@/components/selects/custList';
 import { getNowDate } from '@/utils/auth'
 export default {
     name: 'presaleReturnedData',
-    components: { Pagination, staffList, custList, supplierList },
+    components: { Pagination, staffList, custList, supplierList, Auditconfirm },
     data() {
         return {
             tableKey: 0,
@@ -103,6 +105,7 @@ export default {
             total: 0,
             isBillDate: '0',
             dialogFormVisible: false,
+            auditModalVisible: false,
             listLoading: true,
             curBillId: '',
             listQuery: {
@@ -145,24 +148,17 @@ export default {
                 this.listQuery.queryParam[key] = obj[key];
             }
         },
-        changeVal() {
-
-        },
         handleCheck(id) {
-            this.$confirm('确定审核通过吗?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                this.checkItem(id)
-            }).catch(() => {
-                console.log('取消')
-            });
+            this.auditModalVisible = true
+            this.curBillId = id
         },
-        checkItem(id) {
-            auditPresaleReturned(id).then(res => {
+        checkItem(obj) {
+            let data = obj
+            data.id = this.curBillId
+            auditPresaleReturned(data).then(res => {
                 if (res.data.errorCode == 0) {
                     this.getList();
+                    this.auditModalVisible = false
                     this.$message.success('审核成功')
                 } else {
                     this.$message.error(res.data.msg)
