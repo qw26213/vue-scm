@@ -192,7 +192,7 @@ export default {
             data.billDate = this.curBillDate
             auditSales(data).then(res => {
                 if (res.data.errorCode == 0) {
-                    this.getList();
+                    this.getList()
                     this.auditModalVisible = false
                     this.$message.success('审核成功')
                 } else {
@@ -258,7 +258,7 @@ export default {
             }else{
               this.$message.error(res.data.msg)
             }
-          });
+          })
         },
         handleDel(id, date) {
             this.$confirm('确定删除吗?', '提示', {
@@ -267,7 +267,7 @@ export default {
                 type: 'warning'
             }).then(() => {
                 this.delItem(id,date)
-            });
+            })
         },
         delItem(id, date) {
             delSales(id, date).then(res => {

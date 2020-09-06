@@ -411,11 +411,11 @@ export function delAllocation(id) {
     })
 }
 
-export function auditAllocation(id) {
+export function auditAllocation(data) {
     return request({
         url: '/drp/ic/allocation/auditByHeaderId',
         method: 'post',
-        data: { id: id }
+        data
     })
 }
 
@@ -468,11 +468,11 @@ export function delPresale(id) {
     })
 }
 
-export function auditPresale(id) {
+export function auditPresale(data) {
     return request({
         url: '/drp/ps/presale/auditByHeaderId',
         method: 'post',
-        data: { id: id }
+        data
     })
 }
 
@@ -541,11 +541,11 @@ export function delPresaleReturned(id) {
     })
 }
 
-export function auditPresaleReturned(id) {
+export function auditPresaleReturned(data) {
     return request({
         url: '/drp/ps/presaleReturned/auditByHeaderId',
         method: 'post',
-        data: { id: id }
+        data
     })
 }
 
