@@ -25,7 +25,7 @@
 
 <script>
 export default {
-  name: 'auditConfirm',
+  name: 'confirmfirm',
   props: ['dialogvisible', 'remarklist', 'type'],
   data() {
     return {
@@ -59,7 +59,7 @@ export default {
     saveAudit() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          this.$emit('confirmBill', this.form)
+          this.$emit('confirBill', this.form)
         }
       })
     }

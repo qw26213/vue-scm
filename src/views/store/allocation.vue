@@ -151,7 +151,7 @@ export default {
                     this.confirmModalVisible = false
                     this.$message.success('确认成功')
                 } else {
-                    this.$message.error(res.data.msg)
+                    this.$message.warning(res.data.msg)
                 }
             })
         },
@@ -169,7 +169,7 @@ export default {
                     this.auditModalVisible = false
                     this.$message.success('审核成功')
                 } else {
-                    this.$message.error(res.data.msg)
+                    this.$message.warning(res.data.msg)
                 }
             })
         },
@@ -198,7 +198,7 @@ export default {
                         this.dialogFormVisible = false
                         this.$message.success('删除成功')
                     } else {
-                        this.$message.error(res.data.msg)
+                        this.$message.warning(res.data.msg)
                     }
                 })
             });
