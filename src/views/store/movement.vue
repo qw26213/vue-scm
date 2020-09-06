@@ -70,6 +70,7 @@
                 <template slot-scope="{row}">
                     <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status<=0?'编辑':'查看'}}</span>
                     <span v-if="row.status==-1" class="ctrl" @click="showAuditInfo(row.id)">查看审核意见</span>
+                    <span v-if="row.status==-2" class="ctrl" @click="showConfirmInfo(row.id)">查看确认意见</span>
                     <span v-if="row.status==1" class="ctrl" @click="confirmBill(row.id)">确认</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
                     <span class="ctrl del" v-if="row.status<=0" @click="handleDel(row.id)">删除</span>
@@ -78,18 +79,20 @@
         </el-table>
         <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
         <Auditconfirm :dialogvisible.sync="auditModalVisible" :type="auditType" :remarklist="remarklist" @auditBill="checkItem" />
+        <Confirmconfirm :dialogvisible.sync="confirmModalVisible" :type="confirmType" :remarklist="remarklist1" @confirmBill="confirmItem" />
     </div>
 </template>
 <script>
-import { getMovement, delMovement, auditMovement, confirmMovement, getAuditInfoByHeaderId } from '@/api/store'
+import { getMovement, delMovement, auditMovement, confirmMovement, getAuditInfoByHeaderId, getConfirmInfoByHeaderId } from '@/api/store'
 import Pagination from '@/components/Pagination'
 import warehouseList from '@/components/selects/warehouseList'
 import truckList from '@/components/selects/truckList'
 import Auditconfirm from '@/components/Auditconfirm/index'
+import Confirmconfirm from '@/components/Confirmconfirm/index'
 import { getNowDate } from '@/utils/auth'
 export default {
     name: 'movement',
-    components: { Pagination, warehouseList, truckList, Auditconfirm },
+    components: { Pagination, warehouseList, truckList, Auditconfirm, Confirmconfirm },
     data() {
         return {
             tableKey: 0,
@@ -99,6 +102,9 @@ export default {
             auditModalVisible: false,
             auditType: '',
             remarklist: [],
+            confirmModalVisible: false,
+            confirmType: '',
+            remarklist1: [],
             listQuery: {
                 pageIndex: 1,
                 pageNum: 20,
@@ -120,6 +126,15 @@ export default {
         this.dateTime = [this.listQuery.date1, this.listQuery.date2]
     },
     methods: {
+        showConfirmInfo(id){
+            this.confirmType = 'record'
+            getConfirmInfoByHeaderId(id).then(res => {
+                if(res.data.errorCode == 0) {
+                    this.confirmModalVisible = true
+                    this.remarklist1 = res.data.data || []
+                }
+            })
+        },
         showAuditInfo(id){
             this.auditType = 'record'
             getAuditInfoByHeaderId(id).then(res => {
@@ -129,23 +144,23 @@ export default {
                 }
             })
         },
-        confirmBill(id) {
-            this.$confirm('确认接受本移库单?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                confirmMovement(id).then(res => {
-                    if (res.data.errorCode == 0) {
-                        this.getList();
-                        this.$message.success('确认成功')
-                    } else {
-                        this.$message.error(res.data.msg)
-                    }
-                })
-            }).catch(()=>{
-                console.log('取消')
-            });
+        handleConfirm(id){
+            this.confirmType = 'create'
+            this.confirmModalVisible = true
+            this.curBillId = id
+        },
+        confirmItem(obj) {
+            let data = obj
+            data.id = this.curBillId
+            confirmMovement(data).then(res => {
+                if (res.data.errorCode == 0) {
+                    this.getList()
+                    this.confirmModalVisible = false
+                    this.$message.success('确认成功')
+                } else {
+                    this.$message.error(res.data.msg)
+                }
+            })
         },
         getList() {
             this.listLoading = true

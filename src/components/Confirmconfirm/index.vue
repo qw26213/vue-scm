@@ -1,11 +1,11 @@
 <template>
-  <el-dialog v-if="type==='create'" :close-on-click-modal="false" title="审核" :visible.sync="visible" width="400px">
+  <el-dialog v-if="type==='create'" :close-on-click-modal="false" title="确认" :visible.sync="visible" width="400px">
       <el-form ref="dataForm" label-position="right" label-width="80px" :model="form" style="width: 360px; margin-lef:10px;">
-        <el-form-item label="审核结果" prop="status" required>
+        <el-form-item label="确认结果" prop="status" required>
             <el-radio v-model="form.status" label="1" style="margin-right:10px">通过</el-radio>
             <el-radio v-model="form.status" label="-1">不通过</el-radio>
         </el-form-item>
-        <el-form-item label="审核意见" prop="remarks" :rules="form.status==-1 ? {required: true, message: '审核意见不能为空', trigger: 'change'} : {}">
+        <el-form-item label="确认意见" prop="remarks" :rules="form.status==-1 ? {required: true, message: '确认意见不能为空', trigger: 'change'} : {}">
             <el-input type="textarea" v-model.trim="form.remarks" style="width:100%" />
         </el-form-item>
       </el-form>
@@ -14,11 +14,11 @@
         <el-button type="primary" @click="saveAudit">确定</el-button>
       </div>
   </el-dialog>
-  <el-dialog v-else :close-on-click-modal="false" title="查看审核意见" :visible.sync="visible" width="600px">
+  <el-dialog v-else :close-on-click-modal="false" title="查看确认意见" :visible.sync="visible" width="600px">
       <el-table style="width: 100%;" :data="remarklist" size="mini" border resize>
-          <el-table-column label="审核日期" prop="auditDate" width="140" align="center" />
-          <el-table-column label="审核人" prop="auditorName" width="120" align="center" />
-          <el-table-column label="审核意见" prop="remarks" />
+          <el-table-column label="确认日期" prop="auditDate" width="140" align="center" />
+          <el-table-column label="确认人" prop="auditorName" width="120" align="center" />
+          <el-table-column label="确认意见" prop="remarks" />
       </el-table>
   </el-dialog>
 </template>
@@ -59,7 +59,7 @@ export default {
     saveAudit() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          this.$emit('auditBill', this.form)
+          this.$emit('confirmBill', this.form)
         }
       })
     }

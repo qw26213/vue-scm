@@ -367,7 +367,7 @@ export function getInventoryById(id) {
     return request({
         url: '/drp/ic/inventory/getByHeaderId',
         method: 'post',
-        data: { id: id }
+        data: { id }
     })
 }
 
@@ -414,8 +414,17 @@ export function queryBookQtyList(data) {
 // 查看审核意见
 export function getAuditInfoByHeaderId(id) {
     return request({
-        url: '/drp/log/aduitInfo/getByHeaderId',
+        url: '/drp/log/auditInfo/getByHeaderId',
         method: 'post',
-        data: {id: id}
+        data: { id }
+    })
+}
+
+// 查看确认意见
+export function getConfirmInfoByHeaderId(id) {
+    return request({
+        url: '/drp/log/confirmInfo/getByHeaderId',
+        method: 'post',
+        data: { id }
     })
 }

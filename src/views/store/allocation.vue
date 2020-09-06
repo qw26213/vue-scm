@@ -57,6 +57,7 @@
                     <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status<=0?'编辑':'查看'}}</span>
                     <span v-if="row.status==1" class="ctrl" @click="confirmBill(row.id)">确认</span>
                     <span v-if="row.status==-1" class="ctrl" @click="showAuditInfo(row.id)">查看审核意见</span>
+                    <span v-if="row.status==-2" class="ctrl" @click="showConfirmInfo(row.id)">查看确认意见</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
                     <span class="ctrl del" v-if="row.status<=0" @click="handleDel(row.id)">删除</span>
                 </template>
@@ -64,17 +65,19 @@
         </el-table>
         <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
         <Auditconfirm :dialogvisible.sync="auditModalVisible" :type="auditType" :remarklist="remarklist" @auditBill="checkItem" />
+        <Confirmconfirm :dialogvisible.sync="confirmModalVisible" :type="confirmType" :remarklist="remarklist1" @confirmBill="confirmItem" />
     </div>
 </template>
 <script>
-import { getAllocation, delAllocation, auditAllocation, confirmAllocation, getAuditInfoByHeaderId } from '@/api/store'
+import { getAllocation, delAllocation, auditAllocation, confirmAllocation, getAuditInfoByHeaderId, getConfirmInfoByHeaderId } from '@/api/store'
 import Pagination from '@/components/Pagination'
 import warehouseList from '@/components/selects/warehouseList';
 import Auditconfirm from '@/components/Auditconfirm/index';
+import Confirmconfirm from '@/components/Confirmconfirm/index'
 import { getNowDate } from '@/utils/auth'
 export default {
     name: 'allocation',
-    components: { Pagination, warehouseList, Auditconfirm },
+    components: { Pagination, warehouseList, Auditconfirm, Confirmconfirm },
     data() {
         return {
             tableKey: 0,
@@ -85,6 +88,9 @@ export default {
             auditModalVisible: false,
             auditType: '',
             remarklist: [],
+            confirmModalVisible: false,
+            confirmType: '',
+            remarklist1: [],
             listQuery: {
                 pageIndex: 1,
                 pageNum: 20,
@@ -103,6 +109,15 @@ export default {
         this.getList();
     },
     methods: {
+        showConfirmInfo(id){
+            this.confirmType = 'record'
+            getConfirmInfoByHeaderId(id).then(res => {
+                if(res.data.errorCode == 0) {
+                    this.confirmModalVisible = true
+                    this.remarklist1 = res.data.data || []
+                }
+            })
+        },
         showAuditInfo(id){
             this.auditType = 'record'
             getAuditInfoByHeaderId(id).then(res => {
@@ -122,23 +137,23 @@ export default {
                 this.listLoading = false
             })
         },
-        confirmBill(id) {
-            this.$confirm('确认接受本调拨单?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                confirmAllocation(id).then(res => {
-                    if (res.data.errorCode == 0) {
-                        this.getList();
-                        this.$message.success('确认成功')
-                    } else {
-                        this.$message.error(res.data.msg)
-                    }
-                })
-            }).catch(()=>{
-                console.log('取消')
-            });
+        handleConfirm(id){
+            this.confirmType = 'create'
+            this.confirmModalVisible = true
+            this.curBillId = id
+        },
+        confirmItem(obj) {
+            let data = obj
+            data.id = this.curBillId
+            confirmAllocation(data).then(res => {
+                if (res.data.errorCode == 0) {
+                    this.getList()
+                    this.confirmModalVisible = false
+                    this.$message.success('确认成功')
+                } else {
+                    this.$message.error(res.data.msg)
+                }
+            })
         },
         handleCheck(id) {
             this.auditType = 'create'

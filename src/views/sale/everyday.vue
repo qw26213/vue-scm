@@ -69,6 +69,7 @@
                 <template slot-scope="{row}">
                     <span class="ctrl" v-if="row.status<=0" @click="handleCompile(row.id)">编辑</span>
                     <span class="ctrl" v-if="row.status==-1" @click="showAuditInfo(row.id)">查看审核意见</span>
+                    <span class="ctrl" v-if="row.status==-2" @click="showConfirmInfo(row.id)">查看确认意见</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleScan(row.id)">查看</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleConfirm(row.id)">确认</span>
@@ -78,17 +79,19 @@
         </el-table>
         <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
         <Auditconfirm :dialogvisible.sync="auditModalVisible" :type="auditType" :remarklist="remarklist" @auditBill="checkItem" />
+        <Confirmconfirm :dialogvisible.sync="confirmModalVisible" :type="confirmType" :remarklist="remarklist1" @confirmBill="confirmItem" />
     </div>
 </template>
 <script>
-import { getEverydayTotal, delEverydayTotal, auditEverydayTotal, confirmEverydayTotal, getAuditInfoByHeaderId } from '@/api/sale'
+import { getEverydayTotal, delEverydayTotal, auditEverydayTotal, confirmEverydayTotal, getAuditInfoByHeaderId, getConfirmInfoByHeaderId } from '@/api/sale'
 import Pagination from '@/components/Pagination'
 import staffList from '@/components/selects/staffList'
 import Auditconfirm from '@/components/Auditconfirm/index'
+import Confirmconfirm from '@/components/Confirmconfirm/index'
 import { getNowDate } from '@/utils/auth'
 export default {
     name: 'EverydayTotalData',
-    components: { Pagination, staffList, Auditconfirm },
+    components: { Pagination, staffList, Auditconfirm, Confirmconfirm },
     data() {
         return {
             tableKey: 0,
@@ -100,6 +103,9 @@ export default {
             listLoading: true,
             auditType: '',
             remarklist: [],
+            confirmModalVisible: false,
+            confirmType: '',
+            remarklist1: [],
             curBillId: '',
             listQuery: {
                 pageIndex: 1,
@@ -136,6 +142,15 @@ export default {
                 }
             })
         },
+        showConfirmInfo(id){
+            this.confirmType = 'record'
+            getConfirmInfoByHeaderId(id).then(res => {
+                if(res.data.errorCode == 0) {
+                    this.confirmModalVisible = true
+                    this.remarklist1 = res.data.data || []
+                }
+            })
+        },
         getList() {
             this.listLoading = true
             getEverydayTotal(this.listQuery).then(res => {
@@ -169,6 +184,24 @@ export default {
                 }
             })
         },
+        handleConfirm(id){
+            this.confirmType = 'create'
+            this.confirmModalVisible = true
+            this.curBillId = id
+        },
+        confirmItem(obj) {
+            let data = obj
+            data.id = this.curBillId
+            confirmEverydayTotal(data).then(res => {
+                if (res.data.errorCode == 0) {
+                    this.getList()
+                    this.confirmModalVisible = false
+                    this.$message.success('确认成功')
+                } else {
+                    this.$message.error(res.data.msg)
+                }
+            })
+        },
         handleAdd(obj) {
             this.$store.dispatch('tagsView/delView', this.$route)
             this.$router.push('/sale/everydayAdd')
@@ -176,24 +209,6 @@ export default {
         handleCompile(id) {
             this.$store.dispatch('tagsView/delView', this.$route)
             this.$router.push('/sale/everydayModify?id=' + id)
-        },
-        handleConfirm(id) {
-            this.$confirm('确定要确认吗?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                confirmEverydayTotal(id).then(res => {
-                    if (res.data.errorCode == 0) {
-                        this.getList();
-                        this.$message.success('确认成功')
-                    } else {
-                        this.$message.error(res.data.msg)
-                    }
-                })
-            }).catch(() => {
-                console.log('取消')
-            });
         },
         handleDel(id) {
             this.$confirm('确定删除吗?', '提示', {
