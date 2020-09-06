@@ -3,7 +3,7 @@
       <el-form label-position="right" label-width="72px" style="width: 360px; margin-lef:10px;">
         <el-form-item label="审核结果">
             <el-radio v-model="form.status" label="1" style="margin-right:10px">通过</el-radio>
-            <el-radio v-model="form.status" label="0">不通过</el-radio>
+            <el-radio v-model="form.status" label="-1">不通过</el-radio>
         </el-form-item>
         <el-form-item label="审核意见">
             <el-input v-model="form.remarks" style="width:100%" />
