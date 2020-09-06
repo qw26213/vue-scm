@@ -56,9 +56,40 @@ export function getSaletable(data) {
     })
 }
 
-export function getConf0002() {
+export function getAggregate() {
   return request({
-    url: '/drp/rpt/sales/getConf0002',
+    url: '/drp/rpt/sales/getAggregate',
     method: 'post'
   })
 }
+
+export function getQueryConfList() {
+  return request({
+    url: '/drp/rpt/sales/getQueryConfList',
+    method: 'post'
+  })
+}
+
+export function saveQueryConf(data) {
+  return request({
+    url: '/drp/rpt/sales/saveQueryConf',
+    method: 'post',
+    data
+  })
+}
+
+export function getQueryConf() {
+  return request({
+    url: '/drp/rpt/sales/getQueryConf',
+    method: 'post'
+  })
+}
+
+export function deleteTemplateById(id) {
+  return request({
+    url: '/drp/rpt/sales/deleteTemplateById',
+    method: 'post',
+    data: { id }
+  })
+}
+
