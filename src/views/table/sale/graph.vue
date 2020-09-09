@@ -6,7 +6,7 @@
             <span class="zhi">至</span>
             <el-date-picker :editable="false" v-model="listQuery.billDate2" type="date" placeholder="结束日期" size="mini" :clearable="false" value-format="yyyy-MM-dd" />
             <label class="label ml10">统计表类型</label>
-            <el-select v-model="listQuery.groupType" placeholder="统计表类型" size="mini">
+            <el-select v-model="listQuery.groupDateType" placeholder="统计表类型" size="mini">
                 <el-option v-for="item in methodList" :label="item.label" :value="item.val" :key="item.val" />
             </el-select>
             <label class="label ml10">品类级次</label>
@@ -28,7 +28,7 @@
                         <template slot-scope="{row}">
                             <span v-if="row.templateType==0">系统模板</span>
                             <span v-if="row.templateType==1">公司模板</span>
-                            <span v-if="row.templateType==2">个人模板模板</span>
+                            <span v-if="row.templateType==2">个人模板</span>
                         </template>
                       </el-table-column>
                       <el-table-column label="模板说明" prop="remarks" show-overflow-tooltip />
@@ -67,11 +67,7 @@
             <el-button size="mini" type="primary" @click="getList">查询</el-button>
         </div>
         <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini">
-            <el-table-column v-for="(v,i) in columns" :key="i" :label="v" :align="v.align">
-                <template slot-scope="{row}">
-                    <span>{{row[i]}}</span>
-                </template>
-            </el-table-column>
+            <el-table-column v-for="(it, i) in columns" :key="i" :label="it.lable" :prop="it.key" :align="it.align" />
         </el-table>
         <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
         <saveSelect :dialogvisible.sync="selectModalVisible" @saveTemplate="saveTemplate" />
@@ -97,7 +93,7 @@ export default {
             total: 0,
             tableKey: 0,
             tableData: [],
-            methodList:[{ label: '日报', val: 'day' }, { label: '周报', val: 'week' }, { label: '旬报', val: 'tendays'}, { label: '月报', val: 'month'}, {label: '季报', val: 'quanter' }],
+            methodList:[{ label: '日报', val: 'day' }, { label: '周报', val: 'week' }, { label: '旬报', val: 'tendays'}, { label: '月报', val: 'month'}, {label: '季报', val: 'quarter' }],
             listLoading: true,
             columns: [],
             templatelist: [],
@@ -105,7 +101,7 @@ export default {
             selectModalVisible: false,
             levellist: [],
             listQuery: {
-                billDate1: getNowDate(),
+                billDate1: '2020-08-01', //getNowDate(),
                 billDate2: getNowDate(),
                 groupType: 'day',
                 invCatgLevel: '1',
@@ -192,10 +188,9 @@ export default {
             this.listLoading = true
             getSaletable(this.listQuery).then(res => {
                 this.listLoading = false
-                const aligns = res.data.align
                 this.columns = res.data.columns
                 this.columns.forEach((item,index) => {
-                    item.align = aligns[index] == 0 ? 'center' : aligns[index] == 1 ? 'left' : aligns[index] == 2 ? 'right' : ''
+                    item.align = item.align == 0 ? 'center' : item.align == 1 ? 'left' : item.align == 2 ? 'right' : ''
                 })
                 this.tableData = res.data.dataSet || []
                 this.total = res.data.dataSize
