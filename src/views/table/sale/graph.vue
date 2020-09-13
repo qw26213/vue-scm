@@ -67,7 +67,7 @@
             <el-button size="mini" type="primary" @click="getList">查询</el-button>
         </div>
         <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini">
-            <el-table-column v-for="(it, i) in columns" :key="i" :label="it.lable" :prop="it.key" :align="it.align" />
+            <el-table-column v-for="(it, i) in columns" :key="i" :label="it.label" :prop="it.key" :align="it.align" />
         </el-table>
         <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
         <saveSelect :dialogvisible.sync="selectModalVisible" @saveTemplate="saveTemplate" />
@@ -190,7 +190,7 @@ export default {
                 this.listLoading = false
                 this.columns = res.data.columns
                 this.columns.forEach((item,index) => {
-                    item.align = item.align == 0 ? 'center' : item.align == 1 ? 'left' : item.align == 2 ? 'right' : ''
+                    item.align = item.align == 0 ? 'left' : item.align == 1 ? 'center' : item.align == 2 ? 'right' : ''
                 })
                 this.tableData = res.data.dataSet || []
                 this.total = res.data.dataSize
