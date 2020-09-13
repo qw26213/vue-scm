@@ -68,10 +68,10 @@
             <el-button size="mini" type="default" @click="printBook">打印</el-button>
             <el-button size="mini" type="warning" @click="exportBook">导出</el-button>
         </div>
-        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini">
+        <el-table :key="tableKey" v-loading="listLoading" :data="pageData" border fit highlight-current-row style="width: 100%;" size="mini">
             <el-table-column v-for="(it, i) in columns" :key="i" :label="it.label" :prop="it.key" :align="it.align" />
         </el-table>
-        <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
+        <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getDataByPage" />
         <saveSelect :dialogvisible.sync="selectModalVisible" @saveTemplate="saveTemplate" />
     </div>
 </template>
@@ -99,6 +99,7 @@ export default {
             listLoading: true,
             columns: [],
             templatelist: [],
+            pageData: [],
             selectedTemplate: '',
             selectModalVisible: false,
             levellist: [],
@@ -204,6 +205,16 @@ export default {
                 this.listLoading = false
             })
         },
+        getDataByPage() {
+            var pageIndex = this.listQuery.pageIndex
+            var arr = []
+            var min = pageIndex * 20 - 20
+            var max = pageIndex * 20 <= this.total ? pageIndex * 20 : this.total
+            for (var i = min; i < max; i++) {
+                arr.push(this.tableData[i])
+            }
+            this.pageData = arr
+        },
         getList() {
             this.listLoading = true
             getOutboundOrderReturnedTable(this.listQuery).then(res => {
@@ -214,6 +225,7 @@ export default {
                 })
                 this.tableData = res.data.dataSet || []
                 this.total = res.data.dataSize
+                this.getDataByPage()
             }).catch(err => {
                 this.listLoading = false
             })
