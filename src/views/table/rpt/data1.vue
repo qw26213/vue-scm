@@ -122,7 +122,7 @@ export default {
     created() {
       this.getList()
       this.getTemplateList()
-      getAggregate().then(res => {
+      getAggregate('receipt').then(res => {
         this.levellist = res.data
         getDefaultReceiptQueryConf().then(res => {
             if (res && res.data.data) {

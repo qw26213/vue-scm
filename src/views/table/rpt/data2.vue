@@ -122,7 +122,7 @@ export default {
     created() {
       this.getList()
       this.getTemplateList()
-      getAggregate().then(res => {
+      getAggregate('payment').then(res => {
         this.levellist = res.data
         getDefaultPaymentQueryConf().then(res => {
             if (res && res.data.data) {

@@ -20,7 +20,7 @@ const reportRouter = {
         },
         children: [{
             path: 'data',
-            component: () => import ('@/views/table/store/data'),
+            component: () => import ('@/views/table/store/warehouse'),
             name: 'baseMeas',
             meta: {
                 roles: ['601018'],

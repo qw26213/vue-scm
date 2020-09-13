@@ -122,7 +122,7 @@ export default {
     created() {
       this.getList()
       this.getTemplateList()
-      getAggregate().then(res => {
+      getAggregate('grossProfit').then(res => {
         this.levellist = res.data
         getDefaultGrossProfitQueryConf().then(res => {
             if (res && res.data.data) {

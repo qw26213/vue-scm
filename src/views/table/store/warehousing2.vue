@@ -122,7 +122,7 @@ export default {
     created() {
       this.getList()
       this.getTemplateList()
-      getAggregate().then(res => {
+      getAggregate('warehousingEntryReturned').then(res => {
         this.levellist = res.data
         getDefaultWarehousingEntryReturnedQueryConf().then(res => {
             if (res && res.data.data) {

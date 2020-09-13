@@ -16,9 +16,9 @@ export function getTrucktable(data) {
     })
 }
 
-export function getAggregate() {
+export function getAggregate(type) {
   return request({
-    url: '/drp/rpt/sales/getAggregate',
+    url: '/drp/rpt/'+ type +'/getAggregate',
     method: 'post'
   })
 }

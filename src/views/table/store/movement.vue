@@ -136,7 +136,7 @@ export default {
     created() {
       this.getList()
       this.getTemplateList()
-      getAggregate().then(res => {
+      getAggregate('movement').then(res => {
         this.levellist = res.data
         getDefaultWarehousingEntryQueryConf().then(res => {
             if (res && res.data.data) {

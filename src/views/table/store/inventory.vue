@@ -128,7 +128,7 @@ export default {
     created() {
       this.getList()
       this.getTemplateList()
-      getAggregate().then(res => {
+      getAggregate('inventory').then(res => {
         this.levellist = res.data
         getDefaultInventoryQueryConf().then(res => {
             if (res && res.data.data) {

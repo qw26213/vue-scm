@@ -122,7 +122,7 @@ export default {
     created() {
       this.getList()
       this.getTemplateList()
-      getAggregate().then(res => {
+      getAggregate('outboundOrderReturned').then(res => {
         this.levellist = res.data
         getDefaultOutboundOrderReturnedQueryConf().then(res => {
             if (res && res.data.data) {

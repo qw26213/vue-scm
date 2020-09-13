@@ -129,7 +129,7 @@ export default {
     created() {
       this.getList()
       this.getTemplateList()
-      getAggregate().then(res => {
+      getAggregate('allocation').then(res => {
         this.levellist = res.data
         getDefaultAllocationQueryConf().then(res => {
             if (res && res.data.data) {
