@@ -438,6 +438,7 @@ export function getFuncs(data) {
 }
 
 // ---------------------------------权限管理---------------------------------
+
 export function getFuncsTree(data) {
     return request({
         url: '/drp/sys/funcButton/treeData',
@@ -461,3 +462,44 @@ export function updateRoleIdByFuncButtonIdList(data) {
         data
     })
 }
+
+// ---------------------------------客户导入---------------------------------
+
+export function importCust(data) {
+    return request({
+        url: '/drp/importData/cust',
+        method: 'post',
+        data
+    })
+}
+
+// ---------------------------------商品导入---------------------------------
+
+export function importItem(data) {
+    return request({
+        url: '/drp/importData/item',
+        method: 'post',
+        data
+    })
+}
+
+// ---------------------------------期初导入---------------------------------
+
+export function importBeginBalance(data) {
+    return request({
+        url: '/drp/importData/beginBalance',
+        method: 'post',
+        data
+    })
+}
+
+// ---------------------------------库存导入---------------------------------
+
+export function importStore(data) {
+    return request({
+        url: '/drp/importData/onhand',
+        method: 'post',
+        data
+    })
+}
+

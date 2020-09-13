@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { getData4 } from '@/api/grossprofit'
+import { getData4 } from '@/api/table'
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' 
 export default {

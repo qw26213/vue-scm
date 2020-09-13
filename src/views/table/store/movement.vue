@@ -113,7 +113,7 @@ export default {
             selectModalVisible: false,
             levellist: [],
             listQuery: {
-                billDate1: getNowDate(),
+                billDate1: getNowDate(1),
                 billDate2: getNowDate(),
                 outWarehouseId: '',
                 inWarehouseId: '',

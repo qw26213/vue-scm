@@ -739,6 +739,24 @@ export function printMovementBook(data) {
   })
 }
 
+// ---------------------毛利--------------------
+
+export function getData3(data) {
+  return request({
+    url: '/drp/gp/grossprofit/queryGrossProfitRotation',
+    method: 'post',
+    data
+  })
+}
+
+export function getData4(data) {
+  return request({
+    url: '/drp/gp/grossprofit/queryGrossProfitRotation',
+    method: 'post',
+    data
+  })
+}
+
 // -------------------多维度毛利----------------
 
 export function getGrossProfitQueryConfList() {
@@ -802,6 +820,48 @@ export function printGrossProfitBook(data) {
     method: 'post',
     data
   })
+}
+
+// ------------------品类分项统计-------------
+
+export function getGrossProfitTable6(data) {
+    return request({
+        url: '/drp/rpt/grossProfit/queryFromLine6',
+        method: 'post',
+        data
+    })
+}
+
+export function getAggregate6(data) {
+    return request({
+        url: '/drp/rpt/grossProfit/getAggregate6',
+        method: 'post',
+        data
+    })
+}
+
+export function getQueryConfList6(data) {
+    return request({
+        url: '/drp/rpt/grossProfit/getQueryConfList6',
+        method: 'post',
+        data
+    })
+}
+
+export function saveQueryConf6(data) {
+    return request({
+        url: '/drp/rpt/grossProfit/saveQueryConf6',
+        method: 'post',
+        data
+    })
+}
+
+export function getDefaultQueryConf6(data) {
+    return request({
+        url: '/drp/rpt/grossProfit/getDefaultQueryConf6',
+        method: 'post',
+        data
+    })
 }
 
 // -------------------预收统计----------------
