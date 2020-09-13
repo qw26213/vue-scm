@@ -18,6 +18,10 @@
                 <el-option label="五级" value="5" />
                 <el-option label="末级" value="" />
             </el-select>
+            <label class="label ml10">源仓库</label>
+            <warehouseList @selectChange="selectChange" keyType="outWarehouseId" placeTxt="源仓库" ctrType="list":selectId="listQuery.outWarehouseId" />
+            <label class="label ml10">目标仓库</label>
+            <warehouseList @selectChange="selectChange" keyType="inWarehouseId" placeTxt="目标仓库" ctrType="list":selectId="listQuery.inWarehouseId" />
             <el-checkbox v-model="listQuery.rollUp" false-label="0" true-label="1" class="ml10">显示合计</el-checkbox>
             <el-checkbox v-model="listQuery.rotate" false-label="0" true-label="1">横向打印</el-checkbox>
             <el-popover placement="bottom" title="选择模板" width="500" trigger="click">
@@ -80,10 +84,11 @@ import { getAggregate, getAllocationTable, getAllocationQueryConfList, getDefaul
 import { getPeriodList } from '@/api/user'
 import { getNowDate } from '@/utils/index'
 import Pagination from '@/components/Pagination'
+import warehouseList from '@/components/selects/warehouseList';
 import saveSelect from '@/components/saveSelect'
 export default {
     name: 'totalAccount',
-    components: { Pagination, saveSelect },
+    components: { Pagination, saveSelect, warehouseList },
     filters:{
         Fixed:function(str){
             return parseFloat(str).toFixed(2)
@@ -107,6 +112,8 @@ export default {
                 billDate2: getNowDate(),
                 groupDateType: 'day',
                 invCatgLevel: '1',
+                outWarehouseId: '',
+                inWarehouseId: '',
                 param5: '业务员',
                 param4: '客户',
                 param3: '商品',
@@ -135,6 +142,11 @@ export default {
       })
     },
     methods: {
+        selectChange(obj) {
+            for (var key in obj) {
+                this.listQuery[key] = obj[key];
+            }
+        },
         selectTemplate(row) {
             this.selectedTemplate = row.id
             document.getElementById('level01').click()

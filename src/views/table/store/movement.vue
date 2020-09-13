@@ -18,6 +18,10 @@
                 <el-option label="五级" value="5" />
                 <el-option label="末级" value="" />
             </el-select>
+            <label class="label ml10">源仓库</label>
+            <warehouseList @selectChange="selectChange" keyType="outWarehouseId" placeTxt="源仓库" ctrType="list":selectId="listQuery.outWarehouseId" />
+            <label class="label ml10">目标仓库</label>
+            <warehouseList @selectChange="selectChange" keyType="inWarehouseId" placeTxt="目标仓库" ctrType="list":selectId="listQuery.inWarehouseId" />
             <el-checkbox v-model="listQuery.rollUp" false-label="0" true-label="1" class="ml10">显示合计</el-checkbox>
             <el-checkbox v-model="listQuery.rotate" false-label="0" true-label="1">横向打印</el-checkbox>
             <el-popover placement="bottom" title="选择模板" width="500" trigger="click">
@@ -43,6 +47,10 @@
                 <el-button size="mini" slot="reference">模板查询<i class="el-icon-arrow-down" style="margin-left:3px" /></el-button>
             </el-popover>
             <br/>
+            <label class="label ml10">源车辆</label>
+            <truckList @selectChange="selectChange" keyType="outWarehouseId" placeTxt="源仓库" ctrType="list":selectId="listQuery.outTruckId" />
+            <label class="label ml10">目标车辆</label>
+            <truckList @selectChange="selectChange" keyType="inWarehouseId" placeTxt="目标仓库" ctrType="list":selectId="listQuery.inTruckId" />
             <label class="label" id="level01">一级汇总</label>
             <el-select v-model="listQuery.param1" style="width:100px" placeholder="一级汇总" size="mini">
                 <el-option v-for="item in levellist" :label="item" :value="item" :key="item" />
@@ -81,9 +89,11 @@ import { getPeriodList } from '@/api/user'
 import { getNowDate } from '@/utils/index'
 import Pagination from '@/components/Pagination'
 import saveSelect from '@/components/saveSelect'
+import warehouseList from '@/components/selects/warehouseList';
+import truckList from '@/components/selects/truckList';
 export default {
     name: 'totalAccount',
-    components: { Pagination, saveSelect },
+    components: { Pagination, saveSelect, warehouseList, truckList },
     filters:{
         Fixed:function(str){
             return parseFloat(str).toFixed(2)
@@ -105,6 +115,10 @@ export default {
             listQuery: {
                 billDate1: getNowDate(),
                 billDate2: getNowDate(),
+                outWarehouseId: '',
+                inWarehouseId: '',
+                outTruckId: '',
+                inTruckId: '',
                 groupDateType: 'day',
                 invCatgLevel: '1',
                 param5: '业务员',
@@ -135,6 +149,11 @@ export default {
       })
     },
     methods: {
+        selectChange(obj) {
+            for (var key in obj) {
+                this.listQuery[key] = obj[key];
+            }
+        },
         selectTemplate(row) {
             this.selectedTemplate = row.id
             document.getElementById('level01').click()

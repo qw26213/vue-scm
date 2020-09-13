@@ -25,7 +25,7 @@ export default {
   },
   data() {
     return {
-      title: '丰扬分销管理系统',
+      title: '丰扬快销管理系统',
       logo: logoUrl
     }
   }

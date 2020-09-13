@@ -24,7 +24,7 @@ const reportRouter = {
             name: 'baseMeas',
             meta: {
                 roles: ['601018'],
-                title: '仓库'
+                title: '仓库统计'
             }
         }, {
             path: 'truck',
@@ -32,7 +32,7 @@ const reportRouter = {
             name: 'truck',
             meta: {
                 roles: ['601018'],
-                title: '车辆'
+                title: '车辆统计'
             }
         }, {
             path: 'outbound1',
@@ -72,7 +72,7 @@ const reportRouter = {
             name: 'inventory',
             meta: {
                 roles: ['6030'],
-                title: '盘点'
+                title: '盘点统计'
             }
         }, {
             path: 'allocation',
@@ -80,7 +80,7 @@ const reportRouter = {
             name: 'allocation',
             meta: {
                 roles: ['601018'],
-                title: '调拨'
+                title: '调拨统计'
             }
         }, {
             path: 'movement',
@@ -88,7 +88,7 @@ const reportRouter = {
             name: 'movement',
             meta: {
                 roles: ['601018'],
-                title: '移库'
+                title: '移库统计'
             }
         }]
     }, {
