@@ -16,38 +16,6 @@ export function getTrucktable(data) {
     })
 }
 
-export function getOutboundhousetable(data) {
-    return request({
-        url: '/drp/rpt/outbound/queryBookQtyList',
-        method: 'post',
-        data
-    })
-}
-
-export function getWarehousingtable(data) {
-    return request({
-        url: '/drp/rpt/warehousingEntry/queryBookQtyList',
-        method: 'post',
-        data
-    })
-}
-
-export function getAllocationtable(data) {
-    return request({
-        url: '/drp/rpt/allocation/queryBookQtyList',
-        method: 'post',
-        data
-    })
-}
-
-export function getMovementtable(data) {
-    return request({
-        url: '/drp/rpt/movement/queryBookQtyList',
-        method: 'post',
-        data
-    })
-}
-
 export function getAggregate() {
   return request({
     url: '/drp/rpt/sales/getAggregate',
@@ -60,6 +28,13 @@ export function getAggregate() {
 export function getSalesQueryConfList() {
   return request({
     url: '/drp/rpt/sales/getQueryConfList',
+    method: 'post'
+  })
+}
+
+export function getDefaultSalesQueryConf() {
+  return request({
+    url: '/drp/rpt/sales/getDefaultQueryConf',
     method: 'post'
   })
 }
@@ -122,6 +97,14 @@ export function getSalesReturnedQueryConfList() {
   })
 }
 
+export function getDefaultSalesReturnedQueryConf() {
+  return request({
+    url: '/drp/rpt/salesReturned/getDefaultQueryConf',
+    method: 'post'
+  })
+}
+
+
 export function saveSalesReturnedQueryConf(data) {
   return request({
     url: '/drp/rpt/salesReturned/saveQueryConf',
@@ -180,6 +163,13 @@ export function getPurchaseQueryConfList() {
   })
 }
 
+export function getDefaultPurchaseQueryConf() {
+  return request({
+    url: '/drp/rpt/purchase/getDefaultQueryConf',
+    method: 'post'
+  })
+}
+
 export function savePurchaseQueryConf(data) {
   return request({
     url: '/drp/rpt/purchase/saveQueryConf',
@@ -205,11 +195,11 @@ export function getPurchaseTable(data) {
 }
 
 export function exportPurchaseBook(data) {
-  var exportUrl = '/drp/rpt/purchase/exportFromLine8';
-  var temp = document.createElement("form");
-  temp.action = exportUrl;
-  temp.method = "POST";
-  temp.style.display = 'none';
+  var exportUrl = '/drp/rpt/purchase/exportFromLine8'
+  var temp = document.createElement("form")
+  temp.action = exportUrl
+  temp.method = "POST"
+  temp.style.display = 'none'
   for (var x in data) {
       var opt = document.createElement("textarea")
       opt.name = x
@@ -234,6 +224,13 @@ export function printPurchaseBook(data) {
 export function getPurchaseReturnedQueryConfList() {
   return request({
     url: '/drp/rpt/purchaseReturned/getQueryConfList',
+    method: 'post'
+  })
+}
+
+export function getDefaultPurchaseReturnedQueryConf() {
+  return request({
+    url: '/drp/rpt/purchaseReturned/getDefaultQueryConf',
     method: 'post'
   })
 }
@@ -287,3 +284,457 @@ export function printPurchaseReturnedBook(data) {
   })
 }
 
+// -------------------销售出库统计----------------
+
+export function getOutboundOrderQueryConfList() {
+  return request({
+    url: '/drp/rpt/outboundOrder/getQueryConfList',
+    method: 'post'
+  })
+}
+
+export function getDefaultOutboundOrderQueryConf() {
+  return request({
+    url: '/drp/rpt/outboundOrder/getDefaultQueryConf',
+    method: 'post'
+  })
+}
+
+export function saveOutboundOrderQueryConf(data) {
+  return request({
+    url: '/drp/rpt/outboundOrder/saveQueryConf',
+    method: 'post',
+    data
+  })
+}
+
+export function delOutboundOrderTemplate(id) {
+  return request({
+    url: '/drp/rpt/outboundOrder/deleteTemplateById',
+    method: 'post',
+    data: { id }
+  })
+}
+
+export function getOutboundOrderTable(data) {
+    return request({
+        url: '/drp/rpt/outboundOrder/queryFromLine8',
+        method: 'post',
+        data
+    })
+}
+
+export function exportOutboundOrderBook(data) {
+  var exportUrl = '/drp/rpt/outboundOrder/exportFromLine8';
+  var temp = document.createElement("form");
+  temp.action = exportUrl;
+  temp.method = "POST";
+  temp.style.display = 'none';
+  for (var x in data) {
+      var opt = document.createElement("textarea")
+      opt.name = x
+      opt.value = data[x]
+      temp.appendChild(opt)
+  }
+  document.body.appendChild(temp)
+  temp.submit()
+  return temp
+}
+
+export function printOutboundOrderBook(data) {
+  return request({
+    url: '/drp/rpt/outboundOrder/printFromLine8',
+    method: 'post',
+    data
+  })
+}
+
+// -------------------销售退库统计----------------
+
+export function getOutboundOrderReturnedQueryConfList() {
+  return request({
+    url: '/drp/rpt/outboundOrderReturned/getQueryConfList',
+    method: 'post'
+  })
+}
+
+export function getDefaultOutboundOrderReturnedQueryConf() {
+  return request({
+    url: '/drp/rpt/outboundOrderReturned/getDefaultQueryConf',
+    method: 'post'
+  })
+}
+
+export function saveOutboundOrderReturnedQueryConf(data) {
+  return request({
+    url: '/drp/rpt/outboundOrderReturned/saveQueryConf',
+    method: 'post',
+    data
+  })
+}
+
+export function delOutboundOrderReturnedTemplate(id) {
+  return request({
+    url: '/drp/rpt/outboundOrderReturned/deleteTemplateById',
+    method: 'post',
+    data: { id }
+  })
+}
+
+export function getOutboundOrderReturnedTable(data) {
+    return request({
+        url: '/drp/rpt/outboundOrderReturned/queryFromLine8',
+        method: 'post',
+        data
+    })
+}
+
+export function exportOutboundOrderReturnedBook(data) {
+  var exportUrl = '/drp/rpt/outboundOrderReturned/exportFromLine8';
+  var temp = document.createElement("form");
+  temp.action = exportUrl;
+  temp.method = "POST";
+  temp.style.display = 'none';
+  for (var x in data) {
+      var opt = document.createElement("textarea")
+      opt.name = x
+      opt.value = data[x]
+      temp.appendChild(opt)
+  }
+  document.body.appendChild(temp)
+  temp.submit()
+  return temp
+}
+
+export function printOutboundOrderReturnedBook(data) {
+  return request({
+    url: '/drp/rpt/outboundOrderReturned/printFromLine8',
+    method: 'post',
+    data
+  })
+}
+
+// -------------------入库统计----------------
+
+export function getWarehousingEntryQueryConfList() {
+  return request({
+    url: '/drp/rpt/warehousingEntry/getQueryConfList',
+    method: 'post'
+  })
+}
+
+export function getDefaultWarehousingEntryQueryConf() {
+  return request({
+    url: '/drp/rpt/warehousingEntry/getDefaultQueryConf',
+    method: 'post'
+  })
+}
+
+export function saveWarehousingEntryQueryConf(data) {
+  return request({
+    url: '/drp/rpt/warehousingEntry/saveQueryConf',
+    method: 'post',
+    data
+  })
+}
+
+export function delWarehousingEntryTemplate(id) {
+  return request({
+    url: '/drp/rpt/warehousingEntry/deleteTemplateById',
+    method: 'post',
+    data: { id }
+  })
+}
+
+export function getWarehousingEntryTable(data) {
+    return request({
+        url: '/drp/rpt/warehousingEntry/queryFromLine8',
+        method: 'post',
+        data
+    })
+}
+
+export function exportWarehousingEntryBook(data) {
+  var exportUrl = '/drp/rpt/warehousingEntry/exportFromLine8';
+  var temp = document.createElement("form");
+  temp.action = exportUrl;
+  temp.method = "POST";
+  temp.style.display = 'none';
+  for (var x in data) {
+      var opt = document.createElement("textarea")
+      opt.name = x
+      opt.value = data[x]
+      temp.appendChild(opt)
+  }
+  document.body.appendChild(temp)
+  temp.submit()
+  return temp
+}
+
+export function printWarehousingEntryBook(data) {
+  return request({
+    url: '/drp/rpt/warehousingEntry/printFromLine8',
+    method: 'post',
+    data
+  })
+}
+
+// -------------------退货出库统计----------------
+
+export function getWarehousingEntryReturnedQueryConfList() {
+  return request({
+    url: '/drp/rpt/warehousingEntryReturned/getQueryConfList',
+    method: 'post'
+  })
+}
+
+export function getDefaultWarehousingEntryReturnedQueryConf() {
+  return request({
+    url: '/drp/rpt/warehousingEntryReturned/getDefaultQueryConf',
+    method: 'post'
+  })
+}
+
+export function saveWarehousingEntryReturnedQueryConf(data) {
+  return request({
+    url: '/drp/rpt/warehousingEntryReturned/saveQueryConf',
+    method: 'post',
+    data
+  })
+}
+
+export function delWarehousingEntryReturnedTemplate(id) {
+  return request({
+    url: '/drp/rpt/warehousingEntryReturned/deleteTemplateById',
+    method: 'post',
+    data: { id }
+  })
+}
+
+export function getWarehousingEntryReturnedTable(data) {
+    return request({
+        url: '/drp/rpt/warehousingEntryReturned/queryFromLine8',
+        method: 'post',
+        data
+    })
+}
+
+export function exportWarehousingEntryReturnedBook(data) {
+  var exportUrl = '/drp/rpt/warehousingEntryReturned/exportFromLine8';
+  var temp = document.createElement("form");
+  temp.action = exportUrl;
+  temp.method = "POST";
+  temp.style.display = 'none';
+  for (var x in data) {
+      var opt = document.createElement("textarea")
+      opt.name = x
+      opt.value = data[x]
+      temp.appendChild(opt)
+  }
+  document.body.appendChild(temp)
+  temp.submit()
+  return temp
+}
+
+export function printWarehousingEntryReturnedBook(data) {
+  return request({
+    url: '/drp/rpt/warehousingEntryReturned/printFromLine8',
+    method: 'post',
+    data
+  })
+}
+
+// -------------------盘点----------------
+
+export function getInventoryQueryConfList() {
+  return request({
+    url: '/drp/rpt/inventory/getQueryConfList',
+    method: 'post'
+  })
+}
+
+export function getDefaultInventoryQueryConf() {
+  return request({
+    url: '/drp/rpt/inventory/getDefaultQueryConf',
+    method: 'post'
+  })
+}
+
+export function saveInventoryQueryConf(data) {
+  return request({
+    url: '/drp/rpt/inventory/saveQueryConf',
+    method: 'post',
+    data
+  })
+}
+
+export function delInventoryTemplate(id) {
+  return request({
+    url: '/drp/rpt/inventory/deleteTemplateById',
+    method: 'post',
+    data: { id }
+  })
+}
+
+export function getInventoryTable(data) {
+    return request({
+        url: '/drp/rpt/inventory/queryFromLine8',
+        method: 'post',
+        data
+    })
+}
+
+export function exportInventoryBook(data) {
+  var exportUrl = '/drp/rpt/inventory/exportFromLine8';
+  var temp = document.createElement("form");
+  temp.action = exportUrl;
+  temp.method = "POST";
+  temp.style.display = 'none';
+  for (var x in data) {
+      var opt = document.createElement("textarea")
+      opt.name = x
+      opt.value = data[x]
+      temp.appendChild(opt)
+  }
+  document.body.appendChild(temp)
+  temp.submit()
+  return temp
+}
+
+export function printInventoryBook(data) {
+  return request({
+    url: '/drp/rpt/inventory/printFromLine8',
+    method: 'post',
+    data
+  })
+}
+
+// -------------------调拨----------------
+
+export function getAllocationQueryConfList() {
+  return request({
+    url: '/drp/rpt/allocation/getQueryConfList',
+    method: 'post'
+  })
+}
+
+export function getDefaultAllocationQueryConf() {
+  return request({
+    url: '/drp/rpt/allocation/getDefaultQueryConf',
+    method: 'post'
+  })
+}
+
+export function saveAllocationQueryConf(data) {
+  return request({
+    url: '/drp/rpt/allocation/saveQueryConf',
+    method: 'post',
+    data
+  })
+}
+
+export function delAllocationTemplate(id) {
+  return request({
+    url: '/drp/rpt/allocation/deleteTemplateById',
+    method: 'post',
+    data: { id }
+  })
+}
+
+export function getAllocationTable(data) {
+    return request({
+        url: '/drp/rpt/allocation/queryFromLine8',
+        method: 'post',
+        data
+    })
+}
+
+export function exportAllocationBook(data) {
+  var exportUrl = '/drp/rpt/allocation/exportFromLine8';
+  var temp = document.createElement("form");
+  temp.action = exportUrl;
+  temp.method = "POST";
+  temp.style.display = 'none';
+  for (var x in data) {
+      var opt = document.createElement("textarea")
+      opt.name = x
+      opt.value = data[x]
+      temp.appendChild(opt)
+  }
+  document.body.appendChild(temp)
+  temp.submit()
+  return temp
+}
+
+export function printAllocationBook(data) {
+  return request({
+    url: '/drp/rpt/allocation/printFromLine8',
+    method: 'post',
+    data
+  })
+}
+
+// -------------------移库----------------
+
+export function getMovementQueryConfList() {
+  return request({
+    url: '/drp/rpt/movement/getQueryConfList',
+    method: 'post'
+  })
+}
+
+export function getDefaultMovementQueryConf() {
+  return request({
+    url: '/drp/rpt/movement/getDefaultQueryConf',
+    method: 'post'
+  })
+}
+
+export function saveMovementQueryConf(data) {
+  return request({
+    url: '/drp/rpt/movement/saveQueryConf',
+    method: 'post',
+    data
+  })
+}
+
+export function delMovementTemplate(id) {
+  return request({
+    url: '/drp/rpt/movement/deleteTemplateById',
+    method: 'post',
+    data: { id }
+  })
+}
+
+export function getMovementTable(data) {
+    return request({
+        url: '/drp/rpt/movement/queryFromLine8',
+        method: 'post',
+        data
+    })
+}
+
+export function exportMovementBook(data) {
+  var exportUrl = '/drp/rpt/movement/exportFromLine8';
+  var temp = document.createElement("form");
+  temp.action = exportUrl;
+  temp.method = "POST";
+  temp.style.display = 'none';
+  for (var x in data) {
+      var opt = document.createElement("textarea")
+      opt.name = x
+      opt.value = data[x]
+      temp.appendChild(opt)
+  }
+  document.body.appendChild(temp)
+  temp.submit()
+  return temp
+}
+
+export function printMovementBook(data) {
+  return request({
+    url: '/drp/rpt/movement/printFromLine8',
+    method: 'post',
+    data
+  })
+}

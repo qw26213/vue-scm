@@ -35,25 +35,49 @@ const reportRouter = {
                 title: '车辆'
             }
         }, {
-            path: 'outbound',
-            component: () => import ('@/views/table/store/outbound'),
-            name: 'outbound',
+            path: 'outbound1',
+            component: () => import ('@/views/table/store/outboundOrder1'),
+            name: 'outbound1',
             meta: {
                 roles: ['601018'],
-                title: '出库'
+                title: '销售出库统计'
             }
         }, {
-            path: 'warehousing',
-            component: () => import ('@/views/table/store/warehousing'),
-            name: 'baseMeas',
+            path: 'outbound2',
+            component: () => import ('@/views/table/store/outboundOrder2'),
+            name: 'outbound2',
             meta: {
                 roles: ['601018'],
-                title: '入库'
+                title: '销售退库统计'
+            }
+        }, {
+            path: 'warehousing1',
+            component: () => import ('@/views/table/store/warehousing1'),
+            name: 'warehousing1',
+            meta: {
+                roles: ['601018'],
+                title: '入库统计'
+            }
+        }, {
+            path: 'warehousing2',
+            component: () => import ('@/views/table/store/warehousing2'),
+            name: 'warehousing2',
+            meta: {
+                roles: ['601018'],
+                title: '退货出库统计'
+            }
+        }, {
+            path: 'inventory',
+            component: () => import ('@/views/table/store/inventory'),
+            name: 'inventory',
+            meta: {
+                roles: ['6030'],
+                title: '盘点'
             }
         }, {
             path: 'allocation',
             component: () => import ('@/views/table/store/allocation'),
-            name: 'baseMeas',
+            name: 'allocation',
             meta: {
                 roles: ['601018'],
                 title: '调拨'

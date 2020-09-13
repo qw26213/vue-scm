@@ -76,7 +76,7 @@
     </div>
 </template>
 <script>
-import { getAggregate, getSalesTable, getSalesQueryConfList, saveSalesQueryConf, delSalesTemplate, exportSalesBook, printSalesBook } from '@/api/table'
+import { getAggregate, getSalesTable, getSalesQueryConfList, getDefaultSalesQueryConf, saveSalesQueryConf, delSalesTemplate, exportSalesBook, printSalesBook } from '@/api/table'
 import { getPeriodList } from '@/api/user'
 import { getNowDate } from '@/utils/index'
 import Pagination from '@/components/Pagination'
@@ -105,7 +105,7 @@ export default {
             listQuery: {
                 billDate1: getNowDate(),
                 billDate2: getNowDate(),
-                groupType: 'day',
+                groupDateType: 'day',
                 invCatgLevel: '1',
                 param5: '业务员',
                 param4: '客户',
@@ -124,6 +124,14 @@ export default {
       this.getTemplateList()
       getAggregate().then(res => {
         this.levellist = res.data
+        getDefaultSalesQueryConf().then(res => {
+            if (res && res.data.data) {
+                const propValue = JSON.parse(res.data.data.paramValue)
+                for (var key in propValue) {
+                    this.listQuery[key] = propValue[key]
+                }
+            }
+        })
       })
     },
     methods: {

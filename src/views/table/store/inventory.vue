@@ -18,6 +18,12 @@
                 <el-option label="五级" value="5" />
                 <el-option label="末级" value="" />
             </el-select>
+            <label class="label ml10">盘点类型</label>
+            <el-select v-model="listQuery.inventoryType" placeholder="盘点类型" size="mini">
+                <el-option label="报损" value="0" />
+                <el-option label="盘亏" value="1" />
+                <el-option label="盘盈" value="2" />
+            </el-select>
             <el-checkbox v-model="listQuery.rollUp" false-label="0" true-label="1" class="ml10">显示合计</el-checkbox>
             <el-checkbox v-model="listQuery.rotate" false-label="0" true-label="1">横向打印</el-checkbox>
             <el-popover placement="bottom" title="选择模板" width="500" trigger="click">
@@ -76,7 +82,7 @@
     </div>
 </template>
 <script>
-import { getAggregate, getSalesReturnedTable, getSalesReturnedQueryConfList, getDefaultSalesReturnedQueryConf, saveSalesReturnedQueryConf, delSalesReturnedTemplate, exportSalesReturnedBook, printSalesReturnedBook } from '@/api/table'
+import { getAggregate, getInventoryTable, getInventoryQueryConfList, getDefaultInventoryQueryConf, saveInventoryQueryConf, delInventoryTemplate, exportInventoryBook, printInventoryBook } from '@/api/table'
 import { getPeriodList } from '@/api/user'
 import { getNowDate } from '@/utils/index'
 import Pagination from '@/components/Pagination'
@@ -124,7 +130,7 @@ export default {
       this.getTemplateList()
       getAggregate().then(res => {
         this.levellist = res.data
-        getDefaultSalesReturnedQueryConf().then(res => {
+        getDefaultInventoryQueryConf().then(res => {
             if (res && res.data.data) {
                 const propValue = JSON.parse(res.data.data.paramValue)
                 for (var key in propValue) {
@@ -156,7 +162,7 @@ export default {
             })
         },
         delItem(id) {
-            delSalesReturnedTemplate(id).then(res => {
+            delInventoryTemplate(id).then(res => {
                 if (res.data.errorCode == 0) {
                     this.getTemplateList()
                     this.dialogFormVisible = false
@@ -179,7 +185,7 @@ export default {
                 rollUp: this.listQuery.rollUp,
                 ...obj
             }
-            saveSalesReturnedQueryConf(data).then(res => {
+            saveInventoryQueryConf(data).then(res => {
                 if (res.data.errorCode == 0) {
                     this.getTemplateList()
                     this.selectModalVisible = false
@@ -190,15 +196,15 @@ export default {
             })
         },
         getTemplateList() {
-            getSalesReturnedQueryConfList().then(res => {
+            getInventoryQueryConfList().then(res => {
                 this.templatelist = res.data.data || []
             })
         },
         exportBook() {
-            exportSalesReturnedBook(this.listQuery)
+            exportInventoryBook(this.listQuery)
         },
         printBook() {
-            printSalesReturnedBook(this.listQuery).then(res => {
+            printInventoryBook(this.listQuery).then(res => {
                 window.open("http://"+window.location.host+res.data.data)
             }).catch(err => {
                 this.listLoading = false
@@ -206,7 +212,7 @@ export default {
         },
         getList() {
             this.listLoading = true
-            getSalesReturnedTable(this.listQuery).then(res => {
+            getInventoryTable(this.listQuery).then(res => {
                 this.listLoading = false
                 this.columns = res.data.columns
                 this.columns.forEach((item,index) => {

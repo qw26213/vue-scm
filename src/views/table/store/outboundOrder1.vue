@@ -76,7 +76,7 @@
     </div>
 </template>
 <script>
-import { getAggregate, getSalesReturnedTable, getSalesReturnedQueryConfList, getDefaultSalesReturnedQueryConf, saveSalesReturnedQueryConf, delSalesReturnedTemplate, exportSalesReturnedBook, printSalesReturnedBook } from '@/api/table'
+import { getAggregate, getOutboundOrderTable, getOutboundOrderQueryConfList, getDefaultOutboundOrderQueryConf, saveOutboundOrderQueryConf, delOutboundOrderTemplate, exportOutboundOrderBook, printOutboundOrderBook } from '@/api/table'
 import { getPeriodList } from '@/api/user'
 import { getNowDate } from '@/utils/index'
 import Pagination from '@/components/Pagination'
@@ -124,7 +124,7 @@ export default {
       this.getTemplateList()
       getAggregate().then(res => {
         this.levellist = res.data
-        getDefaultSalesReturnedQueryConf().then(res => {
+        getDefaultOutboundOrderQueryConf().then(res => {
             if (res && res.data.data) {
                 const propValue = JSON.parse(res.data.data.paramValue)
                 for (var key in propValue) {
@@ -156,7 +156,7 @@ export default {
             })
         },
         delItem(id) {
-            delSalesReturnedTemplate(id).then(res => {
+            delOutboundOrderTemplate(id).then(res => {
                 if (res.data.errorCode == 0) {
                     this.getTemplateList()
                     this.dialogFormVisible = false
@@ -179,7 +179,7 @@ export default {
                 rollUp: this.listQuery.rollUp,
                 ...obj
             }
-            saveSalesReturnedQueryConf(data).then(res => {
+            saveOutboundOrderQueryConf(data).then(res => {
                 if (res.data.errorCode == 0) {
                     this.getTemplateList()
                     this.selectModalVisible = false
@@ -190,15 +190,15 @@ export default {
             })
         },
         getTemplateList() {
-            getSalesReturnedQueryConfList().then(res => {
+            getOutboundOrderQueryConfList().then(res => {
                 this.templatelist = res.data.data || []
             })
         },
         exportBook() {
-            exportSalesReturnedBook(this.listQuery)
+            exportOutboundOrderBook(this.listQuery)
         },
         printBook() {
-            printSalesReturnedBook(this.listQuery).then(res => {
+            printOutboundOrderBook(this.listQuery).then(res => {
                 window.open("http://"+window.location.host+res.data.data)
             }).catch(err => {
                 this.listLoading = false
@@ -206,7 +206,7 @@ export default {
         },
         getList() {
             this.listLoading = true
-            getSalesReturnedTable(this.listQuery).then(res => {
+            getOutboundOrderTable(this.listQuery).then(res => {
                 this.listLoading = false
                 this.columns = res.data.columns
                 this.columns.forEach((item,index) => {
