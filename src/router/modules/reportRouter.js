@@ -139,7 +139,7 @@ const reportRouter = {
             name: 'purchase1',
             meta: {
                 roles: ['602010'],
-                title: '采购'
+                title: '采购统计'
             }
         }, {
             path: 'purchase2',
@@ -147,7 +147,7 @@ const reportRouter = {
             name: 'purchase2',
             meta: {
                 roles: ['602010'],
-                title: '采购退货'
+                title: '采购退货统计'
             }
         }]
     }, {
@@ -160,19 +160,19 @@ const reportRouter = {
         },
         children: [{
             path: 'graph',
-            component: () => import ('@/views/table/sale/graph'),
-            name: 'graph',
+            component: () => import ('@/views/table/sale/data1'),
+            name: 'graph1',
             meta: {
                 roles: ['603010'],
                 title: '销售统计'
             }
         }, {
-            path: 'data2',
+            path: 'data',
             component: () => import ('@/views/table/sale/data2'),
-            name: 'userRole',
+            name: 'graph2',
             meta: {
                 roles: ['603020'],
-                title: '销售退货'
+                title: '销售退货统计'
             }
         }]
     }]
