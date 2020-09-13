@@ -12,7 +12,7 @@
             <el-button size="mini" type="primary" @click="getList">查询</el-button>
         </div>
         <el-table :key="tableKey" v-loading="listLoading" :data="pageData" border fit highlight-current-row style="width: 100%;" size="mini">
-            <el-table-column label="车辆名称" align="center">
+            <el-table-column label="车辆名称" align="left">
                 <template slot-scope="{row}">
                     <span>{{ row.truckName }}</span>
                 </template>
