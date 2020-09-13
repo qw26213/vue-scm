@@ -84,7 +84,7 @@ import { getAggregate, getAllocationTable, getAllocationQueryConfList, getDefaul
 import { getPeriodList } from '@/api/user'
 import { getNowDate } from '@/utils/index'
 import Pagination from '@/components/Pagination'
-import warehouseList from '@/components/selects/warehouseList';
+import warehouseList from '@/components/selects/warehouseList'
 import saveSelect from '@/components/saveSelect'
 export default {
     name: 'totalAccount',

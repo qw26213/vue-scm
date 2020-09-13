@@ -76,7 +76,7 @@
     </div>
 </template>
 <script>
-import { getAggregate, getPresaleTable, getPresaleQueryConfList, getDefaultPresaleQueryConf, savePresaleQueryConf, delPresaleTemplate, exportPresaleBook, printPresaleBook } from '@/api/table'
+import { getAggregate, getPaymentTable, getPaymentQueryConfList, getDefaultPaymentQueryConf, savePaymentQueryConf, delPaymentTemplate, exportPaymentBook, printPaymentBook } from '@/api/table'
 import { getPeriodList } from '@/api/user'
 import { getNowDate } from '@/utils/index'
 import Pagination from '@/components/Pagination'
@@ -124,7 +124,7 @@ export default {
       this.getTemplateList()
       getAggregate().then(res => {
         this.levellist = res.data
-        getDefaultPresaleQueryConf().then(res => {
+        getDefaultPaymentQueryConf().then(res => {
             if (res && res.data.data) {
                 const propValue = JSON.parse(res.data.data.paramValue)
                 for (var key in propValue) {
@@ -156,7 +156,7 @@ export default {
             })
         },
         delItem(id) {
-            delPresaleTemplate(id).then(res => {
+            delPaymentTemplate(id).then(res => {
                 if (res.data.errorCode == 0) {
                     this.getTemplateList()
                     this.dialogFormVisible = false
@@ -179,7 +179,7 @@ export default {
                 rollUp: this.listQuery.rollUp,
                 ...obj
             }
-            savePresaleQueryConf(data).then(res => {
+            savePaymentQueryConf(data).then(res => {
                 if (res.data.errorCode == 0) {
                     this.getTemplateList()
                     this.selectModalVisible = false
@@ -190,15 +190,15 @@ export default {
             })
         },
         getTemplateList() {
-            getPresaleQueryConfList().then(res => {
+            getPaymentQueryConfList().then(res => {
                 this.templatelist = res.data.data || []
             })
         },
         exportBook() {
-            exportPresaleBook(this.listQuery)
+            exportPaymentBook(this.listQuery)
         },
         printBook() {
-            printPresaleBook(this.listQuery).then(res => {
+            printPaymentBook(this.listQuery).then(res => {
                 window.open("http://"+window.location.host+res.data.data)
             }).catch(err => {
                 this.listLoading = false
@@ -206,7 +206,7 @@ export default {
         },
         getList() {
             this.listLoading = true
-            getPresaleTable(this.listQuery).then(res => {
+            getPaymentTable(this.listQuery).then(res => {
                 this.listLoading = false
                 this.columns = res.data.columns
                 this.columns.forEach((item,index) => {

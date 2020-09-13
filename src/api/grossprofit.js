@@ -7,6 +7,7 @@ export function getData1(data) {
     data
   })
 }
+
 export function getData2(data) {
   return request({
     url: '/drp/gp/grossprofit/queryGrossProfit',
@@ -14,6 +15,7 @@ export function getData2(data) {
     data
   })
 }
+
 export function getData3(data) {
   return request({
     url: '/drp/gp/grossprofit/queryGrossProfitRotation',
@@ -21,6 +23,7 @@ export function getData3(data) {
     data
   })
 }
+
 export function getData4(data) {
   return request({
     url: '/drp/gp/grossprofit/queryGrossProfitRotation',
@@ -28,6 +31,7 @@ export function getData4(data) {
     data
   })
 }
+
 export function getData5(data) {
   return request({
     url: '/drp/gp/grossprofit/queryGrossProfit7',
@@ -35,6 +39,7 @@ export function getData5(data) {
     data
   })
 }
+
 export function getData6(data) {
   return request({
     url: '/drp/gp/grossprofit/queryGrossProfit8',

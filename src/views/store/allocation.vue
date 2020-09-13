@@ -71,8 +71,8 @@
 <script>
 import { getAllocation, delAllocation, auditAllocation, confirmAllocation, getAuditInfoByHeaderId, getConfirmInfoByHeaderId } from '@/api/store'
 import Pagination from '@/components/Pagination'
-import warehouseList from '@/components/selects/warehouseList';
-import Auditconfirm from '@/components/Auditconfirm/index';
+import warehouseList from '@/components/selects/warehouseList'
+import Auditconfirm from '@/components/Auditconfirm/index'
 import Confirmconfirm from '@/components/Confirmconfirm/index'
 import { getNowDate } from '@/utils/auth'
 export default {

@@ -101,12 +101,12 @@ const reportRouter = {
             title: '毛利'
         },
         children: [{
-            path: 'grossprofit1',
-            component: () => import ('@/views/table/grossprofit/grossprofit1'),
-            name: 'grossprofit1',
+            path: 'table',
+            component: () => import ('@/views/table/grossprofit/grossprofit'),
+            name: 'table',
             meta: {
-                roles: ['5410'],
-                title: '今日毛利统计'
+                roles: ['5460'],
+                title: '多维度统计'
             }
         }, {
             path: 'grossprofit2',
@@ -140,14 +140,6 @@ const reportRouter = {
                 roles: ['5450'],
                 title: '品类分项统计'
             }
-        }, {
-            path: 'grossprofit6',
-            component: () => import ('@/views/table/grossprofit/grossprofit6'),
-            name: 'grossprofit6',
-            meta: {
-                roles: ['5460'],
-                title: '多维度统计'
-            }
         }]
     }, {
         path: 'purchase',
@@ -175,6 +167,14 @@ const reportRouter = {
             }
         }]
     }, {
+        path: 'presale',
+        component: () => import ('@/views/table/presale/data'),
+        name: 'presale1',
+        meta: {
+            roles: ['6020'],
+            title: '预收'
+        }
+    }, {
         path: 'sale',
         component: setView,
         name: 'sale',
@@ -199,7 +199,40 @@ const reportRouter = {
                 title: '销售退货统计'
             }
         }]
+    }, {
+        path: 'sale',
+        component: setView,
+        name: 'sale',
+        meta: {
+            roles: ['6030'],
+            title: '往来'
+        },
+        children: [{
+            path: 'rpt1',
+            component: () => import ('@/views/table/rpt/data1'),
+            name: 'rpt1',
+            meta: {
+                roles: ['603010'],
+                title: '收款'
+            }
+        }, {
+            path: 'rpt2',
+            component: () => import ('@/views/table/rpt/data2'),
+            name: 'rpt2',
+            meta: {
+                roles: ['603020'],
+                title: '付款'
+            }
+        }]
+    }, {
+        path: 'visit',
+        component: () => import ('@/views/table/visit/data'),
+        name: 'visit1',
+        meta: {
+            roles: ['6020'],
+            title: '拜访'
+        }
     }]
 }
 
-export default reportRouter;
+export default reportRouter

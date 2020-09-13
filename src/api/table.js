@@ -738,3 +738,328 @@ export function printMovementBook(data) {
     data
   })
 }
+
+// -------------------多维度毛利----------------
+
+export function getGrossProfitQueryConfList() {
+  return request({
+    url: '/drp/rpt/grossProfit/getQueryConfList',
+    method: 'post'
+  })
+}
+
+export function getDefaultGrossProfitQueryConf() {
+  return request({
+    url: '/drp/rpt/grossProfit/getDefaultQueryConf',
+    method: 'post'
+  })
+}
+
+export function saveGrossProfitQueryConf(data) {
+  return request({
+    url: '/drp/rpt/grossProfit/saveQueryConf',
+    method: 'post',
+    data
+  })
+}
+
+export function delGrossProfitTemplate(id) {
+  return request({
+    url: '/drp/rpt/grossProfit/deleteTemplateById',
+    method: 'post',
+    data: { id }
+  })
+}
+
+export function getGrossProfitTable(data) {
+    return request({
+        url: '/drp/rpt/grossProfit/queryFromLine8',
+        method: 'post',
+        data
+    })
+}
+
+export function exportGrossProfitBook(data) {
+  var exportUrl = '/drp/rpt/grossProfit/exportFromLine8';
+  var temp = document.createElement("form");
+  temp.action = exportUrl;
+  temp.method = "POST";
+  temp.style.display = 'none';
+  for (var x in data) {
+      var opt = document.createElement("textarea")
+      opt.name = x
+      opt.value = data[x]
+      temp.appendChild(opt)
+  }
+  document.body.appendChild(temp)
+  temp.submit()
+  return temp
+}
+
+export function printGrossProfitBook(data) {
+  return request({
+    url: '/drp/rpt/grossProfit/printFromLine8',
+    method: 'post',
+    data
+  })
+}
+
+// -------------------预收统计----------------
+
+export function getPresaleQueryConfList() {
+  return request({
+    url: '/drp/rpt/presale/getQueryConfList',
+    method: 'post'
+  })
+}
+
+export function getDefaultPresaleQueryConf() {
+  return request({
+    url: '/drp/rpt/presale/getDefaultQueryConf',
+    method: 'post'
+  })
+}
+
+export function savePresaleQueryConf(data) {
+  return request({
+    url: '/drp/rpt/presale/saveQueryConf',
+    method: 'post',
+    data
+  })
+}
+
+export function delPresaleTemplate(id) {
+  return request({
+    url: '/drp/rpt/presale/deleteTemplateById',
+    method: 'post',
+    data: { id }
+  })
+}
+
+export function getPresaleTable(data) {
+    return request({
+        url: '/drp/rpt/presale/queryFromLine8',
+        method: 'post',
+        data
+    })
+}
+
+export function exportPresaleBook(data) {
+  var exportUrl = '/drp/rpt/presale/exportFromLine8';
+  var temp = document.createElement("form");
+  temp.action = exportUrl;
+  temp.method = "POST";
+  temp.style.display = 'none';
+  for (var x in data) {
+      var opt = document.createElement("textarea")
+      opt.name = x
+      opt.value = data[x]
+      temp.appendChild(opt)
+  }
+  document.body.appendChild(temp)
+  temp.submit()
+  return temp
+}
+
+export function printPresaleBook(data) {
+  return request({
+    url: '/drp/rpt/presale/printFromLine8',
+    method: 'post',
+    data
+  })
+}
+
+// -------------------收款----------------
+
+export function getReceiptQueryConfList() {
+  return request({
+    url: '/drp/rpt/receipt/getQueryConfList',
+    method: 'post'
+  })
+}
+
+export function getDefaultReceiptQueryConf() {
+  return request({
+    url: '/drp/rpt/receipt/getDefaultQueryConf',
+    method: 'post'
+  })
+}
+
+export function saveReceiptQueryConf(data) {
+  return request({
+    url: '/drp/rpt/receipt/saveQueryConf',
+    method: 'post',
+    data
+  })
+}
+
+export function delReceiptTemplate(id) {
+  return request({
+    url: '/drp/rpt/receipt/deleteTemplateById',
+    method: 'post',
+    data: { id }
+  })
+}
+
+export function getReceiptTable(data) {
+    return request({
+        url: '/drp/rpt/receipt/queryFromLine8',
+        method: 'post',
+        data
+    })
+}
+
+export function exportReceiptBook(data) {
+  var exportUrl = '/drp/rpt/receipt/exportFromLine8';
+  var temp = document.createElement("form");
+  temp.action = exportUrl;
+  temp.method = "POST";
+  temp.style.display = 'none';
+  for (var x in data) {
+      var opt = document.createElement("textarea")
+      opt.name = x
+      opt.value = data[x]
+      temp.appendChild(opt)
+  }
+  document.body.appendChild(temp)
+  temp.submit()
+  return temp
+}
+
+export function printReceiptBook(data) {
+  return request({
+    url: '/drp/rpt/receipt/printFromLine8',
+    method: 'post',
+    data
+  })
+}
+
+// -------------------付款----------------
+
+export function getPaymentQueryConfList() {
+  return request({
+    url: '/drp/rpt/payment/getQueryConfList',
+    method: 'post'
+  })
+}
+
+export function getDefaultPaymentQueryConf() {
+  return request({
+    url: '/drp/rpt/payment/getDefaultQueryConf',
+    method: 'post'
+  })
+}
+
+export function savePaymentQueryConf(data) {
+  return request({
+    url: '/drp/rpt/payment/saveQueryConf',
+    method: 'post',
+    data
+  })
+}
+
+export function delPaymentTemplate(id) {
+  return request({
+    url: '/drp/rpt/payment/deleteTemplateById',
+    method: 'post',
+    data: { id }
+  })
+}
+
+export function getPaymentTable(data) {
+    return request({
+        url: '/drp/rpt/payment/queryFromLine8',
+        method: 'post',
+        data
+    })
+}
+
+export function exportPaymentBook(data) {
+  var exportUrl = '/drp/rpt/payment/exportFromLine8';
+  var temp = document.createElement("form");
+  temp.action = exportUrl;
+  temp.method = "POST";
+  temp.style.display = 'none';
+  for (var x in data) {
+      var opt = document.createElement("textarea")
+      opt.name = x
+      opt.value = data[x]
+      temp.appendChild(opt)
+  }
+  document.body.appendChild(temp)
+  temp.submit()
+  return temp
+}
+
+export function printPaymentBook(data) {
+  return request({
+    url: '/drp/rpt/payment/printFromLine8',
+    method: 'post',
+    data
+  })
+}
+
+// -------------------拜访----------------
+
+export function getVisitQueryConfList() {
+  return request({
+    url: '/drp/rpt/Visit/getQueryConfList',
+    method: 'post'
+  })
+}
+
+export function getDefaultVisitQueryConf() {
+  return request({
+    url: '/drp/rpt/Visit/getDefaultQueryConf',
+    method: 'post'
+  })
+}
+
+export function saveVisitQueryConf(data) {
+  return request({
+    url: '/drp/rpt/Visit/saveQueryConf',
+    method: 'post',
+    data
+  })
+}
+
+export function delVisitTemplate(id) {
+  return request({
+    url: '/drp/rpt/Visit/deleteTemplateById',
+    method: 'post',
+    data: { id }
+  })
+}
+
+export function getVisitTable(data) {
+    return request({
+        url: '/drp/rpt/Visit/queryFromLine8',
+        method: 'post',
+        data
+    })
+}
+
+export function exportVisitBook(data) {
+  var exportUrl = '/drp/rpt/Visit/exportFromLine8';
+  var temp = document.createElement("form");
+  temp.action = exportUrl;
+  temp.method = "POST";
+  temp.style.display = 'none';
+  for (var x in data) {
+      var opt = document.createElement("textarea")
+      opt.name = x
+      opt.value = data[x]
+      temp.appendChild(opt)
+  }
+  document.body.appendChild(temp)
+  temp.submit()
+  return temp
+}
+
+export function printVisitBook(data) {
+  return request({
+    url: '/drp/rpt/Visit/printFromLine8',
+    method: 'post',
+    data
+  })
+}
