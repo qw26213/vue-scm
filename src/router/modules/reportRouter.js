@@ -13,15 +13,15 @@ const reportRouter = {
     children: [{
         path: 'store',
         component: setView,
-        name: 'baseData',
+        name: 'tableStore',
         meta: {
             roles: ['6010'],
             title: '库存'
         },
         children: [{
-            path: 'data',
+            path: 'warehouse',
             component: () => import ('@/views/table/store/warehouse'),
-            name: 'baseMeas',
+            name: 'warehouse1',
             meta: {
                 roles: ['601018'],
                 title: '仓库统计'
@@ -29,7 +29,7 @@ const reportRouter = {
         }, {
             path: 'truck',
             component: () => import ('@/views/table/store/truck'),
-            name: 'truck',
+            name: 'truck1',
             meta: {
                 roles: ['601018'],
                 title: '车辆统计'
@@ -69,7 +69,7 @@ const reportRouter = {
         }, {
             path: 'inventory',
             component: () => import ('@/views/table/store/inventory'),
-            name: 'inventory',
+            name: 'inventory1',
             meta: {
                 roles: ['6030'],
                 title: '盘点统计'
@@ -77,7 +77,7 @@ const reportRouter = {
         }, {
             path: 'allocation',
             component: () => import ('@/views/table/store/allocation'),
-            name: 'allocation',
+            name: 'allocation1',
             meta: {
                 roles: ['601018'],
                 title: '调拨统计'
@@ -101,20 +101,12 @@ const reportRouter = {
             title: '毛利'
         },
         children: [{
-            path: 'table',
+            path: 'grossprofit',
             component: () => import ('@/views/table/grossprofit/grossprofit'),
-            name: 'table',
+            name: 'grossprofit',
             meta: {
                 roles: ['5460'],
-                title: '多维度统计'
-            }
-        }, {
-            path: 'grossprofit2',
-            component: () => import ('@/views/table/grossprofit/grossprofit2'),
-            name: 'grossprofit2',
-            meta: {
-                roles: ['5420'],
-                title: '毛利综合统计'
+                title: '综合统计'
             }
         }, {
             path: 'grossprofit3',
@@ -144,7 +136,7 @@ const reportRouter = {
     }, {
         path: 'purchase',
         component: setView,
-        name: 'purchase',
+        name: 'purchase12',
         meta: {
             roles: ['6020'],
             title: '采购'
@@ -177,7 +169,7 @@ const reportRouter = {
     }, {
         path: 'sale',
         component: setView,
-        name: 'sale',
+        name: 'sale1',
         meta: {
             roles: ['6030'],
             title: '销售'
@@ -200,9 +192,9 @@ const reportRouter = {
             }
         }]
     }, {
-        path: 'sale',
+        path: 'rpt',
         component: setView,
-        name: 'sale',
+        name: 'rpt1',
         meta: {
             roles: ['6030'],
             title: '往来'
