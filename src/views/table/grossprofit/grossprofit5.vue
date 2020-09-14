@@ -200,8 +200,8 @@ export default {
         getDataByPage() {
             var pageIndex = this.listQuery.pageIndex
             var arr = []
-            var min = pageIndex * this.pageNum - this.pageNum
-            var max = pageIndex * this.pageNum <= this.total ? pageIndex * this.pageNum : this.total
+            var min = pageIndex * 20 - 20
+            var max = pageIndex * 20 <= this.total ? pageIndex * 20 : this.total
             for (var i = min; i < max; i++) {
                 arr.push(this.tableData[i])
             }
@@ -212,7 +212,7 @@ export default {
             getGrossProfitTable6(this.listQuery).then(res => {
                 this.listLoading = false
                 this.columns = res.data.columns
-                this.columns.forEach((item,index) => {
+                this.columns.forEach(item => {
                     item.align = item.align == 0 ? 'left' : item.align == 1 ? 'center' : item.align == 2 ? 'right' : ''
                 })
                 this.tableData = res.data.dataSet || []
