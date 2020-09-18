@@ -17,6 +17,16 @@
                     <span>{{row.bizTypeName}}</span>
                 </template>
             </el-table-column>
+            <el-table-column label="编码长度" align="center">
+                <template slot-scope="{row}">
+                    <span>{{row.len}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="单位编码前缀" align="center">
+                <template slot-scope="{row}">
+                    <span>{{row.preCode}}</span>
+                </template>
+            </el-table-column>
             <el-table-column label="备注">
                 <template slot-scope="{row}">
                     <span>{{row.remarks}}</span>
@@ -27,29 +37,35 @@
                     <span>{{row.isDisable==0?'是':'否'}}</span>
                 </template>
             </el-table-column>
-            <!-- <el-table-column label="操作" align="center" width="230">
+            <el-table-column label="操作" align="center" width="100">
                 <template slot-scope="{row}">
                     <el-button type="primary" size="mini" @click="handleCompile(row)">编辑</el-button>
-                    <el-button type="danger" size="mini" @click="handleDel(row.id)">删除</el-button>
-                    <el-button type="warning" size="mini" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
+                    <!-- <el-button type="danger" size="mini" @click="handleDel(row.id)">删除</el-button> -->
+                    <!-- <el-button type="warning" size="mini" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button> -->
                 </template>
-            </el-table-column> -->
+            </el-table-column>
         </el-table>
         <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
         <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增业务类型':'修改业务类型'" :visible.sync="dialogFormVisible" width="500px">
-            <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="120px" style="width: 300px; margin-left:50px;">
+            <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="110px" style="width: 456px;">
                 <el-form-item label="业务类型代码" prop="bizTypeCode">
-                    <el-input v-model="temp.bizTypeCode" placeholder="业务类型代码" />
+                    <el-input v-model="temp.bizTypeCode" disabled placeholder="业务类型代码" />
                 </el-form-item>
                 <el-form-item label="业务类型名称" prop="bizTypeName">
-                    <el-input v-model="temp.bizTypeName" placeholder="业务类型名称" />
+                    <el-input v-model="temp.bizTypeName" disabled placeholder="业务类型名称" />
+                </el-form-item>
+                <el-form-item label="编码长度" prop="len">
+                    <el-input-number v-model="temp.len" min="6" max="10" placeholder="编码长度" />
+                </el-form-item>
+                <el-form-item label="单位编码前缀" prop="preCode">
+                    <el-input-number v-model="temp.preCode" min="10" max="99" placeholder="单位编码前缀" />
                 </el-form-item>
                 <el-form-item label="备注" prop="remarks">
-                    <el-input v-model="temp.remarks" placeholder="备注" />
+                    <el-input v-model="temp.remarks" disabled placeholder="备注" />
                 </el-form-item>
                 <el-form-item label="是否可用" prop="isDisable">
-                    <el-radio v-model="temp.isDisable" label="0">是</el-radio>
-                    <el-radio v-model="temp.isDisable" label="1">否</el-radio>
+                    <el-radio v-model="temp.isDisable" disabled :label="0">是</el-radio>
+                    <el-radio v-model="temp.isDisable" disabled :label="1">否</el-radio>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer" align="center">
@@ -79,8 +95,10 @@ export default {
             temp: {
                 bizTypeName: '',
                 bizTypeCode: '',
+                len: '',
+                preCode: '',
                 remarks: '',
-                isDisable: "0"
+                isDisable: 0
             },
             dialogFormVisible: false,
             dialogStatus: '',
@@ -104,26 +122,12 @@ export default {
                 this.listLoading = false
             })
         },
-        handleAdd(obj) {
-            this.dialogFormVisible = true
-            this.dialogStatus = 'create'
-            this.temp.id = ''
-            this.temp.bizTypeName = ''
-            this.temp.bizTypeCode = ''
-            this.temp.remarks = ''
-            this.temp.isDisable = '0'
-            this.$nextTick(() => {
-                this.$refs['dataForm'].clearValidate()
-            })
-        },
         handleCompile(obj) {
             this.dialogFormVisible = true
             this.dialogStatus = 'update'
-            this.temp.id = obj.id
-            this.temp.bizTypeName = obj.bizTypeName
-            this.temp.bizTypeCode = obj.bizTypeCode
-            this.temp.remarks = obj.remarks
-            this.temp.isDisable = String(obj.isDisable)
+            for (const key in this.temp) {
+                this.temp[key] = obj[key]
+            }
             this.$nextTick(() => {
                 this.$refs['dataForm'].clearValidate()
             })

@@ -136,7 +136,7 @@
                 </el-form-item>
                 <el-form-item label="角色" prop="roleId">
                     <el-select v-model="temp2.roleId" style="width:185px" :disabled="userInfo.isAdmin == 0">
-                        <el-option v-for="v in rolelist" :key="v.id" :label="v.roleName" :value="v.roleCode" />
+                        <el-option v-for="v in rolelist" :key="v.id" :label="v.roleName" :value="v.id" />
                     </el-select>
                 </el-form-item>
                 <el-form-item label="状态" prop="status">
