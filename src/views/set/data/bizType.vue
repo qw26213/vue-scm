@@ -55,10 +55,10 @@
                     <el-input v-model="temp.bizTypeName" disabled placeholder="业务类型名称" />
                 </el-form-item>
                 <el-form-item label="编码长度" prop="len">
-                    <el-input-number v-model="temp.len" min="6" max="10" placeholder="编码长度" />
+                    <el-input-number v-model="temp.len" :min="6" :max="10" placeholder="编码长度" />
                 </el-form-item>
                 <el-form-item label="单位编码前缀" prop="preCode">
-                    <el-input-number v-model="temp.preCode" min="10" max="99" placeholder="单位编码前缀" />
+                    <el-input-number v-model="temp.preCode" :min="10" :max="99" placeholder="单位编码前缀" />
                 </el-form-item>
                 <el-form-item label="备注" prop="remarks">
                     <el-input v-model="temp.remarks" disabled placeholder="备注" />
@@ -93,6 +93,7 @@ export default {
                 bizTypeName: ''
             },
             temp: {
+                id: '',
                 bizTypeName: '',
                 bizTypeCode: '',
                 len: '',
