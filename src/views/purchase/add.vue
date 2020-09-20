@@ -259,7 +259,7 @@ export default {
                 }else{
                     this.$set(this.tableData[index],'taxRate',0)
                     this.$set(this.tableData[index],'price',0)
-                    this.$set(this.tableData[index],'amount',0)
+                    this.$set(this.tableData[index],'amount',vatAmount)
                 }
                 this.calculateTotal();
             }

@@ -17,9 +17,14 @@
                     <span>{{row.bizTypeName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="编码长度" align="center">
+            <el-table-column label="编码总长度" align="center">
                 <template slot-scope="{row}">
                     <span>{{row.len}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="编码总长度" align="center">
+                <template slot-scope="{row}">
+                    <span>{{row.dateType == 1 ? '年月日' : row.dateType == 2 ? '年月' : row.dateType ===3 ? '年' : '无日期' }}</span>
                 </template>
             </el-table-column>
             <el-table-column label="单位编码前缀" align="center">
@@ -54,8 +59,16 @@
                 <el-form-item label="业务类型名称" prop="bizTypeName">
                     <el-input v-model="temp.bizTypeName" disabled placeholder="业务类型名称" />
                 </el-form-item>
-                <el-form-item label="编码长度" prop="len">
-                    <el-input-number v-model="temp.len" :min="6" :max="10" placeholder="编码长度" />
+                <el-form-item label="编码总长度" prop="len">
+                    <el-input-number v-model="temp.len" :min="6" :max="19" placeholder="编码总长度" />
+                </el-form-item>
+                <el-form-item label="编码日期类型" prop="dateType">
+                  <el-select v-model="temp.dateType" style="width:100%" class="filter-item">
+                    <el-option label="无日期" :value="0" />
+                    <el-option label="年月日" :value="1" />
+                    <el-option label="年月" :value="2" />
+                    <el-option label="年" :value="3" />
+                  </el-select>
                 </el-form-item>
                 <el-form-item label="单位编码前缀" prop="preCode">
                     <el-input-number v-model="temp.preCode" :min="10" :max="99" placeholder="单位编码前缀" />
@@ -97,6 +110,7 @@ export default {
                 bizTypeName: '',
                 bizTypeCode: '',
                 len: '',
+                dateType: '',
                 preCode: '',
                 remarks: '',
                 isDisable: 0

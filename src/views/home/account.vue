@@ -68,7 +68,7 @@
                         </el-table-column>
                         <el-table-column label="状态" min-width="60" align="center">
                             <template slot-scope="{row}">
-                                <span>{{row.status==0?'正常':row.status==5?'受限':'禁用'}}</span>
+                                <span>{{row.status == 0 ? '正常' : row.status == 5 ? '受限':'禁用'}}</span>
                             </template>
                         </el-table-column>
                         <el-table-column label="操作" min-width="80" align="center">
@@ -376,6 +376,7 @@ export default {
             for (var key in this.temp2) {
                 this.temp2[key] = row[key]
             }
+
             this.dialogFormVisible2 = true
             this.dialogStatus = 'update'
             this.$nextTick(() => {
