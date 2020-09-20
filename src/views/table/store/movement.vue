@@ -84,7 +84,7 @@
     </div>
 </template>
 <script>
-import { getAggregate, getMovementTable, getWarehousingEntryQueryConfList, getDefaultWarehousingEntryQueryConf, saveWarehousingEntryQueryConf, delWarehousingEntryTemplate, exportWarehousingEntryBook, printWarehousingEntryBook } from '@/api/table'
+import { getAggregate, getMovementTable, getMovementQueryConfList, getDefaultMovementQueryConf, saveMovementQueryConf, delMovementTemplate, exportMovementBook, printMovementBook } from '@/api/table'
 import { getPeriodList } from '@/api/user'
 import { getNowDate } from '@/utils/index'
 import Pagination from '@/components/Pagination'
@@ -139,7 +139,7 @@ export default {
       this.getTemplateList()
       getAggregate('movement').then(res => {
         this.levellist = res.data
-        getDefaultWarehousingEntryQueryConf().then(res => {
+        getDefaultMovementQueryConf().then(res => {
             if (res && res.data.data) {
                 const propValue = JSON.parse(res.data.data.paramValue)
                 for (var key in propValue) {
@@ -176,7 +176,7 @@ export default {
             })
         },
         delItem(id) {
-            delWarehousingEntryTemplate(id).then(res => {
+            delMovementTemplate(id).then(res => {
                 if (res.data.errorCode == 0) {
                     this.getTemplateList()
                     this.dialogFormVisible = false
@@ -199,7 +199,7 @@ export default {
                 rollUp: this.listQuery.rollUp,
                 ...obj
             }
-            saveWarehousingEntryQueryConf(data).then(res => {
+            saveMovementQueryConf(data).then(res => {
                 if (res.data.errorCode == 0) {
                     this.getTemplateList()
                     this.selectModalVisible = false
@@ -210,15 +210,15 @@ export default {
             })
         },
         getTemplateList() {
-            getWarehousingEntryQueryConfList().then(res => {
+            getMovementQueryConfList().then(res => {
                 this.templatelist = res.data.data || []
             })
         },
         exportBook() {
-            exportWarehousingEntryBook(this.listQuery)
+            exportMovementBook(this.listQuery)
         },
         printBook() {
-            printWarehousingEntryBook(this.listQuery).then(res => {
+            printMovementBook(this.listQuery).then(res => {
                 window.open("http://"+window.location.host+res.data.data)
             }).catch(err => {
                 this.listLoading = false
@@ -236,7 +236,7 @@ export default {
         },
         getList() {
             this.listLoading = true
-            getWarehousingEntryTable(this.listQuery).then(res => {
+            getMovementTable(this.listQuery).then(res => {
                 this.listLoading = false
                 this.columns = res.data.columns
                 this.columns.forEach((item,index) => {
