@@ -4,9 +4,10 @@
             <el-tree :data="treeData" :props="defaultProps" @node-click="handleNodeClick" default-expand-all :expand-on-click-node="false" accordion></el-tree>
         </div>
         <div class="app-container">
-            <div class="filter-container">
+            <div class="filterDiv">
                 <el-button size="small" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
             </div>
+            <div class="contentDiv">
             <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small" row-key="id">
                 <el-table-column label="序号" type="index" width="100" align="center"></el-table-column>
                 <el-table-column label="客户类别代码">
@@ -38,6 +39,7 @@
                     </template>
                 </el-table-column>
             </el-table>
+            </div>
             <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增客户类别':'修改客户类别'" :visible.sync="dialogFormVisible" width="460px">
               <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="110px" style="width: 400px; margin-left:10px;">
                 <el-form-item label="客户类别代码" prop="custTypeCode">

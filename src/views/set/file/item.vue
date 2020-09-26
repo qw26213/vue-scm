@@ -4,12 +4,13 @@
             <el-tree :data="treeData" :props="defaultProps" @node-click="handleNodeClick" default-expand-all :expand-on-click-node="false" accordion></el-tree>
         </div>
         <div ref="container" class="app-container">
-            <div class="filter-container">
+            <div class="filterDiv">
                 <el-input size="small" v-model="listQuery.queryParam.itemName" placeholder="商品代码/名称/助记码/规格/特性/品牌..." style="width: 360px;" class="filter-item" />
                 <!-- <el-input size="small" v-model="listQuery.queryParam.itemCode" placeholder="商品代码" style="width: 200px;" class="filter-item" /> -->
                 <el-button size="small" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
                 <el-button size="small" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
             </div>
+            <div class="contentDiv">
             <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
                 <el-table-column label="商品代码">
                     <template slot-scope="{row}">
@@ -96,6 +97,7 @@
                 </el-table-column>
             </el-table>
             <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
+            </div>
             <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增商品':'编辑商品'" :visible.sync="dialogFormVisible" width="700px">
                 <el-form ref="dataForm" :rules="rules" :model="temp" :inline="true" label-position="left" label-width="110px" style="width:660px; margin-left:10px;overflow:auto;height:600px">
                     <el-form-item label="商品代码" prop="itemCode" style="margin-right:20px">

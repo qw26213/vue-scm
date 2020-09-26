@@ -1,6 +1,6 @@
 <template>
     <div class="app-container">
-        <div class="filter-container">
+        <div class="filterDiv">
             <el-input v-model="listQuery.queryParam.custName" size="small" placeholder="客户代码/名称" style="width: 200px;" />
             <el-dropdown trigger="click">
                 <span class="el-dropdown-link" id="dropTit3">
@@ -22,10 +22,11 @@
                     </div>
                 </el-dropdown-menu>
             </el-dropdown>
-            <el-button size="small" type="text" icon="el-icon-search" @click="handleFilter">查询</el-button>
-            <el-button size="small" type="text" icon="el-icon-plus" @click="handleAdd">新增</el-button>
-            <el-button size="small" style="float:right" type="text" @click="showLine">客户地图</el-button>
+            <el-button size="small" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
+            <el-button size="small" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
+            <el-button size="small" style="float:right" type="primary" @click="showLine">客户地图</el-button>
         </div>
+        <div class="contentDiv">
         <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
             <el-table-column label="序号" type="index" width="50" align="center">
             </el-table-column>
@@ -109,6 +110,7 @@
             </el-table-column>
         </el-table>
         <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
+        </div>
         <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增客户':'修改客户'" :visible.sync="dialogFormVisible" width="635px">
             <el-form ref="dataForm" :rules="rules" :model="temp" :inline="true" label-position="right" label-width="95px" style="width: 600px; margin-left:10px;">
                 <el-form-item label="客户代码" prop="custCode">

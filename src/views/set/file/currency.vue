@@ -1,53 +1,53 @@
 <template>
   <div class="app-container">
-    <div class="filter-container">
+    <div class="filterDiv">
       <el-input size="small" v-model="listQuery.currencyName" placeholder="币种代码/名称" style="width: 200px;" class="filter-item" />
       <el-button size="small" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
       <el-button size="small" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
     </div>
-
-    <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
-      <el-table-column label="序号" type="index" width="60" align="center">
-      </el-table-column>
-      <el-table-column label="币种代码">
-        <template slot-scope="{row}">
-          <span>{{row.currencyCode}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="币种名称" width="170">
-        <template slot-scope="{row}">
-          <span>{{row.currencyName}}{{row.isDefault==1?'（默认）':''}}{{row.isBasecurrency==1?'（本位币）':''}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="币种符号" min-width="75">
-        <template slot-scope="{row}">
-          <span>{{row.symbol}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="单位" min-width="75">
-        <template slot-scope="{row}">
-          <span>{{row.uom}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="汇率" min-width="75">
-        <template slot-scope="{row}">
-          <span>{{row.exchangerate}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="是否可用" min-width="75" align="center">
-        <template slot-scope="{row}">
-          <span>{{row.isDisable==0?'是':'否'}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" align="center" width="230">
-        <template slot-scope="{row}">
-          <el-button type="text" size="small" @click="handleCompile(row)">编辑</el-button>
-          <el-button type="text" size="small" @click="handleDel(row.id)">删除</el-button>
-          <el-button type="text" size="small" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-
+    <div class="contentDiv">
+      <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
+        <el-table-column label="序号" type="index" width="60" align="center">
+        </el-table-column>
+        <el-table-column label="币种代码">
+          <template slot-scope="{row}">
+            <span>{{row.currencyCode}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="币种名称" width="170">
+          <template slot-scope="{row}">
+            <span>{{row.currencyName}}{{row.isDefault==1?'（默认）':''}}{{row.isBasecurrency==1?'（本位币）':''}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="币种符号" min-width="75">
+          <template slot-scope="{row}">
+            <span>{{row.symbol}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="单位" min-width="75">
+          <template slot-scope="{row}">
+            <span>{{row.uom}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="汇率" min-width="75">
+          <template slot-scope="{row}">
+            <span>{{row.exchangerate}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="是否可用" min-width="75" align="center">
+          <template slot-scope="{row}">
+            <span>{{row.isDisable==0?'是':'否'}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" align="center" width="230">
+          <template slot-scope="{row}">
+            <el-button type="text" size="small" @click="handleCompile(row)">编辑</el-button>
+            <el-button type="text" size="small" @click="handleDel(row.id)">删除</el-button>
+            <el-button type="text" size="small" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
     <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增币种':'修改币种'" :visible.sync="dialogFormVisible" width="460px">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="80px" style="width: 400px; margin-left:10px;">
         <el-form-item label="币种代码" prop="currencyCode">

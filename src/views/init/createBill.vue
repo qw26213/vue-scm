@@ -100,14 +100,14 @@
                     <el-checkbox v-model="temp.isAuxProj" :false-label="0" :true-label="1" :disabled="!!userInfo.glBookEntity" style="margin-right:10px">启用项目核算</el-checkbox>
                 </el-form-item>
                 <el-form-item>
-                    <el-checkbox v-model="temp.isAutoAuditWhenAutoSave" :false-label="0" :true-label="1" style="margin-right:10px">自动凭证在保存时自动审核</el-checkbox>
-                    <el-checkbox v-model="temp.autoAuditFlag" :false-label="0" :true-label="1" style="margin-right:10px" :disabled="temp.isAutoTransfer==1">结账时自动审核凭证</el-checkbox>
                     <span>自动凭证类型</span>
                     <el-select v-model="temp.autoVoucherType" style="width:160px" size="mini" :disabled="!!userInfo.glBookEntity">
                         <el-option label="全部单据每天自动生成" :value="0" />
                         <el-option label="仅销售单据每天自动生成" :value="1" />
                         <el-option label="全部单据手动生成" :value="2" />
                     </el-select>
+                    <el-checkbox v-model="temp.isAutoAuditWhenAutoSave" :false-label="0" :true-label="1" style="margin-right:10px">自动凭证在保存时自动审核</el-checkbox>
+                    <el-checkbox v-model="temp.autoAuditFlag" :false-label="0" :true-label="1" style="margin-right:10px" :disabled="temp.isAutoTransfer==1">结账时自动审核凭证</el-checkbox>
                     <el-checkbox v-model="temp.isAutoTransfer" :false-label="0" :true-label="1" style="margin-right:10px" @change="autoTransferChange">期末自动结转、结账</el-checkbox>
                     <el-checkbox v-if="temp.isAutoTransfer==1" v-model="temp.isAutoJzdtfy" :false-label="0" :true-label="1" style="margin-right:10px">自动结转待摊费用</el-checkbox>
                     <el-checkbox v-if="temp.isAutoTransfer==1" v-model="temp.isAutoJtzj" :false-label="0" :true-label="1" style="margin-right:10px">自动计提折旧</el-checkbox>

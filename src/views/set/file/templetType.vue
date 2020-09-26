@@ -1,10 +1,11 @@
 <template>
     <div class="app-container">
-        <div class="filter-container">
+        <div class="filterDiv">
             <el-input size="small" v-model="listQuery.templetTypeName" placeholder="凭证模板类型代码/名称" style="width: 200px;" class="filter-item" />
             <el-button size="small" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
             <el-button size="small" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
         </div>
+        <div class="contentDiv">
         <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
             <el-table-column label="序号" type="index" width="100" align="center">
             </el-table-column>
@@ -32,6 +33,7 @@
             </el-table-column>
         </el-table>
         <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+        </div>
         <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增凭证模板类型':'修改凭证模板类型'" :visible.sync="dialogFormVisible" width="460px">
             <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="140px" style="width: 400px; margin-left:10px;">
                 <el-form-item label="凭证模板类型代码" prop="templetTypeCode">

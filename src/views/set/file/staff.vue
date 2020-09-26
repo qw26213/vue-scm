@@ -4,64 +4,66 @@
       <el-tree :data="treeData" :props="defaultProps" @node-click="handleNodeClick" default-expand-all :expand-on-click-node="false" accordion></el-tree>
   </div>
   <div class="app-container tableDiv">
-    <div class="filter-container">
+    <div class="filterDiv">
       <el-input size="small" v-model="listQuery.staffName" placeholder="员工代码/名称" style="width: 200px;" class="filter-item" />
       <el-button size="small" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
       <el-button size="small" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
     </div>
-    <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
-      <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
-      <el-table-column label="员工代码">
-        <template slot-scope="{row}">
-          <span>{{row.staffCode}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="员工名称">
-        <template slot-scope="{row}">
-          <span>{{row.staffName}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="信用额度" align="right"min-width="100">
-        <template slot-scope="{row}">
-          <span>{{row.creditLimit|Fixed}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="已赊销金额" align="right"min-width="110">
-        <template slot-scope="{row}">
-          <span>{{row.overdraftBalance|Fixed}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="销售改价" min-width="110" align="center">
-        <template slot-scope="{row}">
-          <span>{{row.salePriceType == 1 ? '允许' : '不允许'}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="退货改价" min-width="110" align="center">
-        <template slot-scope="{row}">
-          <span>{{row.returnPriceType == 1 ? '允许' : '不允许'}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="备注">
-        <template slot-scope="{row}">
-          <span>{{row.remarks}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="是否可用" align="center" width="90">
-        <template slot-scope="{row}">
-          <span>{{row.isDisable==0?'是':'否'}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" align="center" width="380">
-        <template slot-scope="{row}">
-          <el-button type="text" size="small" @click="handleUpdate1(row.creditLimit,row.id)">改信用额度</el-button>
-          <el-button type="text" size="small" @click="handleUpdate2(row.overdraftBalance,row.id)">改已赊销金额</el-button>
-          <el-button type="primatextry" size="small" @click="handleCompile(row)">编辑</el-button>
-          <el-button type="text" size="small" @click="handleDel(row.id)">删除</el-button>
-          <el-button type="text" size="small" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <div class="contentDiv">
+      <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
+        <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
+        <el-table-column label="员工代码">
+          <template slot-scope="{row}">
+            <span>{{row.staffCode}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="员工名称">
+          <template slot-scope="{row}">
+            <span>{{row.staffName}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="信用额度" align="right"min-width="100">
+          <template slot-scope="{row}">
+            <span>{{row.creditLimit|Fixed}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="已赊销金额" align="right"min-width="110">
+          <template slot-scope="{row}">
+            <span>{{row.overdraftBalance|Fixed}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="销售改价" min-width="110" align="center">
+          <template slot-scope="{row}">
+            <span>{{row.salePriceType == 1 ? '允许' : '不允许'}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="退货改价" min-width="110" align="center">
+          <template slot-scope="{row}">
+            <span>{{row.returnPriceType == 1 ? '允许' : '不允许'}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="备注">
+          <template slot-scope="{row}">
+            <span>{{row.remarks}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="是否可用" align="center" width="90">
+          <template slot-scope="{row}">
+            <span>{{row.isDisable==0?'是':'否'}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" align="center" width="380">
+          <template slot-scope="{row}">
+            <el-button type="text" size="small" @click="handleUpdate1(row.creditLimit,row.id)">改信用额度</el-button>
+            <el-button type="text" size="small" @click="handleUpdate2(row.overdraftBalance,row.id)">改已赊销金额</el-button>
+            <el-button type="primatextry" size="small" @click="handleCompile(row)">编辑</el-button>
+            <el-button type="text" size="small" @click="handleDel(row.id)">删除</el-button>
+            <el-button type="text" size="small" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+    </div>
     <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增员工':'修改员工'" :visible.sync="dialogFormVisible" width="600px">
       <el-form ref="dataForm" :rules="rules" :model="temp" inline label-position="right" label-width="80px" style="width: 580px; margin-left:10px;">
         <el-form-item label="员工代码" prop="staffCode">

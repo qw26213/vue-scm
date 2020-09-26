@@ -1,10 +1,11 @@
 <template>
     <div class="app-container">
-        <div class="filter-container">
+        <div class="filterDiv">
             <el-input size="small" v-model="listQuery.supplierName" placeholder="供应商代码/名称" style="width: 200px;" class="filter-item" />
             <el-button size="small" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
             <el-button size="small" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
         </div>
+        <div class="contentDiv">
         <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
             <el-table-column label="序号" type="index" width="50" align="center">
             </el-table-column>
@@ -72,6 +73,7 @@
             </el-table-column>
         </el-table>
         <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+        </div>
         <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增供应商':'修改供应商'" :visible.sync="dialogFormVisible" width="650px">
             <el-form ref="dataForm" :rules="rules" :model="temp" :inline="true" label-position="right" label-width="100px" style="width: 610px; margin-left:10px;">
                 <el-form-item label="供应商代码" prop="supplierCode">

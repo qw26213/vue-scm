@@ -6,45 +6,46 @@
   </div>
 
   <div class="app-container tableDiv">    
-    <div class="filter-container">
+    <div class="filterDiv">
       <el-button size="small" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
     </div>
-
-    <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small" row-key="id">
-      <el-table-column label="序号" type="index" width="50" align="center" />
-      <el-table-column label="部门代码">
-        <template slot-scope="{row}">
-          <span>{{row.deptCode}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="部门名称">
-        <template slot-scope="{row}">
-          <span>{{row.deptName}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="负责人">
-        <template slot-scope="{row}">
-          <span>{{row.leader}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="备注">
-        <template slot-scope="{row}">
-          <span>{{row.remarks}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="是否可用" align="center">
-        <template slot-scope="{row}">
-          <span>{{row.isDisable==0?'是':'否'}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" align="center" width="230">
-        <template slot-scope="{row}">
-          <el-button type="text" size="small" @click="handleCompile(row)">编辑</el-button>
-          <el-button type="text" size="small" @click="handleDel(row.id)">删除</el-button>
-          <el-button type="text" size="small" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <div class="contentDiv">
+      <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small" row-key="id">
+        <el-table-column label="序号" type="index" width="50" align="center" />
+        <el-table-column label="部门代码">
+          <template slot-scope="{row}">
+            <span>{{row.deptCode}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="部门名称">
+          <template slot-scope="{row}">
+            <span>{{row.deptName}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="负责人">
+          <template slot-scope="{row}">
+            <span>{{row.leader}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="备注">
+          <template slot-scope="{row}">
+            <span>{{row.remarks}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="是否可用" align="center">
+          <template slot-scope="{row}">
+            <span>{{row.isDisable==0?'是':'否'}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" align="center" width="230">
+          <template slot-scope="{row}">
+            <el-button type="text" size="small" @click="handleCompile(row)">编辑</el-button>
+            <el-button type="text" size="small" @click="handleDel(row.id)">删除</el-button>
+            <el-button type="text" size="small" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
     <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增部门':'修改部门'" :visible.sync="dialogFormVisible" width="460px">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="80px" style="width: 400px; margin-left:10px;">
         <el-form-item label="部门代码" prop="deptCode">

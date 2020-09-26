@@ -1,9 +1,10 @@
 <template>
     <div class="app-container">
-        <div class="filter-container" style="text-align:right">
+        <div class="filterDiv" style="text-align:right">
             <el-button size="small" class="filter-item" type="primary" @click="addVoucher">新增凭证模板</el-button>
             <el-button size="small" class="filter-item" style="margin-left: 10px;" type="primary" @click="handleSync">同步模板数据</el-button>
         </div>
+        <div class="contentDiv">
         <el-table :key="tableKey" :data="tableData" border fit highlight-current-row style="width: 100%;">
             <el-table-column label="序号" type="index" width="100" align="center">
             </el-table-column>
@@ -31,6 +32,7 @@
             </el-table-column>
         </el-table>
         <pagination v-show="total>10" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getData" />
+        </div>
     </div>
 </template>
 <script>

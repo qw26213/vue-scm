@@ -1,61 +1,63 @@
 <template>
     <div class="app-container">
-        <div class="filter-container1" style="margin-bottom:15px">
+        <div class="filterDiv">
             <el-radio-group v-model="coaClassCode" @change="getData" size="small">
                 <el-radio-button v-for="(item,index) in coaClassList" :key="index" :label="item.coaClassCode">{{item.coaClassName}}</el-radio-button>
             </el-radio-group>
             <el-button type="primary" size="small" style="float:right" @click="updateDispNameByUuid()">校正名称</el-button>
         </div>
-        <el-table :data="tableData" border fit resize empty-text="无同步数据" style="width: 100%;" size="small">
-            <el-table-column label="科目编码">
-                <template slot-scope="{row}">
-                    <span>{{row.coaCode}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="科目名称" min-width="100" show-overflow-tooltip>
-                <template slot-scope="{row}">
-                    <span v-html="row.pageCoaName"></span>
-                </template>
-            </el-table-column>
-            <el-table-column label="科目分类" min-width="100" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.coaClassName}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="方向" min-width="80" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.crDr == 1?'借':'贷'}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="辅助核算" min-width="80" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.isAuxiliary == 1?'是':'否'}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="币种核算" min-width="80" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.isCurrency == 1?'是':'否'}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="数量核算" min-width="80" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.isQuantity == 1?'是':'否'}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="禁用" min-width="80" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.isDisable == 1?'是':'否'}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="操作" width="260" align="center">
-                <template slot-scope="{row}">
-                    <el-button type="text" size="small" @click="handleAdd(row)">新增下级</el-button>
-                    <el-button type="text" size="small" @click="handleCompile(row)">修改</el-button>
-                    <el-button type="text" size="small" @click="handleDel(row)">删除</el-button>
-                    <el-button type="text" size="small" @click="handleDisable(row)">{{row.isDisable == 1?'解禁':'禁用'}}</el-button>
-                </template>
-            </el-table-column>
-        </el-table>
+        <div class="contentDiv">
+            <el-table :data="tableData" border fit resize empty-text="无同步数据" style="width: 100%;" size="small">
+                <el-table-column label="科目编码">
+                    <template slot-scope="{row}">
+                        <span>{{row.coaCode}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="科目名称" min-width="100" show-overflow-tooltip>
+                    <template slot-scope="{row}">
+                        <span v-html="row.pageCoaName"></span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="科目分类" min-width="100" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.coaClassName}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="方向" min-width="80" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.crDr == 1?'借':'贷'}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="辅助核算" min-width="80" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.isAuxiliary == 1?'是':'否'}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="币种核算" min-width="80" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.isCurrency == 1?'是':'否'}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="数量核算" min-width="80" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.isQuantity == 1?'是':'否'}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="禁用" min-width="80" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.isDisable == 1?'是':'否'}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" width="260" align="center">
+                    <template slot-scope="{row}">
+                        <el-button type="text" size="small" @click="handleAdd(row)">新增下级</el-button>
+                        <el-button type="text" size="small" @click="handleCompile(row)">修改</el-button>
+                        <el-button type="text" size="small" @click="handleDel(row)">删除</el-button>
+                        <el-button type="text" size="small" @click="handleDisable(row)">{{row.isDisable == 1?'解禁':'禁用'}}</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
         <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增下级科目':'修改科目'" :visible.sync="dialogFormVisible" width="620px">
             <el-form ref="dataForm" :rules="rules" :model="temp" :inline="true" label-position="right" label-width="85px" style="width: 580px; margin-left:10px;">
                 <el-form-item label="科目类别" prop="coaClassId">
