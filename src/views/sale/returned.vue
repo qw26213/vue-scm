@@ -1,6 +1,6 @@
 <template>
     <div class="app-container">
-        <div class="filter-container">
+        <div class="filterDiv">
             <el-date-picker :editable="false" v-model="listQuery.queryParam.billDate1" type="date" placeholder="开始日期" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
             <span class="zhi">至</span>
             <el-date-picker :editable="false" v-model="listQuery.queryParam.billDate2" type="date" placeholder="结束日期" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
@@ -15,6 +15,7 @@
             <el-button size="small" type="primary" @click="getList">查询</el-button>
             <el-button size="small" type="primary" @click="handleAdd">新增</el-button>
         </div>
+        <div class="contentDiv">
         <el-table :key="tableKey" v-loading="listLoading" :data="tableData" size="small" border fit highlight-current-row>
             <el-table-column label="单据日期" align="center" width="100">
                 <template slot-scope="{row}">
@@ -84,6 +85,7 @@
                 </template>
             </el-table-column>
         </el-table>
+        </div>
         <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
         <el-dialog :close-on-click-modal="false" title="选择销售退货单日期" :visible.sync="dialogFormVisible1" width="400px">
             <el-form style="margin-top:30px;text-align:center;">
