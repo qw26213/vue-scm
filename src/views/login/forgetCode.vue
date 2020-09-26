@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <el-form ref="reqFrom" :model="reqFrom" :rules="rules" class="login-form" autocomplete="on" label-position="right" label-width="96px" style="width:400px;margin: 100px auto 0">
+        <el-form ref="reqFrom" :model="reqFrom" :rules="rules" class="login-form" autocomplete="on" label-position="right" label-width="93px">
             <div class="title-container" style="margin-bottom:50px">
                 <h3 class="title">找回企业代码</h3>
             </div>
@@ -22,6 +22,9 @@
             <el-form-item label="用户账号" prop="userAccount">
                 <el-input v-model="reqFrom.userAccount" placeholder="用户账号" />
             </el-form-item>
+            <div class="bot clearfix">
+              <span class="fr" @click="$router.push('/login')">返回登录</span>
+            </div>
             <el-button :loading="loading" type="primary" style="width:100%;margin:30px auto;" @click="handleSave">确 认</el-button>
         </el-form>
     </div>
@@ -133,29 +136,3 @@ export default {
     }
 }
 </script>
-<style scoped>
-.container {
-    min-height: 100%;
-    overflow: hidden;
-}
-
-.title {
-    text-align: center;
-    margin-bottom: 20px
-}
-
-.bot {
-    margin: 10px 0
-}
-
-.bot span {
-    display: inline-block;
-    font-size: 14px;
-    color: #666;
-    cursor: pointer;
-}
-
-.bot span:hover {
-    color: #333;
-}
-</style>

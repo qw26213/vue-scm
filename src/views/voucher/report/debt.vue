@@ -1,11 +1,12 @@
 <template>
     <div class="app-container">
-        <div class="filter-container">
+        <div class="filterDiv">
             <label class="label">会计期间:</label>
             <el-select v-model="listQuery.periodCode" placeholder="会计期间" size="small" @change="getList">
                 <el-option v-for="item in periodList" :label="item.text" :value="item.id" :key="item.id"></el-option>
             </el-select>
         </div>
+        <div class="contentDiv">
         <div class="el-table el-table--fit el-table--border el-table--enable-row-hover el-table--enable-row-transition el-table--small" style="width: 100%;">
             <div class="el-table__body-wrapper is-scrolling-none">
                 <table cellspacing="0" cellpadding="0" border="0" class="el-table__body" style="width: 100%">
@@ -559,6 +560,7 @@
                     </tbody>
                 </table>
             </div>
+        </div>
         </div>
     </div>
 </template>

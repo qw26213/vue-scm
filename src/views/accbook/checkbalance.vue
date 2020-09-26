@@ -1,6 +1,6 @@
 <template>
     <div class="app-container">
-        <div class="filter-container">
+        <div class="filterDiv">
             <label class="label">期间：</label>
             <el-select v-model="listQuery.periodCode1" size="small" placeholder="开始期间">
                 <el-option v-for="item in periodArr" :key="item.id" :label="item.text" :value="item.id" />
@@ -42,6 +42,7 @@
             </el-popover>
             <el-button size="small" type="primary" @click="getList">查询</el-button>
         </div>
+        <div class="contentDiv">
         <el-table :key="tableKey" v-loading="listLoading" :data="pageData" border fit highlight-current-row style="width: 100%;" size="small">
             <el-table-column label="项目编码" align="left">
                 <template slot-scope="{row}">
@@ -103,6 +104,7 @@
             </el-table-column>
         </el-table>
         <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.limit" @pagination="getDataByPage" />
+        </div>
     </div>
 </template>
 <script>

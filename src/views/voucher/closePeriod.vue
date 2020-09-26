@@ -1,6 +1,6 @@
 <template>
     <div class="main">
-        <div class="filter-container" style="margin-bottom:15px">
+        <div class="filterDiv">
             <label class="label">会计期间：</label>
             <el-select v-model="periodCode" size="small" placeholder="会计期间">
                 <el-option v-for="item in periodArr" :key="item.id" :label="item.text" :value="item.id"></el-option>
@@ -10,15 +10,17 @@
             <el-button v-else size="small" type="primary" style="width:100px" @click="executeBackPeriodClose">反结账</el-button>
             <el-button size="small" type="default" style="width:100px" @click="getLog">日志</el-button>
         </div>
-        <el-row :gutter="30">
-            <el-col :span="6" v-for="(item, index) in nameArr" :key="index" style="margin-bottom: 20px">
-                <el-card class="box-card" style="text-align:center;height:150px">
-                    <div class="itemTit">{{item}}</div>
-                    <el-button v-if="jzCodeStrs.indexOf(codeArr[index])>=0" type="default" :disabled="isSeasonEnd&&index==4" @click="showJzVoucher(index)" plain>查看凭证</el-button>
-                    <el-button v-else type="primary" :disabled="isSeasonEnd&&index==4" @click="createVoucher(index)" plain>生成凭证</el-button>
-                </el-card>
-            </el-col>
-        </el-row>
+        <div class="contentDiv">
+            <el-row :gutter="30">
+                <el-col :span="6" v-for="(item, index) in nameArr" :key="index" style="margin-bottom: 20px">
+                    <el-card class="box-card" style="text-align:center;height:150px">
+                        <div class="itemTit">{{item}}</div>
+                        <el-button v-if="jzCodeStrs.indexOf(codeArr[index])>=0" type="default" :disabled="isSeasonEnd&&index==4" @click="showJzVoucher(index)" plain>查看凭证</el-button>
+                        <el-button v-else type="primary" :disabled="isSeasonEnd&&index==4" @click="createVoucher(index)" plain>生成凭证</el-button>
+                    </el-card>
+                </el-col>
+            </el-row>
+        </div>
         <el-dialog :close-on-click-modal="false" :title="curIndex==3?'设置附加税率':'设置企业所得税率'" :visible.sync="rateConfigVisiable" width="420px">
             <el-form ref="dataForm" :rules="rules" :model="rateForm" label-position="left" label-width="100px" style="width: 360px; margin-left:10px;">
                 <el-form-item label="计提方式:" prop="month">

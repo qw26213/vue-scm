@@ -1,210 +1,59 @@
 <template>
     <div class="login-container">
-        <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
-            <div class="title-container">
-                <h3 class="title">丰扬快销管理系统</h3>
-            </div>
-            <el-form-item prop="orgCode">
-                <span class="svg-container">
-                    <svg-icon icon-class="chart" />
-                </span>
-                <el-input clearable autocomplete="off" v-model.trim="loginForm.orgCode" placeholder="企业代码" type="text" maxlength='6' />
-            </el-form-item>
-            <el-form-item prop="userAccount">
-                <span class="svg-container">
-                    <svg-icon icon-class="user" />
-                </span>
-                <el-input clearable autocomplete="off" v-model.trim="loginForm.userAccount" placeholder="账号" type="text" />
-            </el-form-item>
-            <el-form-item prop="password">
-                <span class="svg-container">
-                    <svg-icon icon-class="password" />
-                </span>
-                <el-input clearable autocomplete="off" v-model.trim="loginForm.password" placeholder="密码" type="password" />
-            </el-form-item>
-            <el-form-item prop="verifyCode" style="position:realtive;">
-                <span class="svg-container">
-                    <svg-icon icon-class="verify" />
-                </span>
-                <el-input v-model.trim="loginForm.verifyCode" placeholder="图片验证码" />
-                <img :src="imgUrl" class="vertify" @click="getNewCode()">
-            </el-form-item>
-            <div class="bot clearfix">
-                <span class="fl" @click="toPath('/register')">企业注册</span>
-                <span class="fr" @click="toPath('/forgetPsd')">忘记密码?</span>
-            </div>
-            <div class="bot clearfix">
-                <el-checkbox v-model="isRemember" style="float:left;margin-right:5px"></el-checkbox>
-                <span style="float:left;">记住企业代码</span>
-                <span class="fr" @click="toPath('/forgetCode')">忘记企业代码?</span>
-            </div>
-            <el-button :loading="loading" type="primary" style="width:100%;margin:10px auto;" @click="loginFun">登录</el-button>
-        </el-form>
+        <router-view />
     </div>
 </template>
-<script>
-import { getVerifyPhoto } from '@/api/login'
-import { removeToken, removeName } from '@/utils/auth'
-import { debounce } from '@/utils/index'
-export default {
-    name: 'login',
-    data() {
-        const validateOrcode = (rule, value, callback) => {
-            if (value.length < 6) {
-                callback(new Error('企业代码至少6位'))
-            } else {
-                callback()
-            }
-        }
-        const validatePassword = (rule, value, callback) => {
-            if (value.length < 6) {
-                callback(new Error('密码至少6位'))
-            } else {
-                callback()
-            }
-        }
-        return {
-            loginUrl: '',
-            imgUrl: '',
-            loginFun: debounce(this.handleLogin, 1000, true),
-            loginForm: {
-                orgCode: '',
-                userAccount: '',
-                password: '',
-                verifyCode: ''
-            },
-            isRemember: true,
-            loginRules: {
-                orgCode: [{ required: true, trigger: 'blur', validator: validateOrcode }],
-                userAccount: [{ required: true, trigger: 'blur', message: '账号不能为空' }],
-                password: [{ required: true, trigger: 'blur', validator: validatePassword }],
-                verifyCode: [{ required: true, trigger: 'blur', message: '图片验证码不能为空' }]
-            },
-            loading: false,
-            redirect: '/home' // this.$route.query.redirect
-        }
-    },
-    created() {
-        sessionStorage.removeItem('modalShow')
-        this.getNewCode()
-        if (localStorage.orgCode) {
-            this.loginForm.orgCode = localStorage.orgCode
-            this.loginForm.userAccount = localStorage.userAccount
-        } else {
-            this.loginForm.orgCode = "";
-            this.loginForm.userAccount = "";
-        }
-    },
-    methods: {
-        toPath(path) {
-            this.$router.push({ path: path })
-        },
-        getNewCode() {
-            this.imgUrl = getVerifyPhoto() + '?v=' + Math.random()
-        },
-        handleLogin() {
-            if (this.isRemember) {
-                localStorage.orgCode = this.loginForm.orgCode
-                localStorage.userAccount = this.loginForm.userAccount
-            } else {
-                localStorage.removeItem('orgCode')
-                localStorage.removeItem('userAccount')
-            }
-            this.$refs.loginForm.validate(valid => {
-                if (valid) {
-                    this.loading = true
-                    this.$store.dispatch('user/login', this.loginForm).then(() => {
-                        this.$router.push({ path: this.redirect || '/' })
-                        this.loading = false
-                    }).catch(err => {
-                        this.getNewCode()
-                        this.$message.warning(err)
-                        this.loading = false
-                    })
-                } else {
-                    return false
-                }
-            })
-        }
-    },
-    mounted() {
-        removeToken()
-        removeName()
-        document.onkeydown = () => {
-            if (window.event.keyCode == 13 && document.getElementsByClassName('login-container').length > 0) {
-                this.loginFun()
-            }
-        }
-    }
-}
-</script>
-<style scoped>
-.vertify{width:112px;position: absolute;top: 2px;right: 0;height: 42px;border-radius: 4px;}
-</style>
 <style lang="scss" scoped>
-$bg:#f5f5f5;
-$light_gray:#333333;
-
 .login-container {
-    min-height: 100%;
+    background: url(../../assets/bg.jpg) no-repeat center center;
+    background-size: cover;
+    height: 100%;
     width: 100%;
-    background-color: $bg;
     overflow: hidden;
-
-    .login-form {
-        position: relative;
-        width: 420px;
-        max-width: 100%;
-        padding: 120px 35px 0;
-        margin: 0 auto;
-        overflow: hidden;
-    }
-
-    .tips {
-        font-size: 14px;
-        color: #333333;
-        margin-bottom: 10px;
-
-        span {
-            &:first-of-type {
-                margin-right: 16px;
-            }
-        }
-    }
-
-    .svg-container {
-        padding: 6px 5px 6px 15px;
-        color: #333;
-        vertical-align: middle;
-        width: 30px;
-        display: inline-block;
-    }
-
-    .title-container {
-        position: relative;
-
-        .title {
-            font-size: 26px;
-            color: $light_gray;
-            margin: 0px auto 40px auto;
-            text-align: center;
-            font-weight: bold;
-        }
-    }
+}
+>>>.vertify {
+    width: 112px;
+    position: absolute;
+    top: 2px;
+    right: 0;
+    height: 42px;
+    border-radius: 4px;
 }
 
-.bot {
+>>>.login-form {
+    position: relative;
+    width: 480px;
+    max-width: 100%;
+    background: rgba(241, 241, 241, 0.88);
+    padding: 40px 35px 20px;
+    margin: 120px auto;
+    overflow: hidden;
+}
+
+>>>.title-container {
+    position: relative;
+}
+
+>>>.title-container .title {
+    font-size: 26px;
+    color: #333;
+    margin: 0px auto 40px auto;
+    text-align: center;
+    font-weight: bold;
+}
+
+>>>.bot {
     margin: 10px 0
 }
 
-.bot span {
+>>>.bot span {
     display: inline-block;
     font-size: 14px;
     color: #666;
     cursor: pointer;
 }
 
-.bot span:hover {
+>>>.bot span:hover {
     color: #333;
 }
 </style>

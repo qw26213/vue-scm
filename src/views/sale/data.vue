@@ -22,6 +22,7 @@
             <el-button size="small" type="primary" @click="getList">查询</el-button>
             <el-button size="small" type="primary" @click="handleAdd">新增</el-button>
         </div>
+        <div class="contentDiv">
         <el-table :key="tableKey" v-loading="listLoading" :data="tableData" size="small" border fit highlight-current-row>
             <el-table-column label="单据日期" align="center" width="120">
                 <template slot-scope="{row}">
@@ -97,6 +98,7 @@
             </el-table-column>
         </el-table>
         <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
+        </div>
         <el-dialog :close-on-click-modal="false" title="请选择出库单日期" :visible.sync="dialogFormVisible1" width="400px">
             <el-form style="margin-top:30px;text-align:center;">
                 <el-form-item label="" prop="isBillDate">

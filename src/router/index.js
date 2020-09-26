@@ -31,19 +31,24 @@ export const constantRoutes = [{
 }, {
     path: '/login',
     component: () => import('@/views/login/index'),
-    hidden: true
-}, {
-    path: '/forgetPsd',
-    component: () => import('@/views/login/forgetPsd'),
-    hidden: true
-}, {
-    path: '/forgetCode',
-    component: () => import('@/views/login/forgetCode'),
-    hidden: true
-}, {
-    path: '/register',
-    component: () => import('@/views/login/register'),
-    hidden: true
+    hidden: true,
+    children: [{
+        path: '/login',
+        component: () => import('@/views/login/login'),
+        hidden: true
+    }, {
+        path: '/forgetPsd',
+        component: () => import('@/views/login/forgetPsd'),
+        hidden: true
+    }, {
+        path: '/forgetCode',
+        component: () => import('@/views/login/forgetCode'),
+        hidden: true
+    }, {
+        path: '/register',
+        component: () => import('@/views/login/register'),
+        hidden: true
+    }]
 }, {
     path: '/404',
     component: () => import('@/views/error/404'),

@@ -1,5 +1,5 @@
 <template>
-    <div class="app-container">
+    <div class="app-container" style="background:#ffffff">
         <div class="w1200 voucherHeader">
             <el-button v-if="jzType === 0" type="primary" size="small" @click="dialogFormVisible1 = true">从模板生成凭证</el-button>
             <el-button v-if="jzType === 0" type="primary" size="small" @click="dialogFormVisible2 = true">常用摘要</el-button>

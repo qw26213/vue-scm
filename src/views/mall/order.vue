@@ -1,50 +1,52 @@
 <template>
     <div class="app-container" v-loading="listLoading">
-        <div v-for="(item,index) in tableData" :key="index" class="orderItem">
-            <div class="clearfix toper" style="height:28px">
-                <span>订单号：{{item.billNo}}</span>
-                <el-button size="small" type="text" style="float:right;color:#F56C6C;" @click="deleteOrder(item)">删除</el-button>
-                <el-button size="small" type="text" style="float:right;color:#409EFF;margin-right:15px;" @click="showOrder(item)">查看订单</el-button>
-                <el-button v-if="item.status===1" size="small" type="text" style="float:right;color:#409EFF;margin-right:5px;" @click="toBuildBill(item.deliveryType, item, 2)">{{item.deliveryType==0?'生成':'查看'}}配送单</el-button>
-                <el-button v-if="item.status===1" size="small" type="text" style="float:right;color:#409EFF;margin-right:5px;" @click="toBuildBill(item.isOutboundOrder, item, 1)">{{item.isOutboundOrder==0?'生成':'查看'}}出库单</el-button>
-                <el-button v-if="item.status===0" size="small" type="text" style="float:right;color:#409EFF;margin-right:5px;" @click="toAuditOrder(item)">审核</el-button>
+        <div class="contentDiv">
+            <div v-for="(item,index) in tableData" :key="index" class="orderItem">
+                <div class="clearfix toper" style="height:28px">
+                    <span>订单号：{{item.billNo}}</span>
+                    <el-button size="small" type="text" style="float:right;color:#F56C6C;" @click="deleteOrder(item)">删除</el-button>
+                    <el-button size="small" type="text" style="float:right;color:#409EFF;margin-right:15px;" @click="showOrder(item)">查看订单</el-button>
+                    <el-button v-if="item.status===1" size="small" type="text" style="float:right;color:#409EFF;margin-right:5px;" @click="toBuildBill(item.deliveryType, item, 2)">{{item.deliveryType==0?'生成':'查看'}}配送单</el-button>
+                    <el-button v-if="item.status===1" size="small" type="text" style="float:right;color:#409EFF;margin-right:5px;" @click="toBuildBill(item.isOutboundOrder, item, 1)">{{item.isOutboundOrder==0?'生成':'查看'}}出库单</el-button>
+                    <el-button v-if="item.status===0" size="small" type="text" style="float:right;color:#409EFF;margin-right:5px;" @click="toAuditOrder(item)">审核</el-button>
+                </div>
+                <el-table :key="tableKey" :data="item.salesDetail" fit highlight-current-row :show-header="false" style="width: 100%;">
+                    <el-table-column label="商品图片" width="190">
+                        <template slot-scope="{row}">
+                            <div v-if="row.fileUrl" class="itemUrl" :style="{'background-image': 'url(' + row.fileUrl + ')'}"></div>
+                            <div v-else class="itemUrl" :style="{'background-image': 'url(' + nullImg + ')'}"></div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="商品名称" min-width="120">
+                        <template slot-scope="{row}">
+                            <span>{{row.itemName}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="规格" align="center">
+                        <template slot-scope="{row}">
+                            <span>规格：{{row.norms}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="单价(元)" min-width="100" align="center">
+                        <template slot-scope="{row}">
+                            <span>单价：{{row.price | Fixed}}元</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="数量" align="center">
+                        <template slot-scope="{row}">
+                            <span>x{{row.qty}}{{row.uom}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="金额" min-width="100" align="center">
+                        <template slot-scope="{row}">
+                            <div class="udb tx-c">金额：{{ row.amount | Fixed }}元</div>
+                        </template>
+                    </el-table-column>
+                </el-table>
             </div>
-            <el-table :key="tableKey" :data="item.salesDetail" fit highlight-current-row :show-header="false" style="width: 100%;">
-                <el-table-column label="商品图片" width="190">
-                    <template slot-scope="{row}">
-                        <div v-if="row.fileUrl" class="itemUrl" :style="{'background-image': 'url(' + row.fileUrl + ')'}"></div>
-                        <div v-else class="itemUrl" :style="{'background-image': 'url(' + nullImg + ')'}"></div>
-                    </template>
-                </el-table-column>
-                <el-table-column label="商品名称" min-width="120">
-                    <template slot-scope="{row}">
-                        <span>{{row.itemName}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column label="规格" align="center">
-                    <template slot-scope="{row}">
-                        <span>规格：{{row.norms}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column label="单价(元)" min-width="100" align="center">
-                    <template slot-scope="{row}">
-                        <span>单价：{{row.price | Fixed}}元</span>
-                    </template>
-                </el-table-column>
-                <el-table-column label="数量" align="center">
-                    <template slot-scope="{row}">
-                        <span>x{{row.qty}}{{row.uom}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column label="金额" min-width="100" align="center">
-                    <template slot-scope="{row}">
-                        <div class="udb tx-c">金额：{{ row.amount | Fixed }}元</div>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </div>
-        <div v-show="tableData.length===0 && !listLoading" style="width:100%;height:300px;line-height:300px;border:1px solid #eee;text-align:center">
-            暂无订单
+            <div v-show="tableData.length===0 && !listLoading" style="width:100%;height:300px;line-height:300px;border:1px solid #eee;text-align:center">
+                暂无订单
+            </div>
         </div>
         <el-dialog :close-on-click-modal="false" title="订单详情" :visible.sync="dialogFormVisible1" width="960px">
             <div style="width:100%;border:1px #eee solid;">

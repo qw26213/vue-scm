@@ -329,7 +329,9 @@ export default {
 <style scoped>
 .formDiv {
     width: 800px;
-    margin: 50px auto;
+    margin: 20px auto;
+    background: #fff;
+    padding: 20px
 }
 
 .avatar-uploader-icon {

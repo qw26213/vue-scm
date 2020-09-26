@@ -1,6 +1,6 @@
 <template>
     <div class="app-container" style="min-width:1100px">
-        <div class="filter-container">
+        <div class="filterDiv">
             <el-select v-model="listQuery.queryParam.date1" placeholder="开始期间" size="small">
                 <el-option v-for="item in periodList" :key="item.id" :label="item.text" :value="item.id"></el-option>
             </el-select>
@@ -27,62 +27,64 @@
             <el-button size="small" type="primary" @click="resetVoucherSeq">整理凭证号</el-button>
             <el-button size="small" type="primary" @click="printVoucher">打印</el-button>
         </div>
-        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit style="width: 100%;" size="small" cell-class-name="tpCell" :default-sort="{prop: 'jeSeq', order: this.listQuery.queryParam.desc==1 ?'descending': 'ascending'}" @selection-change="selectionChange" @sort-change="sortChange">
-            <el-table-column type="selection" width="55" align="center"></el-table-column>
-            <el-table-column label="日期" align="center" width="100">
-                <template slot-scope="{row}">
-                    <span>{{row.jeDate}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="凭证字号" align="center" sortable="custom" prop="jeSeq" width="110">
-                <template slot-scope="{row}">
-                    <a href="javascript:" @click="handleCompile(row.id)">{{row.jeCatogeryName}}-{{ row.jeSeq | jeSeqFormat }}</a>
-                </template>
-            </el-table-column>
-            <el-table-column label="摘要" min-width="120">
-                <template slot-scope="{row}">
-                    <p clss="pCell" v-for="(item,index) in row.lineList" :key="index">{{item.summary}}</p>
-                </template>
-            </el-table-column>
-            <el-table-column label="科目名称" min-width="240" show-overflow-tooltip>
-                <template slot-scope="{row}">
-                    <p clss="pCell" style="width:max-content;min-width:100%" v-for="(item,index) in row.lineList" :key="index">{{item.longName}}</p>
-                </template>
-            </el-table-column>
-            <el-table-column label="借方金额" align="right">
-                <template slot-scope="{row}">
-                    <p clss="pCell" v-for="(item,index) in row.lineList" :key="index">{{item.accountedDr|Fixed}}</p>
-                </template>
-            </el-table-column>
-            <el-table-column label="贷方金额" align="right">
-                <template slot-scope="{row}">
-                    <p clss="pCell" v-for="(item,index) in row.lineList" :key="index">{{item.accountedCr|Fixed}}</p>
-                </template>
-            </el-table-column>
-            <el-table-column label="状态" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.jeStatus | jeStatusFor}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="制单人" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.sign1}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="审核人" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.sign2}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="操作" align="center" width="150">
-                <template slot-scope="{row}">
-                    <span class="ctrl" @click="insertVoucher(row)">插入</span>
-                    <span class="ctrl" @click="handleCompile(row.id)">编辑</span>
-                    <span v-if="row.jeStatus==0" class="ctrl" @click="handleDel(row)">删除</span>
-                </template>
-            </el-table-column>
-        </el-table>
-        <pagination v-show="total>10" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
+        <div class="contentDiv">
+            <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit style="width: 100%;" size="small" cell-class-name="tpCell" :default-sort="{prop: 'jeSeq', order: this.listQuery.queryParam.desc==1 ?'descending': 'ascending'}" @selection-change="selectionChange" @sort-change="sortChange">
+                <el-table-column type="selection" width="55" align="center"></el-table-column>
+                <el-table-column label="日期" align="center" width="100">
+                    <template slot-scope="{row}">
+                        <span>{{row.jeDate}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="凭证字号" align="center" sortable="custom" prop="jeSeq" width="110">
+                    <template slot-scope="{row}">
+                        <a href="javascript:" @click="handleCompile(row.id)">{{row.jeCatogeryName}}-{{ row.jeSeq | jeSeqFormat }}</a>
+                    </template>
+                </el-table-column>
+                <el-table-column label="摘要" min-width="120">
+                    <template slot-scope="{row}">
+                        <p clss="pCell" v-for="(item,index) in row.lineList" :key="index">{{item.summary}}</p>
+                    </template>
+                </el-table-column>
+                <el-table-column label="科目名称" min-width="240" show-overflow-tooltip>
+                    <template slot-scope="{row}">
+                        <p clss="pCell" style="width:max-content;min-width:100%" v-for="(item,index) in row.lineList" :key="index">{{item.longName}}</p>
+                    </template>
+                </el-table-column>
+                <el-table-column label="借方金额" align="right">
+                    <template slot-scope="{row}">
+                        <p clss="pCell" v-for="(item,index) in row.lineList" :key="index">{{item.accountedDr|Fixed}}</p>
+                    </template>
+                </el-table-column>
+                <el-table-column label="贷方金额" align="right">
+                    <template slot-scope="{row}">
+                        <p clss="pCell" v-for="(item,index) in row.lineList" :key="index">{{item.accountedCr|Fixed}}</p>
+                    </template>
+                </el-table-column>
+                <el-table-column label="状态" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.jeStatus | jeStatusFor}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="制单人" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.sign1}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="审核人" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.sign2}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" align="center" width="150">
+                    <template slot-scope="{row}">
+                        <span class="ctrl" @click="insertVoucher(row)">插入</span>
+                        <span class="ctrl" @click="handleCompile(row.id)">编辑</span>
+                        <span v-if="row.jeStatus==0" class="ctrl" @click="handleDel(row)">删除</span>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <pagination v-show="total>10" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
+        </div>
     </div>
 </template>
 <script>
@@ -95,14 +97,14 @@ export default {
     name: 'presaleData',
     components: { Pagination },
     filters: {
-        jeStatusFor: function (status) {
+        jeStatusFor: function(status) {
             return status == 0 ? "制单完成" : status == -1 ? "退回" : status == 5 ? '审核通过' : status == 1 ? "一审通过" : status == 2 ? "二审通过" : status == 3 ? "三审通过" : '无';
         },
-        Fixed: function (num) {
+        Fixed: function(num) {
             if (!num) { return '0.00' }
             return parseFloat(num).toFixed(2);
         },
-        jeSeqFormat : function (num) {
+        jeSeqFormat: function(num) {
             return num < 10 ? '00' + num : num < 100 ? '0' + num : num;
         }
     },
@@ -111,7 +113,7 @@ export default {
             periodList: [],
             tableKey: 0,
             tableData: [],
-            voucherIdArr:[],
+            voucherIdArr: [],
             total: 0,
             isBillDate: '0',
             dialogFormVisible: false,
@@ -146,16 +148,16 @@ export default {
         this.getList()
     },
     methods: {
-        selectionChange(val){
+        selectionChange(val) {
             let arr = []
-            for(let i = 0;i<val.length;i++){
+            for (let i = 0; i < val.length; i++) {
                 arr.push(val[i].id)
             }
             this.voucherIdArr = arr
         },
-        sortChange({prop, order}) {
+        sortChange({ prop, order }) {
             var desc = order === 'descending' ? 1 : 0
-            this.$set(this.listQuery.queryParam , 'desc', desc)
+            this.$set(this.listQuery.queryParam, 'desc', desc)
             this.getList()
         },
         getList() {
@@ -206,25 +208,26 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                trimJeSeqByMap({periodCode1:date1,periodCode2:date2}).then(res => {
+                trimJeSeqByMap({ periodCode1: date1, periodCode2: date2 }).then(res => {
                     if (res.data.success) {
                         this.$message.success("整理凭证号成功")
                         this.getList()
                     } else {
                         this.$message.error(res.data.msg)
                     }
-                }).catch(err=>{
-                        this.$message.success("请重新登录")
+                }).catch(err => {
+                    this.$message.success("请重新登录")
                 })
             })
         },
         printVoucher() {
-            if(this.voucherIdArr.length==0){
-                this.$message.warning("请先选择凭证！");return
+            if (this.voucherIdArr.length == 0) {
+                this.$message.warning("请先选择凭证！");
+                return
             }
-            printList({data:this.voucherIdArr}).then(res => {
+            printList({ data: this.voucherIdArr }).then(res => {
                 if (res.data.success) {
-                    window.open("http://"+window.location.host+res.data.data);
+                    window.open("http://" + window.location.host + res.data.data);
                 } else {
                     this.$message.error(res.data.msg)
                 }

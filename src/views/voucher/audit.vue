@@ -1,6 +1,6 @@
 <template>
     <div class="app-container" style="min-width:1216px">
-        <div class="filter-container">
+        <div class="filterDiv">
             <el-select v-model="listQuery.queryParam.date1" placeholder="开始期间" size="small">
                 <el-option v-for="item in periodList" :key="item.id" :label="item.text" :value="item.id"></el-option>
             </el-select>
@@ -27,67 +27,69 @@
             <el-button size="small" type="primary" @click="muchVoucherCheck">批量审核</el-button>
             <el-button size="small" type="primary" @click="voucherBackCheck">批量反审核</el-button>
         </div>
-        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit style="width: 100%;" size="small" cell-class-name="tpCell" @selection-change="handleSelectionChange">
-            <el-table-column type="selection" width="55" align="center"></el-table-column>
-            <el-table-column label="日期" align="center" width="100">
-                <template slot-scope="{row}">
-                    <span>{{row.jeDate}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="凭证字号" align="center">
-                <template slot-scope="{row}">
-                    <a href="javascript:">{{row.jeCatogery}}-{{row.jeSeq | catogeryNumberFor}}</a>
-                </template>
-            </el-table-column>
-            <el-table-column label="摘要" min-width="120">
-                <template slot-scope="{row}">
-                    <p clss="pCell" v-for="(item,index) in row.lineList" :key="index">{{item.summary}}</p>
-                </template>
-            </el-table-column>
-            <el-table-column label="科目名称" min-width="200">
-                <template slot-scope="{row}">
-                    <p clss="pCell" style="width:max-content;min-width:100%" v-for="(item,index) in row.lineList" :key="index">{{item.longName}}</p>
-                </template>
-            </el-table-column>
-            <el-table-column label="借方金额" align="right">
-                <template slot-scope="{row}">
-                    <p clss="pCell" v-for="(item,index) in row.lineList" :key="index">{{item.accountedDr|Fixed}}</p>
-                </template>
-            </el-table-column>
-            <el-table-column label="贷方金额" align="right">
-                <template slot-scope="{row}">
-                    <p clss="pCell" v-for="(item,index) in row.lineList" :key="index">{{item.accountedCr|Fixed}}</p>
-                </template>
-            </el-table-column>
-            <el-table-column label="状态" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.jeStatus | jeStatusFor}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="制单人" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.sign1}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="审核人" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.sign2}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="操作" align="center" width="100">
-                <template slot-scope="{row}">
-                    <span v-if="row.jeStatus == 0" class="ctrl" @click="handleCheck(row.id)">审核</span>
-                    <span v-if="row.jeStatus == -1">已退回</span>
-                    <span v-if="row.jeStatus == 5" class="ctrl" @click="handleUnCheck(row.id)">反审核</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="审核记录" align="center" width="100">
-                <template slot-scope="{row}">
-                    <span class="ctrl" @click="showAudit(row.id)">查看</span>
-                </template>
-            </el-table-column>
-        </el-table>                    
-        <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
+        <div class="contentDiv">
+            <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit style="width: 100%;" size="small" cell-class-name="tpCell" @selection-change="handleSelectionChange">
+                <el-table-column type="selection" width="55" align="center"></el-table-column>
+                <el-table-column label="日期" align="center" width="100">
+                    <template slot-scope="{row}">
+                        <span>{{row.jeDate}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="凭证字号" align="center">
+                    <template slot-scope="{row}">
+                        <a href="javascript:">{{row.jeCatogery}}-{{row.jeSeq | catogeryNumberFor}}</a>
+                    </template>
+                </el-table-column>
+                <el-table-column label="摘要" min-width="120">
+                    <template slot-scope="{row}">
+                        <p clss="pCell" v-for="(item,index) in row.lineList" :key="index">{{item.summary}}</p>
+                    </template>
+                </el-table-column>
+                <el-table-column label="科目名称" min-width="200">
+                    <template slot-scope="{row}">
+                        <p clss="pCell" style="width:max-content;min-width:100%" v-for="(item,index) in row.lineList" :key="index">{{item.longName}}</p>
+                    </template>
+                </el-table-column>
+                <el-table-column label="借方金额" align="right">
+                    <template slot-scope="{row}">
+                        <p clss="pCell" v-for="(item,index) in row.lineList" :key="index">{{item.accountedDr|Fixed}}</p>
+                    </template>
+                </el-table-column>
+                <el-table-column label="贷方金额" align="right">
+                    <template slot-scope="{row}">
+                        <p clss="pCell" v-for="(item,index) in row.lineList" :key="index">{{item.accountedCr|Fixed}}</p>
+                    </template>
+                </el-table-column>
+                <el-table-column label="状态" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.jeStatus | jeStatusFor}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="制单人" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.sign1}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="审核人" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.sign2}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" align="center" width="100">
+                    <template slot-scope="{row}">
+                        <span v-if="row.jeStatus == 0" class="ctrl" @click="handleCheck(row.id)">审核</span>
+                        <span v-if="row.jeStatus == -1">已退回</span>
+                        <span v-if="row.jeStatus == 5" class="ctrl" @click="handleUnCheck(row.id)">反审核</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="审核记录" align="center" width="100">
+                    <template slot-scope="{row}">
+                        <span class="ctrl" @click="showAudit(row.id)">查看</span>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
+        </div>
         <el-dialog :close-on-click-modal="false" title="请输入审核意见" :visible.sync="dialogFormVisible" width="420px">
             <el-form ref="dataForm" :rules="rules" :model="auditForm" label-position="top" label-width="100px" style="width: 380px; margin-left:10px;">
                 <el-form-item label="审核意见" prop="content">
@@ -271,7 +273,7 @@ export default {
             })
         },
         showAudit(id) {
-            auditList({jeHeaderId: id}).then(res => {
+            auditList({ jeHeaderId: id }).then(res => {
                 this.dialogFormVisible1 = true
                 this.tableData1 = res.data.data || []
             })

@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <el-form ref="reqForm" :model="reqForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="right" label-width="100px" style="width:400px;margin: 100px auto 0">
+        <el-form ref="reqForm" :model="reqForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="right" label-width="93px" style="margin: 60px auto 0">
             <div class="title-container">
                 <h3 class="title">找回密码</h3>
             </div>
@@ -32,7 +32,7 @@
             <div class="bot clearfix">
               <span class="fr" @click="toPath('/login')">返回登录</span>
             </div>
-            <el-button :loading="loading" type="primary" style="width:100%;margin:30px auto;" @click="handleSave">保 存</el-button>
+            <el-button :loading="loading" type="primary" style="width:100%;margin:10px auto;" @click="handleSave">提 交</el-button>
         </el-form>
     </div>
 </template>
@@ -136,13 +136,3 @@ export default {
     }
 }
 </script>
-<style scoped>
-.container {
-  min-height: 100%;
-  overflow: hidden;
-}
-.title{text-align: center;margin-bottom: 20px}
-.bot{margin: 10px 0}
-.bot span{display: inline-block;font-size: 14px;color: #666;cursor:pointer;}
-.bot span:hover{color:#333;}
-</style>

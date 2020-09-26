@@ -1,6 +1,6 @@
 <template>
     <div class="app-container">
-        <div class="filter-container">
+        <div class="filterDiv">
             <label class="label">会计期间</label>
             <el-select v-model="listQuery.periodCode1" placeholder="开始期间" size="small">
                 <el-option v-for="item in periodList" :key="item.id" :label="item.text" :value="item.id"></el-option>
@@ -23,53 +23,55 @@
             </el-select>
             <el-button size="small" type="primary" @click="getList">查询</el-button>
         </div>
-        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
-            <el-table-column label="科目编码">
-                <template slot-scope="{row}">
-                    <span>{{row.coaCode}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="科目名称" min-width="100">
-                <template slot-scope="{row}">
-                    <span v-html="row.pageCoaName"></span>
-                </template>
-            </el-table-column>
-            <el-table-column label="方向" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.crDrStr}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="期初余额" align="right">
-                <template slot-scope="{row}">
-                    <span>{{row.beginBalance | Fixed}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="借方金额" align="right">
-                <template slot-scope="{row}">
-                    <span>{{row.accountedCr | Fixed}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="贷方金额" align="right">
-                <template slot-scope="{row}">
-                    <span>{{row.accountedDr | Fixed}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="期末余额" align="right">
-                <template slot-scope="{row}">
-                    <span>{{row.endBalance | Fixed}}</span>
-                </template>
-            </el-table-column>
-        </el-table>
+        <div class="contentDiv">
+            <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
+                <el-table-column label="科目编码">
+                    <template slot-scope="{row}">
+                        <span>{{row.coaCode}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="科目名称" min-width="100">
+                    <template slot-scope="{row}">
+                        <span v-html="row.pageCoaName"></span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="方向" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.crDrStr}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="期初余额" align="right">
+                    <template slot-scope="{row}">
+                        <span>{{row.beginBalance | Fixed}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="借方金额" align="right">
+                    <template slot-scope="{row}">
+                        <span>{{row.accountedCr | Fixed}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="贷方金额" align="right">
+                    <template slot-scope="{row}">
+                        <span>{{row.accountedDr | Fixed}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="期末余额" align="right">
+                    <template slot-scope="{row}">
+                        <span>{{row.endBalance | Fixed}}</span>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
     </div>
 </template>
 <script>
-import { getVoucherTable, getCatogery} from '@/api/accbook'
+import { getVoucherTable, getCatogery } from '@/api/accbook'
 import { getPeriodList } from '@/api/user'
 import { getNowMonth } from '@/utils/index'
 export default {
     name: 'totalAccount',
-    filters:{
-        Fixed:function(str){
+    filters: {
+        Fixed: function(str) {
             return parseFloat(str).toFixed(2)
         }
     },
@@ -78,7 +80,7 @@ export default {
             periodList: [],
             tableKey: 0,
             tableData: [],
-            catogeryList:[],
+            catogeryList: [],
             listLoading: true,
             listQuery: {
                 periodCode1: '',
@@ -95,9 +97,9 @@ export default {
             this.listQuery.periodCode1 = res.data.data[0].id
         })
         getCatogery().then(res => {
-          this.catogeryList = res.data.data
-          this.listQuery.jeCatogeryId = res.data.data[0].id
-          this.getList()
+            this.catogeryList = res.data.data
+            this.listQuery.jeCatogeryId = res.data.data[0].id
+            this.getList()
         })
     },
     methods: {
@@ -120,5 +122,8 @@ export default {
     line-height: 40px;
     padding: 0 5px 0 0;
 }
-.ml10{margin-left: 10px}
+
+.ml10 {
+    margin-left: 10px
+}
 </style>

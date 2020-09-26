@@ -354,7 +354,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .homeMain {
-    padding: 30px 30px 0;
+    padding: 20px;
     background-color: rgb(240, 242, 245);
     position: relative;
 }

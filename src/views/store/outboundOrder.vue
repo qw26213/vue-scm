@@ -1,7 +1,6 @@
 <template>
     <div class="app-container">
         <div class="filterDiv">
-        <div class="contentDiv">    
             <el-date-picker :editable="false" v-model="listQuery.queryParam.billDate1" type="date" placeholder="开始日期" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
             <span class="zhi">至</span>
             <el-date-picker :editable="false" v-model="listQuery.queryParam.billDate2" type="date" placeholder="结束日期" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
@@ -18,51 +17,52 @@
             <el-button size="small" type="primary" @click="getList">查询</el-button>
             <el-button size="small" type="primary" @click="handleAdd">新增</el-button>
         </div>
-        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
-            <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
-            <el-table-column label="单据日期" align="center" width="120">
-                <template slot-scope="{row}">
-                    <span>{{row.billDate}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="单据号">
-                <template slot-scope="{row}">
-                    <span>{{row.billNo}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="客户">
-                <template slot-scope="{row}">
-                    <span>{{row.custName}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="仓库">
-                <template slot-scope="{row}">
-                    <span>{{row.warehouseName}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="车辆">
-                <template slot-scope="{row}">
-                    <span>{{row.truckName}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="状态" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.status==1?'已审核':row.status==2?'已生成':'待审核'}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="操作" align="center" width="240">
-                <template slot-scope="{row}">
-                    <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status<=0?'编辑':'查看'}}</span>
-                    <span class="ctrl" v-if="row.status==0" @click="handleCompile(row.id,3)">拆分</span>
-                    <span v-if="row.status==-1" class="ctrl" @click="showAuditInfo(row.id)">查看审核意见</span>
-                    <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
-                    <span class="ctrl del" v-if="row.status<=0" @click="handleDel(row.id)">删除</span>
-                    <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isSales, row.id, row.salesHeaderId, 1, row.billDate)">{{row.isSales==0?'生成':'查看'}}销售单</span>
-                    <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isDelivery, row.id, row.deliveryHeaderId, 2, row.billDate)">{{row.isDelivery==0?'生成':'查看'}}配送单</span>
-                </template>
-            </el-table-column>
-        </el-table>
-        <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
+        <div class="contentDiv">    
+            <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
+                <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
+                <el-table-column label="单据日期" align="center" width="120">
+                    <template slot-scope="{row}">
+                        <span>{{row.billDate}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="单据号">
+                    <template slot-scope="{row}">
+                        <span>{{row.billNo}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="客户">
+                    <template slot-scope="{row}">
+                        <span>{{row.custName}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="仓库">
+                    <template slot-scope="{row}">
+                        <span>{{row.warehouseName}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="车辆">
+                    <template slot-scope="{row}">
+                        <span>{{row.truckName}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="状态" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.status==1?'已审核':row.status==2?'已生成':'待审核'}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" align="center" width="240">
+                    <template slot-scope="{row}">
+                        <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status<=0?'编辑':'查看'}}</span>
+                        <span class="ctrl" v-if="row.status==0" @click="handleCompile(row.id,3)">拆分</span>
+                        <span v-if="row.status==-1" class="ctrl" @click="showAuditInfo(row.id)">查看审核意见</span>
+                        <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
+                        <span class="ctrl del" v-if="row.status<=0" @click="handleDel(row.id)">删除</span>
+                        <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isSales, row.id, row.salesHeaderId, 1, row.billDate)">{{row.isSales==0?'生成':'查看'}}销售单</span>
+                        <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isDelivery, row.id, row.deliveryHeaderId, 2, row.billDate)">{{row.isDelivery==0?'生成':'查看'}}配送单</span>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
         </div>
         <el-dialog :close-on-click-modal="false" :title="type==1?'选择销售单日期':'选择配送单日期'" :visible.sync="dialogFormVisible" width="400px">
             <el-form style="margin-top:30px;text-align:center;">

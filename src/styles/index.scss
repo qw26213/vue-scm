@@ -29,34 +29,7 @@ aside { background: #eef1f6; padding: 8px 24px; margin-bottom: 20px; border-radi
   }
 }
 
-.login-container {
-  .el-input {
-    display: inline-block;
-    height: 47px;
-    width: 310px;
-    input {
-      background: transparent;
-      border: 0px;
-      -webkit-appearance: none;
-      border-radius: 0px;
-      padding: 12px 5px 12px 15px;
-      color: #333;
-      height: 47px;
-      &:-webkit-autofill {
-        box-shadow: 0 0 0px 1000px #fff inset !important;
-        -webkit-text-fill-color:#333 !important;
-      }
-    }
-  }
-  .el-form-item {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: #fff;
-    border-radius: 5px;
-    color: #333;
-  }
-}
-
-.app-container { padding: 20px; }
+.app-container { padding: 20px; min-height: calc(100vh - 84px); width:100%}
 .components-container { margin: 30px 50px; position: relative; }
 .pagination-container { margin-top: 30px; }
 .text-center { text-align: center }
@@ -146,6 +119,7 @@ input:disabled{background-color:#ffffff;}
   background-color: #ffffff;
   width:100%;
   position:relative;
+  margin-bottom: 10px;
 }
 .filterDiv .label{font-size:14px;color: #606266; line-height: 40px; padding-right: 5px;}
 .filterDiv .el-date-editor.el-input--small{width: 142px;}
@@ -157,8 +131,7 @@ input:disabled{background-color:#ffffff;}
 
 .contentDiv{
   border-radius: 8px;
-  padding: 10px 20px 20px;
+  padding: 20px;
   background-color: #ffffff;
-  margin-top: 10px;
 }
 .ml10{margin-left: 10px}

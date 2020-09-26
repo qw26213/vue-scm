@@ -1,15 +1,16 @@
 <template>
     <div class="app-container">
-        <div class="filter-container1 tx-r" style="margin-bottom:15px">
+        <div class="filterDiv tx-r">
             <el-button size="small" type="primary" @click="saveData(0)">保存</el-button>
             <el-button size="small" type="primary" @click="showTable()">试算平衡汇总</el-button>
         </div>
+        <div class="contentDiv">
         <el-table :data="tableData" v-loading="listLoading" border fit resize empty-text="暂无相关数据" style="width: 100%;" :height="tableHeight">
             <el-table-column label="科目编码" min-width="90">
                 <template slot-scope="scope">
                     <span>{{scope.row.coaCode}}</span>
-                    <el-button v-if="scope.row.leaf == 1 && scope.row.type ==1 && scope.row.isAuxiliary == 1 && balanceStatus == 1" type="primary" size="small" @click="showSuplyConfig(scope.$index)" style="margin-left:10px">设置</el-button>
-                    <el-button v-if="scope.row.leaf == 1 && scope.row.type !=1 && scope.row.isAuxiliary == 1 && balanceStatus == 1" type="danger" size="small" @click="removeRow(scope.$index)" style="margin-left:10px">删除</el-button>
+                    <el-button v-if="scope.row.leaf == 1 && scope.row.type ==1 && scope.row.isAuxiliary == 1 && balanceStatus == 1" type="primary" size="mini" @click="showSuplyConfig(scope.$index)" style="margin-left:10px">设置</el-button>
+                    <el-button v-if="scope.row.leaf == 1 && scope.row.type !=1 && scope.row.isAuxiliary == 1 && balanceStatus == 1" type="danger" size="mini" @click="removeRow(scope.$index)" style="margin-left:10px">删除</el-button>
                 </template>
             </el-table-column>
             <el-table-column label="科目名称" min-width="110" style="padding-right:100px;" show-overflow-tooltip>
@@ -59,6 +60,7 @@
                 </el-table-column>
             </el-table-column>
         </el-table>
+        </div>
         <el-dialog :close-on-click-modal="false" title="试算平衡汇总" :visible.sync="dialogFormVisible1" width="720px">
             <el-table :data="[balanceObj]" border fit resize empty-text="无同步数据" style="width: 100%;" size="small">
                 <el-table-column align="center" label="项目">

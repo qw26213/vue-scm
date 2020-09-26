@@ -1,6 +1,6 @@
 <template>
-    <div class="container">
-        <el-form ref="reqFrom" :model="reqFrom" :rules="rules" inline class="login-form" autocomplete="on" label-position="left" label-width="108px" style="width:640px;margin: 100px auto 0">
+    <div>
+        <el-form ref="reqFrom" :model="reqFrom" :rules="rules" inline class="login-form" autocomplete="on" label-position="right" label-width="108px" style="width:685px;margin: 100px auto 0">
             <div class="title-container" style="margin-bottom:30px">
                 <h3 class="title">企业注册</h3>
             </div>
@@ -56,8 +56,8 @@
             </div>
             <el-button :loading="loading" type="primary" style="width:100%;margin:5px auto;" @click="handleRegister">确认注册</el-button>
         </el-form>
-        <el-dialog title="金账簿用户注册协议" :visible.sync="dialogVisible" width="600px">
-            <div class="ptb15 plr15 agreement" style="height:540px;overflow:auto">
+        <el-dialog title="金账簿用户注册协议" :visible.sync="dialogVisible" width="960px" top="5%">
+            <div class="ptb15 plr15 agreement" style="height:600px;overflow:auto">
                 <p style="font-weight:bold;">一、协议的接受</p>
                 <p>1、在使用金账簿网站服务（以下简称“本网站”）之前，您应当认真阅读并遵守《金账簿服务协议》（以下简称“本协议”），请您务必审慎阅读、充分理解各条款内容，特别是免除或者限制责任的条款、争议解决和法律适用条款。如您对协议有任何疑问的，应向金账簿客服咨询。</p>
                 <p>2、本协议中，“用户”指能够接受本协议，在金账簿网站合法注册并通过金账簿网站使用金账簿服务的使用者；“服务”指本网站提供的所有相关服务。</p>
@@ -290,36 +290,6 @@ export default {
 }
 </script>
 <style scoped>
-.container {
-    min-height: 100%;
-    overflow: hidden;
-}
-
-.title {
-    text-align: center;
-    margin-bottom: 20px
-}
-
-.tit {
-    font-size: 14px;
-    color: #333;
-}
-
-.bot {
-    margin: 10px 0
-}
-
-.bot span {
-    display: inline-block;
-    font-size: 14px;
-    color: #666;
-    cursor: pointer;
-}
-
-.bot span:hover {
-    color: #333;
-}
-
 .agreement p {
     line-height: 24px;
     font-size: 13px;

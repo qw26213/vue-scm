@@ -1,6 +1,6 @@
 <template>
     <div class="app-container">
-        <div class="filter-container">
+        <div class="filterDiv">
             <el-date-picker :editable="false" v-model="listQuery.queryParam.billDate1" type="date" placeholder="开始日期" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
             <span class="zhi">至</span>
             <el-date-picker :editable="false" v-model="listQuery.queryParam.billDate2" type="date" placeholder="结束日期" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
@@ -20,67 +20,69 @@
             <el-button size="small" type="primary" @click="getList">查询</el-button>
             <el-button size="small" type="primary" @click="handleAdd">新增</el-button>
         </div>
-        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
-            <el-table-column label="序号" type="index" width="50" align="center">
-            </el-table-column>
-            <el-table-column label="单据日期" align="center" width="100">
-                <template slot-scope="{row}">
-                    <span>{{row.billDate}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="单据号" width="100">
-                <template slot-scope="{row}">
-                    <span>{{row.billNo}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="客户">
-                <template slot-scope="{row}">
-                    <span>{{row.custName}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="预收类型" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.presaleType==0?'按现金':row.presaleType==1?'按商品':'按品类'}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="有效日期" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.expirationDate}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="金额" align="right">
-                <template slot-scope="{row}">
-                    <span>{{row.beginBalance|Fixed}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="余额" align="right">
-                <template slot-scope="{row}">
-                    <span>{{row.balance|Fixed}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="状态" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.status==1?'已审核':row.status==2?'已生成':'待审核'}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="备注">
-                <template slot-scope="{row}">
-                    <span>{{row.remarks}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="操作" align="center" width="200">
-                <template slot-scope="{row}">
-                    <span class="ctrl" v-if="row.status<=0" @click="handleCompile(row.id)">编辑</span>
-                    <span class="ctrl" v-if="row.status==-1" @click="handleScan(row.id,1)">查看审核意见</span>
-                    <span class="ctrl" v-if="row.status==1" @click="handleScan(row.id)">查看</span>
-                    <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
-                    <span class="ctrl del" v-if="row.status<=0" @click="handleDel(row.id)">删除</span>
-                    <span class="ctrl" v-if="row.status==1&&row.balance>0" @click="handBuildBill(row.id)">退款</span>
-                    <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId)">{{row.isJeHeader==0?'生成':'查看'}}预收凭证</span>
-                </template>
-            </el-table-column>
-        </el-table>
-        <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
+        <div class="contentDiv">
+            <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
+                <el-table-column label="序号" type="index" width="50" align="center">
+                </el-table-column>
+                <el-table-column label="单据日期" align="center" width="100">
+                    <template slot-scope="{row}">
+                        <span>{{row.billDate}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="单据号" width="100">
+                    <template slot-scope="{row}">
+                        <span>{{row.billNo}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="客户">
+                    <template slot-scope="{row}">
+                        <span>{{row.custName}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="预收类型" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.presaleType==0?'按现金':row.presaleType==1?'按商品':'按品类'}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="有效日期" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.expirationDate}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="金额" align="right">
+                    <template slot-scope="{row}">
+                        <span>{{row.beginBalance|Fixed}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="余额" align="right">
+                    <template slot-scope="{row}">
+                        <span>{{row.balance|Fixed}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="状态" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.status==1?'已审核':row.status==2?'已生成':'待审核'}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="备注">
+                    <template slot-scope="{row}">
+                        <span>{{row.remarks}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" align="center" width="200">
+                    <template slot-scope="{row}">
+                        <span class="ctrl" v-if="row.status<=0" @click="handleCompile(row.id)">编辑</span>
+                        <span class="ctrl" v-if="row.status==-1" @click="handleScan(row.id,1)">查看审核意见</span>
+                        <span class="ctrl" v-if="row.status==1" @click="handleScan(row.id)">查看</span>
+                        <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
+                        <span class="ctrl del" v-if="row.status<=0" @click="handleDel(row.id)">删除</span>
+                        <span class="ctrl" v-if="row.status==1&&row.balance>0" @click="handBuildBill(row.id)">退款</span>
+                        <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId)">{{row.isJeHeader==0?'生成':'查看'}}预收凭证</span>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
+        </div>
         <el-dialog :close-on-click-modal="false" title="请选择凭证日期" :visible.sync="dialogFormVisible" width="400px">
             <el-form style="margin-top:30px;text-align:center;">
                 <el-form-item label="" prop="isBillDate">
@@ -136,7 +138,7 @@ export default {
         }
     },
     filters: {
-        Fixed: function (num) {
+        Fixed: function(num) {
             if (!num) { return '0.00' }
             return parseFloat(num).toFixed(2);
         }
@@ -145,10 +147,10 @@ export default {
         this.getList();
     },
     methods: {
-        showAuditInfo(id){
+        showAuditInfo(id) {
             this.auditType = 'record'
             getAuditInfoByHeaderId(id).then(res => {
-                if(res.data.errorCode == 0) {
+                if (res.data.errorCode == 0) {
                     this.auditModalVisible = true
                     this.remarklist = res.data.data || []
                 }

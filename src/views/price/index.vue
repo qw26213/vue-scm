@@ -1,59 +1,62 @@
 <template>
     <div class="main">
-        <div class="leftTree">
+        <div class="leftTree filterDiv">
             <div style="margin-bottom:10px">
-                <el-input v-model="search" size="small" placeholder="商品名称搜索" style="width:150px;margin-right: 5px" />
-                <el-button size="small" class="filter-item" type="primary" @click="getData">搜索</el-button>
+                <el-input v-model="search" size="small" placeholder="商品名称搜索" style="width:180px;margin-right: 5px">
+                    <el-button slot="append" type="primary" icon="el-icon-search" @click="getData"></el-button>
+                </el-input>
             </div>
-            <el-table :data="treeData" border fit style="width: 100%;" size="small" :row-class-name="rowClass" :row-style="curStyle" height="720" @row-click="rowClick">
+            <el-table :data="treeData" stripe fit style="width: 100%;" size="small" :row-class-name="rowClass" :row-style="curStyle" height="720" @row-click="rowClick">
                 <el-table-column label="商品名称" prop="itemName" align="left" show-overflow-tooltip />
                 <el-table-column label="规格" prop="norms" align="right" />
             </el-table>
         </div>
         <div class="app-container">
-            <div class="filter-container">
-                <el-button size="small" class="filter-item" type="primary" @click="handleAnyModify">批量修改</el-button>
+            <div class="filterDiv clearfix">
+                <el-button size="small" style="float:right" type="primary" @click="handleAnyModify">批量修改</el-button>
             </div>
-            <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit style="width: 100%;" size="small">
-                <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
-                <el-table-column label="价格组编码">
-                    <template slot-scope="{row}">
-                        <span>{{row.priceGroupCode}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column label="价格组名称">
-                    <template slot-scope="{row}">
-                        <span>{{row.priceGroupName}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column label="售价(元)" align="right">
-                    <template slot-scope="{row}">
-                        <span>{{row.price|Fixed}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column label="最新价(元)" align="right">
-                    <template slot-scope="{row}">
-                        <span>{{row.lastPrice|Fixed}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column label="生效时间" min-width="140" align="center">
-                    <template slot-scope="{row}">
-                        <span>{{row.effectiveDate | parseDate}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column label="生效" min-width="80" align="center">
-                    <template slot-scope="{row}">
-                        <span>{{row.isDisable==0?'是':'否'}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column label="操作" align="center" width="220">
-                    <template slot-scope="{row}">
-                        <el-button type="primary" size="small" @click="handleCompile(row)">改售价</el-button>
-                        <el-button type="danger" size="small" @click="handleDel(row.id)">删除</el-button>
-                        <el-button type="warning" size="small" @click="updateStatus(row)">{{row.isDisable==1?'生效':'失效'}}</el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
+            <div class="contentDiv">
+                <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit style="width: 100%;" size="small">
+                    <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
+                    <el-table-column label="价格组编码">
+                        <template slot-scope="{row}">
+                            <span>{{row.priceGroupCode}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="价格组名称">
+                        <template slot-scope="{row}">
+                            <span>{{row.priceGroupName}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="售价(元)" align="right">
+                        <template slot-scope="{row}">
+                            <span>{{row.price|Fixed}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="最新价(元)" align="right">
+                        <template slot-scope="{row}">
+                            <span>{{row.lastPrice|Fixed}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="生效时间" min-width="140" align="center">
+                        <template slot-scope="{row}">
+                            <span>{{row.effectiveDate | parseDate}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="生效" min-width="80" align="center">
+                        <template slot-scope="{row}">
+                            <span>{{row.isDisable==0?'是':'否'}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="操作" align="center" width="220">
+                        <template slot-scope="{row}">
+                            <el-button type="text" size="small" @click="handleCompile(row)">改售价</el-button>
+                            <el-button type="text" size="small" @click="handleDel(row.id)">删除</el-button>
+                            <el-button type="text" size="small" @click="updateStatus(row)">{{row.isDisable==1?'生效':'失效'}}</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
             <el-dialog :close-on-click-modal="false" title="修改售价" :visible.sync="dialogFormVisible" width="390px">
                 <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="80px" style="width: 320px; margin-left:10px;">
                     <el-form-item label="售价(元)" prop="price">
@@ -335,7 +338,7 @@ export default {
 
 .leftTree {
     width: 220px;
-    height: 100%;
+    height: calc(100vh - 120px);
     background-color: #fff;
     position: absolute;
     top: 20px;

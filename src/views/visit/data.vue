@@ -1,6 +1,6 @@
 <template>
     <div class="app-container">
-        <div class="filter-container">
+        <div class="filterDiv">
             <el-date-picker :editable="false" v-model="listQuery.queryParam.visitDate1" type="date" placeholder="开始日期" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
             <span class="zhi">至</span>
             <el-date-picker :editable="false" v-model="listQuery.queryParam.visitDate2" type="date" placeholder="结束日期" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
@@ -9,6 +9,7 @@
             <el-button size="small" type="primary" @click="getList">查询</el-button>
             <el-button size="small" style="float:right" type="primary" @click="showLine">地图轨迹</el-button>
         </div>
+        <div class="contentDiv">
         <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
             <el-table-column label="日期" align="center" width="100">
                 <template slot-scope="{row}">
@@ -72,6 +73,7 @@
             </el-table-column>
         </el-table>
         <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
+        </div>
         <el-dialog :close-on-click-modal="false" title="地图轨迹" :visible.sync="dialogFormVisible" width="1000px" top="5%">
             <baidu-map id="allmap" :zoom="13" :center="center" :scroll-wheel-zoom="true" @ready="mapReady" />
         </el-dialog>

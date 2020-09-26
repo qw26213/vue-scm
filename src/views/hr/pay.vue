@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <div class="filter-container">
+    <div class="filterDiv">
       <el-date-picker :editable="false" v-model="listQuery.periodCode1" type="month" placeholder="开始月份" size="small" value-format="yyyy-MM" />
       <span class="zhi">至</span>
       <el-date-picker :editable="false" v-model="listQuery.periodCode2" type="month" placeholder="结束月份" size="small" value-format="yyyy-MM" />
@@ -10,32 +10,34 @@
       <el-button size="small" type="primary" @click="handImport">薪酬导入</el-button>
     </div>
     <input enctype="multipart/form-data" ref="uploadFile" style="display:none" type="file" @change="importFile($event)" />
-    <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;">
-      <el-table-column label="序号" type="index" width="50" align="center">
-      </el-table-column>
-      <el-table-column label="会计期间">
-        <template slot-scope="{row}">
-          <span>{{row.periodCode}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="创建/修改时间">
-        <template slot-scope="{row}">
-          <span>{{row.updateDate}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="是否导入">
-        <template slot-scope="{row}">
-          <span>{{row.importFlag==1?'是':'否'}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" align="center">
-        <template slot-scope="{row}">
-          <el-button type="primary" size="small" @click="handleCompile(row)">编辑</el-button>
-          <el-button type="danger" size="small" @click="showBind1(row.id)">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+    <div class="contentDiv">
+      <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;">
+        <el-table-column label="序号" type="index" width="50" align="center">
+        </el-table-column>
+        <el-table-column label="会计期间">
+          <template slot-scope="{row}">
+            <span>{{row.periodCode}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="创建/修改时间">
+          <template slot-scope="{row}">
+            <span>{{row.updateDate}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="是否导入">
+          <template slot-scope="{row}">
+            <span>{{row.importFlag==1?'是':'否'}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" align="center">
+          <template slot-scope="{row}">
+            <el-button type="text" size="small" @click="handleCompile(row)">编辑</el-button>
+            <el-button type="text" size="small" @click="showBind1(row.id)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+    </div>
     <el-dialog title="复制往期薪酬" :visible.sync="dialogVisible1" width="460px">
       <el-form ref="dataForm" :model="temp1" label-position="left" label-width="72px" style="margin-left:10px;width:400px">
         <el-form-item label="工资类型">

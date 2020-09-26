@@ -1,6 +1,6 @@
 <template>
     <div class="app-container" style="min-width:1380px">
-        <div class="filter-container">
+        <div class="filterDiv">
             <label class="label">期间：</label>
             <el-select v-model="listQuery.periodCode1" size="small" style="width:120px" placeholder="开始期间">
                 <el-option v-for="item in periodArr" :key="item.id" :label="item.text" :value="item.id"></el-option>
@@ -40,49 +40,51 @@
             <el-button size="small" type="default" @click="printBook">打印</el-button>
             <el-button size="small" type="warning" @click="exportBook">导出</el-button>
         </div>
-        <el-table :key="tableKey" v-loading="listLoading" :data="pageData" cell-class-name="tpCell" border fit highlight-current-row style="width: 100%;" size="small">
-            <el-table-column label="科目编码" align="left" show-overflow-tooltip>
-                <template slot-scope="{row}">
-                    <a href="javascript:" @click="$router.push('/accbook/detailaccount?coaCode='+row.coaCode)" style="padding-left:10px">{{ row.coaCode }}</a>
-                </template>
-            </el-table-column>
-            <el-table-column label="科目名称" show-overflow-tooltip>
-                <template slot-scope="{row}">
-                    <span style="padding-left:10px" v-html="row.pageCoaName"></span>
-                </template>
-            </el-table-column>
-            <el-table-column label="期间">
-                <template slot-scope="{row}">
-                    <p clss="pCell" style="text-align:center" v-for="(item,index) in row.listPeriodCode" :key="index">{{item}}</p>
-                </template>
-            </el-table-column>
-            <el-table-column label="摘要">
-                <template slot-scope="{row}">
-                    <p clss="pCell" style="width:max-content;min-width:100%" v-for="(item,index) in row.listSummary" :key="index">{{item}}</p>
-                </template>
-            </el-table-column>
-            <el-table-column label="借方金额">
-                <template slot-scope="{row}">
-                    <p clss="pCell" style="text-align:right" v-for="(item,index) in row.listNetDr" :key="index">{{item | Fixed}}</p>
-                </template>
-            </el-table-column>
-            <el-table-column label="贷方金额">
-                <template slot-scope="{row}">
-                    <p clss="pCell" style="text-align:right" v-for="(item,index) in row.listNetCr" :key="index">{{item | Fixed}}</p>
-                </template>
-            </el-table-column>
-            <el-table-column label="方向">
-                <template slot-scope="{row}">
-                    <p clss="pCell" style="text-align:center" v-for="(item,index) in row.listCrDrStr" :key="index">{{item}}</p>
-                </template>
-            </el-table-column>
-            <el-table-column label="余额">
-                <template slot-scope="{row}">
-                    <p clss="pCell" style="text-align:right" v-for="(item,index) in row.listBalance" :key="index">{{item | Fixed}}</p>
-                </template>
-            </el-table-column>
-        </el-table>
-        <pagination v-show="total>10" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.limit" @pagination="getDataByPage" />
+        <div class="contentDiv">
+            <el-table :key="tableKey" v-loading="listLoading" :data="pageData" cell-class-name="tpCell" border fit highlight-current-row style="width: 100%;" size="small">
+                <el-table-column label="科目编码" align="left" show-overflow-tooltip>
+                    <template slot-scope="{row}">
+                        <a href="javascript:" @click="$router.push('/accbook/detailaccount?coaCode='+row.coaCode)" style="padding-left:10px">{{ row.coaCode }}</a>
+                    </template>
+                </el-table-column>
+                <el-table-column label="科目名称" show-overflow-tooltip>
+                    <template slot-scope="{row}">
+                        <span style="padding-left:10px" v-html="row.pageCoaName"></span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="期间">
+                    <template slot-scope="{row}">
+                        <p clss="pCell" style="text-align:center" v-for="(item,index) in row.listPeriodCode" :key="index">{{item}}</p>
+                    </template>
+                </el-table-column>
+                <el-table-column label="摘要">
+                    <template slot-scope="{row}">
+                        <p clss="pCell" style="width:max-content;min-width:100%" v-for="(item,index) in row.listSummary" :key="index">{{item}}</p>
+                    </template>
+                </el-table-column>
+                <el-table-column label="借方金额">
+                    <template slot-scope="{row}">
+                        <p clss="pCell" style="text-align:right" v-for="(item,index) in row.listNetDr" :key="index">{{item | Fixed}}</p>
+                    </template>
+                </el-table-column>
+                <el-table-column label="贷方金额">
+                    <template slot-scope="{row}">
+                        <p clss="pCell" style="text-align:right" v-for="(item,index) in row.listNetCr" :key="index">{{item | Fixed}}</p>
+                    </template>
+                </el-table-column>
+                <el-table-column label="方向">
+                    <template slot-scope="{row}">
+                        <p clss="pCell" style="text-align:center" v-for="(item,index) in row.listCrDrStr" :key="index">{{item}}</p>
+                    </template>
+                </el-table-column>
+                <el-table-column label="余额">
+                    <template slot-scope="{row}">
+                        <p clss="pCell" style="text-align:right" v-for="(item,index) in row.listBalance" :key="index">{{item | Fixed}}</p>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <pagination v-show="total>10" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.limit" @pagination="getDataByPage" />
+        </div>
     </div>
 </template>
 <script>
