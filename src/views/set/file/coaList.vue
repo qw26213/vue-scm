@@ -49,10 +49,10 @@
             </el-table-column>
             <el-table-column label="操作" width="260" align="center">
                 <template slot-scope="{row}">
-                    <el-button type="primary" size="small" @click="handleAdd(row)">新增下级</el-button>
-                    <el-button type="default" size="small" @click="handleCompile(row)">修改</el-button>
-                    <el-button type="danger" size="small" @click="handleDel(row)">删除</el-button>
-                    <el-button type="warning" size="small" @click="handleDisable(row)">{{row.isDisable == 1?'解禁':'禁用'}}</el-button>
+                    <el-button type="text" size="small" @click="handleAdd(row)">新增下级</el-button>
+                    <el-button type="text" size="small" @click="handleCompile(row)">修改</el-button>
+                    <el-button type="text" size="small" @click="handleDel(row)">删除</el-button>
+                    <el-button type="text" size="small" @click="handleDisable(row)">{{row.isDisable == 1?'解禁':'禁用'}}</el-button>
                 </template>
             </el-table-column>
         </el-table>
