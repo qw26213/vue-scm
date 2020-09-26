@@ -25,9 +25,7 @@ import './permission'
 
 import * as filters from './filters'
 
-Vue.use(ELEMENT, {
-  size: Cookies.get('size') || 'medium'
-})
+Vue.use(ELEMENT)
 
 import BaiduMap from'vue-baidu-map'
 Vue.use(BaiduMap,{ak:'izacIyDzFKeyrjsMZjEfTouTUpLsKWnv'})

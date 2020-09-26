@@ -48,9 +48,9 @@
             </el-popover>
             <br/>
             <label class="label ml10">源车辆</label>
-            <truckList @selectChange="selectChange" keyType="outWarehouseId" placeTxt="源仓库" ctrType="list":selectId="listQuery.outTruckId" />
+            <truckList @selectChange="selectChange" keyType="outTruckId" placeTxt="源车辆" ctrType="list":selectId="listQuery.outTruckId" />
             <label class="label ml10">目标车辆</label>
-            <truckList @selectChange="selectChange" keyType="inWarehouseId" placeTxt="目标仓库" ctrType="list":selectId="listQuery.inTruckId" />
+            <truckList @selectChange="selectChange" keyType="inTruckId" placeTxt="目标车辆" ctrType="list":selectId="listQuery.inTruckId" />
             <label class="label" id="level01">一级汇总</label>
             <el-select v-model="listQuery.param1" style="width:100px" placeholder="一级汇总" size="mini">
                 <el-option v-for="item in levellist" :label="item" :value="item" :key="item" />

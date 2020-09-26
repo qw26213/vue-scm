@@ -13,7 +13,7 @@ import storeRouter from './modules/storeRouter'
 import priceRouter from './modules/priceRouter'
 import setRouter from './modules/setRouter'
 import accountRouter from './modules/accountRouter'
-import reportRouter from './modules/reportRouter'
+import tableRouter from './modules/tableRouter'
 import hrRouter from './modules/hrRouter'
 import visitRouter from './modules/visitRouter'
 import maintainRouter from './modules/maintainRouter'
@@ -81,7 +81,7 @@ export const asyncRoutes = [
     priceRouter,
     visitRouter,
     accountRouter,
-    reportRouter,
+    tableRouter,
     hrRouter,
     setRouter,
     initRouter,

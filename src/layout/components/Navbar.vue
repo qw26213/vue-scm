@@ -4,10 +4,10 @@
         <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
         <div class="right-menu">
             <template v-if="device!=='mobile'">
-                <search id="header-search" class="right-menu-item" title="搜索" />
+                <!-- <search id="header-search" class="right-menu-item" title="搜索" /> -->
                 <help class="right-menu-item" title="帮助" />
                 <qq class="right-menu-item" title="在线客服" />
-                <screenfull id="screenfull" class="right-menu-item hover-effect" title="全屏" />
+                <!-- <screenfull id="screenfull" class="right-menu-item hover-effect" title="全屏" /> -->
             </template>
             <el-dropdown class="avatar-container right-menu-item hover-effect" @command="handleCommand">
                 <div class="avatar-wrapper">

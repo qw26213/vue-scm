@@ -23,9 +23,9 @@ export default {
     },
     mounted() {
         this.getData();
-        if(this.placeTxt){
+        if (this.placeTxt) {
             this.placeholderTxt = this.placeTxt
-        }else{
+        } else {
             this.placeholderTxt = "选择仓库"
         }
     },
@@ -42,11 +42,11 @@ export default {
         getData() {
             getWarehouse().then(res => {
                 var arr = [];
-                if(this.ctrType=="list"){
-                    arr = [{warehouseName:'全部仓库',id:'null'}]
+                if(this.ctrType=="list") {
+                    arr = [{ warehouseName:'全部仓库', id:'null' }]
                 }
-                if(this.allowNull&&this.allowNull=="1"){
-                    arr = [{warehouseName:'无',id:''}]
+                if(this.allowNull&&this.allowNull=="1") {
+                    arr = [{ warehouseName: '无', id: '' }]
                 }
                 this.list = arr.concat(res.data.data)
             })
