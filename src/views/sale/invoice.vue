@@ -79,7 +79,7 @@
                     <span class="ctrl" v-if="row.status==1" @click="handleScan(row)">查看</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id, row.invoiceDate)">审核</span>
                     <span class="ctrl del" v-if="row.status<=0" @click="handleDel(row.id, row.invoiceDate)">删除</span>
-                    <span class="ctrl" @click="printBill(row.id)">打印</span>
+                    <span class="ctrl" @click="printBill(row)">打印</span>
                 </template>
             </el-table-column>
         </el-table>
@@ -135,8 +135,8 @@ export default {
         this.getList()
     },
     methods: {
-        printBill(id) {
-            printByHeaderId('/ic/invoice', id).then(res => {
+        printBill(row) {
+            printByHeaderId('/ic/invoice', row.id, row.billDate).then(res => {
                 if (res.data.errorCode == 0) {
                     window.open("http://" + window.location.host + res.data.data)
                 } else {

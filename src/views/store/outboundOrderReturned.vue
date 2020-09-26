@@ -57,6 +57,7 @@
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
                     <span class="ctrl del" v-if="row.status<=0" @click="handleDel(row.id)">删除</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isSales,row.id,row.salesHeaderId)">{{row.isSales==0?'生成':'查看'}}销售退货单</span>
+                    <span class="ctrl" @click="printBill(row)">打印</span>
                 </template>
             </el-table-column>
         </el-table>
@@ -78,7 +79,7 @@
     </div>
 </template>
 <script>
-import { getOutboundOrderReturned, delOutboundOrderReturned, auditOutboundOrderReturned, buildOutboundOrderReturned,getAuditInfoByHeaderId } from '@/api/store';
+import { getOutboundOrderReturned, delOutboundOrderReturned, auditOutboundOrderReturned, buildOutboundOrderReturned,getAuditInfoByHeaderId, printByHeaderId } from '@/api/store';
 import { getNowDate } from '@/utils/auth';
 import staffList from '@/components/selects/staffList';
 import custList from '@/components/selects/custList';
@@ -128,6 +129,15 @@ export default {
         this.getList();
     },
     methods: {
+        printBill(row) {
+            printByHeaderId('/ic/outboundOrderReturned', row.id).then(res => {
+                if (res.data.errorCode == 0) {
+                    window.open("http://" + window.location.host + res.data.data)
+                } else {
+                    this.$messae.warning('文件生成失败')
+                }
+            })
+        },
         showAuditInfo(id){
             this.auditType = 'record'
             getAuditInfoByHeaderId(id).then(res => {

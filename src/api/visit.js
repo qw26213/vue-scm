@@ -39,3 +39,11 @@ export function deleteFile(data) {
         data
     })
 }
+
+export function printByHeaderId(url, id) {
+    return request({
+        url: '/drp/crm/visit/printById',
+        method: 'post',
+        data: { id }
+    })
+}

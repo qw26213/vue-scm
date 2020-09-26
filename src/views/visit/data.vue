@@ -68,7 +68,8 @@
             </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="{row}">
-                    <el-button size="small" type="default" @click="handleLink(row.id)">关联图片</el-button>
+                    <el-button size="small" type="text" @click="handleLink(row.id)">关联图片</el-button>
+                    <el-button size="small" type="text" @click="printBill(row)">打印</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -80,7 +81,7 @@
     </div>
 </template>
 <script>
-import { getVisitData } from '@/api/visit'
+import { getVisitData, printByHeaderId } from '@/api/visit'
 import Pagination from '@/components/Pagination'
 import { getNowDate } from '@/utils/auth'
 import { parseTime } from '@/utils/index'
@@ -124,6 +125,15 @@ export default {
         this.getList();
     },
     methods: {
+        printBill(row) {
+            printByHeaderId(row.id).then(res => {
+                if (res.data.errorCode == 0) {
+                    window.open("http://" + window.location.host + res.data.data)
+                } else {
+                    this.$messae.warning('文件生成失败')
+                }
+            })
+        },
         mapReady({ BMap, map }) {
             var points = [
                 { lng: 114.00100, lat: 22.550000 },

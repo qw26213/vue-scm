@@ -57,6 +57,14 @@ export function buildVoucherByHeaderId(data) {
     })
 }
 
+export function printByHeaderId(url, id) {
+    return request({
+        url: '/drp' + url + '/printByHeaderId',
+        method: 'post',
+        data: { id }
+    })
+}
+
 // -----------采购退货----------
 
 export function getPurchaseReturned(data) {

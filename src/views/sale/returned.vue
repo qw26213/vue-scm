@@ -82,7 +82,7 @@
                     <span class="ctrl" v-if="row.status==1&&(row.returnedType==0||row.returnedType==1)" @click="handleCreateBill(row.isOutboundOrderReturned,row.id,row.outboundOrderReturnedHeaderId)">{{row.isOutboundOrderReturned==0?'生成':'查看'}}退货入库单</span>
                     <span class="ctrl" v-if="row.status==1&&(row.returnedType==2)" @click="handleCreateBill1(row.isInventory,row.id,row.inventoryId)">{{row.isInventory==0?'生成':'查看'}}报损单</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId)">{{row.isJeHeader==0?'生成':'查看'}}销售退货凭证</span>
-                    <span class="ctrl" @click="printBill(row.id)">打印</span>
+                    <span class="ctrl" @click="printBill(row)">打印</span>
                 </template>
             </el-table-column>
         </el-table>
@@ -176,8 +176,8 @@ export default {
         this.getList()
     },
     methods: {
-        printBill(id) {
-            printByHeaderId('/so/salesReturned', id).then(res => {
+        printBill(row) {
+            printByHeaderId('/so/salesReturned', row.id, row.billDate).then(res => {
                 if (res.data.errorCode == 0) {
                     window.open("http://" + window.location.host + res.data.data)
                 } else {

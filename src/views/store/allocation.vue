@@ -61,6 +61,7 @@
                     <span v-if="row.status==-2" class="ctrl" @click="showConfirmInfo(row.id)">查看确认意见</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
                     <span class="ctrl del" v-if="row.status<=0" @click="handleDel(row.id)">删除</span>
+                    <span class="ctrl" @click="printBill(row)">打印</span>
                 </template>
             </el-table-column>
             </el-table>
@@ -72,7 +73,7 @@
     </div>
 </template>
 <script>
-import { getAllocation, delAllocation, auditAllocation, confirmAllocation, getAuditInfoByHeaderId, getConfirmInfoByHeaderId } from '@/api/store'
+import { getAllocation, delAllocation, auditAllocation, confirmAllocation, getAuditInfoByHeaderId, getConfirmInfoByHeaderId, printByHeaderId } from '@/api/store'
 import Pagination from '@/components/Pagination'
 import warehouseList from '@/components/selects/warehouseList'
 import Auditconfirm from '@/components/Auditconfirm/index'
@@ -112,6 +113,15 @@ export default {
         this.getList();
     },
     methods: {
+        printBill(row) {
+            printByHeaderId('/ic/allocation', row.id).then(res => {
+                if (res.data.errorCode == 0) {
+                    window.open("http://" + window.location.host + res.data.data)
+                } else {
+                    this.$messae.warning('文件生成失败')
+                }
+            })
+        },
         showConfirmInfo(id){
             this.confirmType = 'record'
             getConfirmInfoByHeaderId(id).then(res => {

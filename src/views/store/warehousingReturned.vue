@@ -61,6 +61,7 @@
                     <span v-if="row.status==-1" class="ctrl" @click="showAuditInfo(row.id)">查看审核意见</span>
                     <span class="ctrl del" v-if="row.status<=0" @click="handleDel(row.id)">删除</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isPurchase,row.id,row.purchaseHeaderId)">{{row.isPurchase==0?'生成':'查看'}}采购退货单</span>
+                    <span class="ctrl" @click="printBill(row)">打印</span>
                 </template>
             </el-table-column>
         </el-table>
@@ -82,7 +83,7 @@
     </div>
 </template>
 <script>
-import { getWarehousingReturned, saveWarehousingReturned, delWarehousingReturned, auditWarehousingReturned, buildWarehousingEntryReturned, getAuditInfoByHeaderId } from '@/api/store'
+import { getWarehousingReturned, saveWarehousingReturned, delWarehousingReturned, auditWarehousingReturned, buildWarehousingEntryReturned, getAuditInfoByHeaderId, printByHeaderId } from '@/api/store'
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
 import staffList from '@/components/selects/staffList';
@@ -125,6 +126,15 @@ export default {
         this.getList();
     },
     methods: {
+        printBill(row) {
+            printByHeaderId('/ic/warehousingEntryReturned', row.id).then(res => {
+                if (res.data.errorCode == 0) {
+                    window.open("http://" + window.location.host + res.data.data)
+                } else {
+                    this.$messae.warning('文件生成失败')
+                }
+            })
+        },
         showAuditInfo(id){
             this.auditType = 'record'
             getAuditInfoByHeaderId(id).then(res => {

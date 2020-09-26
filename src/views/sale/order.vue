@@ -116,7 +116,7 @@
                     <span class="ctrl del" v-if="row.status<=0" @click="handleDel(row.id, row.billDate)">删除</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isOutboundOrder,row.id,row.outboundOrderHeaderId,row.billDate)">{{row.isOutboundOrder==0?'生成':'查看'}}出库单</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId,row.billDate)">{{row.isJeHeader==0?'生成':'查看'}}销售凭证</span>
-                    <span class="ctrl" @click="printBill(row.id)">打印</span>
+                    <span class="ctrl" @click="printBill(row)">打印</span>
                 </template>
             </el-table-column>
         </el-table>
@@ -200,8 +200,8 @@ export default {
         this.getList()
     },
     methods: {
-        printBill(id) {
-            printByHeaderId('/so/salesOrder', id).then(res => {
+        printBill(row) {
+            printByHeaderId('/so/salesOrder', row.id, row.billDate).then(res => {
                 if (res.data.errorCode == 0) {
                     window.open("http://" + window.location.host + res.data.data)
                 } else {

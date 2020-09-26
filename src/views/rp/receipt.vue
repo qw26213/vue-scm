@@ -57,6 +57,7 @@
                     <span class="ctrl" v-if="row.status==-1" @click="showAuditInfo(row.id)">查看审核意见</span>
                     <span class="ctrl del" v-if="row.status<=0" @click="handleDel(row.id)">删除</span>
                     <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader, row.id, row.jeHeaderId)">{{row.isJeHeader==1?'查看':'生成'}}凭证</span>
+                    <span class="ctrl" @click="printBill(row)">打印</span>
                 </template>
             </el-table-column>
         </el-table>
@@ -78,7 +79,7 @@
     </div>
 </template>
 <script>
-import { getReceiptPayment, delReceiptPayment, auditReceiptPayment, buildReceiptPayment, getAuditInfoByHeaderId } from '@/api/rp'
+import { getReceiptPayment, delReceiptPayment, auditReceiptPayment, buildReceiptPayment, getAuditInfoByHeaderId, printByHeaderId } from '@/api/rp'
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
 import custList from '@/components/selects/custList';
@@ -123,6 +124,15 @@ export default {
         this.getList();
     },
     methods: {
+        printBill(row) {
+            printByHeaderId(row.id).then(res => {
+                if (res.data.errorCode == 0) {
+                    window.open("http://" + window.location.host + res.data.data)
+                } else {
+                    this.$messae.warning('文件生成失败')
+                }
+            })
+        },
         showAuditInfo(id){
             this.auditType = 'record'
             getAuditInfoByHeaderId(id).then(res => {

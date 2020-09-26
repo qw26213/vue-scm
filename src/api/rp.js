@@ -52,7 +52,7 @@ export function printByHeaderId(id) {
     return request({
         url: '/drp/rp/receiptPayment/printByHeaderId',
         method: 'post',
-        data: { id: id }
+        data: { id }
     })
 }
 
@@ -73,3 +73,4 @@ export function getPurchaseListBySupplierId(data) {
         data
     })
 }
+

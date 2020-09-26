@@ -75,6 +75,7 @@
                     <span v-if="row.status==1" class="ctrl" @click="confirmBill(row.id)">确认</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
                     <span class="ctrl del" v-if="row.status<=0" @click="handleDel(row.id)">删除</span>
+                    <span class="ctrl" @click="printBill(row)">打印</span>
                 </template>
             </el-table-column>
         </el-table>
@@ -85,7 +86,7 @@
     </div>
 </template>
 <script>
-import { getMovement, delMovement, auditMovement, confirmMovement, getAuditInfoByHeaderId, getConfirmInfoByHeaderId } from '@/api/store'
+import { getMovement, delMovement, auditMovement, confirmMovement, getAuditInfoByHeaderId, getConfirmInfoByHeaderId, printByHeaderId } from '@/api/store'
 import Pagination from '@/components/Pagination'
 import warehouseList from '@/components/selects/warehouseList'
 import truckList from '@/components/selects/truckList'
@@ -128,6 +129,15 @@ export default {
         this.dateTime = [this.listQuery.date1, this.listQuery.date2]
     },
     methods: {
+        printBill(row) {
+            printByHeaderId('/ic/movement', row.id).then(res => {
+                if (res.data.errorCode == 0) {
+                    window.open("http://" + window.location.host + res.data.data)
+                } else {
+                    this.$messae.warning('文件生成失败')
+                }
+            })
+        },
         showConfirmInfo(id){
             this.confirmType = 'record'
             getConfirmInfoByHeaderId(id).then(res => {
