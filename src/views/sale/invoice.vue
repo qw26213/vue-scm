@@ -79,6 +79,7 @@
                     <span class="ctrl" v-if="row.status==1" @click="handleScan(row)">查看</span>
                     <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id, row.invoiceDate)">审核</span>
                     <span class="ctrl del" v-if="row.status<=0" @click="handleDel(row.id, row.invoiceDate)">删除</span>
+                    <span class="ctrl" @click="printBill(row.id)">打印</span>
                 </template>
             </el-table-column>
         </el-table>
@@ -88,7 +89,7 @@
     </div>
 </template>
 <script>
-import { getInvoice, delInvoice, auditInvoice } from '@/api/sale'
+import { getInvoice, delInvoice, auditInvoice, printByHeaderId } from '@/api/sale'
 import { parseTime } from '@/utils'
 import custList from '@/components/selects/custList'
 import Auditconfirm from '@/components/Auditconfirm/index'
@@ -134,6 +135,15 @@ export default {
         this.getList()
     },
     methods: {
+        printBill(id) {
+            printByHeaderId('/ic/invoice', id).then(res => {
+                if (res.data.errorCode == 0) {
+                    window.open("http://" + window.location.host + res.data.data)
+                } else {
+                    this.$messae.warning('文件生成失败')
+                }
+            })
+        },
         showAuditInfo(id){
             this.auditType = 'record'
             getAuditInfoByHeaderId(id).then(res => {

@@ -235,7 +235,10 @@ export default {
         },
         handleCompile(id) {
             this.$store.dispatch('tagsView/delView', this.$route);
-            this.$router.push('/voucher/modify?id=' + id)
+            const arr = this.tableData.map(it => {
+                return it.id
+            })
+            this.$router.push('/voucher/modify?id=' + id + '&arr=' + arr.join(','))
         },
         handleDel(row) {
             let info = "确定要删除这个凭证吗？";

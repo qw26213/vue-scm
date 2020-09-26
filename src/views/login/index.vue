@@ -24,7 +24,8 @@
     position: relative;
     width: 480px;
     max-width: 100%;
-    background: rgba(241, 241, 241, 0.88);
+    background: rgba(241, 241, 241, 0.80);
+    box-shadow: 0 0 10px #ccc;
     padding: 40px 35px 20px;
     margin: 120px auto;
     overflow: hidden;

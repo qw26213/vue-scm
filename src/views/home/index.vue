@@ -5,7 +5,7 @@
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
                         <span style="display:inline-block;line-height:28px">七日毛利</span>
-                        <el-date-picker :editable="false" v-model="date1" type="date" placeholder="选择日期" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+                        <el-date-picker :editable="false" v-model="date1" type="date" placeholder="选择日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
                     </div>
                     <el-table :data="tableData1" border fit resize>
                       <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
@@ -42,7 +42,7 @@
                     <div slot="header" class="clearfix">
                         <span style="display:inline-block;line-height:28px">日毛利排行--品类</span>
                         <label style="font-size:14px;margin-left:10px;color:#666">选择级次:</label>
-                        <el-select size="small" v-model="invCatgLevel" style="width:80px">
+                        <el-select size="mini" v-model="invCatgLevel" style="width:80px">
                           <el-option label="一级" value="1"></el-option>
                           <el-option label="二级" value="2"></el-option>
                           <el-option label="三级" value="3"></el-option>
@@ -50,7 +50,7 @@
                           <el-option label="五级" value="5"></el-option>
                           <el-option label="末级" value=""></el-option>
                         </el-select>
-                        <el-date-picker :editable="false" v-model="date2" type="date" placeholder="选择日期" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+                        <el-date-picker :editable="false" v-model="date2" type="date" placeholder="选择日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
                     </div>
                     <el-table :data="tableData2" border fit resize>
                       <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
@@ -91,7 +91,7 @@
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
                         <span style="display:inline-block;line-height:28px">日毛利排行--产品</span>
-                        <el-date-picker :editable="false" v-model="date3" type="date" placeholder="选择日期" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+                        <el-date-picker :editable="false" v-model="date3" type="date" placeholder="选择日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
                     </div>
                     <el-table :data="tableData3" border fit resize>
                       <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
@@ -132,7 +132,7 @@
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
                         <span style="display:inline-block;line-height:28px">日毛利排行--网点</span>
-                        <el-date-picker :editable="false" v-model="date4" type="date" placeholder="选择日期" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+                        <el-date-picker :editable="false" v-model="date4" type="date" placeholder="选择日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
                     </div>
                     <el-table :data="tableData1" border fit resize>
                       <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>

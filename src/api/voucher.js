@@ -101,6 +101,14 @@ export function getVoucherById(data) {
         data
     })
 }
+
+export function printVoucherById(data) {
+    return request({
+        url: '/drp/gl/voucher/printById',
+        method: 'post',
+        data
+    })
+}
 // 整理凭证号
 export function trimJeSeqByMap(data) {
     return request({

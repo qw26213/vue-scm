@@ -16,9 +16,14 @@
                     </span>
                 </el-form-item>
                 <el-form-item label="日期" prop="billDate" style="margin-bottom:10px;">
-                    <el-date-picker v-model="billHeader.jeDate" type="date" placeholder="日期" size="small" :clearable="false" value-format="yyyy-MM-dd" style="width:120px" @change="getJeSeqByDate">
+                    <el-date-picker v-model="billHeader.jeDate" type="date" placeholder="日期" size="small" :clearable="false" value-format="yyyy-MM-dd" style="width:130px" @change="getJeSeqByDate">
                     </el-date-picker>
                 </el-form-item>
+                <div v-if="$route.query.id" class="ctrlbutton">
+                    <el-button type="default" size="small" style="top:10px;right:115px" @click="printVoucher()">打印</el-button>
+                    <el-button type="default" size="small" title="上一张" @click="prevVoucher()">上</el-button>
+                    <el-button type="default" size="small" title="下一张" @click="nextVoucher()">下</el-button>
+                </div>
                 <el-form-item label="附单据" prop="expirationDate" style="float:right;margin-bottom:10px">
                     <input type="text" class="jeSeq" v-model="billHeader.voucherAttachmentNum" style="width:40px;margin-right:6px" />
                     <span>张</span>
@@ -233,7 +238,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { getGlPeriodByCenterDate, getGlPeriodByPeriodCode, getMaxVoucherSeq, getVoucherMaxDate } from '@/api/voucher'
-import { getVoucherById, voucherSave, getCatogery } from '@/api/voucher'
+import { getVoucherById, voucherSave, getCatogery, printVoucherById } from '@/api/voucher'
 import { getTempletHeader, getTempletTypeList, getTempletById, templetSave, getJZVoucherByCode, getJzTempletById } from '@/api/voucher'
 import { addSummary, delSummary } from '@/api/voucher'
 import { getNowDate, deleteEmptyObj, addNullObj, addNullObj2, convertCurrency, validateVal, deepClone, showNumber1, showNumber2, getIsAuxiliary } from '@/utils'
@@ -319,6 +324,7 @@ export default {
             projList: [],
             jzCode: '',
             jzType: 0,
+            curVoucherId: this.$route.query.id
         }
     },
     filters: {
@@ -371,9 +377,7 @@ export default {
             this.projList = res.data.data || []
         })
         if (this.$route.query.id) {
-            getVoucherById({ id: this.$route.query.id }).then(res => {
-                this.initMyVoucher(res)
-            })
+            this.getVoucher(this.$route.query.id)
         } else {
             this.$store.dispatch('voucher/getSummaryList')
             this.$store.dispatch('voucher/getSummaryTable')
@@ -390,6 +394,11 @@ export default {
             this.getJeSeqByDate()
             this.getTotalMoney()
         },
+        getVoucher(id) {
+            getVoucherById({ id }).then(res => {
+                this.initMyVoucher(res)
+            })
+        },
         initJzVoucher(jzCode, periodCode, rateObj) {
             this.jzType = 1
             this.jzCode = jzCode
@@ -400,11 +409,34 @@ export default {
                 this.getJzTemplet(res.data.data[0].id, jzCode, periodCode, rateObj);
             })
         },
+        printVoucher() {
+            printVoucherById({ id: this.curVoucherId }).then(res => {
+                if (res.data.errorCode == 0) {
+                    window.open("http://" + window.location.host + res.data.data)
+                } else {
+                    this.$messae.warning('文件生成失败')
+                }
+            })
+        },
+        prevVoucher() {
+            const arr = this.$route.query.arr.split(',')
+            var curIndex = arr.indexOf(this.curVoucherId) - 1
+            if (curIndex == -1) { this.$message.warning('已经是第一张凭证了！'); return; }
+            this.curVoucherId = arr[curIndex]
+            this.getVoucher(this.curVoucherId);
+        },
+        nextVoucher() {
+            const arr = this.$route.query.arr.split(',')
+            var curIndex = arr.indexOf(this.curVoucherId) + 1
+            if (curIndex === arr.length) { this.$message.warning('已经是最后一张凭证了！'); return; }
+            this.curVoucherId = arr[curIndex]
+            this.getVoucher(this.curVoucherId);
+        },
         getJzTemplet(templetId, jzCode, periodCode, rateObj) {
             var data = {
-                id:templetId,
-                jzCode:jzCode,
-                periodCode:periodCode,
+                id: templetId,
+                jzCode: jzCode,
+                periodCode: periodCode,
                 ...rateObj
             }
             getJzTempletById(data).then(res => {
@@ -421,7 +453,7 @@ export default {
             this.$store.dispatch('voucher/getSummaryList')
             this.$store.dispatch('voucher/getSummaryTable')
             this.$store.dispatch('voucher/getCoaList')
-            if (this.jzType !== 1 ) {
+            if (this.jzType !== 1) {
                 this.billHeader = res.data.data.header
             }
             this.tableData = res.data.data.lineList
@@ -862,6 +894,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import './voucher.scss';
+>>>.el-icon-caret-left{font-size:20px}
+>>>.el-icon-caret-right{font-size:20px}
 </style>
 <style scoped>
 .number {
@@ -884,4 +918,6 @@ export default {
     margin: 0 3px;
     outline: none;
 }
+.voucherHeader{position: relative;}
+.ctrlbutton { position: absolute;top: 10px; right: 0px }
 </style>

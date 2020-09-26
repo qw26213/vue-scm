@@ -120,6 +120,7 @@
                         <span class="ctrl" v-if="row.status<=0" @click="handleCheck(row.id, row.billDate)">审核</span>
                         <span class="ctrl del" v-if="row.status==0" @click="handleDel(row.id, row.billDate)">删除</span>
                         <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isOutboundOrder,row.id,row.outboundOrderHeaderId,row.billDate)">{{row.isOutboundOrder==0?'生成':'查看'}}出库单</span>
+                        <span class="ctrl" @click="printBill(row.id)">打印</span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -141,7 +142,7 @@
     </div>
 </template>
 <script>
-import { getDelivery, delDelivery, auditDelivery, buildDelivery, buildDeliveryVoucherByHeaderId, getAuditInfoByHeaderId } from '@/api/sale'
+import { getDelivery, delDelivery, auditDelivery, buildDelivery, buildDeliveryVoucherByHeaderId, getAuditInfoByHeaderId, printByHeaderId } from '@/api/sale'
 import { parseTime } from '@/utils'
 import staffList from '@/components/selects/staffList'
 import Auditconfirm from '@/components/Auditconfirm/index'
@@ -159,6 +160,7 @@ export default {
             listLoading: true,
             dialogFormVisible1: false,
             dialogFormVisible2: false,
+            auditModalVisible: false,
             auditType: 'create',
             remarklist: [],
             curBillId: '',
@@ -190,6 +192,15 @@ export default {
         this.getList()
     },
     methods: {
+        printBill(id) {
+            printByHeaderId('/so/delivery', id).then(res => {
+                if (res.data.errorCode == 0) {
+                    window.open("http://" + window.location.host + res.data.data)
+                } else {
+                    this.$messae.warning('文件生成失败')
+                }
+            })
+        },
         showAuditInfo(id){
             this.auditType = 'record'
             getAuditInfoByHeaderId(id).then(res => {

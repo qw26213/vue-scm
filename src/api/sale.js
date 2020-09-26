@@ -58,6 +58,14 @@ export function buildSaleVoucherByHeaderId(data) {
     })
 }
 
+export function printByHeaderId(url, id) {
+    return request({
+        url: '/drp' + url + '/printByHeaderId',
+        method: 'post',
+        data: { id }
+    })
+}
+
 //-------------------------------------销售订单----------------------------------------
 
 export function getSalesOrder(data) {
