@@ -162,7 +162,7 @@ const saleRouter = {
         component: () => import('@/views/sale/everyday'),
         name: 'saleInvoice',
         meta: {
-            roles: ['1450'],
+            roles: ['1460'],
             title: '销售日结'
         }
     }, {
@@ -171,7 +171,7 @@ const saleRouter = {
         name: 'everydayAdd',
         hidden: true,
         meta: {
-            roles: ['145010'],
+            roles: ['146010'],
             title: '新增销售日结'
         }
     }, {
@@ -180,7 +180,7 @@ const saleRouter = {
         name: 'everydayAdd',
         hidden: true,
         meta: {
-            roles: ['145020'],
+            roles: ['146020'],
             title: '编辑销售日结'
         }
     }]

@@ -12,7 +12,6 @@
         <div class="contentDiv">
             <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small" :default-sort="{prop: 'updateDate', order: this.listQuery.queryParam.desc==1 ?'descending': 'ascending'}" @selection-change="selectionChange" @sort-change="sortChange">
                 <el-table-column v-if="total>1" type="selection" width="55" align="center"></el-table-column>
-                <el-table-column label="序号" type="index" width="50" align="center" />
                 <el-table-column label="拜访日期" align="center">
                     <template slot-scope="{row}">
                         <span>{{row.visitDate}}</span>

@@ -20,8 +20,6 @@
         </div>
         <div class="contentDiv">    
         <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
-            <el-table-column label="序号" type="index" width="50" align="center">
-            </el-table-column>
             <el-table-column label="单据日期" align="center" width="120">
                 <template slot-scope="{row}">
                     <span>{{row.billDate}}</span>

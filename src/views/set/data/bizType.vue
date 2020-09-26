@@ -1,56 +1,58 @@
 <template>
     <div class="app-container">
-        <div class="filter-container">
+        <div class="filterDiv">
             <el-input size="small" v-model="listQuery.bizTypeName" placeholder="业务类型代码/名称" style="width: 200px;" class="filter-item" />
             <el-button size="small" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
         </div>
-        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
-            <el-table-column label="序号" type="index" width="100" align="center">
-            </el-table-column>
-            <el-table-column label="业务类型代码">
-                <template slot-scope="{row}">
-                    <span>{{row.bizTypeCode}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="业务类型名称">
-                <template slot-scope="{row}">
-                    <span>{{row.bizTypeName}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="编码总长度" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.len}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="编码总长度" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.dateType == 1 ? '年月日' : row.dateType == 2 ? '年月' : row.dateType ===3 ? '年' : '无日期' }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="单位编码前缀" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.preCode}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="备注">
-                <template slot-scope="{row}">
-                    <span>{{row.remarks}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="是否可用" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.isDisable==0?'是':'否'}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="操作" align="center" width="100">
-                <template slot-scope="{row}">
-                    <el-button type="text" size="small" @click="handleCompile(row)">编辑</el-button>
-                    <!-- <el-button type="danger" size="small" @click="handleDel(row.id)">删除</el-button> -->
-                    <!-- <el-button type="warning" size="small" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button> -->
-                </template>
-            </el-table-column>
-        </el-table>
-        <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+        <div class="contentDiv">
+            <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
+                <el-table-column label="序号" type="index" width="100" align="center">
+                </el-table-column>
+                <el-table-column label="业务类型代码">
+                    <template slot-scope="{row}">
+                        <span>{{row.bizTypeCode}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="业务类型名称">
+                    <template slot-scope="{row}">
+                        <span>{{row.bizTypeName}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="编码总长度" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.len}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="编码日期类型" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.dateType == 1 ? '年月日' : row.dateType == 2 ? '年月' : row.dateType ===3 ? '年' : '无日期' }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="编码前缀" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.preCode}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="备注">
+                    <template slot-scope="{row}">
+                        <span>{{row.remarks}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="是否可用" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.isDisable==0?'是':'否'}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" align="center" width="100">
+                    <template slot-scope="{row}">
+                        <el-button type="text" size="small" @click="handleCompile(row)">编辑</el-button>
+                        <!-- <el-button type="danger" size="small" @click="handleDel(row.id)">删除</el-button> -->
+                        <!-- <el-button type="warning" size="small" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button> -->
+                    </template>
+                </el-table-column>
+            </el-table>
+            <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+        </div>
         <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增业务类型':'修改业务类型'" :visible.sync="dialogFormVisible" width="500px">
             <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="110px" style="width: 456px;">
                 <el-form-item label="业务类型代码" prop="bizTypeCode">
@@ -70,7 +72,7 @@
                     <el-option label="年" :value="3" />
                   </el-select>
                 </el-form-item>
-                <el-form-item label="单位编码前缀" prop="preCode">
+                <el-form-item label="编码前缀" prop="preCode">
                     <el-input-number v-model="temp.preCode" :min="10" :max="99" placeholder="单位编码前缀" />
                 </el-form-item>
                 <el-form-item label="备注" prop="remarks">

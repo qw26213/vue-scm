@@ -1,5 +1,5 @@
 <template>
-    <div class="homeMain">
+    <div class="app-container">
         <el-row :gutter="40" class="panel-group">
             <el-col :xs="24" :sm="24" :lg="24" class="card-panel-col">
                 <el-card class="box-card">
@@ -102,7 +102,13 @@
                 <el-form-item>
                     <el-checkbox v-model="temp.isAutoAuditWhenAutoSave" :false-label="0" :true-label="1" style="margin-right:10px">自动凭证在保存时自动审核</el-checkbox>
                     <el-checkbox v-model="temp.autoAuditFlag" :false-label="0" :true-label="1" style="margin-right:10px" :disabled="temp.isAutoTransfer==1">结账时自动审核凭证</el-checkbox>
-                    <el-checkbox v-model="temp.isAutoTransfer" :false-label="0" :true-label="1" style="margin-right:300px" @change="autoTransferChange">期末自动结转、结账</el-checkbox>
+                    <span>自动凭证类型</span>
+                    <el-select v-model="temp.autoVoucherType" style="width:160px" size="mini" :disabled="!!userInfo.glBookEntity">
+                        <el-option label="全部单据每天自动生成" :value="0" />
+                        <el-option label="仅销售单据每天自动生成" :value="1" />
+                        <el-option label="全部单据手动生成" :value="2" />
+                    </el-select>
+                    <el-checkbox v-model="temp.isAutoTransfer" :false-label="0" :true-label="1" style="margin-right:10px" @change="autoTransferChange">期末自动结转、结账</el-checkbox>
                     <el-checkbox v-if="temp.isAutoTransfer==1" v-model="temp.isAutoJzdtfy" :false-label="0" :true-label="1" style="margin-right:10px">自动结转待摊费用</el-checkbox>
                     <el-checkbox v-if="temp.isAutoTransfer==1" v-model="temp.isAutoJtzj" :false-label="0" :true-label="1" style="margin-right:10px">自动计提折旧</el-checkbox>
                     <el-checkbox v-if="temp.isAutoTransfer==1" v-model="temp.isAutoJtgz" :false-label="0" :true-label="1" style="margin-right:10px">自动计提工资</el-checkbox>
@@ -166,6 +172,7 @@ export default {
                 codingRule: '4-2-2-2-2',
                 isAutoJtfjs: 0,
                 isCoaCobinationCode: 0,
+                autoVoucherType: 0,
                 isVoucherMaxDate: 0,
                 isDispName: 0,
                 isAutoJtfjs2: 0,
@@ -333,12 +340,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.homeMain {
-    padding: 30px 30px 0;
-    background-color: rgb(240, 242, 245);
-    position: relative;
-}
-
 .panel-group {
     .card-panel-col {
         margin-bottom: 32px;

@@ -1,6 +1,7 @@
 <template>
     <div class="app-container">
         <div class="filterDiv">
+            <span class="label">截止日期</span>
             <el-date-picker :editable="false" v-model="listQuery.queryParam.billDate1" type="date" placeholder="开始日期" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
             <span class="zhi">至</span>
             <el-date-picker :editable="false" v-model="listQuery.queryParam.billDate2" type="date" placeholder="结束日期" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
@@ -15,7 +16,6 @@
         </div>
         <div class="contentDiv">
         <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
-            <el-table-column label="序号" type="index" width="50" align="center" />
             <el-table-column label="单据日期" align="center" width="100">
                 <template slot-scope="{row}">
                     <span>{{row.billDate}}</span>

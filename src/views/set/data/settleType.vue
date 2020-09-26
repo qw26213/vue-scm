@@ -1,68 +1,68 @@
 <template>
   <div class="app-container">
-    <div class="filter-container">
+    <div class="filterDiv">
       <el-input size="small" v-model="listQuery.settleTypeName" placeholder="结算方式代码/名称" style="width: 200px;" class="filter-item" />
       <el-button size="small" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
       <el-button size="small" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
     </div>
-
-    <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-CASHent-row style="width: 100%;" size="small">
-      <el-table-column label="序号" type="index" width="50" align="center">
-      </el-table-column>
-      <el-table-column label="结算方式代码">
-        <template slot-scope="{row}">
-          <span>{{row.settleTypeCode}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="结算方式名称">
-        <template slot-scope="{row}">
-          <span>{{row.settleTypeName}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="对应科目代码">
-        <template slot-scope="{row}">
-          <span>{{row.coaCode}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="收付标志" align="center">
-        <template slot-scope="{row}">
-          <span>{{row.arAp|format}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="left" label="应用场景" min-width="200" show-overflow-tooltip>
-        <template slot-scope="{row}">
-          <span>
-          {{row.poEnable==1?'采购、':''}}
-          {{row.soEnable==1?'销售、':''}}
-          {{row.psEnable==1?'预收、':''}}
-          {{row.poReturnedEnable==1?'采购退款、':''}}
-          {{row.soReturnedEnable==1?'销售退款、':''}}
-          {{row.psReturnedEnable==1?'预收退款、':''}}
-          {{row.recEnable==1?'收款、':''}}
-          {{row.payEnable==1?'付款':''}}
-          </span>
-        </template>
-      </el-table-column>
-      <el-table-column label="备注" show-overflow-tooltip>
-        <template slot-scope="{row}">
-          <span>{{row.remarks}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="是否可用" align="center">
-        <template slot-scope="{row}">
-          <span>{{row.isDisable==0?'是':'否'}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" align="center" width="190">
-        <template slot-scope="{row}">
-          <el-button type="text" size="small" @click="handleCompile(row)">编辑</el-button>
-          <el-button type="text" size="small" @click="handleDel(row.id)">删除</el-button>
-          <el-button type="text" size="small" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
-
+    <div class="contentDiv">
+      <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-CASHent-row style="width: 100%;" size="small">
+        <el-table-column label="序号" type="index" width="50" align="center">
+        </el-table-column>
+        <el-table-column label="结算方式代码">
+          <template slot-scope="{row}">
+            <span>{{row.settleTypeCode}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="结算方式名称">
+          <template slot-scope="{row}">
+            <span>{{row.settleTypeName}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="对应科目代码">
+          <template slot-scope="{row}">
+            <span>{{row.coaCode}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="收付标志" align="center">
+          <template slot-scope="{row}">
+            <span>{{row.arAp|format}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="left" label="应用场景" min-width="200" show-overflow-tooltip>
+          <template slot-scope="{row}">
+            <span>
+            {{row.poEnable==1?'采购、':''}}
+            {{row.soEnable==1?'销售、':''}}
+            {{row.psEnable==1?'预收、':''}}
+            {{row.poReturnedEnable==1?'采购退款、':''}}
+            {{row.soReturnedEnable==1?'销售退款、':''}}
+            {{row.psReturnedEnable==1?'预收退款、':''}}
+            {{row.recEnable==1?'收款、':''}}
+            {{row.payEnable==1?'付款':''}}
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column label="备注" show-overflow-tooltip>
+          <template slot-scope="{row}">
+            <span>{{row.remarks}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="是否可用" align="center">
+          <template slot-scope="{row}">
+            <span>{{row.isDisable==0?'是':'否'}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" align="center" width="190">
+          <template slot-scope="{row}">
+            <el-button type="text" size="small" @click="handleCompile(row)">编辑</el-button>
+            <el-button type="text" size="small" @click="handleDel(row.id)">删除</el-button>
+            <el-button type="text" size="small" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+    </div>
     <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增结算方式':'修改结算方式'" :visible.sync="dialogFormVisible" width="600px">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="110px" style="width: 540px;margin-left:10px">
         <el-form-item label="结算方式代码" prop="settleTypeCode">

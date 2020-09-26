@@ -1,47 +1,49 @@
 <template>
     <div class="app-container">
-        <div class="filter-container">
+        <div class="filterDiv">
             <el-input size="small" v-model="listQuery.paymentTypeName" placeholder="付款方式代码/名称" style="width: 200px;" class="filter-item" />
             <el-button size="small" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
             <el-button size="small" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
         </div>
-        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
-            <el-table-column label="序号" type="index" width="100" align="center">
-            </el-table-column>
-            <el-table-column label="付款方式代码" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.paymentTypeCode}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="付款方式名称" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.paymentTypeName}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="月数" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.month}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="备注">
-                <template slot-scope="{row}">
-                    <span>{{row.remarks}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="是否可用" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.isDisable==0?'是':'否'}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="操作" align="center" width="230">
-                <template slot-scope="{row}">
-                    <el-button type="text" size="small" @click="handleCompile(row)">编辑</el-button>
-                    <el-button type="text" size="small" @click="handleDel(row.id)">删除</el-button>
-                    <el-button type="text" size="small" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
-                </template>
-            </el-table-column>
-        </el-table>
-        <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+        <div class="contentDiv">
+            <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
+                <el-table-column label="序号" type="index" width="100" align="center">
+                </el-table-column>
+                <el-table-column label="付款方式代码" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.paymentTypeCode}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="付款方式名称" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.paymentTypeName}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="月数" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.month}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="备注">
+                    <template slot-scope="{row}">
+                        <span>{{row.remarks}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="是否可用" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.isDisable==0?'是':'否'}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" align="center" width="230">
+                    <template slot-scope="{row}">
+                        <el-button type="text" size="small" @click="handleCompile(row)">编辑</el-button>
+                        <el-button type="text" size="small" @click="handleDel(row.id)">删除</el-button>
+                        <el-button type="text" size="small" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+        </div>
         <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增付款方式':'修改付款方式'" :visible.sync="dialogFormVisible" width="460px">
             <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="110px" style="width: 400px; margin-left:10px;">
                 <el-form-item label="付款方式代码" prop="paymentTypeCode">
