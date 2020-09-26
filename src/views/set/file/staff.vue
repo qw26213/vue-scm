@@ -53,11 +53,11 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="380">
         <template slot-scope="{row}">
-          <el-button type="primary" size="small" @click="handleUpdate1(row.creditLimit,row.id)">改信用额度</el-button>
-          <el-button type="default" size="small" @click="handleUpdate2(row.overdraftBalance,row.id)">改已赊销金额</el-button>
-          <el-button type="primary" size="small" @click="handleCompile(row)">编辑</el-button>
-          <el-button type="danger" size="small" @click="handleDel(row.id)">删除</el-button>
-          <el-button type="warning" size="small" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
+          <el-button type="text" size="small" @click="handleUpdate1(row.creditLimit,row.id)">改信用额度</el-button>
+          <el-button type="text" size="small" @click="handleUpdate2(row.overdraftBalance,row.id)">改已赊销金额</el-button>
+          <el-button type="primatextry" size="small" @click="handleCompile(row)">编辑</el-button>
+          <el-button type="text" size="small" @click="handleDel(row.id)">删除</el-button>
+          <el-button type="text" size="small" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
         </template>
       </el-table-column>
     </el-table>

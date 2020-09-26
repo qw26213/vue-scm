@@ -24,9 +24,9 @@
             </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="{row}">
-                    <el-button v-if="row.isSystem!=1" type="default" size="small" @click="toModify(row)">编辑</el-button>
-                    <el-button type="primary" size="small" @click="toModal(row)">查看</el-button>
-                    <el-button type="danger" size="small" @click="delModal(row.id)">删除</el-button>
+                    <el-button v-if="row.isSystem!=1" type="text" size="small" @click="toModify(row)">编辑</el-button>
+                    <el-button type="text" size="small" @click="toModal(row)">查看</el-button>
+                    <el-button type="text" size="small" @click="delModal(row.id)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>

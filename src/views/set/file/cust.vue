@@ -22,9 +22,9 @@
                     </div>
                 </el-dropdown-menu>
             </el-dropdown>
-            <el-button size="small" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
-            <el-button size="small" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
-            <el-button size="small" style="float:right" type="primary" @click="showLine">客户地图</el-button>
+            <el-button size="small" type="text" icon="el-icon-search" @click="handleFilter">查询</el-button>
+            <el-button size="small" type="text" icon="el-icon-plus" @click="handleAdd">新增</el-button>
+            <el-button size="small" style="float:right" type="text" @click="showLine">客户地图</el-button>
         </div>
         <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
             <el-table-column label="序号" type="index" width="50" align="center">

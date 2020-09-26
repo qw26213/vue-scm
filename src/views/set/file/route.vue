@@ -30,11 +30,11 @@
             </el-table-column>
             <el-table-column label="操作" align="left" width="350">
                 <template slot-scope="{row}">
-                    <el-button type="primary" size="small" @click="handleAssign1(row)">分配用户</el-button>
-                    <el-button type="primary" size="small" @click="handleAssign2(row)">分配客户</el-button>
-                    <el-button type="default" size="small" @click="handleCompile(row)">编辑</el-button>
-                    <el-button type="danger" size="small" @click="handleDel(row.id)">删除</el-button>
-                    <el-button type="warning" size="small" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
+                    <el-button type="text" size="small" @click="handleAssign1(row)">分配用户</el-button>
+                    <el-button type="text" size="small" @click="handleAssign2(row)">分配客户</el-button>
+                    <el-button type="text" size="small" @click="handleCompile(row)">编辑</el-button>
+                    <el-button type="text" size="small" @click="handleDel(row.id)">删除</el-button>
+                    <el-button type="text" size="small" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
                 </template>
             </el-table-column>
         </el-table>

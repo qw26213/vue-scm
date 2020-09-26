@@ -31,9 +31,9 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="230">
         <template slot-scope="{row}">
-          <el-button type="primary" size="small" @click="handleCompile(row)">编辑</el-button>
-          <el-button type="danger" size="small" @click="handleDel(row.id)">删除</el-button>
-          <el-button type="warning" size="small" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
+          <el-button type="text" size="small" @click="handleCompile(row)">编辑</el-button>
+          <el-button type="text" size="small" @click="handleDel(row.id)">删除</el-button>
+          <el-button type="text" size="small" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
         </template>
       </el-table-column>
     </el-table>
