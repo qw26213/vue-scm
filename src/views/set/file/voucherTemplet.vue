@@ -5,7 +5,7 @@
             <el-button size="small" class="filter-item" style="margin-left: 10px;" type="primary" @click="handleSync">同步模板数据</el-button>
         </div>
         <div class="contentDiv">
-        <el-table :key="tableKey" :data="tableData" border fit highlight-current-row style="width: 100%;">
+        <el-table :key="tableKey" :data="tableData" size="small" border fit highlight-current-row style="width: 100%;">
             <el-table-column label="序号" type="index" width="100" align="center">
             </el-table-column>
             <el-table-column label="模板名称">
