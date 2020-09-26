@@ -101,7 +101,7 @@
                 </el-form-item>
                 <el-form-item>
                     <span>自动凭证类型</span>
-                    <el-select v-model="temp.autoVoucherType" style="width:160px" size="mini" :disabled="!!userInfo.glBookEntity">
+                    <el-select v-model="temp.autoVoucherType" style="width:160px" size="mini">
                         <el-option label="全部单据每天自动生成" :value="0" />
                         <el-option label="仅销售单据每天自动生成" :value="1" />
                         <el-option label="全部单据手动生成" :value="2" />

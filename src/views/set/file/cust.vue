@@ -27,89 +27,89 @@
             <el-button size="small" style="float:right" type="primary" @click="showLine">客户地图</el-button>
         </div>
         <div class="contentDiv">
-        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
-            <el-table-column label="序号" type="index" width="50" align="center">
-            </el-table-column>
-            <el-table-column label="客户代码">
-                <template slot-scope="{row}">
-                    <span>{{row.custCode}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="客户名称">
-                <template slot-scope="{row}">
-                    <span>{{row.custName}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="助记码">
-                <template slot-scope="{row}">
-                    <span>{{row.mnemonicCode}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="简称">
-                <template slot-scope="{row}">
-                    <span>{{row.abbr}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="地址" show-overflow-tooltip>
-                <template slot-scope="{row}">
-                    <span>{{row.addr}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="联系人">
-                <template slot-scope="{row}">
-                    <span>{{row.contact}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="电话">
-                <template slot-scope="{row}">
-                    <span>{{row.tel}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="微信号">
-                <template slot-scope="{row}">
-                    <span>{{row.wechat}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="预收余额" align="right" width="100">
-                <template slot-scope="{row}">
-                    <span>{{row.advrBalance|Fixed}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="赊销金额" align="right" width="100">
-                <template slot-scope="{row}">
-                    <span>{{row.creditLimit|Fixed}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="已赊销金额" align="right" width="100">
-                <template slot-scope="{row}">
-                    <span>{{row.overdraftBalance|Fixed}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="纳税人识别号" align="right" width="110">
-                <template slot-scope="{row}">
-                    <span>{{row.taxRegistrationCertificateNo}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="是否开票" width="80" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.isInvoice==1?'是':'否'}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="是否可用" width="80" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.isDisable==0?'是':'否'}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="操作" align="center" width="280">
-                <template slot-scope="{row}">
-                    <el-button type="text" size="small" @click="handleUpdate(row.overdraftBalance, row.id)">改已赊销金额</el-button>
-                    <el-button type="text" size="small" @click="handleCompile(row)">编辑</el-button>
-                    <el-button type="text" size="small" @click="handleDel(row.id)">删除</el-button>
-                    <el-button type="text" size="small" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
-                </template>
-            </el-table-column>
-        </el-table>
-        <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
+            <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
+                <el-table-column label="序号" type="index" width="50" align="center">
+                </el-table-column>
+                <el-table-column label="客户代码">
+                    <template slot-scope="{row}">
+                        <span>{{row.custCode}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="客户名称">
+                    <template slot-scope="{row}">
+                        <span>{{row.custName}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="助记码">
+                    <template slot-scope="{row}">
+                        <span>{{row.mnemonicCode}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="简称">
+                    <template slot-scope="{row}">
+                        <span>{{row.abbr}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="地址" show-overflow-tooltip>
+                    <template slot-scope="{row}">
+                        <span>{{row.addr}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="联系人">
+                    <template slot-scope="{row}">
+                        <span>{{row.contact}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="电话">
+                    <template slot-scope="{row}">
+                        <span>{{row.tel}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="微信号">
+                    <template slot-scope="{row}">
+                        <span>{{row.wechat}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="预收余额" align="right" width="100">
+                    <template slot-scope="{row}">
+                        <span>{{row.advrBalance|Fixed}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="赊销金额" align="right" width="100">
+                    <template slot-scope="{row}">
+                        <span>{{row.creditLimit|Fixed}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="已赊销金额" align="right" width="100">
+                    <template slot-scope="{row}">
+                        <span>{{row.overdraftBalance|Fixed}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="纳税人识别号" align="right" width="110">
+                    <template slot-scope="{row}">
+                        <span>{{row.taxRegistrationCertificateNo}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="是否开票" width="80" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.isInvoice==1?'是':'否'}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="是否可用" width="80" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.isDisable==0?'是':'否'}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" align="center" width="280">
+                    <template slot-scope="{row}">
+                        <el-button type="text" size="small" @click="handleUpdate(row.overdraftBalance, row.id)">改已赊销金额</el-button>
+                        <el-button type="text" size="small" @click="handleCompile(row)">编辑</el-button>
+                        <el-button type="text" size="small" @click="handleDel(row.id)">删除</el-button>
+                        <el-button type="text" size="small" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
         </div>
         <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增客户':'修改客户'" :visible.sync="dialogFormVisible" width="635px">
             <el-form ref="dataForm" :rules="rules" :model="temp" :inline="true" label-position="right" label-width="95px" style="width: 600px; margin-left:10px;">
@@ -325,12 +325,9 @@ export default {
                 { lng: 114.00800, lat: 22.550000 },
                 { lng: 114.00900, lat: 22.550000 },
             ];
-            points.forEach((item,index) => {
+            points.forEach((item, index) => {
                 var point = new BMap.Point(item.lng, item.lat)
-                var  myIcon  =  new  BMap.Icon("http://api.map.baidu.com/img/markers.png",  new BMap.Size(23,  25), {
-                    offset: new BMap.Size(10,  25),
-                    imageOffset: new BMap.Size(0, 0 - index * 25)
-               });
+                var  myIcon  =  new  BMap.Icon("http://api.map.baidu.com/img/markers.png",  new  BMap.Size(23,  25), {     offset: new BMap.Size(10,  25),     imageOffset: new BMap.Size(0, 0  - index * 25)   });
                 var marker = new BMap.Marker(point,   { icon:  myIcon })
                 map.addOverlay(marker)
             })
