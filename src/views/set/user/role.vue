@@ -1,9 +1,9 @@
 <template>
     <div class="app-container">
         <div class="filter-container">
-            <el-button size="mini" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
+            <el-button size="small" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
         </div>
-        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini">
+        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
             <el-table-column label="序号" type="index" width="100" align="center">
             </el-table-column>
             <el-table-column label="角色代码">
@@ -28,9 +28,9 @@
             </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="{row}">
-                    <el-button type="primary" size="mini" @click="showAssign(row)">编辑权限</el-button>
-                    <el-button v-if="row.isSystem !=1" type="default" size="mini" @click="handleCompile(row)">编辑</el-button>
-                    <el-button v-if="row.isSystem !=1" type="danger" size="mini" @click="handleDel(row.id)">删除</el-button>
+                    <el-button type="primary" size="small" @click="showAssign(row)">编辑权限</el-button>
+                    <el-button v-if="row.isSystem !=1" type="default" size="small" @click="handleCompile(row)">编辑</el-button>
+                    <el-button v-if="row.isSystem !=1" type="danger" size="small" @click="handleDel(row.id)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>

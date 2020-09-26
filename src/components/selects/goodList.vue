@@ -1,5 +1,5 @@
 <template>
-  <el-select v-model="curId" filterable remote reserve-keyword :remote-method="remoteGet" size="mini" @change="changeVal" placeholder="选择商品">
+  <el-select v-model="curId" filterable remote reserve-keyword :remote-method="remoteGet" size="small" @change="changeVal" placeholder="选择商品">
     <el-option v-for="item in itemList" :key="item.id" :label="item.itemName" :value="item.id" />
   </el-select>
 </template>

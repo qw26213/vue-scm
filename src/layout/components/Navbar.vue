@@ -46,7 +46,7 @@
             </div>
             <div slot="footer" class="dialog-footer" align="right">
                 <el-checkbox v-model="isTodayShow" style="float:left;margin-right:5px;font-size:12px">今天不再显示</el-checkbox>
-                <el-button type="primary" @click="closeModal" size="mini">确定</el-button>
+                <el-button type="primary" @click="closeModal" size="small">确定</el-button>
             </div>
         </el-dialog>
     </div>
@@ -59,7 +59,6 @@ import Breadcrumb from "@/components/Breadcrumb";
 import Hamburger from "@/components/Hamburger";
 import qq from "@/components/qq";
 import Screenfull from "@/components/Screenfull";
-import SizeSelect from "@/components/SizeSelect";
 import Search from "@/components/HeaderSearch";
 import help from "@/components/help";
 import { setToken, getToken } from "@/utils/auth";
@@ -70,7 +69,6 @@ export default {
         Hamburger,
         qq,
         Screenfull,
-        SizeSelect,
         Search,
         help
     },

@@ -1,5 +1,5 @@
 <template>
-    <el-select v-model="curId" style="width:145px" :disabled="selectDisabled" placeholder="选择业务类型" size="mini" @change="changeVal">
+    <el-select v-model="curId" style="width:145px" :disabled="selectDisabled" placeholder="选择业务类型" size="small" @change="changeVal">
         <el-option v-for="item in list" :label="item.bizTypeName" :value="item.id"></el-option>
     </el-select>
 </template>

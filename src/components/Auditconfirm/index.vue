@@ -15,7 +15,7 @@
       </div>
   </el-dialog>
   <el-dialog v-else :close-on-click-modal="false" title="查看审核意见" :visible.sync="visible" width="600px">
-      <el-table style="width: 100%;" :data="remarklist" size="mini" border resize>
+      <el-table style="width: 100%;" :data="remarklist" size="small" border resize>
           <el-table-column label="审核日期" prop="auditDate" width="140" align="center" />
           <el-table-column label="审核人" prop="auditorName" width="120" align="center" />
           <el-table-column label="审核意见" prop="remarks" />

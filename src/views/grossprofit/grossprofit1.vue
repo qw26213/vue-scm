@@ -1,10 +1,10 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-date-picker :editable="false" v-model="listQuery.date" type="date" placeholder="统计日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
-      <el-button size="mini" type="primary" @click="getList">查询</el-button>
+      <el-date-picker :editable="false" v-model="listQuery.date" type="date" placeholder="统计日期" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+      <el-button size="small" type="primary" @click="getList">查询</el-button>
     </div>
-    <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini" show-summary>
+    <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small" show-summary>
       <el-table-column label="序号" type="index" width="50" align="center">
       </el-table-column>
       <el-table-column label="单据日期" align="center">

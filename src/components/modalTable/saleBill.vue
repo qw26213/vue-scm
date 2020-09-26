@@ -2,14 +2,14 @@
     <div>
         <el-dialog :close-on-click-modal="false" title="请选择销售单" :visible.sync="visible" width="800px">
             <div class="filter-container">
-                <el-date-picker :editable="false" v-model="listQuery.queryParam.date1" type="date" placeholder="开始日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+                <el-date-picker :editable="false" v-model="listQuery.queryParam.date1" type="date" placeholder="开始日期" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
                 <span class="zhi">至</span>
-                <el-date-picker :editable="false" v-model="listQuery.queryParam.date2" type="date" placeholder="结束日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
-                <el-input size="mini" v-model="listQuery.queryParam.billNo" placeholder="单据号" style="width: 120px;" />
+                <el-date-picker :editable="false" v-model="listQuery.queryParam.date2" type="date" placeholder="结束日期" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+                <el-input size="small" v-model="listQuery.queryParam.billNo" placeholder="单据号" style="width: 120px;" />
                 <custList @selectChange="selectChange" ctrType="list"></custList>
-                <el-button size="mini" type="primary" @click="getList">查询</el-button>
+                <el-button size="small" type="primary" @click="getList">查询</el-button>
             </div>
-            <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini">
+            <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
                 <el-table-column label="序号" type="index" width="50" align="center" />
                 <el-table-column label="单据日期" align="center" width="100">
                     <template slot-scope="{row}">
@@ -48,7 +48,7 @@
                 </el-table-column>
                 <el-table-column label="操作" align="center" width="80">
                     <template slot-scope="{row}">
-                        <el-button type="primary" size="mini" @click="handleSelect(row.id)">选择</el-button>
+                        <el-button type="primary" size="small" @click="handleSelect(row.id)">选择</el-button>
                     </template>
                 </el-table-column>
             </el-table>

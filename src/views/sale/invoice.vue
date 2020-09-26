@@ -1,19 +1,19 @@
 <template>
     <div class="app-container">
         <div class="filter-container">
-            <el-date-picker :editable="false" v-model="listQuery.queryParam.invoiceDate1" type="date" placeholder="开始日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+            <el-date-picker :editable="false" v-model="listQuery.queryParam.invoiceDate1" type="date" placeholder="开始日期" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
             <span class="zhi">至</span>
-            <el-date-picker :editable="false" v-model="listQuery.queryParam.invoiceDate2" type="date" placeholder="结束日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
-            <el-input size="mini" v-model="listQuery.invoiceNo" placeholder="发票号" style="width: 120px;" />
+            <el-date-picker :editable="false" v-model="listQuery.queryParam.invoiceDate2" type="date" placeholder="结束日期" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+            <el-input size="small" v-model="listQuery.invoiceNo" placeholder="发票号" style="width: 120px;" />
             <custList @selectChange="selectChange" ctrType="list" />
-            <el-select v-model="listQuery.queryParam.status" placeholder="发票状态" size="mini">
+            <el-select v-model="listQuery.queryParam.status" placeholder="发票状态" size="small">
                 <el-option label="全部" :value="null" />
                 <el-option label="未审核" :value="0" />
                 <el-option label="已审核" :value="1" />
                 <el-option label="已完成" :value="9" />
             </el-select>
-            <el-button size="mini" type="primary" @click="getList">查询</el-button>
-            <el-button size="mini" type="primary" @click="handleAdd">新增</el-button>
+            <el-button size="small" type="primary" @click="getList">查询</el-button>
+            <el-button size="small" type="primary" @click="handleAdd">新增</el-button>
         </div>
         <el-table :key="tableKey" v-loading="listLoading" :data="tableData" size="small" border fit highlight-current-row>
             <el-table-column label="发票日期" align="center" width="120">

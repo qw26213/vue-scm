@@ -1,16 +1,16 @@
 <template>
     <div class="app-container">
-        <div class="filter-container">
+        <div class="filterDiv">
             <label class="label">统计期间</label>
-            <el-date-picker :editable="false" v-model="listQuery.billDate1" type="date" placeholder="开始日期" size="mini" :clearable="false" value-format="yyyy-MM-dd" />
+            <el-date-picker :editable="false" v-model="listQuery.billDate1" type="date" placeholder="开始日期" size="small" :clearable="false" value-format="yyyy-MM-dd" />
             <span class="zhi">至</span>
-            <el-date-picker :editable="false" v-model="listQuery.billDate2" type="date" placeholder="结束日期" size="mini" :clearable="false" value-format="yyyy-MM-dd" />
+            <el-date-picker :editable="false" v-model="listQuery.billDate2" type="date" placeholder="结束日期" size="small" :clearable="false" value-format="yyyy-MM-dd" />
             <label class="label ml10">统计表类型</label>
-            <el-select v-model="listQuery.groupDateType" placeholder="统计表类型" size="mini">
+            <el-select v-model="listQuery.groupDateType" placeholder="统计表类型" size="small">
                 <el-option v-for="item in methodList" :label="item.label" :value="item.val" :key="item.val" />
             </el-select>
             <label class="label ml10">品类级次</label>
-            <el-select v-model="listQuery.invCatgLevel" placeholder="品类级次" size="mini">
+            <el-select v-model="listQuery.invCatgLevel" placeholder="品类级次" size="small">
                 <el-option label="一级" value="1" />
                 <el-option label="二级" value="2" />
                 <el-option label="三级" value="3" />
@@ -22,7 +22,7 @@
             <el-checkbox v-model="listQuery.rotate" false-label="0" true-label="1">横向打印</el-checkbox>
             <el-popover placement="bottom" title="选择模板" width="500" trigger="click">
                 <div>
-                  <el-table style="width: 100%;" :data="templatelist" size="mini" resize>
+                  <el-table style="width: 100%;" :data="templatelist" size="small" resize>
                       <el-table-column label="模板名称" prop="queryName" width="120" align="left" show-overflow-tooltip />
                       <el-table-column label="模板类型" width="100" align="center">
                         <template slot-scope="{row}">
@@ -40,30 +40,32 @@
                       </el-table-column>
                   </el-table>
                 </div>
-                <el-button size="mini" slot="reference">模板查询<i class="el-icon-arrow-down" style="margin-left:3px" /></el-button>
+                <el-button size="small" slot="reference">模板查询<i class="el-icon-arrow-down" style="margin-left:3px" /></el-button>
             </el-popover>
             <br/>
             <label class="label" id="level01">一级汇总</label>
-            <el-select v-model="listQuery.param1" style="width:100px" placeholder="一级汇总" size="mini">
+            <el-select v-model="listQuery.param1" style="width:100px" placeholder="一级汇总" size="small">
                 <el-option v-for="item in levellist" :label="item" :value="item" :key="item" />
             </el-select>
             <label class="label ml10">二级汇总</label>
-            <el-select v-model="listQuery.param2" style="width:100px" placeholder="二级汇总" size="mini">
+            <el-select v-model="listQuery.param2" style="width:100px" placeholder="二级汇总" size="small">
                 <el-option v-for="item in levellist" :label="item" :value="item" :key="item" />
             </el-select>
             <label class="label ml10">三级汇总</label>
-            <el-select v-model="listQuery.param3" style="width:100px" placeholder="三级汇总" size="mini">
+            <el-select v-model="listQuery.param3" style="width:100px" placeholder="三级汇总" size="small">
                 <el-option v-for="item in levellist" :label="item" :value="item" :key="item" />
             </el-select>
-            <el-button size="mini" @click="handleSave">保存选择</el-button>
-            <el-button size="mini" type="primary" @click="getList">查询</el-button>
-            <el-button size="mini" type="default" @click="printBook">打印</el-button>
-            <el-button size="mini" type="warning" @click="exportBook">导出</el-button>
+            <el-button size="small" @click="handleSave">保存选择</el-button>
+            <el-button size="small" type="primary" @click="getList">查询</el-button>
+            <el-button size="small" type="default" @click="printBook">打印</el-button>
+            <el-button size="small" type="warning" @click="exportBook">导出</el-button>
         </div>
-        <el-table :key="tableKey" v-loading="listLoading" :data="pageData" border fit highlight-current-row style="width: 100%;" size="mini">
-            <el-table-column v-for="(it, i) in columns" :key="i" :label="it.label" :prop="it.key" :align="it.align" />
-        </el-table>
-        <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getDataByPage" />
+        <div class="contentDiv">
+            <el-table :key="tableKey" v-loading="listLoading" :data="pageData" fit highlight-current-row style="width: 100%;" size="small">
+                <el-table-column v-for="(it, i) in columns" :key="i" :label="it.label" :prop="it.key" :align="it.align" />
+            </el-table>
+            <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getDataByPage" />
+        </div>
         <saveSelect :dialogvisible.sync="selectModalVisible" @saveTemplate="saveTemplate" />
     </div>
 </template>
@@ -225,12 +227,3 @@ export default {
     }
 }
 </script>
-<style scoped>
-.label {
-    font-size: 14px;
-    color: #606266;
-    line-height: 40px;
-    padding: 0 5px 0 0;
-}
-.ml10{margin-left: 10px}
-</style>

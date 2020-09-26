@@ -15,8 +15,8 @@
                     <staffList @selectChange="selectChange" :selectId="temp.staffId"></staffList>
                 </el-form-item>
                 <el-form-item label="现结金额:" prop="amount" label-width="72px">
-                    <el-input size="mini" v-model="temp.amount" placeholder="现结金额" style="width:72px" disabled />
-                    <el-button size="mini" style="width:44px;padding:6px" @click="showSettleType">选择</el-button>
+                    <el-input size="small" v-model="temp.amount" placeholder="现结金额" style="width:72px" disabled />
+                    <el-button size="small" style="width:44px;padding:6px" @click="showSettleType">选择</el-button>
                 </el-form-item>
                 <el-button size="small" class="filter-item" type="primary" @click="showSaleBill">选择采购单</el-button>
             </el-form>
@@ -58,7 +58,7 @@
                 <el-date-picker :editable="false" v-model="modalQuery.billDate1" type="date" placeholder="开始日期" size="small" :clearable="false" value-format="yyyy-MM-dd" style="width:140px;" />
                 <span class="zhi">至</span>
                 <el-date-picker :editable="false" v-model="modalQuery.billDate2" type="date" placeholder="结束日期" size="small" :clearable="false" value-format="yyyy-MM-dd" style="width:140px;" />
-                <el-button size="mini" type="primary" @click="getPurechaseList">查询</el-button>
+                <el-button size="small" type="primary" @click="getPurechaseList">查询</el-button>
             </div>
             <el-table ref="dataTable" :data="modalData" border fit highlight-current-row style="width: 100%;" size="small" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="50" align="center" :reserve-selection="true" />
@@ -89,7 +89,7 @@
             </div>
         </el-dialog>
         <el-dialog :close-on-click-modal="false" title="结算方式" :visible.sync="dialogFormVisible" width="420px">
-            <el-table :data="settleData" border fit highlight-current-row style="width: 100%;" size="mini" cell-class-name="tdCell">
+            <el-table :data="settleData" border fit highlight-current-row style="width: 100%;" size="small" cell-class-name="tdCell">
                 <el-table-column label="名称" width="146">
                     <template slot-scope="scope">
                         <settleTypeList :settleTypeArr="settleTypeArr" :selectCode="scope.row.settleTypeCode" :selectArap="scope.row.arAp" :selectName="scope.row.settleTypeName" :index="scope.$index" @settleTypeChange="settleTypeChange">

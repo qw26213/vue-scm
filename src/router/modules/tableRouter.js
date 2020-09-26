@@ -85,7 +85,7 @@ const reportRouter = {
                 title: '出库统计'
             }
         }, {
-            path: 'allocation',
+            path: 'allocation1',
             component: () => import ('@/views/table/store/allocation'),
             name: 'allocation1',
             meta: {

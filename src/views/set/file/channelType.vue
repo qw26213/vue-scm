@@ -5,10 +5,10 @@
   </div>
   <div class="app-container">
     <div class="filter-container">
-      <el-button size="mini" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
+      <el-button size="small" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
     </div>
 
-    <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini" row-key="id">
+    <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small" row-key="id">
       <el-table-column label="序号" type="index" width="100" align="center">
       </el-table-column>
       <el-table-column label="渠道类型代码">
@@ -33,10 +33,10 @@
       </el-table-column>
       <el-table-column label="操作" align="left" width="250">
         <template slot-scope="{row}">
-          <el-button type="default" size="mini" @click="handleCompile(row)">编辑</el-button>
-          <el-button type="danger" size="mini" @click="handleDel(row.id)">删除</el-button>
-          <el-button type="warning" size="mini" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
-          <el-button type="primary" size="mini" v-if="row.leaf==1" @click="handleAssign(row)">分配客户</el-button>
+          <el-button type="default" size="small" @click="handleCompile(row)">编辑</el-button>
+          <el-button type="danger" size="small" @click="handleDel(row.id)">删除</el-button>
+          <el-button type="warning" size="small" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
+          <el-button type="primary" size="small" v-if="row.leaf==1" @click="handleAssign(row)">分配客户</el-button>
         </template>
       </el-table-column>
     </el-table>

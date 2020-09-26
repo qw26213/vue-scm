@@ -1,12 +1,12 @@
 <template>
     <div class="app-container">
         <div class="filter-container1" style="margin-bottom:15px">
-            <el-radio-group v-model="coaClassCode" @change="getData" size="mini">
+            <el-radio-group v-model="coaClassCode" @change="getData" size="small">
                 <el-radio-button v-for="(item,index) in coaClassList" :key="index" :label="item.coaClassCode">{{item.coaClassName}}</el-radio-button>
             </el-radio-group>
-            <el-button type="primary" size="mini" style="float:right" @click="updateDispNameByUuid()">校正名称</el-button>
+            <el-button type="primary" size="small" style="float:right" @click="updateDispNameByUuid()">校正名称</el-button>
         </div>
-        <el-table :data="tableData" border fit resize empty-text="无同步数据" style="width: 100%;" size="mini">
+        <el-table :data="tableData" border fit resize empty-text="无同步数据" style="width: 100%;" size="small">
             <el-table-column label="科目编码">
                 <template slot-scope="{row}">
                     <span>{{row.coaCode}}</span>
@@ -49,10 +49,10 @@
             </el-table-column>
             <el-table-column label="操作" width="260" align="center">
                 <template slot-scope="{row}">
-                    <el-button type="primary" size="mini" @click="handleAdd(row)">新增下级</el-button>
-                    <el-button type="default" size="mini" @click="handleCompile(row)">修改</el-button>
-                    <el-button type="danger" size="mini" @click="handleDel(row)">删除</el-button>
-                    <el-button type="warning" size="mini" @click="handleDisable(row)">{{row.isDisable == 1?'解禁':'禁用'}}</el-button>
+                    <el-button type="primary" size="small" @click="handleAdd(row)">新增下级</el-button>
+                    <el-button type="default" size="small" @click="handleCompile(row)">修改</el-button>
+                    <el-button type="danger" size="small" @click="handleDel(row)">删除</el-button>
+                    <el-button type="warning" size="small" @click="handleDisable(row)">{{row.isDisable == 1?'解禁':'禁用'}}</el-button>
                 </template>
             </el-table-column>
         </el-table>

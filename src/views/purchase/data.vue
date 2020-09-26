@@ -1,29 +1,29 @@
 <template>
     <div class="app-container">
         <div class="filter-container">
-            <el-date-picker :editable="false" v-model="listQuery.queryParam.billDate1" type="date" placeholder="开始日期" size="mini" :clearable="false" value-format="yyyy-MM-dd">
+            <el-date-picker :editable="false" v-model="listQuery.queryParam.billDate1" type="date" placeholder="开始日期" size="small" :clearable="false" value-format="yyyy-MM-dd">
             </el-date-picker>
             <span class="zhi">至</span>
-            <el-date-picker :editable="false" v-model="listQuery.queryParam.billDate2" type="date" placeholder="结束日期" size="mini" :clearable="false" value-format="yyyy-MM-dd">
+            <el-date-picker :editable="false" v-model="listQuery.queryParam.billDate2" type="date" placeholder="结束日期" size="small" :clearable="false" value-format="yyyy-MM-dd">
             </el-date-picker>
-            <el-input size="mini" v-model="listQuery.queryParam.billNo" placeholder="单据号" />
+            <el-input size="small" v-model="listQuery.queryParam.billNo" placeholder="单据号" />
             <supplierList @selectChange="selectChange" ctrType="list"></supplierList>
             <staffList @selectChange="selectChange" ctrType="list"></staffList>
             <warehouseList @selectChange="selectChange" ctrType="list"></warehouseList>
-            <el-select v-model="listQuery.queryParam.status" placeholder="单据状态" size="mini">
+            <el-select v-model="listQuery.queryParam.status" placeholder="单据状态" size="small">
                 <el-option label="全部" :value="null"></el-option>
                 <el-option label="未审核" value="0"></el-option>
                 <el-option label="已审核" value="1"></el-option>
             </el-select>
-            <el-select v-model="listQuery.queryParam.isJeHeader" placeholder="凭证状态" size="mini">
+            <el-select v-model="listQuery.queryParam.isJeHeader" placeholder="凭证状态" size="small">
                 <el-option label="全部" :value="null"></el-option>
                 <el-option label="未生成凭证" value="0"></el-option>
                 <el-option label="已生成凭证" value="1"></el-option>
             </el-select>
-            <el-button size="mini" type="primary" @click="getList">查询</el-button>
-            <el-button size="mini" type="primary" @click="handleAdd">新增</el-button>
+            <el-button size="small" type="primary" @click="getList">查询</el-button>
+            <el-button size="small" type="primary" @click="handleAdd">新增</el-button>
         </div>
-        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini">
+        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
             <el-table-column label="序号" type="index" width="50" align="center">
             </el-table-column>
             <el-table-column label="单据日期" align="center" width="120">

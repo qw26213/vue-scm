@@ -2,19 +2,19 @@
     <div class="main">
         <div class="leftTree">
             <div style="margin-bottom:10px">
-                <el-input v-model="search" size="mini" placeholder="商品名称搜索" style="width:150px;margin-right: 5px" />
-                <el-button size="mini" class="filter-item" type="primary" @click="getData">搜索</el-button>
+                <el-input v-model="search" size="small" placeholder="商品名称搜索" style="width:150px;margin-right: 5px" />
+                <el-button size="small" class="filter-item" type="primary" @click="getData">搜索</el-button>
             </div>
-            <el-table :data="treeData" border fit style="width: 100%;" size="mini" :row-class-name="rowClass" :row-style="curStyle" height="720" @row-click="rowClick">
+            <el-table :data="treeData" border fit style="width: 100%;" size="small" :row-class-name="rowClass" :row-style="curStyle" height="720" @row-click="rowClick">
                 <el-table-column label="商品名称" prop="itemName" align="left" show-overflow-tooltip />
                 <el-table-column label="规格" prop="norms" align="right" />
             </el-table>
         </div>
         <div class="app-container">
             <div class="filter-container">
-                <el-button size="mini" class="filter-item" type="primary" @click="handleAnyModify">批量修改</el-button>
+                <el-button size="small" class="filter-item" type="primary" @click="handleAnyModify">批量修改</el-button>
             </div>
-            <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit style="width: 100%;" size="mini">
+            <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit style="width: 100%;" size="small">
                 <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
                 <el-table-column label="价格组编码">
                     <template slot-scope="{row}">
@@ -48,9 +48,9 @@
                 </el-table-column>
                 <el-table-column label="操作" align="center" width="220">
                     <template slot-scope="{row}">
-                        <el-button type="primary" size="mini" @click="handleCompile(row)">改售价</el-button>
-                        <el-button type="danger" size="mini" @click="handleDel(row.id)">删除</el-button>
-                        <el-button type="warning" size="mini" @click="updateStatus(row)">{{row.isDisable==1?'生效':'失效'}}</el-button>
+                        <el-button type="primary" size="small" @click="handleCompile(row)">改售价</el-button>
+                        <el-button type="danger" size="small" @click="handleDel(row.id)">删除</el-button>
+                        <el-button type="warning" size="small" @click="updateStatus(row)">{{row.isDisable==1?'生效':'失效'}}</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -80,16 +80,16 @@
                 </div>
             </el-dialog>
             <el-dialog :close-on-click-modal="false" title="批量修改价格" :visible.sync="dialogFormVisible2" :show-close="false" width="820px">
-                <el-table ref="checkTable" :data="tableList" border fit style="width: 100%;" size="mini" cell-class-name="compileall">
+                <el-table ref="checkTable" :data="tableList" border fit style="width: 100%;" size="small" cell-class-name="compileall">
                     <el-table-column label="价格组代码" align="left" prop="priceGroupCode" width="110"></el-table-column>
                     <el-table-column label="价格组名称" align="left" prop="priceGroupName" width="110"></el-table-column>
                     <el-table-column label="售价" align="right" width="120">
                         <template slot-scope="{row}">
-                            <el-input v-model="row.price" size="mini" placeholder="售价" style="width:100px" /></template>
+                            <el-input v-model="row.price" size="small" placeholder="售价" style="width:100px" /></template>
                     </el-table-column>
                     <el-table-column label="生效时间" width="188">
                         <template slot-scope="{row}">
-                            <el-date-picker v-model="row.effectiveDate" type="datetime" placeholder="生效时间" value-format="yyyy-MM-dd HH:mm:ss" style="width:170px" size="mini" :clearable="false">
+                            <el-date-picker v-model="row.effectiveDate" type="datetime" placeholder="生效时间" value-format="yyyy-MM-dd HH:mm:ss" style="width:170px" size="small" :clearable="false">
                             </el-date-picker>
                         </template>
                     </el-table-column>

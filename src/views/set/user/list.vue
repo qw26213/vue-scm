@@ -1,9 +1,9 @@
 <template>
     <div class="app-container">
         <div class="filter-container">
-            <el-button size="mini" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增用户</el-button>
+            <el-button size="small" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增用户</el-button>
         </div>
-        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini">
+        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
             <el-table-column label="序号" type="index" width="50" align="center">
             </el-table-column>
             <el-table-column label="企业代码">
@@ -43,8 +43,8 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="160">
                 <template slot-scope="{row}">
-                    <el-button type="default" size="mini" @click="handleCompile(row)">编辑</el-button>
-                    <el-button type="danger" size="mini" @click="handleDel(row.id)">删除</el-button>
+                    <el-button type="default" size="small" @click="handleCompile(row)">编辑</el-button>
+                    <el-button type="danger" size="small" @click="handleDel(row.id)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -88,7 +88,7 @@
                 </el-form-item> -->
                 <el-form-item label="员工" prop="staffId">
                     <el-select v-model="temp.staffId" style="width:185px">
-                        <el-option v-for="item in staffList" :value="item.id" :label="item.staffName"></el-option>
+                        <el-option v-for="item in staffList" :value="item.id" :key="item.id" :label="item.staffName"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="单据查询权限" prop="queryType">

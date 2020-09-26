@@ -1,13 +1,13 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-date-picker :editable="false" v-model="listQuery.periodCode1" type="month" placeholder="开始月份" size="mini" value-format="yyyy-MM"></el-date-picker>
+      <el-date-picker :editable="false" v-model="listQuery.periodCode1" type="month" placeholder="开始月份" size="small" value-format="yyyy-MM" />
       <span class="zhi">至</span>
-      <el-date-picker :editable="false" v-model="listQuery.periodCode2" type="month" placeholder="结束月份" size="mini" value-format="yyyy-MM"></el-date-picker>
-      <el-button size="mini" type="primary" @click="getList">查询</el-button>
-      <el-button size="mini" type="primary" @click="copyPay">复制工资表</el-button>
-      <el-button size="mini" type="primary" @click="downloadModel">下载模板</el-button>
-      <el-button size="mini" type="primary" @click="handImport">薪酬导入</el-button>
+      <el-date-picker :editable="false" v-model="listQuery.periodCode2" type="month" placeholder="结束月份" size="small" value-format="yyyy-MM" />
+      <el-button size="small" type="primary" @click="getList">查询</el-button>
+      <el-button size="small" type="primary" @click="copyPay">复制工资表</el-button>
+      <el-button size="small" type="primary" @click="downloadModel">下载模板</el-button>
+      <el-button size="small" type="primary" @click="handImport">薪酬导入</el-button>
     </div>
     <input enctype="multipart/form-data" ref="uploadFile" style="display:none" type="file" @change="importFile($event)" />
     <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;">
@@ -30,8 +30,8 @@
       </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="{row}">
-          <el-button type="primary" size="mini" @click="handleCompile(row)">编辑</el-button>
-          <el-button type="danger" size="mini" @click="showBind1(row.id)">删除</el-button>
+          <el-button type="primary" size="small" @click="handleCompile(row)">编辑</el-button>
+          <el-button type="danger" size="small" @click="showBind1(row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -45,9 +45,9 @@
           </el-select>
         </el-form-item>
         <el-form-item label="期间选择">
-          <el-date-picker :editable="false" v-model="temp1.periodStar" type="month" placeholder="月份" style="width:152px" value-format="yyyy-MM-dd"></el-date-picker>
+          <el-date-picker :editable="false" v-model="temp1.periodStar" type="month" placeholder="月份" style="width:152px" value-format="yyyy-MM-dd" />
           <span>至</span>
-          <el-date-picker :editable="false" v-model="temp1.periodEnd" type="month" placeholder="月份" style="width:152px" value-format="yyyy-MM-dd"></el-date-picker>
+          <el-date-picker :editable="false" v-model="temp1.periodEnd" type="month" placeholder="月份" style="width:152px" value-format="yyyy-MM-dd" />
         </el-form-item>
         <el-form-item label="是否覆盖">
           <el-radio v-model="temp1.cover" label="1">是</el-radio>
@@ -62,7 +62,7 @@
     <el-dialog title="薪酬导入" :visible.sync="dialogVisible2" width="460px">
       <el-form ref="dataForm" :model="temp2" label-position="left" label-width="72px" style="margin-left:10px;width:400px">
         <el-form-item label="选择月份">
-          <el-date-picker :editable="false" v-model="temp2.periodCode" type="month" placeholder="选择月份" style="width:100%" value-format="yyyy-MM"></el-date-picker>
+          <el-date-picker :editable="false" v-model="temp2.periodCode" type="month" placeholder="选择月份" style="width:100%" value-format="yyyy-MM" />
         </el-form-item>
         <el-form-item label="选择文件">
           <el-button size="small" type="primary" @click="handFileImport"><i class="el-icon-upload" style="margin-right:5px"></i>点击上传</el-button>

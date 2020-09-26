@@ -1,5 +1,5 @@
 <template>
-    <el-select v-model="curId" style="width:150px" placeholder="" size="mini" @change="changeVal">
+    <el-select v-model="curId" style="width:150px" placeholder="" size="small" @change="changeVal">
         <el-option v-for="item in list" :label="item.measName" :value="item.id"></el-option>
     </el-select>
 </template>

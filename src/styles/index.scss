@@ -92,7 +92,7 @@ aside { background: #eef1f6; padding: 8px 24px; margin-bottom: 20px; border-radi
 .dataTable .el-input__inner { padding: 0 8px; border-radius: 2px;width: 100%; }
 .el-date-editor--date .el-input__inner { padding: 0 0 0 30px; border-radius: 2px; }
 .dataTable .el-form-item__label { font-size: 12px; padding-right: 5px; }
-.el-table th>.cell { text-align: center; }
+/*.el-table th>.cell { text-align: center; }*/
 .popper__arrow { display: none !important }
 .el-select-dropdown__list { padding: 0 0; }
 .el-popper[x-placement^="bottom"] { margin-top: -3px; }
@@ -108,13 +108,12 @@ input:disabled{background-color:#ffffff;}
 .el-message-box__btns{text-align:center;padding:10px 15px 0}
 .el-message-box__btns button:nth-child(2){margin-left:20px}
 
-.filter-container .el-date-editor.el-input--mini{width: 120px;}
-.filter-container .el-select--mini{width: 120px!important;}
-.filter-container .el-input--mini{width: 120px;}
-
+.filter-container .el-date-editor.el-input--small{width: 120px;}
+.filter-container .el-select--small{width: 120px!important;}
+.filter-container .el-input--small{width: 120px;}
 .filter-container .el-input .el-input__inner {width: 100%;padding-left: 8px }
 .filter-container .el-date-editor.el-input .el-input__inner{padding-left: 30px;padding-right:20px}
-.filter-container .el-button--mini{margin-left: 10px;margin-right: 0}
+.filter-container .el-button--small{margin-left: 10px;margin-right: 0}
 .el-input--suffix .el-input__inner {padding-right: 20px!important;}
 .el-popper[x-placement^=bottom] {
     margin-top: 4px!important;
@@ -136,3 +135,30 @@ input:disabled{background-color:#ffffff;}
 *::-webkit-scrollbar-thumb { border-radius: 3px; background-color: #CCCCCC; }
 *::-webkit-scrollbar-track { background-color: #f5f5f5; }
 
+.mainPage{
+  min-height: calc(100vh - 120px);
+  padding: 20px;
+  background: rgba(65,63,112,0.1);
+}
+.filterDiv{
+  border-radius: 8px;
+  padding: 10px 20px;
+  background-color: #ffffff;
+  width:100%;
+  position:relative;
+}
+.filterDiv .label{font-size:14px;color: #606266; line-height: 40px; padding-right: 5px;}
+.filterDiv .el-date-editor.el-input--small{width: 142px;}
+.filterDiv .el-select--small{width: 120px!important;}
+.filterDiv .el-input--small{width: 120px;}
+.filterDiv .el-input .el-input__inner {width: 100%;padding-left: 8px }
+.filterDiv .el-date-editor.el-input .el-input__inner{padding-left: 30px;padding-right:20px}
+.filterDiv .el-button--small{margin-left: 10px;margin-right: 0}
+
+.contentDiv{
+  border-radius: 8px;
+  padding: 10px 20px 20px;
+  background-color: #ffffff;
+  margin-top: 10px;
+}
+.ml10{margin-left: 10px}

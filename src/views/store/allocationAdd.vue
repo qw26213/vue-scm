@@ -3,10 +3,10 @@
         <div class="dataTable">
             <el-form :inline="true" label-position="right" label-width="64px" style="width: 100%; margin-top:0px;">
                 <el-form-item label="单据日期:" prop="billDate">
-                    <el-date-picker v-model="temp.billDate" type="date" placeholder="单据日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+                    <el-date-picker v-model="temp.billDate" type="date" placeholder="单据日期" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
                 </el-form-item>
                 <el-form-item label="单据号:" prop="billNo">
-                    <el-input size="mini" v-model="temp.billNo" placeholder="单据号" disabled />
+                    <el-input size="small" v-model="temp.billNo" placeholder="单据号" disabled />
                 </el-form-item>
                 <el-form-item label="调出仓库:" prop="outWarehouseId">
                     <warehouseList @selectChange="selectChange" keyType="outWarehouseId" :selectId="temp.outWarehouseId"></warehouseList>
@@ -19,7 +19,7 @@
                 </el-form-item>
             </el-form>
         </div>
-        <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini" cell-class-name="tdCell">
+        <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="small" cell-class-name="tdCell">
             <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
             <el-table-column label="商品代码">
                 <template slot-scope="scope">
@@ -53,7 +53,7 @@
             </el-table-column>
             <el-table-column label="生产日期" width="120">
                 <template slot-scope="{row}">
-                    <el-date-picker :editable="false" v-model="row.productionDate" type="date" placeholder="" size="mini" style="width:100%" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+                    <el-date-picker :editable="false" v-model="row.productionDate" type="date" placeholder="" size="small" style="width:100%" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
                 </template>
             </el-table-column>
             <el-table-column label="保质期(天)">
@@ -70,23 +70,23 @@
         <div class="dataTable" style="margin-top: 10px">
             <el-form label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
                 <el-form-item label="备 注:" prop="remarks">
-                    <el-input size="mini" v-model="temp.remarks" placeholder="备注" style="width:790px" />
+                    <el-input size="small" v-model="temp.remarks" placeholder="备注" style="width:790px" />
                 </el-form-item>
             </el-form>
             <el-form :inline="true" label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
                 <el-form-item label="制单日期:" prop="recordDate">
-                    <el-date-picker :editable="false" v-model="temp.recordDate" type="date" placeholder="制单日期" size="mini" style="width:145px" :clearable="false" value-format="yyyy-MM-dd">
+                    <el-date-picker :editable="false" v-model="temp.recordDate" type="date" placeholder="制单日期" size="small" style="width:145px" :clearable="false" value-format="yyyy-MM-dd">
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="制单人:" prop="recorderId">
-                    <el-input size="mini" v-model="temp.recorder" placeholder="制单人" />
+                    <el-input size="small" v-model="temp.recorder" placeholder="制单人" />
                 </el-form-item>
                 <el-form-item label="审核日期:" prop="auditDate">
-                    <el-date-picker :editable="false" v-model="temp.auditDate" type="date" placeholder="审核日期" size="mini" style="width:145px" :clearable="false" value-format="yyyy-MM-dd">
+                    <el-date-picker :editable="false" v-model="temp.auditDate" type="date" placeholder="审核日期" size="small" style="width:145px" :clearable="false" value-format="yyyy-MM-dd">
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="审核人:" prop="auditorId">
-                    <el-input size="mini" v-model="temp.auditor" placeholder="审核人" />
+                    <el-input size="small" v-model="temp.auditor" placeholder="审核人" />
                 </el-form-item>
             </el-form>
         </div>

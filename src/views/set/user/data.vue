@@ -35,19 +35,19 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="540">
                 <template slot-scope="{row}">
-                    <el-button type="text" size="mini" @click="handleAssCust(row)">分配客户</el-button>
-                    <el-button type="text" size="mini" @click="handleAssign(row,1)">分配仓库</el-button>
-                    <el-button type="text" size="mini" @click="handleAssign(row,2)">分配车辆</el-button>
-                    <el-button type="text" size="mini" @click="handleAssign(row,3)">分配线路</el-button>
-                    <el-button type="text" size="mini" @click="handleAssign(row,4)">分配品牌</el-button>
-                    <el-button type="text" size="mini" @click="handleAssItem(row,5)">分配商品</el-button>
-                    <el-button type="text" size="mini" @click="handleAssign(row,6)">分配角色</el-button>
+                    <el-button type="text" size="small" @click="handleAssCust(row)">分配客户</el-button>
+                    <el-button type="text" size="small" @click="handleAssign(row,1)">分配仓库</el-button>
+                    <el-button type="text" size="small" @click="handleAssign(row,2)">分配车辆</el-button>
+                    <el-button type="text" size="small" @click="handleAssign(row,3)">分配线路</el-button>
+                    <el-button type="text" size="small" @click="handleAssign(row,4)">分配品牌</el-button>
+                    <el-button type="text" size="small" @click="handleAssItem(row,5)">分配商品</el-button>
+                    <el-button type="text" size="small" @click="handleAssign(row,6)">分配角色</el-button>
                 </template>
             </el-table-column>
         </el-table>
         <el-dialog :close-on-click-modal="false" :title="'分配'+dialogTit" :visible.sync="dialogFormVisible" :show-close="false" ::close-on-click-modal="false" width="500px">
             <el-form ref="dataForm" style="width: 460px">
-                <el-table ref="checkTable" :data="dataList" border fit highlight-current-row style="width: 100%;" size="mini" @selection-change="handleSelectionChange" @select-all="selectAll">
+                <el-table ref="checkTable" :data="dataList" border fit highlight-current-row style="width: 100%;" size="small" @selection-change="handleSelectionChange" @select-all="selectAll">
                     <el-table-column type="selection" width="50" align="center" :reserve-selection="true"></el-table-column>
                     <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
                     <el-table-column :label="dialogTit+'代码'">

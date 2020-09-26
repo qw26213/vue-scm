@@ -1,5 +1,7 @@
 import request from '@/utils/request'
 
+// ----------------仓库统计------------------
+
 export function getWarehousetable(data) {
     return request({
         url: '/drp/ic/onhandQty/queryBookQtyList',
@@ -8,6 +10,33 @@ export function getWarehousetable(data) {
     })
 }
 
+export function exportWarehouseBook(data) {
+  var exportUrl = '/drp/ic/onhandQty/exportAll';
+  var temp = document.createElement("form");
+  temp.action = exportUrl;
+  temp.method = "POST";
+  temp.style.display = 'none';
+  for (var x in data) {
+      var opt = document.createElement("textarea")
+      opt.name = x
+      opt.value = data[x]
+      temp.appendChild(opt)
+  }
+  document.body.appendChild(temp)
+  temp.submit()
+  return temp
+}
+
+export function printWarehouseBook(data) {
+  return request({
+    url: '/drp/ic/onhandQty/printAll',
+    method: 'post',
+    data
+  })
+}
+
+// ----------------车辆统计------------------
+
 export function getTrucktable(data) {
     return request({
         url: '/drp/ic/truckQty/queryBookQtyList',
@@ -15,6 +44,33 @@ export function getTrucktable(data) {
         data
     })
 }
+
+export function exportTruckBook(data) {
+  var exportUrl = '/drp/ic/truckQty/exportAll';
+  var temp = document.createElement("form");
+  temp.action = exportUrl;
+  temp.method = "POST";
+  temp.style.display = 'none';
+  for (var x in data) {
+      var opt = document.createElement("textarea")
+      opt.name = x
+      opt.value = data[x]
+      temp.appendChild(opt)
+  }
+  document.body.appendChild(temp)
+  temp.submit()
+  return temp
+}
+
+export function printTruckBook(data) {
+  return request({
+    url: '/drp/ic/truckQty/printAll',
+    method: 'post',
+    data
+  })
+}
+
+// ------------------级别列表------------------
 
 export function getAggregate(type) {
   return request({

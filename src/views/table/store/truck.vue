@@ -1,58 +1,62 @@
 <template>
     <div class="app-container">
-        <div class="filter-container">
+        <div class="filterDiv clearfix">
             <label class="label">车辆:</label>
             <truckList @selectChange="selectChange" ctrType="list" />
             <label class="label">商品:</label>
             <itemList @changeVal="selectChange" />
             <label class="label">库存:</label>
-            <el-select v-model="listQuery.qtyType" placeholder="库存" size="mini">
+            <el-select v-model="listQuery.qtyType" placeholder="库存" size="small">
                 <el-option v-for="item in qtyList" :label="item.label" :value="item.val" :key="item.val"></el-option>
             </el-select>
-            <el-button size="mini" type="primary" @click="getList">查询</el-button>
+            <el-button size="small" type="primary" @click="getList">查询</el-button>
+            <el-button style="float:right;margin-top:5px" size="small" type="default" @click="exportBook">导出</el-button>
+            <el-button style="float:right;margin-top:5px" size="small" type="default" @click="printBook">打印</el-button>
         </div>
-        <el-table :key="tableKey" v-loading="listLoading" :data="pageData" border fit highlight-current-row style="width: 100%;" size="mini">
-            <el-table-column label="车辆名称" align="left">
-                <template slot-scope="{row}">
-                    <span>{{ row.truckName }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="商品名称" align="left">
-                <template slot-scope="{row}">
-                    <span>{{ row.itemName }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="商品规格" align="center">
-                <template slot-scope="{row}">
-                    <span>{{ row.norms }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="口味/特性" align="center">
-                <template slot-scope="{row}">
-                    <span>{{ row.def1 }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="批次号" align="center">
-                <template slot-scope="{row}">
-                    <span>{{ row.batchNo }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="单位" align="center">
-                <template slot-scope="{row}">
-                    <span>{{ row.uom }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="库存" align="center">
-                <template slot-scope="{row}">
-                    <span>{{ row.qty }}</span>
-                </template>
-            </el-table-column>
-        </el-table>
-        <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getDataByPage" />
+        <div class="contentDiv">
+            <el-table :key="tableKey" v-loading="listLoading" :data="pageData" fit highlight-current-row style="width: 100%;" size="small">
+                <el-table-column label="车辆名称" align="left">
+                    <template slot-scope="{row}">
+                        <span>{{ row.truckName }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="商品名称" align="left">
+                    <template slot-scope="{row}">
+                        <span>{{ row.itemName }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="商品规格" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{ row.norms }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="口味/特性" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{ row.def1 }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="批次号" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{ row.batchNo }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="单位" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{ row.uom }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="库存" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{ row.qty }}</span>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getDataByPage" />
+        </div>
     </div>
 </template>
 <script>
-import { getTrucktable } from '@/api/table'
+import { getTrucktable, exportTruckBook, printTruckBook } from '@/api/table'
 import { getNowMonth } from '@/utils/index'
 import truckList from '@/components/selects/truckList';
 import itemList from '@/components/selects/goodList';
@@ -81,6 +85,16 @@ export default {
         this.getList()
     },
     methods: {
+        exportBook() {
+            exportTruckBook(this.listQuery)
+        },
+        printBook() {
+            printTruckBook(this.listQuery).then(res => {
+                window.open("http://"+window.location.host+res.data.data)
+            }).catch(err => {
+                this.listLoading = false
+            })
+        },
         selectChange(obj) {
             for (var key in obj) {
                 this.listQuery[key] = obj[key]

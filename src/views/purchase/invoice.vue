@@ -2,11 +2,11 @@
   <div class="app-container">
     <div class="filter-container">
       <el-date-picker editable="false" size="small" class="filter-item" v-model="dateTime" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" @change="timeChange" value-format="yyyy-MM-dd"></el-date-picker>
-      <el-button size="mini" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
-      <!-- <el-button size="mini" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button> -->
+      <el-button size="small" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
+      <!-- <el-button size="small" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button> -->
     </div>
 
-    <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini" show-summary>
+    <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small" show-summary>
       <el-table-column label="序号" type="index" width="50" align="center">
       </el-table-column>
       <el-table-column label="单据日期" align="center">
@@ -51,10 +51,10 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="260">
         <template slot-scope="{row}">
-          <el-button type="primary" size="mini" @click="handleCompile(row)">编辑</el-button>
-          <el-button type="danger" size="mini" @click="handleDel(row.id)">删除</el-button>
-          <el-button v-if="row.status==0" type="warning" size="mini" @click="handleCheck(row.id)">审核</el-button>
-          <el-button type="default" size="mini" @click="handleCreateBill(row.id)">生成进货单</el-button>
+          <el-button type="primary" size="small" @click="handleCompile(row)">编辑</el-button>
+          <el-button type="danger" size="small" @click="handleDel(row.id)">删除</el-button>
+          <el-button v-if="row.status==0" type="warning" size="small" @click="handleCheck(row.id)">审核</el-button>
+          <el-button type="default" size="small" @click="handleCreateBill(row.id)">生成进货单</el-button>
         </template>
       </el-table-column>
     </el-table>

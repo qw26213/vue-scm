@@ -1,33 +1,33 @@
 <template>
     <div class="app-container">
         <div class="filter-container">
-            <el-date-picker :editable="false" v-model="listQuery.queryParam.billDate1" type="date" placeholder="开始日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+            <el-date-picker :editable="false" v-model="listQuery.queryParam.billDate1" type="date" placeholder="开始日期" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
             <span class="zhi">至</span>
-            <el-date-picker :editable="false" v-model="listQuery.queryParam.billDate2" type="date" placeholder="结束日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
-            <el-input size="mini" v-model="listQuery.billNo" placeholder="单据号" style="width: 120px;" />
+            <el-date-picker :editable="false" v-model="listQuery.queryParam.billDate2" type="date" placeholder="结束日期" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+            <el-input size="small" v-model="listQuery.billNo" placeholder="单据号" style="width: 120px;" />
             <custList @selectChange="selectChange" ctrType="list" />
             <staffList @selectChange="selectChange" ctrType="list" :selectId="listQuery.queryParam.staffId" />
-            <el-select v-model="listQuery.queryParam.status" placeholder="单据状态" size="mini">
+            <el-select v-model="listQuery.queryParam.status" placeholder="单据状态" size="small">
                 <el-option label="全部" :value="null" />
                 <el-option label="未审核" value="0" />
                 <el-option label="已审核" value="1" />
             </el-select>
-            <el-select v-model="listQuery.queryParam.statusDelivery" placeholder="配送状态" size="mini">
+            <el-select v-model="listQuery.queryParam.statusDelivery" placeholder="配送状态" size="small">
                 <el-option label="全部" :value="null" />
                 <el-option label="未配送" :value="0" />
                 <el-option label="配送中" :value="1" />
                 <el-option label="已完成" :value="9" />
                 <el-option label="订单作废" :value="-9" />
             </el-select>
-            <el-select v-model="listQuery.queryParam.statusPayment" placeholder="支付状态" size="mini">
+            <el-select v-model="listQuery.queryParam.statusPayment" placeholder="支付状态" size="small">
                 <el-option label="全部" :value="null" />
                 <el-option label="未支付" :value="0" />
                 <el-option label="预付定金" :value="1" />
                 <el-option label="已支付" :value="9" />
                 <el-option label="订单作废" :value="-9" />
             </el-select>
-            <el-button size="mini" type="primary" @click="getList">查询</el-button>
-            <el-button size="mini" type="primary" @click="handleAdd">新增</el-button>
+            <el-button size="small" type="primary" @click="getList">查询</el-button>
+            <el-button size="small" type="primary" @click="handleAdd">新增</el-button>
         </div>
         <el-table :key="tableKey" v-loading="listLoading" :data="tableData" size="small" border fit highlight-current-row>
             <el-table-column label="单据日期" align="center" width="120">

@@ -1,8 +1,8 @@
 <template>
     <div class="app-container">
         <div class="filter-container" style="text-align:right">
-            <el-button size="mini" class="filter-item" type="primary" @click="addVoucher">新增凭证模板</el-button>
-            <el-button size="mini" class="filter-item" style="margin-left: 10px;" type="primary" @click="handleSync">同步模板数据</el-button>
+            <el-button size="small" class="filter-item" type="primary" @click="addVoucher">新增凭证模板</el-button>
+            <el-button size="small" class="filter-item" style="margin-left: 10px;" type="primary" @click="handleSync">同步模板数据</el-button>
         </div>
         <el-table :key="tableKey" :data="tableData" border fit highlight-current-row style="width: 100%;">
             <el-table-column label="序号" type="index" width="100" align="center">
@@ -24,9 +24,9 @@
             </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="{row}">
-                    <el-button v-if="row.isSystem!=1" type="default" size="mini" @click="toModify(row)">编辑</el-button>
-                    <el-button type="primary" size="mini" @click="toModal(row)">查看</el-button>
-                    <el-button type="danger" size="mini" @click="delModal(row.id)">删除</el-button>
+                    <el-button v-if="row.isSystem!=1" type="default" size="small" @click="toModify(row)">编辑</el-button>
+                    <el-button type="primary" size="small" @click="toModal(row)">查看</el-button>
+                    <el-button type="danger" size="small" @click="delModal(row.id)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>

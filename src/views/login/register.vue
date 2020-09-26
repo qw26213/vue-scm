@@ -155,7 +155,7 @@
                 <p>5、 如果服务不包括Internet访问，那么您负责向您的Internet访问服务提供商支付相应费用。这些费用并不包含在您向金账簿支付的服务费用之中。如果您通过无线设备（例如，移动电话和平板电脑）来访问服务，则您的无线运营商可能会针对Web浏览、消息传递以及其他需要使用空中和无线数据服务的服务收取费用。请向您的运营商核实是否会向您收取这种费用。您应独自负责承担因通过任何无线或其他通信服务访问该服务而发生的任何费用。</p>
             </div>
             <div slot="footer" class="dialog-footer" style="text-align:center">
-                <el-button type="primary" @click="dialogVisible = false" size="mini">确 定</el-button>
+                <el-button type="primary" @click="dialogVisible = false" size="small">确 定</el-button>
             </div>
         </el-dialog>
     </div>

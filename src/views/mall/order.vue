@@ -3,11 +3,11 @@
         <div v-for="(item,index) in tableData" :key="index" class="orderItem">
             <div class="clearfix toper" style="height:28px">
                 <span>订单号：{{item.billNo}}</span>
-                <el-button size="mini" type="text" style="float:right;color:#F56C6C;" @click="deleteOrder(item)">删除</el-button>
-                <el-button size="mini" type="text" style="float:right;color:#409EFF;margin-right:15px;" @click="showOrder(item)">查看订单</el-button>
-                <el-button v-if="item.status===1" size="mini" type="text" style="float:right;color:#409EFF;margin-right:5px;" @click="toBuildBill(item.deliveryType, item, 2)">{{item.deliveryType==0?'生成':'查看'}}配送单</el-button>
-                <el-button v-if="item.status===1" size="mini" type="text" style="float:right;color:#409EFF;margin-right:5px;" @click="toBuildBill(item.isOutboundOrder, item, 1)">{{item.isOutboundOrder==0?'生成':'查看'}}出库单</el-button>
-                <el-button v-if="item.status===0" size="mini" type="text" style="float:right;color:#409EFF;margin-right:5px;" @click="toAuditOrder(item)">审核</el-button>
+                <el-button size="small" type="text" style="float:right;color:#F56C6C;" @click="deleteOrder(item)">删除</el-button>
+                <el-button size="small" type="text" style="float:right;color:#409EFF;margin-right:15px;" @click="showOrder(item)">查看订单</el-button>
+                <el-button v-if="item.status===1" size="small" type="text" style="float:right;color:#409EFF;margin-right:5px;" @click="toBuildBill(item.deliveryType, item, 2)">{{item.deliveryType==0?'生成':'查看'}}配送单</el-button>
+                <el-button v-if="item.status===1" size="small" type="text" style="float:right;color:#409EFF;margin-right:5px;" @click="toBuildBill(item.isOutboundOrder, item, 1)">{{item.isOutboundOrder==0?'生成':'查看'}}出库单</el-button>
+                <el-button v-if="item.status===0" size="small" type="text" style="float:right;color:#409EFF;margin-right:5px;" @click="toAuditOrder(item)">审核</el-button>
             </div>
             <el-table :key="tableKey" :data="item.salesDetail" fit highlight-current-row :show-header="false" style="width: 100%;">
                 <el-table-column label="商品图片" width="190">

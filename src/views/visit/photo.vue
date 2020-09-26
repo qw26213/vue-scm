@@ -1,13 +1,13 @@
 <template>
     <div class="app-container">
         <div class="filter-container">
-            <el-date-picker :editable="false" v-model="listQuery.queryParam.uploadDate1" type="date" placeholder="开始日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+            <el-date-picker :editable="false" v-model="listQuery.queryParam.uploadDate1" type="date" placeholder="开始日期" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
             <span class="zhi">至</span>
-            <el-date-picker :editable="false" v-model="listQuery.queryParam.uploadDate2" type="date" placeholder="结束日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+            <el-date-picker :editable="false" v-model="listQuery.queryParam.uploadDate2" type="date" placeholder="结束日期" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
             <custList @selectChange="selectChange" ctrType="list"></custList>
             <staffList @selectChange="selectChange" ctrType="list" :selectId="listQuery.queryParam.staffId"></staffList>
-            <el-button size="mini" type="primary" @click="getList">查询</el-button>
-            <el-button v-if="total>1" size="mini" type="danger" @click="delAnyItems">批量删除</el-button>
+            <el-button size="small" type="primary" @click="getList">查询</el-button>
+            <el-button v-if="total>1" size="small" type="danger" @click="delAnyItems">批量删除</el-button>
         </div>
         <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small" :default-sort="{prop: 'updateDate', order: this.listQuery.queryParam.desc==1 ?'descending': 'ascending'}" @selection-change="selectionChange" @sort-change="sortChange">
             <el-table-column v-if="total>1" type="selection" width="55" align="center"></el-table-column>
@@ -44,8 +44,8 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="180">
                 <template slot-scope="{row}">
-                    <el-button class="ctrl" type="primary" size="mini" @click="showImg(row)">查看图片</el-button>
-                    <el-button class="ctrl del" type="danger" size="mini" @click="handleDel(row.id)">删除</el-button>
+                    <el-button class="ctrl" type="primary" size="small" @click="showImg(row)">查看图片</el-button>
+                    <el-button class="ctrl del" type="danger" size="small" @click="handleDel(row.id)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>

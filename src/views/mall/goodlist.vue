@@ -49,14 +49,14 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="230">
         <template slot-scope="{row}">
-          <el-button type="default" size="mini" @click="toModify(row.id)">编辑</el-button>
-          <el-button type="primary" size="mini" @click="toDeline(row)">明细管理</el-button>
-          <el-button type="danger" size="mini" @click="handleDelete(row.id)">删除</el-button>
+          <el-button type="default" size="small" @click="toModify(row.id)">编辑</el-button>
+          <el-button type="primary" size="small" @click="toDeline(row)">明细管理</el-button>
+          <el-button type="danger" size="small" @click="handleDelete(row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
     <el-dialog :close-on-click-modal="false" title="选择商品" :visible.sync="dialogFormVisible" width="640px">
-        <el-table :data="itemData" border fit highlight-current-row style="width: 100%;margin-bottom:10px" size="mini" cell-class-name="trCell">
+        <el-table :data="itemData" border fit highlight-current-row style="width: 100%;margin-bottom:10px" size="small" cell-class-name="trCell">
             <el-table-column label="商品名称" min-width="150" show-overflow-tooltip>
                 <template slot-scope="{row}">
                     <span>{{row.itemName}}</span>
@@ -74,7 +74,7 @@
             </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="{row}">
-                    <el-button class="filter-item" type="primary" size="mini" @click="selectGood(row.id)">选择</el-button>
+                    <el-button class="filter-item" type="primary" size="small" @click="selectGood(row.id)">选择</el-button>
                 </template>
             </el-table-column>
         </el-table>

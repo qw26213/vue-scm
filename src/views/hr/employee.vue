@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
     <div class="filter-container tx-r">
-      <el-button size="mini" type="primary" @click="handleAdd">新增</el-button>
-      <el-button size="mini" type="primary" @click="downloadModel">下载模板</el-button>
-      <el-button size="mini" type="primary" @click="handImport">人员导入</el-button>
+      <el-button size="small" type="primary" @click="handleAdd">新增</el-button>
+      <el-button size="small" type="primary" @click="downloadModel">下载模板</el-button>
+      <el-button size="small" type="primary" @click="handImport">人员导入</el-button>
     </div>
     <input enctype="multipart/form-data" ref="uploadFile" style="display:none" type="file" @change="importFile($event)" />
     <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;">
@@ -14,12 +14,12 @@
           <span>{{row.name}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="证照类型" width="150">
+      <el-table-column label="证照类型">
         <template slot-scope="{row}">
           <span>{{row.certificateName}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="证照号码" width="200">
+      <el-table-column label="证照号码">
         <template slot-scope="{row}">
           <span>{{row.certificateNumber}}</span>
         </template>
@@ -66,8 +66,8 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="140">
         <template slot-scope="{row}">
-          <el-button type="primary" size="mini" @click="handleCompile(row)">编辑</el-button>
-          <el-button type="danger" size="mini" @click="showBind1(row.id)">删除</el-button>
+          <el-button type="primary" size="small" @click="handleCompile(row)">编辑</el-button>
+          <el-button type="danger" size="small" @click="showBind1(row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

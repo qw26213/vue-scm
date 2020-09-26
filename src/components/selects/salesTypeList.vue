@@ -1,5 +1,5 @@
 <template>
-    <el-select v-model="salesTypeCode" style="width:100%" placeholder="" class="custInput" size="mini" @change="changeVal">
+    <el-select v-model="salesTypeCode" style="width:100%" placeholder="" class="custInput" size="small" @change="changeVal">
         <el-option v-for="item in salesTypeArr" :key="item.id" :label="item.salesTypeName" :value="item.salesTypeCode"></el-option>
     </el-select>
 </template>

@@ -2,11 +2,11 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input size="small" v-model="listQuery.warehouseName" placeholder="仓库代码/名称" style="width: 200px;" class="filter-item" />
-      <el-button size="mini" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
-      <el-button size="mini" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
+      <el-button size="small" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
+      <el-button size="small" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
     </div>
 
-    <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini">
+    <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
       <el-table-column label="序号" type="index" width="50" align="center">
       </el-table-column>
       <el-table-column label="仓库代码">
@@ -56,10 +56,10 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="260">
         <template slot-scope="{row}">
-          <el-button type="primary" size="mini" @click="handleAssign(row)">分配用户</el-button>
-          <el-button type="default" size="mini" @click="handleCompile(row)">编辑</el-button>
-          <el-button type="danger" size="mini" @click="handleDel(row.id)">删除</el-button>
-          <el-button type="warning" size="mini" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
+          <el-button type="primary" size="small" @click="handleAssign(row)">分配用户</el-button>
+          <el-button type="default" size="small" @click="handleCompile(row)">编辑</el-button>
+          <el-button type="danger" size="small" @click="handleDel(row.id)">删除</el-button>
+          <el-button type="warning" size="small" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -112,7 +112,7 @@
     <el-dialog :close-on-click-modal="false" title="分配用户" :visible.sync="dialogFormVisible1" :show-close="false" ::close-on-click-modal="false" width="500px">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="110px" style="width: 460px;">
         <div class="curTit">当前仓库：{{handleObj.warehouseName}}({{handleObj.warehouseCode}})</div>
-        <el-table ref="checkTable" :data="userList" border fit highlight-current-row style="width: 100%;" size="mini" @selection-change="handleSelectionChange" @select-all="selectAll">
+        <el-table ref="checkTable" :data="userList" border fit highlight-current-row style="width: 100%;" size="small" @selection-change="handleSelectionChange" @select-all="selectAll">
           <el-table-column type="selection" width="50" align="center" :reserve-selection="true"></el-table-column>
           <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
           <el-table-column label="用户账号">

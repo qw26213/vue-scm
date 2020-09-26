@@ -1,6 +1,6 @@
 <template>
-  <el-select v-model="curId" style="width:145px" placeholder="选择部门" size="mini" @change="changeVal">
-    <el-option v-for="item in list" :label="item.deptName" :value="item.id"></el-option>
+  <el-select v-model="curId" style="width:145px" placeholder="选择部门" size="small" @change="changeVal">
+    <el-option v-for="item in list" :label="item.deptName" :value="item.id" :key="item.id"></el-option>
   </el-select>
 </template>
 <script>

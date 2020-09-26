@@ -1,12 +1,12 @@
 <template>
     <div class="app-container">
         <div class="w1200 voucherHeader">
-            <el-button v-if="jzType === 0" type="primary" size="mini" @click="dialogFormVisible1 = true">从模板生成凭证</el-button>
-            <el-button v-if="jzType === 0" type="primary" size="mini" @click="dialogFormVisible2 = true">常用摘要</el-button>
+            <el-button v-if="jzType === 0" type="primary" size="small" @click="dialogFormVisible1 = true">从模板生成凭证</el-button>
+            <el-button v-if="jzType === 0" type="primary" size="small" @click="dialogFormVisible2 = true">常用摘要</el-button>
             <div class="voucherTit">{{billHeader.jeCatogeryTitle}}<span class="Period">{{ billHeader.periodName }}</span></div>
             <el-form :inline="true" label-position="right" label-width="80px" style="width: 100%; margin-top:0px;">
                 <el-form-item label="凭证字号" prop="billNo" style="margin-bottom:10px">
-                    <el-select ref="catogeryRef" v-model="billHeader.jeCatogeryId" style="width:50px" size="mini" @change="catogeryChange">
+                    <el-select ref="catogeryRef" v-model="billHeader.jeCatogeryId" style="width:50px" size="small" @change="catogeryChange">
                         <el-option v-for="item in catogeryList" :key="item.id" :label="item.catogeryName" :data-tit="item.catogeryTitle" :value="item.id"></el-option>
                     </el-select>
                     <span class="jeSeq uds">{{billHeader.jeSeq | numberFormat}}</span>
@@ -16,7 +16,7 @@
                     </span>
                 </el-form-item>
                 <el-form-item label="日期" prop="billDate" style="margin-bottom:10px;">
-                    <el-date-picker v-model="billHeader.jeDate" type="date" placeholder="日期" size="mini" :clearable="false" value-format="yyyy-MM-dd" style="width:120px" @change="getJeSeqByDate">
+                    <el-date-picker v-model="billHeader.jeDate" type="date" placeholder="日期" size="small" :clearable="false" value-format="yyyy-MM-dd" style="width:120px" @change="getJeSeqByDate">
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="附单据" prop="expirationDate" style="float:right;margin-bottom:10px">
@@ -105,7 +105,7 @@
             <el-button v-if="$route.query.id" class="filter-item" type="primary" style="width:160px" @click="saveData(2)">保存凭证</el-button>
         </div>
         <el-dialog :close-on-click-modal="false" title="选择凭证模板" :visible.sync="dialogFormVisible1" width="540px">
-            <el-table :data="templetData" border fit highlight-current-row style="width: 100%;" size="mini" cell-class-name="trCell">
+            <el-table :data="templetData" border fit highlight-current-row style="width: 100%;" size="small" cell-class-name="trCell">
                 <el-table-column label="模板类型" width="140" align="center">
                     <template slot-scope="{row}">
                         <span v-for="item in templetTypeList" v-if="item.id==row.templetType" :key="item.id">{{item.templetTypeName}}</span>
@@ -123,7 +123,7 @@
                 </el-table-column>
                 <el-table-column label="操作" align="center">
                     <template slot-scope="{row}">
-                        <el-button class="filter-item" type="primary" size="mini" @click="selectTemplet(row.id)">选择</el-button>
+                        <el-button class="filter-item" type="primary" size="small" @click="selectTemplet(row.id)">选择</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -133,9 +133,9 @@
             <div class="filter-container" style="padding-bottom:0;margin-top:-10px">
                 <el-input size="small" v-model="summaryQuery.mnemonicCode" placeholder="助记码" style="width: 180px;" class="filter-item" />
                 <el-input size="small" v-model="summaryQuery.summary" placeholder="名称" style="width: 180px;" class="filter-item" />
-                <el-button size="mini" class="filter-item" type="primary" @click="saveSummary">新增摘要</el-button>
+                <el-button size="small" class="filter-item" type="primary" @click="saveSummary">新增摘要</el-button>
             </div>
-            <el-table :data="summaryPageData" border fit highlight-current-row style="width: 100%;" size="mini" cell-class-name="trCell">
+            <el-table :data="summaryPageData" border fit highlight-current-row style="width: 100%;" size="small" cell-class-name="trCell">
                 <el-table-column label="序号" width="50" align="center">
                     <template slot-scope="scope">
                         <span>{{listQuery2.pageIndex*10 - 10 + scope.$index+1}}</span>
@@ -145,7 +145,7 @@
                 <el-table-column label="名称" prop="summary" align="center"></el-table-column>
                 <el-table-column label="操作" prop="summary" align="center" width="100">
                     <template slot-scope="{row}">
-                        <el-button class="filter-item" type="danger" size="mini" @click="handDelSummary(row.id)">删除</el-button>
+                        <el-button class="filter-item" type="danger" size="small" @click="handDelSummary(row.id)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>

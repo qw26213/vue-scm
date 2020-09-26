@@ -44,7 +44,7 @@
                     </div>
                     <el-button size="small" slot="reference">更多<i class="el-icon-arrow-right el-icon--right"></i></el-button>
                 </el-popover>
-                <el-button size="mini" type="primary" @click="getList">查询</el-button>
+                <el-button size="small" type="primary" @click="getList">查询</el-button>
                 <el-button size="small" type="default" @click="printBook">打印</el-button>
                 <el-button size="small" type="warning" @click="exportBook">导出</el-button>
             </div>

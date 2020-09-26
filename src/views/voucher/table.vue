@@ -2,28 +2,28 @@
     <div class="app-container">
         <div class="filter-container">
             <label class="label">会计期间</label>
-            <el-select v-model="listQuery.periodCode1" placeholder="开始期间" size="mini">
+            <el-select v-model="listQuery.periodCode1" placeholder="开始期间" size="small">
                 <el-option v-for="item in periodList" :key="item.id" :label="item.text" :value="item.id"></el-option>
             </el-select>
             <span class="zhi">至</span>
-            <el-select v-model="listQuery.periodCode2" placeholder="结束期间" size="mini">
+            <el-select v-model="listQuery.periodCode2" placeholder="结束期间" size="small">
                 <el-option v-for="item in periodList" :key="item.id" :label="item.text" :value="item.id"></el-option>
             </el-select>
             <label class="label ml10">凭证字</label>
-            <el-select v-model="listQuery.jeCatogeryId" placeholder="凭证字" size="mini">
+            <el-select v-model="listQuery.jeCatogeryId" placeholder="凭证字" size="small">
                 <el-option v-for="item in catogeryList" :label="item.catogeryName" :value="item.id" :key="item.id"></el-option>
             </el-select>
             <label class="label ml10">科目级次</label>
-            <el-select v-model="listQuery.coaLevel1" placeholder="科目级次" size="mini">
+            <el-select v-model="listQuery.coaLevel1" placeholder="科目级次" size="small">
                 <el-option v-for="item in [1,2,3,4,5,6,7,8]" :label="item" :value="item" :key="item"></el-option>
             </el-select>
             <span class="zhi">至</span>
-            <el-select v-model="listQuery.coaLevel2" placeholder="科目级次" size="mini">
+            <el-select v-model="listQuery.coaLevel2" placeholder="科目级次" size="small">
                 <el-option v-for="item in [1,2,3,4,5,6,7,8]" :label="item" :value="item" :key="item"></el-option>
             </el-select>
-            <el-button size="mini" type="primary" @click="getList">查询</el-button>
+            <el-button size="small" type="primary" @click="getList">查询</el-button>
         </div>
-        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini">
+        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
             <el-table-column label="科目编码">
                 <template slot-scope="{row}">
                     <span>{{row.coaCode}}</span>

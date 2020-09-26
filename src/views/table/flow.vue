@@ -2,11 +2,11 @@
     <div class="app-container">
         <div class="filter-container">
             <label class="label">会计期间:</label>
-            <el-select v-model="listQuery.queryParam.periodCode" placeholder="会计期间" size="mini" @change="getList">
+            <el-select v-model="listQuery.queryParam.periodCode" placeholder="会计期间" size="small" @change="getList">
                 <el-option v-for="item in periodList" :label="item.text" :value="item.id" :key="item.id"></el-option>
             </el-select>
         </div>
-        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini">
+        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
             <el-table-column label="项目" align="left">
                 <template slot-scope="{row}">
                     <span>{{row.itemName}}</span>

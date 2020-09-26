@@ -6,10 +6,10 @@
             <el-checkbox v-model="listQuery.coaN" false-label="0" true-label="1" style="margin-right:10px">同步系统科目名称</el-checkbox>
             <el-checkbox v-model="listQuery.coaCrdr" false-label="0" true-label="1" style="margin-right:10px">同步系统科目方向</el-checkbox>
             <el-checkbox v-model="listQuery.templet" false-label="0" true-label="1" style="margin-right:10px">同步凭证模板(系统)</el-checkbox>
-            <el-button size="mini" type="primary" @click="getData('0')">检查</el-button>
-            <el-button size="mini" type="primary" @click="getData('1')">执行同步</el-button>
+            <el-button size="small" type="primary" @click="getData('0')">检查</el-button>
+            <el-button size="small" type="primary" @click="getData('1')">执行同步</el-button>
         </div>
-        <el-table :data="tableData" border fit resize empty-text="无同步数据" style="width: 100%;" size="mini">
+        <el-table :data="tableData" border fit resize empty-text="无同步数据" style="width: 100%;" size="small">
             <el-table-column label="科目编码">
                 <template slot-scope="{row}">
                     <span>{{row.coaCode}}</span>

@@ -1,13 +1,13 @@
 <template>
     <div class="app-container">
         <div class="filter-container">
-            <el-date-picker :editable="false" v-model="listQuery.queryParam.visitDate1" type="date" placeholder="开始日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+            <el-date-picker :editable="false" v-model="listQuery.queryParam.visitDate1" type="date" placeholder="开始日期" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
             <span class="zhi">至</span>
-            <el-date-picker :editable="false" v-model="listQuery.queryParam.visitDate2" type="date" placeholder="结束日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+            <el-date-picker :editable="false" v-model="listQuery.queryParam.visitDate2" type="date" placeholder="结束日期" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
             <custList @selectChange="selectChange" ctrType="list"></custList>
             <staffList @selectChange="selectChange" ctrType="list" :selectId="listQuery.queryParam.staffId"></staffList>
-            <el-button size="mini" type="primary" @click="getList">查询</el-button>
-            <el-button size="mini" style="float:right" type="primary" @click="showLine">地图轨迹</el-button>
+            <el-button size="small" type="primary" @click="getList">查询</el-button>
+            <el-button size="small" style="float:right" type="primary" @click="showLine">地图轨迹</el-button>
         </div>
         <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
             <el-table-column label="日期" align="center" width="100">
@@ -67,7 +67,7 @@
             </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="{row}">
-                    <el-button size="mini" type="default" @click="handleLink(row.id)">关联图片</el-button>
+                    <el-button size="small" type="default" @click="handleLink(row.id)">关联图片</el-button>
                 </template>
             </el-table-column>
         </el-table>

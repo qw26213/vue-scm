@@ -2,7 +2,7 @@
     <div class="app-container">
         <div class="filter-container">
             <label class="label">会计期间:</label>
-            <el-select v-model="listQuery.periodCode" placeholder="会计期间" size="mini" @change="getList">
+            <el-select v-model="listQuery.periodCode" placeholder="会计期间" size="small" @change="getList">
                 <el-option v-for="item in periodList" :label="item.text" :value="item.id" :key="item.id"></el-option>
             </el-select>
         </div>

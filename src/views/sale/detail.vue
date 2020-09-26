@@ -48,7 +48,7 @@
                 </el-form-item>
             </el-form>
         </div>
-        <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini" cell-class-name="tdCell">
+        <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="small" cell-class-name="tdCell">
             <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
             <el-table-column label="商品代码" width="160">
                 <template slot-scope="{row}">

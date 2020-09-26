@@ -1,5 +1,5 @@
 <template>
-    <el-select v-model="curId" style="width:145px" filterable :remote="isRemote" :disabled="selectDisabled" :remote-method="remoteGet" size="mini" @change="changeVal" placeholder="选择客户">
+    <el-select v-model="curId" style="width:145px" filterable :remote="isRemote" :disabled="selectDisabled" :remote-method="remoteGet" size="small" @change="changeVal" placeholder="选择客户">
         <el-option v-for="item in custList" :key="item.id" :label="item.custName" :value="item.id" />
     </el-select>
 </template>

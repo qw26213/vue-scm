@@ -1,33 +1,33 @@
 <template>
     <div class="app-container" style="min-width:1100px">
         <div class="filter-container">
-            <el-select v-model="listQuery.queryParam.date1" placeholder="开始期间" size="mini">
+            <el-select v-model="listQuery.queryParam.date1" placeholder="开始期间" size="small">
                 <el-option v-for="item in periodList" :key="item.id" :label="item.text" :value="item.id"></el-option>
             </el-select>
             <span class="zhi">至</span>
-            <el-select v-model="listQuery.queryParam.date2" placeholder="结束期间" size="mini">
+            <el-select v-model="listQuery.queryParam.date2" placeholder="结束期间" size="small">
                 <el-option v-for="item in periodList" :key="item.id" :label="item.text" :value="item.id"></el-option>
             </el-select>
-            <el-select v-model="listQuery.queryParam.startCoa" placeholder="开始科目" size="mini">
+            <el-select v-model="listQuery.queryParam.startCoa" placeholder="开始科目" size="small">
                 <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode"></el-option>
             </el-select>
             <span class="zhi">至</span>
-            <el-select v-model="listQuery.queryParam.endCoa" placeholder="结束科目" size="mini">
+            <el-select v-model="listQuery.queryParam.endCoa" placeholder="结束科目" size="small">
                 <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode"></el-option>
             </el-select>
-            <el-input size="mini" v-model="listQuery.queryParam.voucherSeq" placeholder="凭证号" style="width: 120px;" />
-            <el-input size="mini" v-model="listQuery.queryParam.summary" placeholder="摘要" style="width: 120px;" />
-            <el-select v-model="listQuery.queryParam.jeStatus" placeholder="状态" size="mini">
+            <el-input size="small" v-model="listQuery.queryParam.voucherSeq" placeholder="凭证号" style="width: 120px;" />
+            <el-input size="small" v-model="listQuery.queryParam.summary" placeholder="摘要" style="width: 120px;" />
+            <el-select v-model="listQuery.queryParam.jeStatus" placeholder="状态" size="small">
                 <el-option label="全部状态" value=""></el-option>
                 <el-option label="制单完成" value="0"></el-option>
                 <el-option label="审核通过" value="5"></el-option>
                 <el-option label="退回" value="-1"></el-option>
             </el-select>
-            <el-button size="mini" type="primary" @click="getList">查询</el-button>
-            <el-button size="mini" type="primary" @click="resetVoucherSeq">整理凭证号</el-button>
-            <el-button size="mini" type="primary" @click="printVoucher">打印</el-button>
+            <el-button size="small" type="primary" @click="getList">查询</el-button>
+            <el-button size="small" type="primary" @click="resetVoucherSeq">整理凭证号</el-button>
+            <el-button size="small" type="primary" @click="printVoucher">打印</el-button>
         </div>
-        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit style="width: 100%;" size="mini" cell-class-name="tpCell" :default-sort="{prop: 'jeSeq', order: this.listQuery.queryParam.desc==1 ?'descending': 'ascending'}" @selection-change="selectionChange" @sort-change="sortChange">
+        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit style="width: 100%;" size="small" cell-class-name="tpCell" :default-sort="{prop: 'jeSeq', order: this.listQuery.queryParam.desc==1 ?'descending': 'ascending'}" @selection-change="selectionChange" @sort-change="sortChange">
             <el-table-column type="selection" width="55" align="center"></el-table-column>
             <el-table-column label="日期" align="center" width="100">
                 <template slot-scope="{row}">

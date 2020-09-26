@@ -5,9 +5,9 @@
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
                         <span style="display:inline-block;line-height:28px">账套信息</span>
-                        <el-button v-if="!!userInfo.glBookEntity" type="primary" style="float: right;margin-right:10px" size="mini" @click="handleCompile">编辑</el-button>
-                        <el-button v-if="!!userInfo.glBookEntity" type="danger" style="float: right;margin-right:20px" size="mini" @click="resetAcc">重置</el-button>
-                        <el-button v-if="!!!userInfo.glBookEntity" type="primary" style="float: right;margin-right:10px" size="mini" @click="handleAdd">建账</el-button>
+                        <el-button v-if="!!userInfo.glBookEntity" type="primary" style="float: right;margin-right:10px" size="small" @click="handleCompile">编辑</el-button>
+                        <el-button v-if="!!userInfo.glBookEntity" type="danger" style="float: right;margin-right:20px" size="small" @click="resetAcc">重置</el-button>
+                        <el-button v-if="!!!userInfo.glBookEntity" type="primary" style="float: right;margin-right:10px" size="small" @click="handleAdd">建账</el-button>
                     </div>
                     <div class="listItem"><label>企业代码:</label>{{managementInfo.orgCode}}</div>
                     <div class="listItem"><label>企业名称:</label>{{managementInfo.orgName}}</div>
@@ -15,8 +15,8 @@
                     <div class="listItem"><label>所属区域:</label>{{managementInfo.areaName}}</div>
                     <div class="listItem">
                         <label>纳税类型:</label>{{managementInfo.taxFilingCategoryName}}
-                        <el-button v-if="managementInfo.taxFilingCategoryId==0" type="default" style="margin-left:20px" size="mini" @click="handleTransfer">转为一般纳税人</el-button>
-                        <el-button v-if="managementInfo.taxFilingCategoryId==1" type="default" style="margin-left:20px" size="mini" @click="handleTransfer">转为小规模纳税人</el-button>
+                        <el-button v-if="managementInfo.taxFilingCategoryId==0" type="default" style="margin-left:20px" size="small" @click="handleTransfer">转为一般纳税人</el-button>
+                        <el-button v-if="managementInfo.taxFilingCategoryId==1" type="default" style="margin-left:20px" size="small" @click="handleTransfer">转为小规模纳税人</el-button>
                     </div>
                     <div class="listItem"><label>试用期:</label>{{managementInfo.bizExpirationDate}}</div>
                     <div class="listItem"><label>账簿名称:</label>{{managementInfo.bookName}}</div>
@@ -41,17 +41,17 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="启用期间" prop="enablePeriodYear">
-                    <el-select size="mini" v-model="temp.enablePeriodYear" style="width: 72px" :disabled="!!userInfo.glBookEntity">
+                    <el-select size="small" v-model="temp.enablePeriodYear" style="width: 72px" :disabled="!!userInfo.glBookEntity">
                         <el-option v-for="item in [2018,2019,2020,2021,2022]" :key="item" :value="item" :label="item"></el-option>
                     </el-select>
                     <label>年</label>
-                    <el-select size="mini" v-model="temp.enablePeriodNum" style="width: 56px" :disabled="!!userInfo.glBookEntity">
+                    <el-select size="small" v-model="temp.enablePeriodNum" style="width: 56px" :disabled="!!userInfo.glBookEntity">
                         <el-option v-for="item in [1,2,3,4,5,6,7,8,9,10,11,12]" :key="item" :value="item" :label="item"></el-option>
                     </el-select>
                     <label>月</label>
                 </el-form-item>
                 <el-form-item label="科目级次" prop="coaLevel">
-                    <el-select v-model="temp.coaLevel" size="mini" style="width:56px" :disabled="!!userInfo.glBookEntity">
+                    <el-select v-model="temp.coaLevel" size="small" style="width:56px" :disabled="!!userInfo.glBookEntity">
                         <el-option v-for="item in [4,5,6,7,8]" :key="item" :label="item" :value="item"></el-option>
                     </el-select>
                 </el-form-item>
@@ -79,7 +79,7 @@
                 </el-form-item>
                 <el-form-item>
                     <span>自定义增值税率</span>
-                    <el-input v-model="temp.defaultTaxRateStr" placeholder="" size="mini" style="width:60px;margin-right:5px" />%
+                    <el-input v-model="temp.defaultTaxRateStr" placeholder="" size="small" style="width:60px;margin-right:5px" />%
                     <span style="font-size:12px;margin-right:10px">(小规模纳税人为3%，一般纳税人为13%)</span>
                     <el-checkbox v-model="temp.isDispName" :false-label="0" :true-label="1" style="margin-right:10px">科目名称显示路径</el-checkbox>
                     <el-checkbox v-model="temp.isCoaCobinationCode" :false-label="0" :true-label="1" style="margin-right:10px">凭证中显示辅助项编码组合</el-checkbox>
@@ -124,15 +124,15 @@
                 </el-form-item>
                 <el-form-item v-if="temp.isAutoTransfer==1">
                     <span>城市建设维护税</span>
-                    <el-input v-model="temp.isAutoJtfjs7" style="width:45px" size="mini" />%
+                    <el-input v-model="temp.isAutoJtfjs7" style="width:45px" size="small" />%
                     <span style="margin-left:5px">教育附加</span>
-                    <el-input v-model="temp.isAutoJtfjs3" style="width:45px" size="mini" />%
+                    <el-input v-model="temp.isAutoJtfjs3" style="width:45px" size="small" />%
                     <span style="margin-left:5px">地方教育附加</span>
-                    <el-input v-model="temp.isAutoJtfjs2" style="width:45px" size="mini" />%
+                    <el-input v-model="temp.isAutoJtfjs2" style="width:45px" size="small" />%
                     <span style="margin-left:5px">自动结转成本</span>
-                    <el-input v-model="temp.isAutoJzcb" style="width:45px" size="mini" disabled />%
+                    <el-input v-model="temp.isAutoJzcb" style="width:45px" size="small" disabled />%
                     <span style="margin-left:5px">自动计提所得税</span>
-                    <el-input v-model="temp.isAutoJtsds" style="width:45px" size="mini" />%
+                    <el-input v-model="temp.isAutoJtsds" style="width:45px" size="small" />%
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer" align="center">

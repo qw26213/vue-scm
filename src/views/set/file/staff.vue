@@ -6,10 +6,10 @@
   <div class="app-container tableDiv">
     <div class="filter-container">
       <el-input size="small" v-model="listQuery.staffName" placeholder="员工代码/名称" style="width: 200px;" class="filter-item" />
-      <el-button size="mini" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
-      <el-button size="mini" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
+      <el-button size="small" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
+      <el-button size="small" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
     </div>
-    <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini">
+    <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
       <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
       <el-table-column label="员工代码">
         <template slot-scope="{row}">
@@ -53,11 +53,11 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="380">
         <template slot-scope="{row}">
-          <el-button type="primary" size="mini" @click="handleUpdate1(row.creditLimit,row.id)">改信用额度</el-button>
-          <el-button type="default" size="mini" @click="handleUpdate2(row.overdraftBalance,row.id)">改已赊销金额</el-button>
-          <el-button type="primary" size="mini" @click="handleCompile(row)">编辑</el-button>
-          <el-button type="danger" size="mini" @click="handleDel(row.id)">删除</el-button>
-          <el-button type="warning" size="mini" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
+          <el-button type="primary" size="small" @click="handleUpdate1(row.creditLimit,row.id)">改信用额度</el-button>
+          <el-button type="default" size="small" @click="handleUpdate2(row.overdraftBalance,row.id)">改已赊销金额</el-button>
+          <el-button type="primary" size="small" @click="handleCompile(row)">编辑</el-button>
+          <el-button type="danger" size="small" @click="handleDel(row.id)">删除</el-button>
+          <el-button type="warning" size="small" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
         </template>
       </el-table-column>
     </el-table>

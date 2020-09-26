@@ -44,8 +44,8 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="230">
         <template slot-scope="{row}">
-          <el-button type="default" size="mini" @click="toModify(row.id)">编辑</el-button>
-          <el-button type="danger" size="mini" @click="handleDelete(row.id)">删除</el-button>
+          <el-button type="default" size="small" @click="toModify(row.id)">编辑</el-button>
+          <el-button type="danger" size="small" @click="handleDelete(row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

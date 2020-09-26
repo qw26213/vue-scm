@@ -1,5 +1,5 @@
 <template>
-  <el-select v-model="curId" style="border:none;width: 100%;display: block;" placeholder="" size="mini" @change="changeVal">
+  <el-select v-model="curId" style="border:none;width: 100%;display: block;" placeholder="" size="small" @change="changeVal">
       <el-option v-for="item in datalist" :label="item.truckName" :value="item.id"></el-option>
   </el-select>
 </template>

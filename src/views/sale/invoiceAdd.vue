@@ -3,52 +3,52 @@
         <div class="dataTable">
             <el-form :inline="true" label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
                 <el-form-item label="发票日期:" prop="invoiceDate">
-                    <el-date-picker :editable="false" v-model="temp.invoiceDate" type="date" placeholder="发票日期" size="mini" :clearable="false" value-format="yyyy-MM-dd" />
+                    <el-date-picker :editable="false" v-model="temp.invoiceDate" type="date" placeholder="发票日期" size="small" :clearable="false" value-format="yyyy-MM-dd" />
                 </el-form-item>
                 <el-form-item label="发票号:" prop="invoiceNo">
-                    <el-input size="mini" v-model="temp.invoiceNo" placeholder="发票号" />
+                    <el-input size="small" v-model="temp.invoiceNo" placeholder="发票号" />
                 </el-form-item>
                 <el-form-item label="客户:" prop="custId">
                     <custList @selectChange="selectChange" keyType="custId" :contact="1" :selectId="temp.custId" />
                 </el-form-item>
                 <el-form-item label="地址:" prop="addr">
-                    <el-input size="mini" v-model="temp.addr" placeholder="地址" />
+                    <el-input size="small" v-model="temp.addr" placeholder="地址" />
                 </el-form-item>
                 <el-form-item label="电话:" prop="tel">
-                    <el-input size="mini" v-model="temp.tel" placeholder="电话" />
+                    <el-input size="small" v-model="temp.tel" placeholder="电话" />
                 </el-form-item>
                 <el-form-item label="开户行:" prop="bankName">
-                    <el-input size="mini" v-model="temp.bankName" placeholder="开户行" />
+                    <el-input size="small" v-model="temp.bankName" placeholder="开户行" />
                 </el-form-item>
                 <el-form-item label="账户:" prop="bankAccount">
-                    <el-input size="mini" v-model="temp.bankAccount" placeholder="账户" />
+                    <el-input size="small" v-model="temp.bankAccount" placeholder="账户" />
                 </el-form-item>
                 <el-form-item label="纳税人识别号:" prop="taxRegistrationCertificateNo" label-width="84">
-                    <el-input size="mini" v-model="temp.taxRegistrationCertificateNo" placeholder="纳税人识别号" />
+                    <el-input size="small" v-model="temp.taxRegistrationCertificateNo" placeholder="纳税人识别号" />
                 </el-form-item>
                 <el-form-item label="销售方名称:" prop="sellerName">
-                    <el-input size="mini" v-model="temp.sellerName" placeholder="销售方名称" />
+                    <el-input size="small" v-model="temp.sellerName" placeholder="销售方名称" />
                 </el-form-item>
                 <el-form-item label="销售方税号:" prop="sellerTaxRegistrationCertificateNo">
-                    <el-input size="mini" v-model="temp.sellerTaxRegistrationCertificateNo" placeholder="销售方税号" />
+                    <el-input size="small" v-model="temp.sellerTaxRegistrationCertificateNo" placeholder="销售方税号" />
                 </el-form-item>
                 <el-form-item label="销售方地址:" prop="sellerAddr">
-                    <el-input size="mini" v-model="temp.sellerAddr" placeholder="销售方地址" />
+                    <el-input size="small" v-model="temp.sellerAddr" placeholder="销售方地址" />
                 </el-form-item>
                 <el-form-item label="销售方电话:" prop="sellerTel">
-                    <el-input size="mini" v-model="temp.sellerTel" placeholder="销售方电话" />
+                    <el-input size="small" v-model="temp.sellerTel" placeholder="销售方电话" />
                 </el-form-item>
                 <el-form-item label="销售方开户行:" prop="sellerBankName" label-width="84">
-                    <el-input size="mini" v-model="temp.sellerBankName" placeholder="销售方开户行" />
+                    <el-input size="small" v-model="temp.sellerBankName" placeholder="销售方开户行" />
                 </el-form-item>
                 <el-form-item label="销售方账号:" prop="sellerBankAccount">
-                    <el-input size="mini" v-model="temp.sellerBankAccount" placeholder="销售方账号" />
+                    <el-input size="small" v-model="temp.sellerBankAccount" placeholder="销售方账号" />
                 </el-form-item>
                 <el-form-item label="价税合计:" prop="vatAmount">
-                    <el-input size="mini" v-model="temp.vatAmount" placeholder="价税合计" disabled />
+                    <el-input size="small" v-model="temp.vatAmount" placeholder="价税合计" disabled />
                 </el-form-item>
                 <el-form-item label="未开票余额:" prop="salesVatBalance">
-                    <el-input size="mini" v-model="temp.salesVatBalance" placeholder="未开票余额" />
+                    <el-input size="small" v-model="temp.salesVatBalance" placeholder="未开票余额" />
                 </el-form-item>
             </el-form>
         </div>
@@ -103,21 +103,21 @@
         <div class="dataTable" style="margin-top: 10px">
             <el-form :inline="true" label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
                 <el-form-item label="开票日期:" prop="recordDate">
-                    <el-date-picker :editable="false" v-model="temp.recordDate" type="date" placeholder="制单日期" size="mini" :clearable="false" value-format="yyyy-MM-dd">
+                    <el-date-picker :editable="false" v-model="temp.recordDate" type="date" placeholder="制单日期" size="small" :clearable="false" value-format="yyyy-MM-dd">
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="开票人:" prop="recorder">
-                    <el-input size="mini" v-model="temp.recorder" placeholder="制单人" />
+                    <el-input size="small" v-model="temp.recorder" placeholder="制单人" />
                 </el-form-item>
                 <el-form-item label="收款人:" prop="beneficiaryName">
-                    <el-input size="mini" v-model="temp.beneficiaryName" placeholder="收款人" />
+                    <el-input size="small" v-model="temp.beneficiaryName" placeholder="收款人" />
                 </el-form-item>
                 <el-form-item label="审核日期:" prop="auditDate">
-                    <el-date-picker :editable="false" v-model="temp.auditDate" type="date" placeholder="审核日期" size="mini" :clearable="false" value-format="yyyy-MM-dd">
+                    <el-date-picker :editable="false" v-model="temp.auditDate" type="date" placeholder="审核日期" size="small" :clearable="false" value-format="yyyy-MM-dd">
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="审核人:" prop="auditorId">
-                    <el-input size="mini" v-model="temp.auditor" placeholder="审核人" />
+                    <el-input size="small" v-model="temp.auditor" placeholder="审核人" />
                 </el-form-item>
             </el-form>
         </div>

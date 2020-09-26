@@ -1,5 +1,5 @@
 <template>
-  <el-select v-model="curId" filterable remote reserve-keyword :remote-method="remoteGet" size="mini" class="filter-item custInput" @focus="searchThis($event)" @change="changeVal" placeholder="">
+  <el-select v-model="curId" filterable remote reserve-keyword :remote-method="remoteGet" size="small" class="filter-item custInput" @focus="searchThis($event)" @change="changeVal" placeholder="">
     <el-option v-for="item in itemList" :key="item.id" :label="item.itemCode" :value="item.id" />
   </el-select>
 </template>

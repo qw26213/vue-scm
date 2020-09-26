@@ -3,7 +3,7 @@
         <el-card class="box-card">
             <div slot="header" class="clearfix">
                 <span style="display:inline-block;line-height:28px">企业信息</span>
-                <el-button type="primary" style="float: right;" size="mini" @click="showCompile">编辑</el-button>
+                <el-button type="primary" style="float: right;" size="small" @click="showCompile">编辑</el-button>
             </div>
             <div class="clearfix">
                 <div style="width: 50%; float:left">
@@ -63,7 +63,7 @@
         <el-card class="box-card" style="margin-top:15px">
             <div slot="header" class="clearfix">
                 <span style="display:inline-block;line-height:28px">小程序页签</span>
-                <el-button style="float:right" type="primary" size="mini" @click="showAdd">添加页签</el-button>
+                <el-button style="float:right" type="primary" size="small" @click="showAdd">添加页签</el-button>
             </div>
             <el-table :data="tabs" size="small" border fit highlight-current-row>
                 <el-table-column label="页签名称" align="center" width="120">

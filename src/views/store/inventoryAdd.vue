@@ -3,13 +3,13 @@
         <div class="dataTable">
             <el-form :inline="true" label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
                 <el-form-item label="单据日期:" prop="billDate">
-                    <el-date-picker :editable="false" v-model="temp.billDate" type="date" placeholder="单据日期" size="mini" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+                    <el-date-picker :editable="false" v-model="temp.billDate" type="date" placeholder="单据日期" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
                 </el-form-item>
                 <el-form-item label="单据号:" prop="billNo">
-                    <el-input size="mini" v-model="temp.billNo" placeholder="单据号" disabled />
+                    <el-input size="small" v-model="temp.billNo" placeholder="单据号" disabled />
                 </el-form-item>
                 <el-form-item label="盘点类型:" prop="inventoryType">
-                    <el-select v-model="temp.inventoryType" size="mini">
+                    <el-select v-model="temp.inventoryType" size="small">
                         <el-option label="报损" :value="0"></el-option>
                         <el-option label="盘盈/盘亏" :value="1"></el-option>
                     </el-select>
@@ -21,25 +21,25 @@
                     <staffList @selectChange="selectChange" :selectId="temp.staffId"></staffList>
                 </el-form-item>
                 <el-form-item label="成本金额:" prop="wmapAmount">
-                    <el-input size="mini" v-model="temp.wmapAmount" placeholder="成本金额" />
+                    <el-input size="small" v-model="temp.wmapAmount" placeholder="成本金额" />
                 </el-form-item>
                 <el-form-item label="商品金额:" prop="itemAmount">
-                    <el-input size="mini" v-model="temp.itemAmount" placeholder="商品金额" />
+                    <el-input size="small" v-model="temp.itemAmount" placeholder="商品金额" />
                 </el-form-item>
                 <el-form-item label="运费:" prop="freightAmount">
-                    <el-input size="mini" v-model="temp.freightAmount" placeholder="运费" />
+                    <el-input size="small" v-model="temp.freightAmount" placeholder="运费" />
                 </el-form-item>
                 <el-form-item label="金额合计:" prop="sumAmount">
-                    <el-input size="mini" v-model="temp.sumAmount" placeholder="金额合计" />
+                    <el-input size="small" v-model="temp.sumAmount" placeholder="金额合计" />
                 </el-form-item>
             </el-form>
         </div>
-        <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini" cell-class-name="tdCell">
+        <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="small" cell-class-name="tdCell">
             <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
             <el-table-column label="仓库选择" width="160">
                 <template slot-scope="scope">
-                  <el-select v-model="scope.row.warehouseId" style="border:none;width: 100%;display: block;" disabled placeholder="" size="mini">
-                      <el-option v-for="item in warehouseList" :label="item.warehouseName" :value="item.id"></el-option>
+                  <el-select v-model="scope.row.warehouseId" style="border:none;width: 100%;display: block;" disabled placeholder="" size="small">
+                      <el-option v-for="item in warehouseList" :label="item.warehouseName" :key="item.id" :value="item.id"></el-option>
                   </el-select>
                 </template>
             </el-table-column>
@@ -87,18 +87,18 @@
         <div class="dataTable" style="margin-top: 10px">
             <el-form :inline="true" label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
                 <el-form-item label="制单日期:" prop="recordDate">
-                    <el-date-picker :editable="false" v-model="temp.recordDate" type="date" placeholder="制单日期" size="mini" :clearable="false" value-format="yyyy-MM-dd">
+                    <el-date-picker :editable="false" v-model="temp.recordDate" type="date" placeholder="制单日期" size="small" :clearable="false" value-format="yyyy-MM-dd">
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="制单人:" prop="recorderId">
-                    <el-input size="mini" v-model="temp.recorder" placeholder="制单人" />
+                    <el-input size="small" v-model="temp.recorder" placeholder="制单人" />
                 </el-form-item>
                 <el-form-item label="审核日期:" prop="auditDate">
-                    <el-date-picker :editable="false" v-model="temp.auditDate" type="date" placeholder="审核日期" size="mini" :clearable="false" value-format="yyyy-MM-dd">
+                    <el-date-picker :editable="false" v-model="temp.auditDate" type="date" placeholder="审核日期" size="small" :clearable="false" value-format="yyyy-MM-dd">
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="审核人:" prop="auditorId">
-                    <el-input size="mini" v-model="temp.auditor" placeholder="审核人" />
+                    <el-input size="small" v-model="temp.auditor" placeholder="审核人" />
                 </el-form-item>
             </el-form>
         </div>
@@ -110,7 +110,7 @@
                 <el-form-item label="选择仓库:" prop="warehouseId">
                     <el-select v-model="form.warehouseId" style="width:240px" placeholder="选择仓库" size="small">
                         <el-option label="全部" value="null"></el-option>
-                        <el-option v-for="item in warehouseList" :label="item.warehouseName" :value="item.id"></el-option>
+                        <el-option v-for="item in warehouseList" :label="item.warehouseName" :key="item.id" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="零库存:" prop="includeZero">

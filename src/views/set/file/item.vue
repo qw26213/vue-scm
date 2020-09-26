@@ -7,10 +7,10 @@
             <div class="filter-container">
                 <el-input size="small" v-model="listQuery.queryParam.itemName" placeholder="商品代码/名称/助记码/规格/特性/品牌..." style="width: 360px;" class="filter-item" />
                 <!-- <el-input size="small" v-model="listQuery.queryParam.itemCode" placeholder="商品代码" style="width: 200px;" class="filter-item" /> -->
-                <el-button size="mini" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
-                <el-button size="mini" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
+                <el-button size="small" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
+                <el-button size="small" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
             </div>
-            <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="mini">
+            <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
                 <el-table-column label="商品代码">
                     <template slot-scope="{row}">
                         <span>{{row.itemCode}}</span>
@@ -89,9 +89,9 @@
                 </el-table-column>
                 <el-table-column fixed="right" label="操作" align="center" width="150">
                     <template slot-scope="{row}">
-                        <el-button type="text" size="mini" @click="handleCompile(row)">编辑</el-button>
-                        <el-button type="text" size="mini" @click="handleDel(row.id)">删除</el-button>
-                        <el-button type="text" size="mini" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
+                        <el-button type="text" size="small" @click="handleCompile(row)">编辑</el-button>
+                        <el-button type="text" size="small" @click="handleDel(row.id)">删除</el-button>
+                        <el-button type="text" size="small" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
                     </template>
                 </el-table-column>
             </el-table>
