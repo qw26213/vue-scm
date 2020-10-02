@@ -57,10 +57,19 @@ aside { background: #eef1f6; padding: 8px 24px; margin-bottom: 20px; border-radi
 .tdCell .cell .el-date-editor .el-input__prefix{display: none!important}
 .tdCell .cell .el-date-editor .el-input__inner{padding-left:20px!important }
 
+.dataTable{
+  border-radius: 8px;
+  padding: 10px 10px;
+  background-color: #fff;
+  width:100%;
+  position:relative;
+  margin-bottom: 10px;
+}
+
 .dataTable .el-form-item { margin-bottom: 5px; }
-.dataTable .el-date-editor.el-input--mini{width: 120px;}
-.dataTable .el-select--mini{width: 120px!important;}
-.dataTable .el-input--mini{width: 120px;}
+.dataTable .el-date-editor.el-input--small{width: 125px;}
+.dataTable .el-select--small{width: 125px!important;}
+.dataTable .el-input--small{width: 125px;}
 
 .dataTable .el-input__inner { padding: 0 8px; border-radius: 2px;width: 100%; }
 .el-date-editor--date .el-input__inner { padding: 0 0 0 30px; border-radius: 2px; }

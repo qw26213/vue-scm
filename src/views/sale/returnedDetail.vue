@@ -46,94 +46,96 @@
                 </el-form-item>
             </el-form>
         </div>
-        <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="small" cell-class-name="tdCell">
-            <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
-            <el-table-column label="商品代码" width="160">
-                <template slot-scope="{row}">
-                    <span>{{row.itemCode}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="商品名称" width="160">
-                <template slot-scope="{row}">
-                    <span>{{row.itemName}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="规格">
-                <template slot-scope="{row}">
-                    <span>{{row.norms}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="单位" width="60">
-                <template slot-scope="{row}">
-                    <span>{{row.uom}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="批号">
-                <template slot-scope="{row}">
-                    <span>{{row.batchNo}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="生产日期" width="120">
-                <template slot-scope="{row}">
-                    <span>{{row.productionDat}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="保质期(天)">
-                <template slot-scope="{row}">
-                    <span>{{row.qualityDays}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="单价(元)">
-                <template slot-scope="{row}">
-                    <span>{{row.price}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="数量">
-                <template slot-scope="{row}">
-                    <span>{{row.qty}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="金额">
-                <template slot-scope="{row}">
-                    <span>{{row.amount}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="税率(%)">
-                <template slot-scope="{row}">
-                    <span>{{row.taxRate}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="税额">
-                <template slot-scope="{row}">
-                    <span>{{row.taxAmount}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="价税合计">
-                <template slot-scope="{row}">
-                    <span>{{row.vatAmount}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="是否赠品" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.salesTypeCode}}</span>
-                </template>
-            </el-table-column>
-        </el-table>
-        <div class="dataTable" style="margin-top: 10px">
-            <el-form :inline="true" label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
-                <el-form-item label="制单日期:">
-                    <span>{{temp.recordDate}}</span>
-                </el-form-item>
-                <el-form-item label="制单人:">
-                    <span>{{temp.recorderId}}</span>
-                </el-form-item>
-                <el-form-item label="审核日期:">
-                    <span>{{temp.auditDate}}</span>
-                </el-form-item>
-                <el-form-item label="审核人:">
-                    <span>{{temp.auditorId}}</span>
-                </el-form-item>
-            </el-form>
+        <div class="contentDiv">
+            <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="small" cell-class-name="tdCell">
+                <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
+                <el-table-column label="商品代码" width="160">
+                    <template slot-scope="{row}">
+                        <span>{{row.itemCode}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="商品名称" width="160">
+                    <template slot-scope="{row}">
+                        <span>{{row.itemName}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="规格">
+                    <template slot-scope="{row}">
+                        <span>{{row.norms}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="单位" width="60">
+                    <template slot-scope="{row}">
+                        <span>{{row.uom}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="批号">
+                    <template slot-scope="{row}">
+                        <span>{{row.batchNo}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="生产日期" width="120">
+                    <template slot-scope="{row}">
+                        <span>{{row.productionDat}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="保质期(天)">
+                    <template slot-scope="{row}">
+                        <span>{{row.qualityDays}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="单价(元)">
+                    <template slot-scope="{row}">
+                        <span>{{row.price}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="数量">
+                    <template slot-scope="{row}">
+                        <span>{{row.qty}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="金额">
+                    <template slot-scope="{row}">
+                        <span>{{row.amount}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="税率(%)">
+                    <template slot-scope="{row}">
+                        <span>{{row.taxRate}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="税额">
+                    <template slot-scope="{row}">
+                        <span>{{row.taxAmount}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="价税合计">
+                    <template slot-scope="{row}">
+                        <span>{{row.vatAmount}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="是否赠品" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.salesTypeCode}}</span>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <div class="dataTable" style="margin-top: 10px">
+                <el-form :inline="true" label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
+                    <el-form-item label="制单日期:">
+                        <span>{{temp.recordDate}}</span>
+                    </el-form-item>
+                    <el-form-item label="制单人:">
+                        <span>{{temp.recorderId}}</span>
+                    </el-form-item>
+                    <el-form-item label="审核日期:">
+                        <span>{{temp.auditDate}}</span>
+                    </el-form-item>
+                    <el-form-item label="审核人:">
+                        <span>{{temp.auditorId}}</span>
+                    </el-form-item>
+                </el-form>
+            </div>
         </div>
     </div>
 </template>

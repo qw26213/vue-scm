@@ -5,8 +5,8 @@
             <span class="zhi">至</span>
             <el-date-picker :editable="false" v-model="listQuery.queryParam.billDate2" type="date" placeholder="结束日期" size="small" :clearable="false" value-format="yyyy-MM-dd" />
             <el-input size="small" v-model="listQuery.queryParam.billNo" placeholder="单据号" />
-            <warehouseList @selectChange="selectChange" keyType="outWarehouseId" placeTxt="调出仓库" ctrType="list":selectId="listQuery.queryParam.outWarehouseId"></warehouseList>
-            <warehouseList @selectChange="selectChange" keyType="inWarehouseId" placeTxt="调入仓库" ctrType="list":selectId="listQuery.queryParam.inWarehouseId"></warehouseList>
+            <warehouseList @selectChange="selectChange" keyType="outWarehouseId" placeTxt="调出仓库" ctrType="list" :selectId="listQuery.queryParam.outWarehouseId"></warehouseList>
+            <warehouseList @selectChange="selectChange" keyType="inWarehouseId" placeTxt="调入仓库" ctrType="list" :selectId="listQuery.queryParam.inWarehouseId"></warehouseList>
             <el-select v-model="listQuery.queryParam.status" placeholder="单据状态" size="small">
                 <el-option label="全部" :value="null" />
                 <el-option label="未审核" value="0" />
@@ -15,58 +15,57 @@
             <el-button size="small" type="primary" @click="getList">查询</el-button>
             <el-button size="small" type="primary" @click="handleAdd">新增</el-button>
         </div>
-        <div class="contentDiv">    
+        <div class="contentDiv">
             <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
-            <el-table-column label="单据日期" align="center" width="120">
-                <template slot-scope="{row}">
-                    <span>{{row.billDate}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="单据号">
-                <template slot-scope="{row}">
-                    <span>{{row.billNo}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="业务类型">
-                <template slot-scope="{row}">
-                    <span>{{row.bizTypeName}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="调出仓库">
-                <template slot-scope="{row}">
-                    <span>{{row.outWarehouseName}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="调入仓库">
-                <template slot-scope="{row}">
-                    <span>{{row.inWarehouseName}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="业务员">
-                <template slot-scope="{row}">
-                    <span>{{row.staffName}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="状态" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.status==1?'已审核':row.status==2?'已确认':'待审核'}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="操作" align="center" width="150">
-                <template slot-scope="{row}">
-                    <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status<=0?'编辑':'查看'}}</span>
-                    <span v-if="row.status==1" class="ctrl" @click="confirmBill(row.id)">确认</span>
-                    <span v-if="row.status==-1" class="ctrl" @click="showAuditInfo(row.id)">查看审核意见</span>
-                    <span v-if="row.status==-2" class="ctrl" @click="showConfirmInfo(row.id)">查看确认意见</span>
-                    <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
-                    <span class="ctrl del" v-if="row.status<=0" @click="handleDel(row.id)">删除</span>
-                    <span class="ctrl" @click="printBill(row)">打印</span>
-                </template>
-            </el-table-column>
+                <el-table-column label="单据日期" align="center" width="120">
+                    <template slot-scope="{row}">
+                        <span>{{row.billDate}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="单据号">
+                    <template slot-scope="{row}">
+                        <span>{{row.billNo}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="业务类型">
+                    <template slot-scope="{row}">
+                        <span>{{row.bizTypeName}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="调出仓库">
+                    <template slot-scope="{row}">
+                        <span>{{row.outWarehouseName}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="调入仓库">
+                    <template slot-scope="{row}">
+                        <span>{{row.inWarehouseName}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="业务员">
+                    <template slot-scope="{row}">
+                        <span>{{row.staffName}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="状态" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.status==1?'已审核':row.status==2?'已确认':'待审核'}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" align="center" width="150">
+                    <template slot-scope="{row}">
+                        <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status<=0?'编辑':'查看'}}</span>
+                        <span v-if="row.status==1" class="ctrl" @click="confirmBill(row.id)">确认</span>
+                        <span v-if="row.status==-1" class="ctrl" @click="showAuditInfo(row.id)">查看审核意见</span>
+                        <span v-if="row.status==-2" class="ctrl" @click="showConfirmInfo(row.id)">查看确认意见</span>
+                        <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
+                        <span class="ctrl del" v-if="row.status<=0" @click="handleDel(row.id)">删除</span>
+                        <span class="ctrl" @click="printBill(row)">打印</span>
+                    </template>
+                </el-table-column>
             </el-table>
             <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
         </div>
-
         <Auditconfirm :dialogvisible.sync="auditModalVisible" :type="auditType" :remarklist="remarklist" @auditBill="checkItem" />
         <Confirmconfirm :dialogvisible.sync="confirmModalVisible" :type="confirmType" :remarklist="remarklist1" @confirmBill="confirmItem" />
     </div>
@@ -85,7 +84,7 @@ export default {
         return {
             tableKey: 0,
             tableData: [],
-            statusList: [{status:1, label:'已审核'}, {status:2, label:'已确认'}, {status:0,label:'待审核'}],
+            statusList: [{ status: 1, label: '已审核' }, { status: 2, label: '已确认' }, { status: 0, label: '待审核' }],
             total: 0,
             listLoading: true,
             auditModalVisible: false,
@@ -100,8 +99,8 @@ export default {
                 queryParam: {
                     billDate1: getNowDate(),
                     billDate2: getNowDate(),
-                    outWarehouseId:'',
-                    inWarehouseId:'',
+                    outWarehouseId: '',
+                    inWarehouseId: '',
                     billNo: '',
                     status: ''
                 }
@@ -121,19 +120,19 @@ export default {
                 }
             })
         },
-        showConfirmInfo(id){
+        showConfirmInfo(id) {
             this.confirmType = 'record'
             getConfirmInfoByHeaderId(id).then(res => {
-                if(res.data.errorCode == 0) {
+                if (res.data.errorCode == 0) {
                     this.confirmModalVisible = true
                     this.remarklist1 = res.data.data || []
                 }
             })
         },
-        showAuditInfo(id){
+        showAuditInfo(id) {
             this.auditType = 'record'
             getAuditInfoByHeaderId(id).then(res => {
-                if(res.data.errorCode == 0) {
+                if (res.data.errorCode == 0) {
                     this.auditModalVisible = true
                     this.remarklist = res.data.data || []
                 }
@@ -149,7 +148,7 @@ export default {
                 this.listLoading = false
             })
         },
-        handleConfirm(id){
+        handleConfirm(id) {
             this.confirmType = 'create'
             this.confirmModalVisible = true
             this.curBillId = id

@@ -16,7 +16,7 @@ everyday<template>
                 </el-form-item>
                 <el-form-item label="业务员:" prop="staffId">
                     <el-select v-model="temp.staffId" style="width:240px" disabled placeholder="选择业务员" size="small">
-                        <el-option v-for="item in stafflist" :label="item.staffName" :value="item.id"></el-option>
+                        <el-option v-for="item in stafflist" :label="item.staffName" :value="item.id" :key="item.id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="销售单数:" prop="soBillNum">
@@ -68,15 +68,15 @@ everyday<template>
                     <el-input size="small" class="input-item" v-model="temp.balance" placeholder="余额" disabled />
                 </el-form-item>
             </el-form>
-        </div>
-        <div class="tx-c" style="margin-top:15px">
-            <el-button class="filter-item" type="primary" @click="save">保存</el-button>
+            <div class="tx-c" style="margin-top:15px">
+                <el-button class="filter-item" type="primary" @click="save">保存</el-button>
+            </div>
         </div>
         <el-dialog :close-on-click-modal="false" title="选择截止日期" :visible.sync="dialogFormVisible" :show-close="false" width="420px">
             <el-form ref="dataForm" :rules="rules" :model="form" label-position="left" label-width="88px" style="width:400px; margin:10px 25px;">
                 <el-form-item label="业务员:" prop="staffId">
                     <el-select v-model="form.staffId" style="width:240px" placeholder="选择业务员" size="small">
-                        <el-option v-for="item in stafflist" :label="item.staffName" :value="item.id"></el-option>
+                        <el-option v-for="item in stafflist" :label="item.staffName" :key="item.id" :value="item.id" />
                     </el-select>
                 </el-form-item>
                 <el-form-item label="截止日期:" prop="endDate">

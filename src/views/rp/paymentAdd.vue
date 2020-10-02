@@ -15,42 +15,44 @@
                     <staffList @selectChange="selectChange" :selectId="temp.staffId"></staffList>
                 </el-form-item>
                 <el-form-item label="现结金额:" prop="amount" label-width="72px">
-                    <el-input size="small" v-model="temp.amount" placeholder="现结金额" style="width:72px" disabled />
-                    <el-button size="small" style="width:44px;padding:6px" @click="showSettleType">选择</el-button>
+                    <el-input size="small" v-model="temp.amount" placeholder="现结金额" style="width:75px" disabled />
+                    <el-button size="small" style="width:45px;padding:8px" @click="showSettleType">选择</el-button>
                 </el-form-item>
                 <el-button size="small" class="filter-item" type="primary" @click="showSaleBill">选择采购单</el-button>
             </el-form>
         </div>
-        <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="small" max-height="600">
-            <el-table-column label="序号" type="index" width="50" align="center" />
-            <el-table-column label="单据日期" align="center">
-                <template slot-scope="{row}">
-                    <span>{{ row.billDate }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="单据号" align="center">
-                <template slot-scope="{row}">
-                    <span>{{ row.billNo }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="单据金额" align="right">
-                <template slot-scope="{row}">
-                    <span>{{ row.billAmount }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="应收金额" align="right">
-                <template slot-scope="{row}">
-                    <span>{{ row.billBalance }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="收款金额" align="right">
-                <template slot-scope="{row}">
-                    <input class="amount" @focus="$event.target.select()" v-model="row.amount" />
-                </template>
-            </el-table-column>
-        </el-table>
-        <div class="tx-c" style="margin-top:15px" v-if="status!=1&&status!=2">
-            <el-button class="filter-item" type="primary" @click="save">保存</el-button>
+        <div class="contentDiv">
+            <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="small" max-height="600">
+                <el-table-column label="序号" type="index" width="50" align="center" />
+                <el-table-column label="单据日期" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{ row.billDate }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="单据号" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{ row.billNo }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="单据金额" align="right">
+                    <template slot-scope="{row}">
+                        <span>{{ row.billAmount }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="应收金额" align="right">
+                    <template slot-scope="{row}">
+                        <span>{{ row.billBalance }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="收款金额" align="right">
+                    <template slot-scope="{row}">
+                        <input class="amount" @focus="$event.target.select()" v-model="row.amount" />
+                    </template>
+                </el-table-column>
+            </el-table>
+            <div class="tx-c" style="margin-top:15px" v-if="status!=1&&status!=2">
+                <el-button class="filter-item" type="primary" @click="save">保存</el-button>
+            </div>
         </div>
         <el-dialog :close-on-click-modal="false" title="选择采购单" :visible.sync="dialogFormVisible1" width="720px">
             <div class="filter-container">

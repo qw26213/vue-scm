@@ -207,11 +207,11 @@ export function getDelivery(data) {
     })
 }
 
-export function getDeliveryById(id, date) {
+export function getDeliveryById(id, billDate) {
     return request({
         url: '/drp/so/delivery/getByHeaderId',
         method: 'post',
-        data: { id: id, billDate: date }
+        data: { id, billDate }
     })
 }
 

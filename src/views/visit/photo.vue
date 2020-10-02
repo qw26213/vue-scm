@@ -45,7 +45,7 @@
                 <el-table-column label="操作" align="center" width="180">
                     <template slot-scope="{row}">
                         <el-button class="ctrl" type="primary" size="small" @click="showImg(row)">查看图片</el-button>
-                        <el-button class="ctrl del" type="danger" size="small" @click="handleDel(row.id)">删除</el-button>
+                        <el-button class="ctrl del" type="danger" size="small" @click="handleDel(row.id, row.visitDate )">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -133,13 +133,13 @@ export default {
             this.dialogFormVisible = true
             this.imgUrl = obj.baseUrl + obj.fileUrl
         },
-        handleDel(id) {
+        handleDel(id, date) {
             this.$confirm('确定要删除吗', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                deleteFileById({ id: id }).then(res => {
+                deleteFileById({ id: id, visitDate: date }).then(res => {
                     if (res.data.success) {
                         this.$message.success("删除成功")
                         this.getList()

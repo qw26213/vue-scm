@@ -15,53 +15,53 @@
             <el-button size="small" type="primary" @click="handleAdd">新增</el-button>
         </div>
         <div class="contentDiv">
-        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
-            <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
-            <el-table-column label="单据日期" align="center" width="120">
-                <template slot-scope="{row}">
-                    <span>{{row.billDate}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="单据号">
-                <template slot-scope="{row}">
-                    <span>{{row.billNo}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="客户">
-                <template slot-scope="{row}">
-                    <span>{{row.custName}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="收款金额" align="right">
-                <template slot-scope="{row}">
-                    <span>{{row.amount | fixed}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="状态" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.status==1?'已审核':row.status==2?'已生成':'待审核'}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="核销状态" align="center">
-                <template slot-scope="{row}">
-                  <span v-if="row.statusVerification === 0">无需核销</span>
-                  <span v-if="row.statusVerification === 1">待核销</span>
-                  <span v-if="row.statusVerification === 2">部分核销</span>
-                  <span v-if="row.statusVerification === 9">已核销</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="操作" align="center" width="200">
-                <template slot-scope="{row}">
-                    <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status<=0?'编辑':'查看'}}</span>
-                    <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
-                    <span class="ctrl" v-if="row.status==-1" @click="showAuditInfo(row.id)">查看审核意见</span>
-                    <span class="ctrl del" v-if="row.status<=0" @click="handleDel(row.id)">删除</span>
-                    <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader, row.id, row.jeHeaderId)">{{row.isJeHeader==1?'查看':'生成'}}凭证</span>
-                    <span class="ctrl" @click="printBill(row)">打印</span>
-                </template>
-            </el-table-column>
-        </el-table>
-        <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
+            <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
+                <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
+                <el-table-column label="单据日期" align="center" width="120">
+                    <template slot-scope="{row}">
+                        <span>{{row.billDate}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="单据号">
+                    <template slot-scope="{row}">
+                        <span>{{row.billNo}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="客户">
+                    <template slot-scope="{row}">
+                        <span>{{row.custName}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="收款金额" align="right">
+                    <template slot-scope="{row}">
+                        <span>{{row.amount | fixed}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="状态" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.status==1?'已审核':row.status==2?'已生成':'待审核'}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="核销状态" align="center">
+                    <template slot-scope="{row}">
+                      <span v-if="row.statusVerification === 0">无需核销</span>
+                      <span v-if="row.statusVerification === 1">待核销</span>
+                      <span v-if="row.statusVerification === 2">部分核销</span>
+                      <span v-if="row.statusVerification === 9">已核销</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" align="center" width="200">
+                    <template slot-scope="{row}">
+                        <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status<=0?'编辑':'查看'}}</span>
+                        <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
+                        <span class="ctrl" v-if="row.status==-1" @click="showAuditInfo(row.id)">查看审核意见</span>
+                        <span class="ctrl del" v-if="row.status<=0" @click="handleDel(row.id)">删除</span>
+                        <span class="ctrl" v-if="row.status==1" @click="handleCreateVouter(row.isJeHeader, row.id, row.jeHeaderId)">{{row.isJeHeader==1?'查看':'生成'}}凭证</span>
+                        <span class="ctrl" @click="printBill(row)">打印</span>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
         </div>
         <el-dialog :close-on-click-modal="false" title="请选择凭证日期" :visible.sync="dialogFormVisible" width="400px">
             <el-form style="margin-top:30px;text-align:center;">

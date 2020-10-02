@@ -52,6 +52,7 @@
                 </el-form-item>
             </el-form>
         </div>
+        <div class="contentDiv">
         <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="small" cell-class-name="tdCell">
             <el-table-column label="序号" type="index" width="50" align="center" />
             <el-table-column label="商品名称" width="160">
@@ -123,6 +124,7 @@
         </div>
         <div class="tx-c" style="margin-top:15px" v-if="status!=1 && status!=2">
             <el-button class="filter-item" type="primary" @click="save">保存</el-button>
+        </div>
         </div>
     </div>
 </template>

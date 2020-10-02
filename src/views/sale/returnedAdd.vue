@@ -27,15 +27,14 @@
                     <paymentTypeList @selectChange="selectChange" :selectId="temp.paymentTypeId"></paymentTypeList>
                 </el-form-item>
                 <el-form-item label="收款到期日:" prop="paymentDueDate">
-                    <el-date-picker :editable="false" v-model="temp.paymentDueDate" type="date" placeholder="收款到期日" size="small" :clearable="false" value-format="yyyy-MM-dd">
-                    </el-date-picker>
+                    <el-date-picker :editable="false" v-model="temp.paymentDueDate" type="date" placeholder="收款到期日" size="small" :clearable="false" value-format="yyyy-MM-dd" />
                 </el-form-item>
                 <el-form-item label="合计金额:" prop="itemAmount">
                     <el-input size="small" v-model="temp.itemAmount" placeholder="合计金额" disabled />
                 </el-form-item>
                 <el-form-item label="现结金额:" prop="currPayAmount">
-                    <el-input size="small" v-model="temp.currPayAmount" placeholder="现结金额" style="width:72px" disabled />
-                    <el-button size="small" style="width:44px;padding:6px" @click="showSettleType">选择</el-button>
+                    <el-input size="small" v-model="temp.currPayAmount" placeholder="现结金额" style="width:75px" disabled />
+                    <el-button size="small" style="width:45px;padding:8px" @click="showSettleType">选择</el-button>
                 </el-form-item>
                 <el-form-item label="返利金额:" prop="rebateAmount">
                     <el-input size="small" v-model="temp.rebateAmount" placeholder="返利金额" />
@@ -56,100 +55,100 @@
                 </el-form-item>
             </el-form>
         </div>
-        <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="small" cell-class-name="tdCell">
-            <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
-            <el-table-column label="销售方式" align="center">
-                <template slot-scope="scope">
-                    <salesTypeList :selectId="scope.row.salesTypeCode" :index="scope.$index" @selectChange="salesTypeChange" ></salesTypeList>
-                </template>
-            </el-table-column>
-            <el-table-column label="商品名称" width="160">
-                <template slot-scope="scope">
-                    <itemList :selectCode="scope.row.itemCode" :selectId="scope.row.itemId" :index="scope.$index" :item-list="item_list" @changeVal="changeVal" />
-                </template>
-            </el-table-column>
-            <el-table-column label="商品代码" width="160">
-                <template slot-scope="{row}">
-                    <input type="text" class="inputCell" v-model="row.itemCode" disabled>
-                </template>
-            </el-table-column>
-            <el-table-column label="规格">
-                <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-r" v-model="row.norms" disabled>
-                </template>
-            </el-table-column>
-            <el-table-column label="单位" width="60">
-                <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-c" v-model="row.uom" disabled>
-                </template>
-            </el-table-column>
-            <el-table-column label="批号">
-                <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-r" v-model="row.batchNo">
-                </template>
-            </el-table-column>
-            <el-table-column label="生产日期" width="120">
-                <template slot-scope="{row}">
-                    <el-date-picker :editable="false" v-model="row.productionDate" type="date" placeholder="" size="small" style="width:100%" :clearable="false" value-format="yyyy-MM-dd">
-                    </el-date-picker>
-                </template>
-            </el-table-column>
-            <el-table-column label="保质期(天)">
-                <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-r" v-model="row.qualityDays">
-                </template>
-            </el-table-column>
-            <el-table-column label="含税价(元)">
-                <template slot-scope="scope">
-                    <input type="text" class="inputCell tx-r" v-model="scope.row.vatPrice" :disables="userInfo.returnPriceType + scope.row.salePriceType <= 1" @change="calculate(scope.$index)">
-                </template>
-            </el-table-column>
-            <el-table-column label="数量">
-                <template slot-scope="scope">
-                    <input type="text" class="inputCell tx-r" v-model="scope.row.qty" @change="calculate(scope.$index)">
-                </template>
-            </el-table-column>
-            <el-table-column label="金额">
-                <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-r" v-model="row.amount" disabled>
-                </template>
-            </el-table-column>
-            <el-table-column label="税率(%)">
-                <template slot-scope="scope">
-                    <input type="text" class="inputCell tx-r" v-model="scope.row.taxRate" @change="calculate(scope.$index)">
-                </template>
-            </el-table-column>
-            <el-table-column label="税额">
-                <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-r" v-model="row.taxAmount" disabled>
-                </template>
-            </el-table-column>
-            <el-table-column label="价税合计">
-                <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-r" v-model="row.vatAmount||0" disabled>
-                </template>
-            </el-table-column>
-        </el-table>
-        <div class="dataTable" style="margin-top: 10px">
-            <el-form :inline="true" label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
-                <el-form-item label="制单日期:" prop="recordDate">
-                    <el-date-picker :editable="false" v-model="temp.recordDate" type="date" placeholder="制单日期" size="small" :clearable="false" value-format="yyyy-MM-dd">
-                    </el-date-picker>
-                </el-form-item>
-                <el-form-item label="制单人:" prop="recorderId">
-                    <el-input size="small" v-model="temp.recorder" placeholder="制单人" />
-                </el-form-item>
-                <el-form-item label="审核日期:" prop="auditDate">
-                    <el-date-picker :editable="false" v-model="temp.auditDate" type="date" placeholder="审核日期" size="small" :clearable="false" value-format="yyyy-MM-dd">
-                    </el-date-picker>
-                </el-form-item>
-                <el-form-item label="审核人:" prop="auditorId">
-                    <el-input size="small" v-model="temp.auditor" placeholder="审核人" />
-                </el-form-item>
-            </el-form>
-        </div>
-        <div class="tx-c" style="margin-top:15px" v-if="status!=1&&status!=2">
-            <el-button class="filter-item" type="primary" @click="save">保存</el-button>
+        <div class="contentDiv">
+            <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="small" cell-class-name="tdCell">
+                <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
+                <el-table-column label="销售方式" align="center">
+                    <template slot-scope="scope">
+                        <salesTypeList :selectId="scope.row.salesTypeCode" :index="scope.$index" @selectChange="salesTypeChange"></salesTypeList>
+                    </template>
+                </el-table-column>
+                <el-table-column label="商品名称" width="160">
+                    <template slot-scope="scope">
+                        <itemList :selectCode="scope.row.itemCode" :selectId="scope.row.itemId" :index="scope.$index" :item-list="item_list" @changeVal="changeVal" />
+                    </template>
+                </el-table-column>
+                <el-table-column label="商品代码" width="160">
+                    <template slot-scope="{row}">
+                        <input type="text" class="inputCell" v-model="row.itemCode" disabled>
+                    </template>
+                </el-table-column>
+                <el-table-column label="规格">
+                    <template slot-scope="{row}">
+                        <input type="text" class="inputCell tx-r" v-model="row.norms" disabled>
+                    </template>
+                </el-table-column>
+                <el-table-column label="单位" width="60">
+                    <template slot-scope="{row}">
+                        <input type="text" class="inputCell tx-c" v-model="row.uom" disabled>
+                    </template>
+                </el-table-column>
+                <el-table-column label="批号">
+                    <template slot-scope="{row}">
+                        <input type="text" class="inputCell tx-r" v-model="row.batchNo">
+                    </template>
+                </el-table-column>
+                <el-table-column label="生产日期" width="120">
+                    <template slot-scope="{row}">
+                        <el-date-picker :editable="false" v-model="row.productionDate" type="date" placeholder="" size="small" style="width:100%" :clearable="false" value-format="yyyy-MM-dd">
+                        </el-date-picker>
+                    </template>
+                </el-table-column>
+                <el-table-column label="保质期(天)">
+                    <template slot-scope="{row}">
+                        <input type="text" class="inputCell tx-r" v-model="row.qualityDays">
+                    </template>
+                </el-table-column>
+                <el-table-column label="含税价(元)">
+                    <template slot-scope="scope">
+                        <input type="text" class="inputCell tx-r" v-model="scope.row.vatPrice" :disables="userInfo.returnPriceType + scope.row.salePriceType <= 1" @change="calculate(scope.$index)">
+                    </template>
+                </el-table-column>
+                <el-table-column label="数量">
+                    <template slot-scope="scope">
+                        <input type="text" class="inputCell tx-r" v-model="scope.row.qty" @change="calculate(scope.$index)">
+                    </template>
+                </el-table-column>
+                <el-table-column label="金额">
+                    <template slot-scope="{row}">
+                        <input type="text" class="inputCell tx-r" v-model="row.amount" disabled>
+                    </template>
+                </el-table-column>
+                <el-table-column label="税率(%)">
+                    <template slot-scope="scope">
+                        <input type="text" class="inputCell tx-r" v-model="scope.row.taxRate" @change="calculate(scope.$index)">
+                    </template>
+                </el-table-column>
+                <el-table-column label="税额">
+                    <template slot-scope="{row}">
+                        <input type="text" class="inputCell tx-r" v-model="row.taxAmount" disabled>
+                    </template>
+                </el-table-column>
+                <el-table-column label="价税合计">
+                    <template slot-scope="{row}">
+                        <input type="text" class="inputCell tx-r" v-model="row.vatAmount||0" disabled>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <div class="dataTable" style="margin-top: 10px">
+                <el-form :inline="true" label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
+                    <el-form-item label="制单日期:" prop="recordDate">
+                        <el-date-picker :editable="false" v-model="temp.recordDate" type="date" placeholder="制单日期" size="small" :clearable="false" value-format="yyyy-MM-dd" />
+                    </el-form-item>
+                    <el-form-item label="制单人:" prop="recorderId">
+                        <el-input size="small" v-model="temp.recorder" placeholder="制单人" />
+                    </el-form-item>
+                    <el-form-item label="审核日期:" prop="auditDate">
+                        <el-date-picker :editable="false" v-model="temp.auditDate" type="date" placeholder="审核日期" size="small" :clearable="false" value-format="yyyy-MM-dd" />
+                    </el-form-item>
+                    <el-form-item label="审核人:" prop="auditorId">
+                        <el-input size="small" v-model="temp.auditor" placeholder="审核人" />
+                    </el-form-item>
+                </el-form>
+            </div>
+            <div class="tx-c" style="margin-top:15px" v-if="status!=1&&status!=2">
+                <el-button class="filter-item" type="primary" @click="save">保存</el-button>
+            </div>
         </div>
         <el-dialog :close-on-click-modal="false" title="结算方式" :visible.sync="dialogFormVisible" width="392px">
             <el-table :data="settleData" border fit highlight-current-row style="width: 100%;" size="small" cell-class-name="tdCell">
@@ -263,7 +262,7 @@ export default {
     },
     mounted() {
         this.$store.dispatch('basedata/getPresaleReturnedSettleType')
-        if(!this.status){
+        if (!this.status) {
             this.modalTableVisible = true
         }
     },
@@ -280,21 +279,21 @@ export default {
         calculate(index) {
             var vatPrice = this.tableData[index].vatPrice //含税价
             var qty = this.tableData[index].qty //数量
-            if(qty&&vatPrice){
+            if (qty && vatPrice) {
                 var vatAmount = parseFloat(Number(qty) * Number(vatPrice)).toFixed(2)
-                this.$set(this.tableData[index],'vatAmount',vatAmount)
+                this.$set(this.tableData[index], 'vatAmount', vatAmount)
                 var taxRate = this.tableData[index].taxRate;
-                if(taxRate){
-                    var price = parseFloat(Number(vatPrice)/(Number(taxRate)/100+1)).toFixed(2)
-                    var amount = parseFloat(Number(qty)*Number(price)).toFixed(2)
+                if (taxRate) {
+                    var price = parseFloat(Number(vatPrice) / (Number(taxRate) / 100 + 1)).toFixed(2)
+                    var amount = parseFloat(Number(qty) * Number(price)).toFixed(2)
                     var taxAmount = parseFloat(Number(vatAmount) - Number(amount)).toFixed(2)
-                    this.$set(this.tableData[index],'taxAmount',taxAmount)
-                    this.$set(this.tableData[index],'price',price)
-                    this.$set(this.tableData[index],'amount',amount)
-                }else{
-                    this.$set(this.tableData[index],'taxRate',0)
-                    this.$set(this.tableData[index],'price',0)
-                    this.$set(this.tableData[index],'amount',0)
+                    this.$set(this.tableData[index], 'taxAmount', taxAmount)
+                    this.$set(this.tableData[index], 'price', price)
+                    this.$set(this.tableData[index], 'amount', amount)
+                } else {
+                    this.$set(this.tableData[index], 'taxRate', 0)
+                    this.$set(this.tableData[index], 'price', 0)
+                    this.$set(this.tableData[index], 'amount', 0)
                 }
                 this.calculateTotal();
             }
@@ -325,8 +324,8 @@ export default {
                 this.settleData[obj.index][key] = obj[key];
             }
         },
-        salesTypeChange(obj){
-            for(var key in obj){
+        salesTypeChange(obj) {
+            for (var key in obj) {
                 this.tableData[obj.index][key] = obj[key];
             }
         },
@@ -350,11 +349,11 @@ export default {
         },
         getItemList() {
             const obj = {
-              pageIndex: 1,
-              pageNum: 100,
-              queryParam:{
-                custId: this.temp.custId
-              }
+                pageIndex: 1,
+                pageNum: 100,
+                queryParam: {
+                    custId: this.temp.custId
+                }
             }
             getResPageByFuzzyCustId(obj).then(res => {
                 this.item_list = res.data.data;

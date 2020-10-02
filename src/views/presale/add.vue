@@ -30,122 +30,124 @@
                     <el-input size="small" v-model="temp.amount" placeholder="预收合计" disabled />
                 </el-form-item>
                 <el-form-item label="现结金额:" prop="beginBalance">
-                    <el-input size="small" v-model="temp.beginBalance" placeholder="现结金额" style="width:72px" disabled />
-                    <el-button size="small" style="width:44px;padding:6px" @click="showSettleType">选择</el-button>
+                    <el-input size="small" v-model="temp.beginBalance" placeholder="现结金额" style="width:75px" disabled />
+                    <el-button size="small" style="width:45px;padding:6px" @click="showSettleType">选择</el-button>
                 </el-form-item>
                 <el-form-item label="余额:" prop="balance" v-if="status==1">
                     <el-input size="small" v-model="temp.balance" placeholder="余额" />
                 </el-form-item>
             </el-form>
         </div>
-        <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="small" cell-class-name="tdCell" max-height="600">
-            <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
-            <el-table-column label="商品代码" width="160" v-if="temp.presaleType=='1'">
-                <template slot-scope="scope">
-                    <itemList :selectCode="scope.row.itemCode" :selectId="scope.row.itemId" :index="scope.$index" @changeVal="changeVal"></itemList>
-                </template>
-            </el-table-column>
-            <el-table-column label="商品名称" width="160" v-if="temp.presaleType=='1'">
-                <template slot-scope="{row}">
-                    <input type="text" class="inputCell" v-model="row.itemName" disabled>
-                </template>
-            </el-table-column>
-            <el-table-column label="规格" v-if="temp.presaleType=='1'">
-                <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-r" v-model="row.norms" disabled>
-                </template>
-            </el-table-column>
-            <el-table-column label="单位" v-if="temp.presaleType=='1'">
-                <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-c" v-model="row.uom" disabled>
-                </template>
-            </el-table-column>
-            <el-table-column label="辅助单位" v-if="temp.presaleType=='1'">
-                <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-c" v-model="row.subUom" disabled>
-                </template>
-            </el-table-column>
-            <el-table-column label="品类代码" v-if="temp.presaleType=='2'" key="1" width="150">
-                <template slot-scope="scope">
-                    <invCatgList :resdata="invCatgList" :selectId="scope.row.invCatgId" :index="scope.$index" @changeVal="changeVal1"></invCatgList>
-                </template>
-            </el-table-column>
-            <el-table-column label="品类名称" v-if="temp.presaleType=='2'" key="2" width="160">
-                <template slot-scope="{row}">
-                    <input type="text" class="inputCell" v-model="row.invCatgName" disabled>
-                </template>
-            </el-table-column>
-            <el-table-column label="计量单位" v-if="temp.presaleType=='2'" key='3' width="150">
-                <template slot-scope="scope">
-                    <measList :resdata="measList" :selectId="scope.row.measId" keyType="meas" :index="scope.$index" @changeVal="changeVal1"></measList>
-                </template>
-            </el-table-column>
-            <el-table-column label="辅助单位" v-if="temp.presaleType=='2'" key='4' width="150">
-                <template slot-scope="scope">
-                    <measList :resdata="measList" :selectId="scope.row.subMeasId" keyType="subMeas" :index="scope.$index" @changeVal="changeVal1"></measList>
-                </template>
-            </el-table-column>
-            <el-table-column label="换算率" v-if="temp.presaleType=='2'||temp.presaleType=='1'" key="5" width="100">
-                <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-c" v-model="row.exchangeRate" :disabled="temp.presaleType=='1'">
-                </template>
-            </el-table-column>
-            <el-table-column label="单价">
-                <template slot-scope="scope">
-                    <input type="text" class="inputCell tx-r" v-model="scope.row.price" @change="calculate(scope.$index)" :disabled="temp.presaleType==0">
-                </template>
-            </el-table-column>
-            <el-table-column label="数量">
-                <template slot-scope="scope">
-                    <input type="text" class="inputCell tx-r" v-model="scope.row.beginBalanceQty" @change="calculate(scope.$index)" :disabled="temp.presaleType==0">
-                </template>
-            </el-table-column>
-            <el-table-column label="金额">
-                <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-r" v-model="row.beginBalance" disabled>
-                </template>
-            </el-table-column>
-            <el-table-column label="余量">
-                <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-r" v-model="row.balanceQty" v-if="temp.presaleType=='2'||temp.presaleType=='1'&&status==1">
-                </template>
-            </el-table-column>
-            <el-table-column label="余额">
-                <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-r" v-model="row.balance" v-if="temp.presaleType=='2'||temp.presaleType=='1'&&status==1">
-                </template>
-            </el-table-column>
-            <el-table-column label="备注">
-                <template slot-scope="{row}">
-                    <input type="text" class="inputCell tx-r" v-model="row.remarks" :disabled="temp.presaleType==0">
-                </template>
-            </el-table-column>
-        </el-table>
-        <div class="dataTable" style="margin-top: 10px">
-            <el-form label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
-                <el-form-item label="备 注:" prop="remarks">
-                    <el-input size="small" v-model="temp.remarks" placeholder="备注" style="width:790px" />
-                </el-form-item>
-            </el-form>
-            <el-form :inline="true" label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
-                <el-form-item label="制单日期:" prop="recordDate">
-                    <el-date-picker :editable="false" v-model="temp.recordDate" type="date" placeholder="制单日期" size="small" style="width:145px" :clearable="false" value-format="yyyy-MM-dd">
-                    </el-date-picker>
-                </el-form-item>
-                <el-form-item label="制单人:" prop="recorderId">
-                    <el-input size="small" v-model="temp.recorder" placeholder="制单人" />
-                </el-form-item>
-                <el-form-item label="审核日期:" prop="auditDate">
-                    <el-date-picker :editable="false" v-model="temp.auditDate" type="date" placeholder="审核日期" size="small" style="width:145px" :clearable="false" value-format="yyyy-MM-dd">
-                    </el-date-picker>
-                </el-form-item>
-                <el-form-item label="审核人:" prop="auditorId">
-                    <el-input size="small" v-model="temp.auditor" placeholder="审核人" />
-                </el-form-item>
-            </el-form>
-        </div>
-        <div class="tx-c" style="margin-top:15px" v-if="status!=1&&status!=2">
-          <el-button class="filter-item" type="primary" @click="save">保存</el-button>
+        <div class="contentDiv">
+            <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="small" cell-class-name="tdCell" max-height="600">
+                <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
+                <el-table-column label="商品代码" width="160" v-if="temp.presaleType=='1'">
+                    <template slot-scope="scope">
+                        <itemList :selectCode="scope.row.itemCode" :selectId="scope.row.itemId" :index="scope.$index" @changeVal="changeVal"></itemList>
+                    </template>
+                </el-table-column>
+                <el-table-column label="商品名称" width="160" v-if="temp.presaleType=='1'">
+                    <template slot-scope="{row}">
+                        <input type="text" class="inputCell" v-model="row.itemName" disabled>
+                    </template>
+                </el-table-column>
+                <el-table-column label="规格" v-if="temp.presaleType=='1'">
+                    <template slot-scope="{row}">
+                        <input type="text" class="inputCell tx-r" v-model="row.norms" disabled>
+                    </template>
+                </el-table-column>
+                <el-table-column label="单位" v-if="temp.presaleType=='1'">
+                    <template slot-scope="{row}">
+                        <input type="text" class="inputCell tx-c" v-model="row.uom" disabled>
+                    </template>
+                </el-table-column>
+                <el-table-column label="辅助单位" v-if="temp.presaleType=='1'">
+                    <template slot-scope="{row}">
+                        <input type="text" class="inputCell tx-c" v-model="row.subUom" disabled>
+                    </template>
+                </el-table-column>
+                <el-table-column label="品类代码" v-if="temp.presaleType=='2'" key="1" width="150">
+                    <template slot-scope="scope">
+                        <invCatgList :resdata="invCatgList" :selectId="scope.row.invCatgId" :index="scope.$index" @changeVal="changeVal1"></invCatgList>
+                    </template>
+                </el-table-column>
+                <el-table-column label="品类名称" v-if="temp.presaleType=='2'" key="2" width="160">
+                    <template slot-scope="{row}">
+                        <input type="text" class="inputCell" v-model="row.invCatgName" disabled>
+                    </template>
+                </el-table-column>
+                <el-table-column label="计量单位" v-if="temp.presaleType=='2'" key='3' width="150">
+                    <template slot-scope="scope">
+                        <measList :resdata="measList" :selectId="scope.row.measId" keyType="meas" :index="scope.$index" @changeVal="changeVal1"></measList>
+                    </template>
+                </el-table-column>
+                <el-table-column label="辅助单位" v-if="temp.presaleType=='2'" key='4' width="150">
+                    <template slot-scope="scope">
+                        <measList :resdata="measList" :selectId="scope.row.subMeasId" keyType="subMeas" :index="scope.$index" @changeVal="changeVal1"></measList>
+                    </template>
+                </el-table-column>
+                <el-table-column label="换算率" v-if="temp.presaleType=='2'||temp.presaleType=='1'" key="5" width="100">
+                    <template slot-scope="{row}">
+                        <input type="text" class="inputCell tx-c" v-model="row.exchangeRate" :disabled="temp.presaleType=='1'">
+                    </template>
+                </el-table-column>
+                <el-table-column label="单价">
+                    <template slot-scope="scope">
+                        <input type="text" class="inputCell tx-r" v-model="scope.row.price" @change="calculate(scope.$index)" :disabled="temp.presaleType==0">
+                    </template>
+                </el-table-column>
+                <el-table-column label="数量">
+                    <template slot-scope="scope">
+                        <input type="text" class="inputCell tx-r" v-model="scope.row.beginBalanceQty" @change="calculate(scope.$index)" :disabled="temp.presaleType==0">
+                    </template>
+                </el-table-column>
+                <el-table-column label="金额">
+                    <template slot-scope="{row}">
+                        <input type="text" class="inputCell tx-r" v-model="row.beginBalance" disabled>
+                    </template>
+                </el-table-column>
+                <el-table-column label="余量">
+                    <template slot-scope="{row}">
+                        <input type="text" class="inputCell tx-r" v-model="row.balanceQty" v-if="temp.presaleType=='2'||temp.presaleType=='1'&&status==1">
+                    </template>
+                </el-table-column>
+                <el-table-column label="余额">
+                    <template slot-scope="{row}">
+                        <input type="text" class="inputCell tx-r" v-model="row.balance" v-if="temp.presaleType=='2'||temp.presaleType=='1'&&status==1">
+                    </template>
+                </el-table-column>
+                <el-table-column label="备注">
+                    <template slot-scope="{row}">
+                        <input type="text" class="inputCell tx-r" v-model="row.remarks" :disabled="temp.presaleType==0">
+                    </template>
+                </el-table-column>
+            </el-table>
+            <div class="dataTable" style="margin-top: 10px">
+                <el-form label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
+                    <el-form-item label="备 注:" prop="remarks">
+                        <el-input size="small" v-model="temp.remarks" placeholder="备注" style="width:790px" />
+                    </el-form-item>
+                </el-form>
+                <el-form :inline="true" label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
+                    <el-form-item label="制单日期:" prop="recordDate">
+                        <el-date-picker :editable="false" v-model="temp.recordDate" type="date" placeholder="制单日期" size="small" style="width:145px" :clearable="false" value-format="yyyy-MM-dd">
+                        </el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="制单人:" prop="recorderId">
+                        <el-input size="small" v-model="temp.recorder" placeholder="制单人" />
+                    </el-form-item>
+                    <el-form-item label="审核日期:" prop="auditDate">
+                        <el-date-picker :editable="false" v-model="temp.auditDate" type="date" placeholder="审核日期" size="small" style="width:145px" :clearable="false" value-format="yyyy-MM-dd">
+                        </el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="审核人:" prop="auditorId">
+                        <el-input size="small" v-model="temp.auditor" placeholder="审核人" />
+                    </el-form-item>
+                </el-form>
+            </div>
+            <div class="tx-c" style="margin-top:15px" v-if="status!=1&&status!=2">
+              <el-button class="filter-item" type="primary" @click="save">保存</el-button>
+            </div>
         </div>
         <el-dialog :close-on-click-modal="false" title="结算方式" :visible.sync="dialogFormVisible" width="392px">
             <el-table :data="settleData" border fit highlight-current-row style="width: 100%;" size="small" cell-class-name="tdCell">
