@@ -37,7 +37,7 @@
                 </el-table-column>
                 <el-table-column label="凭证字号" align="center">
                     <template slot-scope="{row}">
-                        <a href="javascript:">{{row.jeCatogery}}-{{row.jeSeq | catogeryNumberFor}}</a>
+                        <a href="javascript:" @click="handleCompile(row.id)">{{row.jeCatogeryName}}-{{ row.jeSeq | jeSeqFormat }}</a>
                     </template>
                 </el-table-column>
                 <el-table-column label="摘要" min-width="120">
@@ -191,6 +191,13 @@ export default {
         this.getList();
     },
     methods: {
+        handleCompile(id) {
+            this.$store.dispatch('tagsView/delView', this.$route);
+            const arr = this.tableData.map(it => {
+                return it.id
+            })
+            this.$router.push('/voucher/modify?id=' + id + '&arr=' + arr.join(','))
+        },
         handleSelectionChange(val) {
             let arr = []
             for (let i = 0; i < val.length; i++) {

@@ -7,8 +7,7 @@
         </div>
         <div class="contentDiv">
             <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
-                <el-table-column label="序号" type="index" width="100" align="center">
-                </el-table-column>
+                <el-table-column label="序号" type="index" width="100" align="center" />
                 <el-table-column label="凭证字名称">
                     <template slot-scope="{row}">
                         <span>{{row.catogeryName}}</span>
@@ -21,7 +20,7 @@
                 </el-table-column>
                 <el-table-column label="打印标题">
                     <template slot-scope="{row}">
-                        <span>{{row.printTitle}}</span>
+                        <span>{{row.catogeryTitle}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="是否默认" align="center">
@@ -52,8 +51,8 @@
                 <el-form-item label="顺序号" prop="seq">
                     <el-input v-model="temp.seq" placeholder="顺序号" />
                 </el-form-item>
-                <el-form-item label="打印标题" prop="printTitle">
-                    <el-input v-model="temp.printTitle" placeholder="打印标题" />
+                <el-form-item label="打印标题" prop="catogeryTitle">
+                    <el-input v-model="temp.catogeryTitle" placeholder="打印标题" />
                 </el-form-item>
                 <el-form-item label="是否默认" prop="isDefault">
                     <el-radio v-model="temp.isDefault" label="1">是</el-radio>
@@ -101,7 +100,7 @@ export default {
             temp: {
                 catogeryName: '',
                 seq: '',
-                printTitle: '',
+                catogeryTitle: '',
                 isDefault: '0',
                 isDisable: '0'
             },
@@ -110,7 +109,7 @@ export default {
             rules: {
                 catogeryName: [{ required: true, message: '凭证字名称不能为空', trigger: 'change' }],
                 seq: [{ required: true, trigger: 'change', validator: validateNum }],
-                printTitle: [{ required: true, message: '打印标题不能为空', trigger: 'change' }],
+                catogeryTitle: [{ required: true, message: '打印标题不能为空', trigger: 'change' }],
                 isDisable: [{ required: false }],
                 isDefault: [{ required: false }]
             }
@@ -135,7 +134,7 @@ export default {
             this.temp.id = ''
             this.temp.catogeryName = ''
             this.temp.catogeryCode = ''
-            this.temp.printTitle = ''
+            this.temp.catogeryTitle = ''
             this.temp.isDisable = '0'
             this.temp.isDefault = '0'
             this.$nextTick(() => {
@@ -149,7 +148,7 @@ export default {
             this.temp.catogeryName = obj.catogeryName
             this.temp.seq = obj.seq
             this.temp.catogeryCode = obj.catogeryCode
-            this.temp.printTitle = obj.printTitle
+            this.temp.catogeryTitle = obj.catogeryTitle
             this.temp.isDisable = String(obj.isDisable)
             this.temp.isDefault = String(obj.isDefault)
             this.$nextTick(() => {

@@ -57,11 +57,11 @@ export function buildVoucherByHeaderId(data) {
     })
 }
 
-export function printByHeaderId(url, id) {
+export function printByHeaderId(url, data) {
     return request({
         url: '/drp' + url + '/printByHeaderId',
         method: 'post',
-        data: { id }
+        data
     })
 }
 
@@ -232,11 +232,11 @@ export function getOutboundOrder(data) {
     })
 }
 
-export function getOutboundOrderById(id) {
+export function getOutboundOrderById(data) {
     return request({
         url: '/drp/ic/outboundOrder/getByHeaderId',
         method: 'post',
-        data: { id: id }
+        data
     })
 }
 
@@ -248,11 +248,11 @@ export function saveOutboundOrder(data) {
     })
 }
 
-export function delOutboundOrder(id) {
+export function delOutboundOrder(data) {
     return request({
         url: '/drp/ic/outboundOrder/deleteByHeaderId',
         method: 'post',
-        data: { id: id }
+        data
     })
 }
 

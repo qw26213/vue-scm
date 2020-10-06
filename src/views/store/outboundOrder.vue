@@ -51,11 +51,11 @@
                 </el-table-column>
                 <el-table-column label="操作" align="center" width="240">
                     <template slot-scope="{row}">
-                        <span class="ctrl" @click="handleCompile(row.id,row.status)">{{row.status<=0?'编辑':'查看'}}</span>
-                        <span class="ctrl" v-if="row.status==0" @click="handleCompile(row.id,3)">拆分</span>
+                        <span class="ctrl" @click="handleCompile(row,row.status)">{{row.status<=0?'编辑':'查看'}}</span>
+                        <span class="ctrl" v-if="row.status==0" @click="handleCompile(row,3)">拆分</span>
                         <span v-if="row.status==-1" class="ctrl" @click="showAuditInfo(row.id)">查看审核意见</span>
-                        <span class="ctrl" v-if="row.status==0" @click="handleCheck(row.id)">审核</span>
-                        <span class="ctrl del" v-if="row.status<=0" @click="handleDel(row.id)">删除</span>
+                        <span class="ctrl" v-if="row.status==0" @click="handleCheck(row)">审核</span>
+                        <span class="ctrl del" v-if="row.status<=0" @click="handleDel(row)">删除</span>
                         <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isSales, row.id, row.salesHeaderId, 1, row.billDate)">{{row.isSales==0?'生成':'查看'}}销售单</span>
                         <span class="ctrl" v-if="row.status==1" @click="handleCreateBill(row.isDelivery, row.id, row.deliveryHeaderId, 2, row.billDate)">{{row.isDelivery==0?'生成':'查看'}}配送单</span>
                         <span class="ctrl" @click="printBill(row)">打印</span>
@@ -133,7 +133,7 @@ export default {
     },
     methods: {
         printBill(row) {
-            printByHeaderId('/ic/outboundOrder', row.id).then(res => {
+            printByHeaderId('/ic/outboundOrder', {id: row.id, billDate: row.billDate}).then(res => {
                 if (res.data.errorCode == 0) {
                     window.open("http://" + window.location.host + res.data.data)
                 } else {
@@ -165,14 +165,16 @@ export default {
                 this.listLoading = false
             })
         },
-        handleCheck(id) {
+        handleCheck(row) {
             this.auditType = 'create'
             this.auditModalVisible = true
-            this.curBillId = id
+            this.curBillId = row.id
+            this.curBillDate = row.billDate
         },
         checkItem(obj) {
             let data = obj
             data.id = this.curBillId
+            data.id = this.curBillDate
             auditOutboundOrder(data).then(res => {
                 if (res.data.errorCode == 0) {
                     this.getList()
@@ -229,17 +231,19 @@ export default {
             this.$store.dispatch('tagsView/delView', this.$route)
             this.$router.push('/store/outboundOrderAdd')
         },
-        handleCompile(id, status) {
+        handleCompile(row, status) {
             this.$store.dispatch('tagsView/delView', this.$route)
-            this.$router.push('/store/outboundOrderModify?id=' + id + '&status=' + status)
+            this.$router.push('/store/outboundOrderModify?id=' + row.id + '&status=' + status + '&billDate=' + row.billDate)
         },
-        handleDel(id) {
+        handleDel(row) {
             this.$confirm('确定删除吗?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                delOutboundOrder(id).then(res => {
+                const id = row.id
+                const billDate = row.billDate
+                delOutboundOrder({id, billDate}).then(res => {
                     if (res.data.errorCode == 0) {
                         this.getList();
                         this.dialogFormVisible = false
@@ -248,7 +252,7 @@ export default {
                         this.$message.error(res.data.msg)
                     }
                 })
-            });
+            })
         }
     }
 }

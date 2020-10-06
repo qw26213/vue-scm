@@ -83,7 +83,6 @@
 
 <script>
 import { getSalesType,saveSalesType,delSalesType,updateSalesTypeDisabled } from '@/api/basedata'
-
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' 
 export default {
@@ -100,6 +99,7 @@ export default {
         salesTypeName: ''
       },
       temp: {
+        id: '',
         salesTypeName: '',
         salesTypeCode: '',
         priceRatio: 0,
@@ -108,6 +108,7 @@ export default {
         isDisable: 0
       },
       resetTemp: {
+        id: '',
         salesTypeName: '',
         salesTypeCode: '',
         priceRatio: 0,

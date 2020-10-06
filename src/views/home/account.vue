@@ -329,7 +329,7 @@ export default {
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    closeAccount({}).then(res => {
+                    resetBook({}).then(res => {
                         if (res.data.errorCode == 0) {
                             this.$message.success('清除账套成功')
                             this.$router.replace('/login')
@@ -347,7 +347,7 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                closeAccount(id).then(res => {
+                killUser({ id }).then(res => {
                     if (res.data.errorCode == 0) {
                         this.$message.success('强制下线成功')
                         this.$router.replace('/login')

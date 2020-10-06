@@ -161,6 +161,7 @@ export default {
             userInfo: {},
             codingRuleArr: [4, 2, 2, 2, 2, 2, 2, 2],
             temp: {
+                id: '',
                 bookName: '',
                 baseCurrencyCode: 'CNY',
                 enablePeriodYear: new Date().getFullYear(),
@@ -299,13 +300,14 @@ export default {
                 dangerouslyUseHTMLString: true,
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
-                type: 'warning',
-                callback: () => {
-                    this.dialogFormVisible = true
-                    this.codingRuleArr = [4, 2, 2, 2, 2, 2, 2, 2]
-                    this.temp.bookName = this.managementInfo.orgName
-                    this.dialogStatus = 'create'
-                }
+                type: 'warning'
+            }).then(() => {
+                this.dialogFormVisible = true
+                this.codingRuleArr = [4, 2, 2, 2, 2, 2, 2, 2]
+                this.temp.bookName = this.managementInfo.orgName
+                this.dialogStatus = 'create'
+            }).catch(() => {
+                this.dialogFormVisible = false
             })
         },
         formatNum(num){

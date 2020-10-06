@@ -145,6 +145,7 @@ export default {
         settleTypeName: ''
       },
       temp: {
+        id: '',
         settleTypeName: '',
         settleTypeCode: '',
         coaCode:'',
@@ -161,6 +162,7 @@ export default {
         isDisable: 0
       },
       resetTemp: {
+        id: '',
         settleTypeName: '',
         settleTypeCode: '',
         coaCode:'',

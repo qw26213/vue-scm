@@ -1,7 +1,11 @@
-<template>
+ <template>
     <div class="app-container">
         <div class="filterDiv">
+            <el-date-picker :editable="false" v-model="listQuery.queryParam.createDate1" type="date" placeholder="开始日期" size="small" :clearable="false" value-format="yyyy-MM-dd" style="width:130px"/>
+            <span class="zhi">至</span>
+            <el-date-picker :editable="false" v-model="listQuery.queryParam.createDate2" type="date" placeholder="结束日期" size="small" :clearable="false" value-format="yyyy-MM-dd" style="width:130px"/>
             <el-input v-model="listQuery.queryParam.custName" size="small" placeholder="客户代码/名称" style="width: 200px;" />
+            <el-input size="small" v-model="listQuery.queryParam.area" placeholder="区域" />
             <el-dropdown trigger="click">
                 <span class="el-dropdown-link" id="dropTit3">
                     <el-input v-model="listQuery.queryParam.channelTypeName" size="small" placeholder="渠道类型" />
@@ -58,6 +62,11 @@
                 <el-table-column label="联系人">
                     <template slot-scope="{row}">
                         <span>{{row.contact}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="区域">
+                    <template slot-scope="{row}">
+                        <span>{{row.area}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="电话">
@@ -151,6 +160,9 @@
                 <el-form-item label="地址" prop="addr">
                     <el-input v-model="temp.addr" placeholder="地址" />
                 </el-form-item>
+                <el-form-item label="区域" prop="area">
+                    <el-input v-model="temp.area" maxLength="8" placeholder="区域" />
+                </el-form-item>
                 <el-form-item label="赊销金额" prop="creditLimit">
                     <el-input v-model="temp.creditLimit" placeholder="赊销金额" />
                 </el-form-item>
@@ -242,6 +254,9 @@ export default {
                 pageIndex: 1,
                 pageNum: 20,
                 queryParam: {
+                    createDate1: '',
+                    createDate2: '',
+                    area: '',
                     custCode: '',
                     custName: '',
                     channelTypeId: '',
@@ -261,6 +276,7 @@ export default {
                 custTypeId: '',
                 province: '',
                 city: '',
+                area: '',
                 district: '',
                 priceGroupId: '',
                 custTypeName: '',
@@ -282,6 +298,7 @@ export default {
                 custTypeId: '',
                 province: '',
                 city: '',
+                area: '',
                 district: '',
                 priceGroupId: '',
                 custTypeName: '',

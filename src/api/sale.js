@@ -76,11 +76,11 @@ export function getSalesOrder(data) {
     })
 }
 
-export function getSalesOrderById(id) {
+export function getSalesOrderById(data) {
     return request({
         url: '/drp/so/salesOrder/getByHeaderId',
         method: 'post',
-        data: { id: id }
+        data
     })
 }
 
