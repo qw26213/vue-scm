@@ -244,29 +244,29 @@ export default {
         }
     },
     methods: {
-        calculate(index){
+        calculate(index) {
             var vatPrice = this.tableData[index].vatPrice //含税价
             var qty = this.tableData[index].qty //数量
-            if(qty&&vatPrice){
+            if (qty && vatPrice) {
                 var vatAmount = parseFloat(Number(qty) * Number(vatPrice)).toFixed(2)
-                this.$set(this.tableData[index],'vatAmount',vatAmount)
+                this.$set(this.tableData[index], 'vatAmount', vatAmount)
                 var taxRate = this.tableData[index].taxRate;
-                if(taxRate){
-                    var price = parseFloat(Number(vatPrice)/(Number(taxRate)/100+1)).toFixed(2)
-                    var amount = parseFloat(Number(qty)*Number(price)).toFixed(2)
+                if (taxRate) {
+                    var price = parseFloat(Number(vatPrice) / (Number(taxRate) / 100 + 1)).toFixed(2)
+                    var amount = parseFloat(Number(qty) * Number(price)).toFixed(2)
                     var taxAmount = parseFloat(Number(vatAmount) - Number(amount)).toFixed(2)
-                    this.$set(this.tableData[index],'taxAmount',taxAmount)
-                    this.$set(this.tableData[index],'price',price)
-                    this.$set(this.tableData[index],'amount',amount)
-                }else{
-                    this.$set(this.tableData[index],'taxRate',0)
-                    this.$set(this.tableData[index],'price',0)
-                    this.$set(this.tableData[index],'amount',vatAmount)
+                    this.$set(this.tableData[index], 'taxAmount', taxAmount)
+                    this.$set(this.tableData[index], 'price', price)
+                    this.$set(this.tableData[index], 'amount', amount)
+                } else {
+                    this.$set(this.tableData[index], 'taxRate', 0)
+                    this.$set(this.tableData[index], 'price', 0)
+                    this.$set(this.tableData[index], 'amount', 0)
                 }
                 this.calculateTotal();
             }
         },
-        calculate1(index){
+s        calculate1(index){
             var amount = 0;
             for (var i = 0; i < this.settleData.length; i++) {
                 if (this.settleData[i] && this.settleData[i].amount) {
