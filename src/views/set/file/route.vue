@@ -29,7 +29,7 @@
                     <span>{{row.isDisable==0?'是':'否'}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" align="left" width="350">
+            <el-table-column label="操作" align="center" width="280">
                 <template slot-scope="{row}">
                     <el-button type="text" size="small" @click="handleAssign1(row)">分配用户</el-button>
                     <el-button type="text" size="small" @click="handleAssign2(row)">分配客户</el-button>
@@ -42,7 +42,7 @@
         <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
         </div>
         <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增线路':'修改线路'" :visible.sync="dialogFormVisible" width="500px">
-            <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="80px" style="width: 300px; margin-left:50px;">
+            <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="80px" style="width: 440px; margin-left:10px;">
                 <el-form-item label="线路代码" prop="routeCode">
                     <el-input v-model="temp.routeCode" placeholder="线路代码" />
                 </el-form-item>
@@ -115,6 +115,13 @@ export default {
             },
             showReviewer: false,
             temp: {
+                id: '',
+                routeName: '',
+                remarks: '',
+                isDisable: 0
+            },
+            resetTemp: {
+                id: '',
                 routeName: '',
                 remarks: '',
                 isDisable: 0
@@ -212,10 +219,9 @@ export default {
         handleAdd(obj) {
             this.dialogFormVisible = true
             this.dialogStatus = 'create'
-            this.temp.id = ''
-            this.temp.routeName = ''
-            this.temp.routeCode = ''
-            this.temp.isDisable = 0
+            for (const key in this.temp) {
+                this.temp[key] = this.resetTemp[key]
+            }
             this.$nextTick(() => {
                 this.$refs['dataForm'].clearValidate()
             })
@@ -223,10 +229,9 @@ export default {
         handleCompile(obj) {
             this.dialogFormVisible = true
             this.dialogStatus = 'update'
-            this.temp.id = obj.id
-            this.temp.routeName = obj.routeName
-            this.temp.routeCode = obj.routeCode
-            this.temp.isDisable = obj.isDisable
+            for (const key in this.temp) {
+                this.temp[key] = obj[key]
+            }
             this.$nextTick(() => {
                 this.$refs['dataForm'].clearValidate()
             })

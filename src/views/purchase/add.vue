@@ -25,7 +25,7 @@
                     <el-date-picker :editable="false" v-model="temp.paymentDueDate" type="date" placeholder="付款到期日" size="small" :clearable="false" value-format="yyyy-MM-dd" />
                 </el-form-item>
                 <el-form-item label="合计金额:" prop="itemAmount">
-                    <el-input size="small" v-model="temp.itemAmount" placeholder="合计金额" disabled/>
+                    <el-input size="small" v-model="temp.itemAmount" placeholder="合计金额" disabled />
                 </el-form-item>
                 <el-form-item label="使用预付:" prop="advPayAmount">
                     <el-input size="small" v-model="temp.advPayAmount" placeholder="使用预付" disabled />
@@ -171,7 +171,7 @@
 import { mapGetters } from 'vuex'
 import { savePurchase, getPurchaseById } from '@/api/store';
 import { getAllNoADVR } from '@/api/basedata';
-import { deleteEmptyProp, addNullObj,addNullObj2 } from '@/utils';
+import { deleteEmptyProp, addNullObj, addNullObj2 } from '@/utils';
 import staffList from '@/components/selects/staffList';
 import supplierList from '@/components/selects/supplierList';
 import warehouseList from '@/components/selects/warehouseList';
@@ -179,11 +179,11 @@ import paymentTypeList from '@/components/selects/paymentTypeList';
 import itemList from '@/components/selects/itemList';
 import bizTypeList from "@/components/selects/bizTypeList";
 import settleTypeList from "@/components/selects/settleTypeList";
-import { getName,getNowDate } from '@/utils/auth'
+import { getName, getNowDate } from '@/utils/auth'
 var userInfo = JSON.parse(sessionStorage.userInfo)
 export default {
     name: 'purchaseAdd',
-    components: { staffList, warehouseList, supplierList, bizTypeList, paymentTypeList, itemList,settleTypeList },
+    components: { staffList, warehouseList, supplierList, bizTypeList, paymentTypeList, itemList, settleTypeList },
     data() {
         return {
             id: '',
@@ -193,34 +193,34 @@ export default {
             status: this.$route.query.status,
             dialogFormVisible: false,
             tableData: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
-            settleData: [{}, {}, {}, {},{}],
+            settleData: [{}, {}, {}, {}, {}],
             keys: ["itemId", "itemCode", "itemName", "norms", "uom", "subUom", "exchangeRate", "batchNo", "productionDate", "qualityName", "qualityDays", "qty", "price", "amount", "taxRate", "taxAmount", "vatAmount", "invoiceNo", "bGift"],
             temp: {
-                billDate:getNowDate(),
+                billDate: getNowDate(),
                 billNo: '',
-                remarks:'',
+                remarks: '',
                 bizTypeId: '',
                 supplierId: "",
                 warehouseId: '',
                 warehouseName: '',
                 staffId: '',
                 paymentTypeId: '',
-                paymentDueDate:'',
+                paymentDueDate: '',
                 itemAmount: '',
                 advPayAmount: '',
                 currPayAmount: '',
                 rebateAmount: '',
-                auditDate:'',
+                auditDate: '',
                 auditor: "",
-                recordDate:getNowDate()+" 00:00:00",
+                recordDate: getNowDate() + " 00:00:00",
                 recorder: getName()
             }
         }
     },
     computed: {
         ...mapGetters([
-          'settleTypeArr',
-          'truckList'
+            'settleTypeArr',
+            'truckList'
         ])
     },
     created() {
@@ -234,7 +234,7 @@ export default {
                 for (var i = 0; i < res.data.data.purchaseLine.length; i++) {
                     for (var j = 0; j < this.keys.length; j++) {
                         this.tableData[i][this.keys[j]] = res.data.data.purchaseLine[i][this.keys[j]]
-                        if(this.tableData[i].taxRate < 1) {
+                        if (this.tableData[i].taxRate < 1) {
                             this.tableData[i].taxRate = this.tableData[i].taxRate * 100
                         }
                     }
@@ -266,7 +266,7 @@ export default {
                 this.calculateTotal();
             }
         },
-s        calculate1(index){
+        calculate1(index) {
             var amount = 0;
             for (var i = 0; i < this.settleData.length; i++) {
                 if (this.settleData[i] && this.settleData[i].amount) {
@@ -275,8 +275,8 @@ s        calculate1(index){
             }
             this.temp.currPayAmount = parseFloat(amount).toFixed(2);
         },
-        calculate2(){
-            if(this.temp.advPayAmount){
+        calculate2() {
+            if (this.temp.advPayAmount) {
                 this.temp.currPayAmount = this.temp.itemAmount - this.temp.advPayAmount;
             } else {
                 this.temp.currPayAmount = this.temp.itemAmount;
@@ -302,7 +302,7 @@ s        calculate1(index){
         showSettleType() {
             this.dialogFormVisible = true
         },
-        settleTypeChange(obj){
+        settleTypeChange(obj) {
             for (var key in obj) {
                 this.settleData[obj.index][key] = obj[key];
             }
@@ -331,7 +331,7 @@ s        calculate1(index){
                 } else {
                     this.$message.error(res.data.msg)
                 }
-            }).catch(()=>{
+            }).catch(() => {
                 this.$message.error('保存失败，请稍后重试！')
             })
         }

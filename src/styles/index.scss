@@ -38,6 +38,7 @@ aside { background: #eef1f6; padding: 8px 24px; margin-bottom: 20px; border-radi
   &.draft { background: #d0d0d0; }
   &.deleted { background: #d0d0d0; }
 }
+th .cell{text-align: center;}
 .link-type, .link-type:focus { color: #337ab7; cursor: pointer;
   &:hover { color: rgb(32, 160, 255); }
 }

@@ -251,7 +251,7 @@ export default {
                     if (res.data.errorCode == 0) {
                         this.$message.success('账套已被删除！')
                         this.$store.dispatch('user/logout').then(() => {
-                            this.$router.push({ path: '/login' })
+                            this.$router.replace('/login')
                         })
                     } else {
                         this.$message.warning(res.data.msg)

@@ -1,9 +1,9 @@
  <template>
     <div class="app-container">
         <div class="filterDiv">
-            <el-date-picker :editable="false" v-model="listQuery.queryParam.createDate1" type="date" placeholder="开始日期" size="small" :clearable="false" value-format="yyyy-MM-dd" style="width:130px"/>
+            <el-date-picker :editable="false" v-model="listQuery.queryParam.createDate1" type="date" placeholder="建档开始日期" size="small" :clearable="false" value-format="yyyy-MM-dd" style="width:130px"/>
             <span class="zhi">至</span>
-            <el-date-picker :editable="false" v-model="listQuery.queryParam.createDate2" type="date" placeholder="结束日期" size="small" :clearable="false" value-format="yyyy-MM-dd" style="width:130px"/>
+            <el-date-picker :editable="false" v-model="listQuery.queryParam.createDate2" type="date" placeholder="建档结束日期" size="small" :clearable="false" value-format="yyyy-MM-dd" style="width:130px"/>
             <el-input v-model="listQuery.queryParam.custName" size="small" placeholder="客户代码/名称" style="width: 200px;" />
             <el-input size="small" v-model="listQuery.queryParam.area" placeholder="区域" />
             <el-dropdown trigger="click">

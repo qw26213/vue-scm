@@ -215,6 +215,7 @@ export default {
                     this.auditModalVisible = false
                     this.$message.success('审核成功！')
                 } else {
+                    this.auditModalVisible = false
                     this.$message.warning(res.data.msg)
                 }
             })

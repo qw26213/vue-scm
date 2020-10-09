@@ -23,11 +23,11 @@
                     <span>{{ row.updateDate | parseTime }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" align="center">
+            <el-table-column label="操作" align="center" width="150">
                 <template slot-scope="{row}">
                     <el-button v-if="row.isSystem!=1" type="text" size="small" @click="toModify(row)">编辑</el-button>
-                    <el-button type="text" size="small" @click="toModal(row)">查看</el-button>
-                    <el-button type="text" size="small" @click="delModal(row.id)">删除</el-button>
+                    <el-button type="text" size="small" @click="toDetail(row.id)">查看</el-button>
+                    <el-button type="text" size="small" @click="delTemplet(row.id)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -65,7 +65,7 @@ export default {
         this.getData()
     },
     methods: {
-        delModal(id) {
+        delTemplet(id) {
             this.$confirm('如果是系统模板，在删除后可以“基础数据同步=>执行同步”来恢复系统模板。确定要删除这个模板吗?', '提示', {
                 confirmButtonText: '确定',
                 closeOnClickModal: false,
@@ -74,6 +74,7 @@ export default {
             }).then(() => {
                 delTempletHeader(id).then(res => {
                     if (res.data.errorCode == 0) {
+                        this.getData()
                         this.$message.success('删除模板成功')
                     } else {
                         this.$message.warning(res.data.msg)
@@ -104,8 +105,8 @@ export default {
                 this.total = res.data.totalNum
             })
         },
-        addVoucher() {
-            this.$router.push('/voucher/add')
+        toDetail(id) {
+            this.$router.push('/voucher/add?tid='+id)
         }
     }
 }
