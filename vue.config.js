@@ -35,7 +35,7 @@ module.exports = {
     },
     proxy: {
       '/drp': {
-        target: 'http://49.232.47.16/',
+        target: 'http://81.70.101.14/',
         // target: 'http://192.168.10.49/',
         ws: true,
         changeOrigin: true,// 如果接口跨域，需要进行这个参数配置
