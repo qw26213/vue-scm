@@ -1,32 +1,31 @@
 <template>
   <div class="app-container">
     <div class="filterDiv">
-      <el-date-picker :editable="false" v-model="listQuery.periodCode1" type="month" placeholder="开始月份" size="small" value-format="yyyy-MM" />
+      <el-date-picker v-model="listQuery.periodCode1" :editable="false" type="month" placeholder="开始月份" size="small" value-format="yyyy-MM" />
       <span class="zhi">至</span>
-      <el-date-picker :editable="false" v-model="listQuery.periodCode2" type="month" placeholder="结束月份" size="small" value-format="yyyy-MM" />
+      <el-date-picker v-model="listQuery.periodCode2" :editable="false" type="month" placeholder="结束月份" size="small" value-format="yyyy-MM" />
       <el-button size="small" type="primary" @click="getList">查询</el-button>
       <el-button size="small" type="primary" @click="copyPay">复制工资表</el-button>
       <el-button size="small" type="primary" @click="downloadModel">下载模板</el-button>
       <el-button size="small" type="primary" @click="handImport">薪酬导入</el-button>
     </div>
-    <input enctype="multipart/form-data" ref="uploadFile" style="display:none" type="file" @change="importFile($event)" />
+    <input ref="uploadFile" enctype="multipart/form-data" style="display:none" type="file" @change="importFile($event)">
     <div class="contentDiv">
       <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;">
-        <el-table-column label="序号" type="index" width="50" align="center">
-        </el-table-column>
+        <el-table-column label="序号" type="index" width="50" align="center" />
         <el-table-column label="会计期间">
           <template slot-scope="{row}">
-            <span>{{row.periodCode}}</span>
+            <span>{{ row.periodCode }}</span>
           </template>
         </el-table-column>
         <el-table-column label="创建/修改时间">
           <template slot-scope="{row}">
-            <span>{{row.updateDate}}</span>
+            <span>{{ row.updateDate }}</span>
           </template>
         </el-table-column>
         <el-table-column label="是否导入">
           <template slot-scope="{row}">
-            <span>{{row.importFlag==1?'是':'否'}}</span>
+            <span>{{ row.importFlag==1?'是':'否' }}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center">
@@ -42,14 +41,14 @@
       <el-form ref="dataForm" :model="temp1" label-position="left" label-width="72px" style="margin-left:10px;width:400px">
         <el-form-item label="工资类型">
           <el-select v-model="temp1.salaryType" placeholder="工资类型" style="width:100%" class="filter-item">
-            <el-option label="正常工资" value="1"></el-option>
-            <el-option label="劳务报酬" value="2"></el-option>
+            <el-option label="正常工资" value="1" />
+            <el-option label="劳务报酬" value="2" />
           </el-select>
         </el-form-item>
         <el-form-item label="期间选择">
-          <el-date-picker :editable="false" v-model="temp1.periodStar" type="month" placeholder="月份" style="width:152px" value-format="yyyy-MM-dd" />
+          <el-date-picker v-model="temp1.periodStar" :editable="false" type="month" placeholder="月份" style="width:152px" value-format="yyyy-MM-dd" />
           <span>至</span>
-          <el-date-picker :editable="false" v-model="temp1.periodEnd" type="month" placeholder="月份" style="width:152px" value-format="yyyy-MM-dd" />
+          <el-date-picker v-model="temp1.periodEnd" :editable="false" type="month" placeholder="月份" style="width:152px" value-format="yyyy-MM-dd" />
         </el-form-item>
         <el-form-item label="是否覆盖">
           <el-radio v-model="temp1.cover" label="1">是</el-radio>
@@ -64,10 +63,10 @@
     <el-dialog title="薪酬导入" :visible.sync="dialogVisible2" width="460px">
       <el-form ref="dataForm" :model="temp2" label-position="left" label-width="72px" style="margin-left:10px;width:400px">
         <el-form-item label="选择月份">
-          <el-date-picker :editable="false" v-model="temp2.periodCode" type="month" placeholder="选择月份" style="width:100%" value-format="yyyy-MM" />
+          <el-date-picker v-model="temp2.periodCode" :editable="false" type="month" placeholder="选择月份" style="width:100%" value-format="yyyy-MM" />
         </el-form-item>
         <el-form-item label="选择文件">
-          <el-button size="small" type="primary" @click="handFileImport"><i class="el-icon-upload" style="margin-right:5px"></i>点击上传</el-button>
+          <el-button size="small" type="primary" @click="handFileImport"><i class="el-icon-upload" style="margin-right:5px" />点击上传</el-button>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer" align="center">
@@ -79,12 +78,12 @@
 </template>
 
 <script>
-import { getPayData,getNationalityType,getCertificateType,saveEmployee,paydetailImport } from '@/api/hr'
+import { getPayData, getNationalityType, getCertificateType, saveEmployee, paydetailImport } from '@/api/hr'
 import { getDept } from '@/api/basedata'
-import { debounce,getNowMonth,getNowDate } from '@/utils/index'
+import { debounce, getNowMonth, getNowDate } from '@/utils/index'
 import Pagination from '@/components/Pagination'
 export default {
-  name: 'employeeList',
+  name: 'EmployeeList',
   components: { Pagination },
   data() {
     return {
@@ -92,21 +91,21 @@ export default {
       tableData: null,
       total: 0,
       listLoading: true,
-      downloadModel:debounce(this.downloadFile,1000,true),
+      downloadModel: debounce(this.downloadFile, 1000, true),
       listQuery: {
-        periodCode1:getNowDate(),
-        periodCode2:getNowDate(),
-        page:1,
-        limit:20
+        periodCode1: getNowDate(),
+        periodCode2: getNowDate(),
+        page: 1,
+        limit: 20
       },
       temp1: {
-        salaryType:'',
-        periodStar:'',
-        periodEnd:'',
-        cover:'1'
+        salaryType: '',
+        periodStar: '',
+        periodEnd: '',
+        cover: '1'
       },
       temp2: {
-        periodCode:getNowMonth()
+        periodCode: getNowMonth()
       },
       dialogVisible1: false,
       dialogVisible2: false
@@ -121,60 +120,60 @@ export default {
       getPayData(this.listQuery).then(res => {
         this.listLoading = false
         this.tableData = res.data.data
-      }).catch(err=>{
+      }).catch(err => {
         this.listLoading = false
       })
     },
-    copyPay(){
+    copyPay() {
       this.dialogVisible1 = true
     },
-    downloadFile(){
-      this.$message.warning("暂未开发")
+    downloadFile() {
+      this.$message.warning('暂未开发')
       return
       window.location.href = '/drp/business/employee.xlsx'
     },
-    handImport(){
+    handImport() {
       this.dialogVisible2 = true
     },
-    handFileImport(){
-      this.$refs.uploadFile.click();
+    handFileImport() {
+      this.$refs.uploadFile.click()
     },
-    importFile(event){
-      this.formData = new FormData();
-      var fileObj = event.currentTarget.files[0];
-      if(fileObj==null||fileObj==undefined){return;}
-      this.formData.append("file", fileObj);
-      this.formData.append("fileName", 'employee.xlsx');
+    importFile(event) {
+      this.formData = new FormData()
+      var fileObj = event.currentTarget.files[0]
+      if (fileObj == null || fileObj == undefined) { return }
+      this.formData.append('file', fileObj)
+      this.formData.append('fileName', 'employee.xlsx')
     },
-    paydetailFileImport(){
-      let obj= {
+    paydetailFileImport() {
+      const obj = {
         periodCode: this.temp2.periodCode,
-        fileName: "employee.xlsx"
+        fileName: 'employee.xlsx'
       }
       paydetailImport(obj).then(res => {
-        if(res.data.errorCode == 0){
-          this.getList();
+        if (res.data.errorCode == 0) {
+          this.getList()
         } else {
           this.$message.error(res.data.msg)
         }
       })
     },
-    handleImport(){
+    handleImport() {
       this.$axios({
-          url: '/drp/hr/paydetail/uploadexcel',
-          method: 'POST',
-          data: this.formData,
-          timeout: 10000,
-          headers: { 'Content-Type': 'multipart/form-data' }
+        url: '/drp/hr/paydetail/uploadexcel',
+        method: 'POST',
+        data: this.formData,
+        timeout: 10000,
+        headers: { 'Content-Type': 'multipart/form-data' }
       }).then(res => {
-        if(res.status == 200){
+        if (res.status == 200) {
           this.dialogVisible2 = false
-          this.paydetailFileImport();
-        }else{
-          this.$message.error("系统错误")
+          this.paydetailFileImport()
+        } else {
+          this.$message.error('系统错误')
         }
-      }).catch(res=>{
-          this.$message.error("导入失败,请稍后重试")
+      }).catch(res => {
+        this.$message.error('导入失败,请稍后重试')
       })
     }
   }

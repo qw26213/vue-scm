@@ -1,7 +1,7 @@
 <template>
-    <div class="login-container">
-        <router-view />
-    </div>
+  <div class="login-container">
+    <router-view />
+  </div>
 </template>
 <style lang="scss" scoped>
 .login-container {

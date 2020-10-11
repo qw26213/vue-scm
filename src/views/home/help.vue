@@ -1,102 +1,101 @@
 <template>
-    <div style="height:660px;">
-        <div class="guide-wrap">
-            <div class="guide-content">
-                <img src="../../assets/guide.png" width="100%" height="100%">
-                <div class="steps step1 cf" data-index="1"> 
-                    <span class="step-num">1</span>
-                    <div class="step-dtl">
-                        <p class="bold pointer" @click="toPath('/init/createBill')">建账</p>
-                        <div class="guide-line"></div>
-                        <p class="size-12">设置账套名称、会计体系、启用期间、</p>
-                        <p class="size-12">科目级次、科目编码规则等</p>
-                    </div>
-                </div>
-                <div class="steps step2 cf" data-index="2"> 
-                    <span class="step-num">2</span>
-                    <div class="step-dtl">
-                        <p class="bold pointer" @click="toPath('/set/balance')">设置</p>
-                        <div class="guide-line"></div>
-                        <p class="size-12" @click="toPath('/set/coaList')">1.科目设置，增加下级科目，设置核算项</p>
-                        <p class="size-12" @click="toPath('/set')">2.辅助核算，增加或者修改辅助</p>
-                        <p class="size-12">核算项数据，自定义辅助核算项</p>
-                    </div>
-                </div>
-                <div class="steps step3 cf" data-index="3">
-                    <span class="step-num">3</span>
-                    <div class="step-dtl">
-                        <p class="bold pointer" @click="toPath('/set/balance')">期初余额</p>
-                        <div class="guide-line"></div>
-                        <p class="size-12">录入开账的期初余额</p>
-                        <p class="size-12">录入年初至截止启用期间的借贷发生额度</p>
-                    </div>
-                </div>
-                <div class="steps step4 cf" data-index="4">
-                    <span class="step-num">4</span>
-                    <div class="step-dtl">
-                        <p class="bold pointer" @click="toPath('/voucher/add')">凭证</p>
-                        <div class="guide-line"></div>
-                        <p class="size-12" @click="toPath('/voucher/add')">1.新增凭证</p>
-                        <p class="size-12" @click="toPath('/voucher/list')">2.查询凭证</p>
-                        <p class="size-12" @click="toPath('/voucher/auidt')">3.审核凭证</p>
-                        <p class="size-12" @click="toPath('/voucher/table')">4.凭证汇总表</p>
-                    </div>
-                </div>
-                <div class="steps step5 cf" data-index="5">
-                    <span class="step-num">5</span>
-                    <div class="step-dtl">
-                        <p class="bold pointer" @click="toPath('/accbook/totalaccount')">账簿</p>
-                        <div class="guide-line"></div>
-                        <p class="size-12">包括总账、明细账、科目余额表、</p>
-                        <p class="size-12">数量总账、数量明细账等各种</p>
-                        <p class="size-12">企业常用账簿</p>
-                    </div>
-                </div>
-                <div class="steps step6 cf" data-index="6">
-                    <span class="step-num">6</span>
-                    <div class="step-dtl">
-                        <p class="bold pointer" @click="toPath('/account/closePeriod')">结账</p>
-                        <div class="guide-line"></div>
-                        <p class="size-12">结账，进入下一个会计期间</p>
-                    </div>
-                </div>
-                <div class="steps step7 cf" data-index="7">
-                    <span class="step-num">7</span>
-                    <div class="step-dtl">
-                        <p class="bold pointer" @click="toPath('/report/debt')">报表</p>
-                        <div class="guide-line"></div>
-                        <p class="size-12" @click="toPath('/report/debt')">1.资产负债表</p>
-                        <p class="size-12" @click="toPath('/report/profit')">2.利润表</p>
-                    </div>
-                </div>
-                <div class="guide-tips">
-                </div>
-                <div class="btn btn-default plr15 guide-download">
-                    <el-button type="primary" @click="downloadFile">手册下载</el-button>
-                </div>
-            </div>
+  <div style="height:660px;">
+    <div class="guide-wrap">
+      <div class="guide-content">
+        <img src="../../assets/guide.png" width="100%" height="100%">
+        <div class="steps step1 cf" data-index="1">
+          <span class="step-num">1</span>
+          <div class="step-dtl">
+            <p class="bold pointer" @click="toPath('/init/createBill')">建账</p>
+            <div class="guide-line" />
+            <p class="size-12">设置账套名称、会计体系、启用期间、</p>
+            <p class="size-12">科目级次、科目编码规则等</p>
+          </div>
         </div>
+        <div class="steps step2 cf" data-index="2">
+          <span class="step-num">2</span>
+          <div class="step-dtl">
+            <p class="bold pointer" @click="toPath('/set/balance')">设置</p>
+            <div class="guide-line" />
+            <p class="size-12" @click="toPath('/set/coaList')">1.科目设置，增加下级科目，设置核算项</p>
+            <p class="size-12" @click="toPath('/set')">2.辅助核算，增加或者修改辅助</p>
+            <p class="size-12">核算项数据，自定义辅助核算项</p>
+          </div>
+        </div>
+        <div class="steps step3 cf" data-index="3">
+          <span class="step-num">3</span>
+          <div class="step-dtl">
+            <p class="bold pointer" @click="toPath('/set/balance')">期初余额</p>
+            <div class="guide-line" />
+            <p class="size-12">录入开账的期初余额</p>
+            <p class="size-12">录入年初至截止启用期间的借贷发生额度</p>
+          </div>
+        </div>
+        <div class="steps step4 cf" data-index="4">
+          <span class="step-num">4</span>
+          <div class="step-dtl">
+            <p class="bold pointer" @click="toPath('/voucher/add')">凭证</p>
+            <div class="guide-line" />
+            <p class="size-12" @click="toPath('/voucher/add')">1.新增凭证</p>
+            <p class="size-12" @click="toPath('/voucher/list')">2.查询凭证</p>
+            <p class="size-12" @click="toPath('/voucher/auidt')">3.审核凭证</p>
+            <p class="size-12" @click="toPath('/voucher/table')">4.凭证汇总表</p>
+          </div>
+        </div>
+        <div class="steps step5 cf" data-index="5">
+          <span class="step-num">5</span>
+          <div class="step-dtl">
+            <p class="bold pointer" @click="toPath('/accbook/totalaccount')">账簿</p>
+            <div class="guide-line" />
+            <p class="size-12">包括总账、明细账、科目余额表、</p>
+            <p class="size-12">数量总账、数量明细账等各种</p>
+            <p class="size-12">企业常用账簿</p>
+          </div>
+        </div>
+        <div class="steps step6 cf" data-index="6">
+          <span class="step-num">6</span>
+          <div class="step-dtl">
+            <p class="bold pointer" @click="toPath('/account/closePeriod')">结账</p>
+            <div class="guide-line" />
+            <p class="size-12">结账，进入下一个会计期间</p>
+          </div>
+        </div>
+        <div class="steps step7 cf" data-index="7">
+          <span class="step-num">7</span>
+          <div class="step-dtl">
+            <p class="bold pointer" @click="toPath('/report/debt')">报表</p>
+            <div class="guide-line" />
+            <p class="size-12" @click="toPath('/report/debt')">1.资产负债表</p>
+            <p class="size-12" @click="toPath('/report/profit')">2.利润表</p>
+          </div>
+        </div>
+        <div class="guide-tips" />
+        <div class="btn btn-default plr15 guide-download">
+          <el-button type="primary" @click="downloadFile">手册下载</el-button>
+        </div>
+      </div>
     </div>
+  </div>
 </template>
 <script>
 export default {
-    data() {
-        return {
-          info: {}
-        }
-    },
-    methods: {
-        downloadFile() {
-            var eleLink = document.createElement('a')
-            eleLink.href = 'https://www.baidu.com'
-            eleLink.target = "_blank"
-            eleLink.download = '金账簿使用手册'
-            eleLink.style.display = "none"
-        },
-        toPath(path) {
-          this.$router.push(path)
-        }
+  data() {
+    return {
+      info: {}
     }
+  },
+  methods: {
+    downloadFile() {
+      var eleLink = document.createElement('a')
+      eleLink.href = 'https://www.baidu.com'
+      eleLink.target = '_blank'
+      eleLink.download = '金账簿使用手册'
+      eleLink.style.display = 'none'
+    },
+    toPath(path) {
+      this.$router.push(path)
+    }
+  }
 }
 </script>
 <style scoped>
