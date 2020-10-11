@@ -286,7 +286,7 @@ export function getJZVoucherByCode(code) {
     return request({
         url: '/drp/gl/templetHeader/getJZList',
         method: 'post',
-        data: {code: code}
+        data: { code: code }
     })
 }
 

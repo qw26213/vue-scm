@@ -343,7 +343,7 @@ export function getCoaCodeUsedByIdNoSysTemplet(id) {
     return request({
         url: '/drp/gl/coa/getCoaCodeUsedByIdNoSysTemplet',
         method: 'post',
-        data: {id: id}
+        data: { id: id }
     })
 }
 
@@ -359,7 +359,7 @@ export function getCoaCodeUsedById(id) {
     return request({
         url: '/drp/gl/coa/getCoaCodeUsedById',
         method: 'post',
-        data: {id: id}
+        data: { id: id }
     })
 }
 
@@ -375,7 +375,7 @@ export function updateDispName(bookId) {
     return request({
         url: '/drp/gl/coa/updateDispName/',
         method: 'post',
-        data: {bookId: bookId}
+        data: { bookId: bookId }
     })
 }
 
@@ -502,4 +502,3 @@ export function importStore(data) {
         data
     })
 }
-

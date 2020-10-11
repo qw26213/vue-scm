@@ -25,7 +25,7 @@ export default {
         }
     },
     watch: {
-        'selectId'() {
+        'selectId' () {
             this.curId = this.selectId
         }
     },
@@ -42,7 +42,7 @@ export default {
             }
             if (this.contact) {
                 this.custList.forEach(item => {
-                    if(item.id === val) {
+                    if (item.id === val) {
                         obj.settleCustId = val
                         obj.addr = (item.city ? item.city + '市' : '') + (item.district ? item.district + '区' : '') + item.addr
                         obj.contact = item.contact

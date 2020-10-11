@@ -4,48 +4,48 @@
     </el-select>
 </template>
 <script>
-import {getTruck} from '@/api/basedata'
+import { getTruck } from '@/api/basedata'
 export default {
     name: 'list',
-    props: ['selectId','keyType','ctrType','placeTxt','allowNull'],
-    data(){
-      return {
-        list:[],
-        curId:this.selectId,
-        placeholderTxt:'',
-        curName:''
-      }
+    props: ['selectId', 'keyType', 'ctrType', 'placeTxt', 'allowNull'],
+    data() {
+        return {
+            list: [],
+            curId: this.selectId,
+            placeholderTxt: '',
+            curName: ''
+        }
     },
-    watch:{
-        'selectId'() {
+    watch: {
+        'selectId' () {
             this.curId = this.selectId
         }
     },
-    mounted(){
+    mounted() {
         this.getData();
-        if(this.placeTxt){
+        if (this.placeTxt) {
             this.placeholderTxt = this.placeTxt
-        }else{
+        } else {
             this.placeholderTxt = "选择车辆"
         }
     },
     methods: {
-        changeVal(val){
+        changeVal(val) {
             var obj = {}
             obj[this.keyType] = val;
-            this.$emit('selectChange',obj)
+            this.$emit('selectChange', obj)
         },
         getData() {
             var arr = [];
             getTruck().then(res => {
-                if(this.ctrType=="list"){
-                    arr = [{truckName:'全部车辆',id:'null'}]
+                if (this.ctrType == "list") {
+                    arr = [{ truckName: '全部车辆', id: 'null' }]
                 }
-                if(this.allowNull&&this.allowNull=="1"){
-                    arr = [{truckName:'无',id:''}]
+                if (this.allowNull && this.allowNull == "1") {
+                    arr = [{ truckName: '无', id: '' }]
                 }
                 this.list = arr.concat(res.data.data)
-            }).catch(err=>{
+            }).catch(err => {
                 this.list = arr;
             })
         }

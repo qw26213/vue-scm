@@ -7,17 +7,17 @@
 import { getWarehouse } from '@/api/basedata'
 export default {
     name: 'list',
-    props: ['selectId','keyType','ctrType','placeTxt','allowNull'],
+    props: ['selectId', 'keyType', 'ctrType', 'placeTxt', 'allowNull'],
     data() {
         return {
             list: [],
             curId: this.selectId,
-            curName:'',
-            placeholderTxt:''
+            curName: '',
+            placeholderTxt: ''
         }
     },
-    watch:{
-        'selectId'() {
+    watch: {
+        'selectId' () {
             this.curId = this.selectId
         }
     },
@@ -32,20 +32,20 @@ export default {
     methods: {
         changeVal(val) {
             var obj = {}
-            if(this.keyType){
-                obj[this.keyType] = val;
-            }else{
-                obj.warehouseId = val;
+            if (this.keyType) {
+                obj[this.keyType] = val
+            } else {
+                obj.warehouseId = val
             }
             this.$emit('selectChange', obj)
         },
         getData() {
             getWarehouse().then(res => {
                 var arr = [];
-                if(this.ctrType=="list") {
-                    arr = [{ warehouseName:'全部仓库', id:'null' }]
+                if (this.ctrType == "list") {
+                    arr = [{ warehouseName: '全部仓库', id: 'null' }]
                 }
-                if(this.allowNull&&this.allowNull=="1") {
+                if (this.allowNull && this.allowNull == "1") {
                     arr = [{ warehouseName: '无', id: '' }]
                 }
                 this.list = arr.concat(res.data.data)

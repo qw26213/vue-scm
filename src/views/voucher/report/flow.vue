@@ -7,28 +7,28 @@
             </el-select>
         </div>
         <div class="contentDiv">
-        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
-            <el-table-column label="项目" align="left">
-                <template slot-scope="{row}">
-                    <span>{{row.itemName}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="行次" align="center">
-                <template slot-scope="{row}">
-                    <span>{{row.seqNo}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="本次金额" align="right">
-                <template slot-scope="{row}">
-                    <span>{{row.val1}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="本次累计金额" align="right">
-                <template slot-scope="{row}">
-                    <span>{{row.val2}}</span>
-                </template>
-            </el-table-column>
-        </el-table>
+            <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
+                <el-table-column label="项目" align="left">
+                    <template slot-scope="{row}">
+                        <span>{{row.itemName}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="行次" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{row.seqNo}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="本次金额" align="right">
+                    <template slot-scope="{row}">
+                        <span>{{row.val1}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="本次累计金额" align="right">
+                    <template slot-scope="{row}">
+                        <span>{{row.val2}}</span>
+                    </template>
+                </el-table-column>
+            </el-table>
         </div>
     </div>
 </template>

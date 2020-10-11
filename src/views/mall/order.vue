@@ -107,7 +107,8 @@
     </div>
 </template>
 <script>
-import { getOrderData, delOrder, getOrderInfo, auditOrder, buildOutboundOrderByHeaderId, buildDeliveryByHeaderId } from '@/api/mall'
+import { getOrderData, delOrder, getOrderInfo, auditOrder } from '@/api/mall'
+import { buildOutboundOrderByHeaderId, buildDeliveryByHeaderId } from '@/api/sale'
 import nullImg from '@/assets/null.png'
 export default {
     name: 'merchantList',

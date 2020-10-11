@@ -901,8 +901,13 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import './voucher.scss';
->>>.el-icon-caret-left{font-size:20px}
->>>.el-icon-caret-right{font-size:20px}
+>>>.el-icon-caret-left {
+    font-size: 20px
+}
+
+>>>.el-icon-caret-right {
+    font-size: 20px
+}
 </style>
 <style scoped>
 .number {
@@ -925,6 +930,14 @@ export default {
     margin: 0 3px;
     outline: none;
 }
-.voucherHeader{position: relative;}
-.ctrlbutton { position: absolute;top: 10px; right: 0px }
+
+.voucherHeader {
+    position: relative;
+}
+
+.ctrlbutton {
+    position: absolute;
+    top: 10px;
+    right: 0px
+}
 </style>

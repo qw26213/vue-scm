@@ -7,26 +7,26 @@
 import { getBizType } from '@/api/basedata';
 export default {
     name: 'list',
-    props: ['selectId','disabled'],
-    data(){
-      return {
-        list:[],
-        curId:this.selectId,
-        selectDisabled:this.disabled&&this.disabled==1||false
-      }
+    props: ['selectId', 'disabled'],
+    data() {
+        return {
+            list: [],
+            curId: this.selectId,
+            selectDisabled: this.disabled && this.disabled == 1 || false
+        }
     },
-    watch:{
-        'selectId'() {
+    watch: {
+        'selectId' () {
             this.curId = this.selectId
         }
     },
-    mounted(){
-      this.getData();
+    mounted() {
+        this.getData();
     },
     methods: {
-        changeVal(val){
-            var obj = {bizTypeId:val}
-            this.$emit('selectChange',obj)
+        changeVal(val) {
+            var obj = { bizTypeId: val }
+            this.$emit('selectChange', obj)
         },
         getData() {
             getBizType().then(res => {

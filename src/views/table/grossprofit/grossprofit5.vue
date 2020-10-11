@@ -2,9 +2,9 @@
     <div class="app-container">
         <div class="filterDiv">
             <label class="label">统计期间</label>
-            <el-date-picker :editable="false" v-model="listQuery.billDate1" type="date" placeholder="开始日期" size="small" :clearable="false" value-format="yyyy-MM-dd" />
+            <el-date-picker v-model="listQuery.billDate1" :editable="false" type="date" placeholder="开始日期" size="small" :clearable="false" value-format="yyyy-MM-dd" />
             <span class="zhi">至</span>
-            <el-date-picker :editable="false" v-model="listQuery.billDate2" type="date" placeholder="结束日期" size="small" :clearable="false" value-format="yyyy-MM-dd" />
+            <el-date-picker v-model="listQuery.billDate2" :editable="false" type="date" placeholder="结束日期" size="small" :clearable="false" value-format="yyyy-MM-dd" />
             <label class="label ml10">统计表类型</label>
             <el-select v-model="listQuery.groupDateType" placeholder="统计表类型" size="small">
                 <el-option v-for="item in methodList" :label="item.label" :value="item.val" :key="item.val" />
@@ -22,23 +22,23 @@
             <el-checkbox v-model="listQuery.rotate" false-label="0" true-label="1">横向打印</el-checkbox>
             <el-popover placement="bottom" title="选择模板" width="500" trigger="click">
                 <div>
-                  <el-table style="width: 100%;" :data="templatelist" size="small" resize>
-                      <el-table-column label="模板名称" prop="queryName" width="120" align="left" show-overflow-tooltip />
-                      <el-table-column label="模板类型" width="100" align="center">
-                        <template slot-scope="{row}">
-                            <span v-if="row.templateType==0">系统模板</span>
-                            <span v-if="row.templateType==1">公司模板</span>
-                            <span v-if="row.templateType==2">个人模板</span>
-                        </template>
-                      </el-table-column>
-                      <el-table-column label="模板说明" prop="remarks" show-overflow-tooltip />
-                      <el-table-column label="操作" align="center" width="100">
-                        <template slot-scope="{row}">
-                            <span class="ctrl" @click="selectTemplate(row)">选择</span>
-                            <span class="ctrl" @click="deleteTemplate(row.id)">删除</span>
-                        </template>
-                      </el-table-column>
-                  </el-table>
+                    <el-table style="width: 100%;" :data="templatelist" size="small" resize>
+                        <el-table-column label="模板名称" prop="queryName" width="120" align="left" show-overflow-tooltip />
+                        <el-table-column label="模板类型" width="100" align="center">
+                            <template slot-scope="{row}">
+                                <span v-if="row.templateType==0">系统模板</span>
+                                <span v-if="row.templateType==1">公司模板</span>
+                                <span v-if="row.templateType==2">个人模板</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="模板说明" prop="remarks" show-overflow-tooltip />
+                        <el-table-column label="操作" align="center" width="100">
+                            <template slot-scope="{row}">
+                                <span class="ctrl" @click="selectTemplate(row)">选择</span>
+                                <span class="ctrl" @click="deleteTemplate(row.id)">删除</span>
+                            </template>
+                        </el-table-column>
+                    </el-table>
                 </div>
                 <el-button size="small" slot="reference">模板查询<i class="el-icon-arrow-down" style="margin-left:3px" /></el-button>
             </el-popover>
@@ -78,8 +78,8 @@ import saveSelect from '@/components/saveSelect'
 export default {
     name: 'totalAccount',
     components: { Pagination, saveSelect },
-    filters:{
-        Fixed:function(str){
+    filters: {
+        Fixed: function(str) {
             return parseFloat(str).toFixed(2)
         }
     },
@@ -89,7 +89,7 @@ export default {
             total: 0,
             tableKey: 0,
             tableData: [],
-            methodList:[{ label: '日报', val: 'day' }, { label: '周报', val: 'week' }, { label: '旬报', val: 'tendays'}, { label: '月报', val: 'month'}, {label: '季报', val: 'quarter' }],
+            methodList: [{ label: '日报', val: 'day' }, { label: '周报', val: 'week' }, { label: '旬报', val: 'tendays' }, { label: '月报', val: 'month' }, { label: '季报', val: 'quarter' }],
             listLoading: true,
             columns: [],
             templatelist: [],
@@ -115,19 +115,19 @@ export default {
         }
     },
     created() {
-      this.getList()
-      this.getTemplateList()
-      getAggregate6().then(res => {
-        this.levellist = res.data
-        getDefaultQueryConf6().then(res => {
-            if (res && res.data.data) {
-                const propValue = JSON.parse(res.data.data.paramValue)
-                for (var key in propValue) {
-                    this.listQuery[key] = propValue[key]
+        this.getList()
+        this.getTemplateList()
+        getAggregate6().then(res => {
+            this.levellist = res.data
+            getDefaultQueryConf6().then(res => {
+                if (res && res.data.data) {
+                    const propValue = JSON.parse(res.data.data.paramValue)
+                    for (var key in propValue) {
+                        this.listQuery[key] = propValue[key]
+                    }
                 }
-            }
+            })
         })
-      })
     },
     methods: {
         selectTemplate(row) {
@@ -194,7 +194,7 @@ export default {
         },
         printBook() {
             printGrossProfitBook(this.listQuery).then(res => {
-                window.open("http://"+window.location.host+res.data.data)
+                window.open("http://" + window.location.host + res.data.data)
             }).catch(err => {
                 this.listLoading = false
             })

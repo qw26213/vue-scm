@@ -73,7 +73,7 @@ export default {
                 queryParam: {
                     date1: '2019-01-01',
                     date2: getNowDate(),
-                    nonZeroBalance:'1',
+                    nonZeroBalance: '1',
                     billNo: "",
                     custId: ''
                 }
@@ -81,7 +81,7 @@ export default {
         }
     },
     watch: {
-        'modalTableVisible'(val) {
+        'modalTableVisible' (val) {
             this.visible = val
             if (val) {
                 this.getList()
@@ -89,7 +89,7 @@ export default {
         }
     },
     filters: {
-        Fixed: function (num) {
+        Fixed: function(num) {
             if (!num) { return '0.00' }
             return parseFloat(num).toFixed(2);
         }

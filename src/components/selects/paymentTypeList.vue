@@ -8,29 +8,29 @@ import { getPaymentType } from '@/api/basedata'
 export default {
     name: 'list',
     props: ['selectId'],
-    data(){
-      return {
-        list:[],
-        curId:this.selectId,
-      }
+    data() {
+        return {
+            list: [],
+            curId: this.selectId,
+        }
     },
-    watch:{
-        'selectId'() {
+    watch: {
+        'selectId' () {
             this.curId = this.selectId
         }
     },
-    mounted(){
-      this.getData();
+    mounted() {
+        this.getData();
     },
     methods: {
-        changeVal(val){
-            var obj = {paymentTypeId:val}
-            this.$emit('selectChange',obj)
+        changeVal(val) {
+            var obj = { paymentTypeId: val }
+            this.$emit('selectChange', obj)
         },
         getData() {
             getPaymentType().then(res => {
                 var data = res.data.data;
-                this.list = [{paymentTypeName:'无',id:''},...data]
+                this.list = [{ paymentTypeName: '无', id: '' }, ...data]
             })
         }
     }

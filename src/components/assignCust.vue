@@ -62,11 +62,11 @@ export default {
                         this.getCustTable()
                     })
                 }
-                if (this.type === 'group'){
+                if (this.type === 'group') {
                     this.curRowObj = deepClone(this.handleObj)
                     this.getCustTable()
                 }
-                if (this.type === 'user'){
+                if (this.type === 'user') {
                     getCustListByUserId({ userId: this.handleObj.id }).then(res => {
                         var rowObj = this.handleObj
                         rowObj.custList = res.data.data

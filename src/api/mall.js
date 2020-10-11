@@ -40,6 +40,14 @@ export function getGoodsDetailData(data) {
     })
 }
 
+export function delGoodsDetailById(data) {
+    return request({
+        url: '/drp/mm/goodsDetail/delByHeaderId',
+        method: 'post',
+        data
+    })
+}
+
 export function getGoodDetail(data) {
     return request({
         url: '/drp/mm/goodsDetail/getById',
@@ -157,4 +165,3 @@ export function addTab(data) {
         data
     })
 }
-

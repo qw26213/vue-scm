@@ -7,29 +7,29 @@
 import { getInvCatg } from '@/api/basedata'
 export default {
     name: 'list',
-    props: ['selectId','index','resdata'],
-    data(){
-      return {
-        curName:'',
-        curCode:'',
-        curId:this.selectId,
-      }
+    props: ['selectId', 'index', 'resdata'],
+    data() {
+        return {
+            curName: '',
+            curCode: '',
+            curId: this.selectId,
+        }
     },
-    watch:{
-        'selectId'() {
+    watch: {
+        'selectId' () {
             this.curId = this.selectId
         }
     },
     methods: {
-        changeVal(val){
-            for(var i=0;i<this.resdata.length;i++){
-                if(this.resdata[i].id==val){
-                  this.curName = this.resdata[i].invCatgName;
-                  this.curCode = this.resdata[i].invCatgCode;
+        changeVal(val) {
+            for (var i = 0; i < this.resdata.length; i++) {
+                if (this.resdata[i].id == val) {
+                    this.curName = this.resdata[i].invCatgName;
+                    this.curCode = this.resdata[i].invCatgCode;
                 }
             }
-            var obj = {invCatgId:val,invCatgCode:this.curCode,invCatgName:this.curName,index:this.index}
-            this.$emit('changeVal',obj)
+            var obj = { invCatgId: val, invCatgCode: this.curCode, invCatgName: this.curName, index: this.index }
+            this.$emit('changeVal', obj)
         }
     }
 }

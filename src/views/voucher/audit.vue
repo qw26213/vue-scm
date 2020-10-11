@@ -2,26 +2,26 @@
     <div class="app-container" style="min-width:1216px">
         <div class="filterDiv">
             <el-select v-model="listQuery.queryParam.date1" placeholder="开始期间" size="small">
-                <el-option v-for="item in periodList" :key="item.id" :label="item.text" :value="item.id"></el-option>
+                <el-option v-for="item in periodList" :key="item.id" :label="item.text" :value="item.id" />
             </el-select>
             <span class="zhi">至</span>
             <el-select v-model="listQuery.queryParam.date2" placeholder="结束期间" size="small">
-                <el-option v-for="item in periodList" :key="item.id" :label="item.text" :value="item.id"></el-option>
+                <el-option v-for="item in periodList" :key="item.id" :label="item.text" :value="item.id" />
             </el-select>
             <el-select v-model="listQuery.queryParam.startCoa" placeholder="开始科目" size="small">
-                <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode"></el-option>
+                <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode" />
             </el-select>
             <span class="zhi">至</span>
             <el-select v-model="listQuery.queryParam.endCoa" placeholder="结束科目" size="small">
-                <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode"></el-option>
+                <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode" />
             </el-select>
             <el-input size="small" v-model="listQuery.queryParam.voucherSeq" placeholder="凭证号" style="width: 120px;" />
             <el-input size="small" v-model="listQuery.queryParam.summary" placeholder="摘要" style="width: 120px;" />
             <el-select v-model="listQuery.queryParam.jeStatus" placeholder="状态" size="small">
-                <el-option label="全部状态" value=""></el-option>
-                <el-option label="制单完成" :value="0"></el-option>
-                <el-option label="审核通过" :value="5"></el-option>
-                <el-option label="退回" :value="-1"></el-option>
+                <el-option label="全部状态" value="" />
+                <el-option label="制单完成" :value="0" />
+                <el-option label="审核通过" :value="5" />
+                <el-option label="退回" :value="-1" />
             </el-select>
             <el-button size="small" type="primary" @click="getList">查询</el-button>
             <el-button size="small" type="primary" @click="muchVoucherCheck">批量审核</el-button>
@@ -42,22 +42,22 @@
                 </el-table-column>
                 <el-table-column label="摘要" min-width="120">
                     <template slot-scope="{row}">
-                        <p clss="pCell" v-for="(item,index) in row.lineList" :key="index">{{item.summary}}</p>
+                        <p clss="pCell" v-for="(item,index) in row.lineList" :key="index">{{ item.summary }}</p>
                     </template>
                 </el-table-column>
                 <el-table-column label="科目名称" min-width="200">
                     <template slot-scope="{row}">
-                        <p clss="pCell" style="width:max-content;min-width:100%" v-for="(item,index) in row.lineList" :key="index">{{item.longName}}</p>
+                        <p clss="pCell" style="width:max-content;min-width:100%" v-for="(item,index) in row.lineList" :key="index">{{ item.longName }}</p>
                     </template>
                 </el-table-column>
                 <el-table-column label="借方金额" align="right">
                     <template slot-scope="{row}">
-                        <p clss="pCell" v-for="(item,index) in row.lineList" :key="index">{{item.accountedDr|Fixed}}</p>
+                        <p clss="pCell" v-for="(item,index) in row.lineList" :key="index">{{ item.accountedDr|Fixed }}</p>
                     </template>
                 </el-table-column>
                 <el-table-column label="贷方金额" align="right">
                     <template slot-scope="{row}">
-                        <p clss="pCell" v-for="(item,index) in row.lineList" :key="index">{{item.accountedCr|Fixed}}</p>
+                        <p clss="pCell" v-for="(item,index) in row.lineList" :key="index">{{ item.accountedCr|Fixed }}</p>
                     </template>
                 </el-table-column>
                 <el-table-column label="状态" align="center">

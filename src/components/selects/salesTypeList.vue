@@ -8,33 +8,40 @@ import { mapGetters } from 'vuex'
 export default {
     name: 'list',
     props: ['selectId', 'index'],
-    data(){
-      return {
-        list:[],
-        curIndex: this.index,
-        salesTypeCode:this.selectId,
-      }
+    data() {
+        return {
+            list: [],
+            curIndex: this.index,
+            salesTypeCode: this.selectId,
+        }
     },
     computed: {
         ...mapGetters([
-          'salesTypeArr'
+            'salesTypeArr'
         ])
     },
-    watch:{
-        'selectId'() {
+    watch: {
+        'selectId' () {
             this.salesTypeCode = this.selectId
             this.curIndex = this.index
         }
     },
     methods: {
-        changeVal(val){
-            var obj = {salesTypeCode:val,index:this.curIndex}
-            this.$emit('selectChange',obj)
+        changeVal(val) {
+            var obj = { salesTypeCode: val, index: this.curIndex }
+            this.$emit('selectChange', obj)
         }
     }
 }
 </script>
 <style lang="scss">
-.custInput{width:100%;}
-.custInput input{border:none;width: 100%;display: block;}
+.custInput {
+    width: 100%;
+}
+
+.custInput input {
+    border: none;
+    width: 100%;
+    display: block;
+}
 </style>

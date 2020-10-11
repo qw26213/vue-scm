@@ -1,6 +1,5 @@
 <template>
     <el-dialog :close-on-click-modal="false" :title="'分配商品_'+tit" :visible.sync="openModal" :show-close="false" ::close-on-click-modal="false" width="500px">
-        <!-- <div class="curTit">当前价格组：{{}})</div> -->
         <el-table ref="table" :data="itemData" border fit highlight-current-row style="width: 100%;" size="small" row-key="id" @selection-change="selectChange" @select-all="selectChange">
             <el-table-column type="selection" width="50" align="center" :reserve-selection="true"></el-table-column>
             <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
@@ -46,7 +45,7 @@ export default {
                         this.getItemTable()
                     })
                 }
-                if (this.type === 'group'){
+                if (this.type === 'group') {
                     this.curRowObj = deepClone(this.handleObj)
                     this.getItemTable()
                 }

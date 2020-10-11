@@ -12,7 +12,7 @@ export function delReceiptPayment(id) {
     return request({
         url: '/drp/rp/receiptPayment/deleteByHeaderId',
         method: 'post',
-        data: { id: id }
+        data: { id }
     })
 }
 
@@ -20,7 +20,7 @@ export function getByHeaderId(id) {
     return request({
         url: '/drp/rp/receiptPayment/getByHeaderId',
         method: 'post',
-        data: {id: id}
+        data: { id }
     })
 }
 
@@ -32,11 +32,11 @@ export function saveReceiptPayment(data) {
     })
 }
 
-export function buildReceiptPayment(obj) {
+export function buildReceiptPayment(data) {
     return request({
         url: '/drp/rp/receiptPayment/buildVoucherByHeaderId',
         method: 'post',
-        data: obj
+        data
     })
 }
 
@@ -73,4 +73,3 @@ export function getPurchaseListBySupplierId(data) {
         data
     })
 }
-
