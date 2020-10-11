@@ -33,9 +33,8 @@
           </template>
         </el-table-column>
       </el-table>
-      <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
     </div>
-    <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增科目对照':'修改科目对照'" :visible.sync="dialogFormVisible" width="460px">
+    <el-dialog :close-on-click-modal="false" title="修改科目对照" :visible.sync="dialogFormVisible" width="460px">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="110px" style="width: 400px; margin-left:10px;">
         <el-form-item label="科目对照代码" prop="referCoaCode">
           <el-input v-model="temp.referCoaCode" disabled placeholder="科目对照代码" />
@@ -67,7 +66,6 @@ export default {
     return {
       tableKey: 0,
       tableData: [],
-      total: 0,
       listLoading: true,
       listQuery: {
         page: 1,
@@ -86,7 +84,6 @@ export default {
         coaCode: ''
       },
       dialogFormVisible: false,
-      dialogStatus: '',
       rules: {
         referCoaName: [{ required: true, message: '名称不能为空', trigger: 'change' }],
         referCoaCode: [{ required: true, message: '代码不能为空', trigger: 'change' }],
@@ -111,7 +108,6 @@ export default {
     },
     handleCompile(obj) {
       this.dialogFormVisible = true
-      this.dialogStatus = 'update'
       for (var key in this.temp) {
         this.temp[key] = obj[key]
       }
