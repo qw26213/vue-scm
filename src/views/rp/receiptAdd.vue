@@ -18,7 +18,7 @@
           <el-input v-model="temp.amount" size="small" placeholder="现结金额" style="width:75px" disabled />
           <el-button size="small" style="width:45px;padding:8px" @click="showSettleType">选择</el-button>
         </el-form-item>
-        <el-button size="small" style="margin-top:3px" :disabled="!temp.custId" type="primary" @click="showSaleBill">选择采购单</el-button>
+        <el-button size="small" style="margin-top:3px" :disabled="!temp.custId" type="primary" @click="showSaleBill">选择销售单</el-button>
       </el-form>
     </div>
     <div class="contentDiv">
