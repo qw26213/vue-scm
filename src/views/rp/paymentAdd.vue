@@ -150,7 +150,7 @@ export default {
         billDate: getNowDate(),
         staffId: '',
         supplierId: '',
-        crDr: -1,
+        crDr: '-1',
         amount: 0
       },
       dialogFormVisible: false,
@@ -227,6 +227,7 @@ export default {
     getPurechaseList() {
       this.modalQuery.supplierId = this.temp.supplierId
       this.modalQuery.staffId = this.temp.staffId
+      this.modalQuery.crDr = -1
       getPurchaseListBySupplierId(this.modalQuery).then(res => {
         this.modalData = res.data.data || []
       })

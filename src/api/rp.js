@@ -59,7 +59,7 @@ export function printByHeaderId(id) {
 // 获取销售单据
 export function getSalesListByCustId(data) {
   return request({
-    url: '/drp/rp/receiptPayment/getSalesListByCustId',
+    url: '/drp/rp/receiptPayment/getBySupplierIdOrCustId',
     method: 'post',
     data
   })
@@ -68,8 +68,18 @@ export function getSalesListByCustId(data) {
 // 获取采购单据
 export function getPurchaseListBySupplierId(data) {
   return request({
-    url: '/drp/rp/receiptPayment/getPurchaseListBySupplierId',
+    url: '/drp/rp/receiptPayment/getBySupplierIdOrCustId',
     method: 'post',
     data
   })
 }
+
+// 查看审核意见
+export function getAuditInfoByHeaderId(id) {
+  return request({
+    url: '/drp/log/auditInfo/getByHeaderId',
+    method: 'post',
+    data: { id }
+  })
+}
+

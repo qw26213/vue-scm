@@ -64,6 +64,11 @@
       </div>
       <el-table ref="dataTable" :data="modalData" border fit highlight-current-row style="width: 100%;" size="small" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="50" align="center" :reserve-selection="true" />
+        <el-table-column label="客户" align="center">
+          <template slot-scope="{row}">
+            <span v-html="row.custName" />
+          </template>
+        </el-table-column>
         <el-table-column label="单据日期" align="center">
           <template slot-scope="{row}">
             <span v-html="row.billDate" />
@@ -225,6 +230,7 @@ export default {
     getSaleList() {
       this.modalQuery.custId = this.temp.custId
       this.modalQuery.staffId = this.temp.staffId
+      this.modalQuery.crDr = 1
       getSalesListByCustId(this.modalQuery).then(res => {
         this.modalData = res.data.data || []
       })
