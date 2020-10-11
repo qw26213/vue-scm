@@ -59,6 +59,14 @@ const setRouter = {
                 title: '结算方式'
             }
         }, {
+            path: 'referCoa',
+            component: () => import ('@/views/set/data/referCoa'),
+            name: 'referCoa',
+            meta: {
+                roles: ['601030'],
+                title: '科目对照'
+            }
+        }, {
             path: 'paymentType',
             component: () => import ('@/views/set/data/paymentType'),
             name: 'basePaymentType',

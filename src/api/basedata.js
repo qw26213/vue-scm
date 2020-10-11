@@ -635,7 +635,7 @@ export function delRoute(id) {
   return request({
     url: '/drp/bd/route/deleteById',
     method: 'post',
-    data: { id: id }
+    data: { id }
   })
 }
 
@@ -678,6 +678,23 @@ export function updateSalesTypeDisabled(data) {
     data
   })
 }
+
+export function getReferCoa(data) {
+  return request({
+    url: '/drp/bd/referCoa/getAll',
+    method: 'post',
+    data
+  })
+}
+
+export function saveReferCoa(data) {
+  return request({
+    url: '/drp/bd/referCoa/save',
+    method: 'post',
+    data
+  })
+}
+
 
 export function getSettleType(data) {
   return request({
