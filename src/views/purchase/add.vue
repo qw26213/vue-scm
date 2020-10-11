@@ -71,24 +71,19 @@
             <input v-model="row.qualityDays" type="text" class="inputCell tx-r">
           </template>
         </el-table-column>
-        <el-table-column label="数量">
-          <template slot-scope="scope">
-            <input v-model="scope.row.qty" type="text" :index="scope.$index" class="inputCell tx-r" @change="calculate(scope.$index)">
-          </template>
-        </el-table-column>
         <el-table-column label="含税价(元)">
           <template slot-scope="scope">
             <input v-model="scope.row.vatPrice" type="text" class="inputCell tx-r" :disables="userSalePriceType + scope.row.salePriceType <= 1" @change="calculate(scope.$index)">
           </template>
         </el-table-column>
-        <!-- <el-table-column label="单价">
-                    <template slot-scope="scope">
-                        <input type="text" :index="scope.$index" class="inputCell tx-r" v-model="scope.row.price" @change="calculate(scope.$index)">
-                    </template>
-                </el-table-column> -->
-        <el-table-column label="金额">
+        <el-table-column label="数量">
+          <template slot-scope="scope">
+            <input v-model="scope.row.qty" type="text" :index="scope.$index" class="inputCell tx-r" @change="calculate(scope.$index)">
+          </template>
+        </el-table-column>
+        <el-table-column label="价税合计">
           <template slot-scope="{row}">
-            <input v-model="row.amount" type="text" class="inputCell tx-r" disabled>
+            <input v-model="row.vatAmount" type="text" class="inputCell tx-r" disabled>
           </template>
         </el-table-column>
         <el-table-column label="税率(%)">
@@ -102,9 +97,9 @@
             <input v-model="row.taxAmount" type="text" class="inputCell tx-r" disabled>
           </template>
         </el-table-column>
-        <el-table-column label="价税合计">
+        <el-table-column label="金额">
           <template slot-scope="{row}">
-            <input v-model="row.vatAmount" type="text" class="inputCell tx-r" disabled>
+            <input v-model="row.amount" type="text" class="inputCell tx-r" disabled>
           </template>
         </el-table-column>
       </el-table>

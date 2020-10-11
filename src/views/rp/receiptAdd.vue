@@ -46,7 +46,7 @@
         </el-table-column>
         <el-table-column label="收款金额" align="right">
           <template slot-scope="{row}">
-            <input v-model="row.amount" class="amount" @focus="$event.target.select()">
+            <input v-model="row.amount" class="inputCell tx-r" @focus="$event.target.select()">
           </template>
         </el-table-column>
       </el-table>

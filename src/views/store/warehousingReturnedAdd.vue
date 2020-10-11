@@ -52,24 +52,25 @@
             <input v-model="row.qualityDays" type="text" class="inputCell tx-r">
           </template>
         </el-table-column>
-        <el-table-column label="数量" width="90">
+        <el-table-column label="含税价(元)">
           <template slot-scope="scope">
-            <input v-model="scope.row.qty" type="text" class="inputCell tx-r" @change="calculate(scope.$index)">
+            <input v-model="scope.row.vatPrice" type="text" class="inputCell tx-r" @change="calculate(scope.$index)">
           </template>
         </el-table-column>
-        <el-table-column label="单价(元)">
+        <el-table-column label="数量">
           <template slot-scope="scope">
-            <input v-model="scope.row.price" type="text" class="inputCell tx-r" @change="calculate(scope.$index)">
+            <input v-model="scope.row.qty" type="text" :index="scope.$index" class="inputCell tx-r" @change="calculate(scope.$index)">
           </template>
         </el-table-column>
-        <el-table-column label="金额">
+        <el-table-column label="价税合计">
           <template slot-scope="{row}">
-            <input v-model="row.amount" type="text" class="inputCell tx-r" disabled>
+            <input v-model="row.vatAmount" type="text" class="inputCell tx-r" disabled>
           </template>
         </el-table-column>
         <el-table-column label="税率(%)">
           <template slot-scope="scope">
-            <input v-model="scope.row.taxRate" type="text" class="inputCell tx-r" @change="calculate(scope.$index)">
+            <input v-if="taxFilingCategoryCode==0" type="text" class="inputCell tx-r" value="0" disabled>
+            <input v-else v-model="scope.row.taxRate" type="text" class="inputCell tx-r" @change="calculate(scope.$index)">
           </template>
         </el-table-column>
         <el-table-column label="税额">
@@ -77,9 +78,9 @@
             <input v-model="row.taxAmount" type="text" class="inputCell tx-r" disabled>
           </template>
         </el-table-column>
-        <el-table-column label="价税合计">
+        <el-table-column label="金额">
           <template slot-scope="{row}">
-            <input v-model="row.vatAmount" type="text" class="inputCell tx-r" disabled>
+            <input v-model="row.amount" type="text" class="inputCell tx-r" disabled>
           </template>
         </el-table-column>
         <el-table-column label="是否赠品" align="center">
@@ -160,18 +161,23 @@ export default {
   },
   methods: {
     calculate(index) {
-      var qty = this.tableData[index].qty
-      var price = this.tableData[index].price
-      if (qty && price) {
-        var amount = parseFloat(Number(qty) * Number(price)).toFixed(2)
-        this.$set(this.tableData[index], 'amount', amount)
-        this.$set(this.tableData[index], 'vatAmount', amount)
+      var vatPrice = this.tableData[index].vatPrice // 含税价
+      var qty = this.tableData[index].qty // 数量
+      if (qty && vatPrice) {
+        var vatAmount = parseFloat(Number(qty) * Number(vatPrice)).toFixed(2)
+        this.$set(this.tableData[index], 'vatAmount', vatAmount)
         var taxRate = this.tableData[index].taxRate
         if (taxRate) {
-          var taxAmount = parseFloat(Number(amount) * Number(taxRate) / 100).toFixed(2)
-          var vatAmount = parseFloat(Number(amount) + Number(taxAmount)).toFixed(2)
+          var price = parseFloat(Number(vatPrice) / (Number(taxRate) / 100 + 1)).toFixed(2)
+          var amount = parseFloat(Number(qty) * Number(price)).toFixed(2)
+          var taxAmount = parseFloat(Number(vatAmount) - Number(amount)).toFixed(2)
           this.$set(this.tableData[index], 'taxAmount', taxAmount)
-          this.$set(this.tableData[index], 'vatAmount', vatAmount)
+          this.$set(this.tableData[index], 'price', price)
+          this.$set(this.tableData[index], 'amount', amount)
+        } else {
+          this.$set(this.tableData[index], 'taxRate', 0)
+          this.$set(this.tableData[index], 'price', 0)
+          this.$set(this.tableData[index], 'amount', 0)
         }
       }
     },
