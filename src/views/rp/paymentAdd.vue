@@ -24,6 +24,11 @@
         <div class="contentDiv">
             <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="small" max-height="600">
                 <el-table-column label="序号" type="index" width="50" align="center" />
+                <el-table-column label="供应商" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{ row.supplierName }}</span>
+                    </template>
+                </el-table-column>
                 <el-table-column label="单据日期" align="center">
                     <template slot-scope="{row}">
                         <span>{{ row.billDate }}</span>
