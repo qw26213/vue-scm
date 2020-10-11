@@ -28,14 +28,9 @@
         <div class="contentDiv">
             <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="small" cell-class-name="tdCell">
                 <el-table-column label="序号" type="index" width="50" align="center" />
-                <el-table-column label="商品代码">
+                <el-table-column label="商品" width="300">
                     <template slot-scope="scope">
                         <itemList :selectId="scope.row.itemId" :selectCode="scope.row.itemCode" :index="scope.$index" @changeVal="changeVal" />
-                    </template>
-                </el-table-column>
-                <el-table-column label="商品名称">
-                    <template slot-scope="{row}">
-                        <input type="text" class="inputCell" v-model="row.itemName" disabled>
                     </template>
                 </el-table-column>
                 <el-table-column label="规格">

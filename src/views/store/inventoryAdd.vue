@@ -44,14 +44,9 @@
                       </el-select>
                     </template>
                 </el-table-column>
-                <el-table-column label="商品名称" width="160">
+                <el-table-column label="商品" width="300">
                     <template slot-scope="scope">
-                        <itemList :selectCode="scope.row.itemCode" :selectId="scope.row.itemId" :index="scope.$index" :item-list="item_list" @changeVal="changeVal" />
-                    </template>
-                </el-table-column>
-                <el-table-column label="商品代码" width="160">
-                    <template slot-scope="{row}">
-                        <input type="text" class="inputCell" v-model="row.itemCode" disabled>
+                        <itemList :selectId="scope.row.itemId" :selectCode="scope.row.itemCode" :index="scope.$index" @changeVal="changeVal" />
                     </template>
                 </el-table-column>
                 <el-table-column label="规格">
