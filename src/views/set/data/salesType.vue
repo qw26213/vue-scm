@@ -1,49 +1,48 @@
 <template>
   <div class="app-container">
     <div class="filterDiv">
-      <el-input size="small" v-model="listQuery.salesTypeName" placeholder="销售类型代码/名称" style="width: 200px;" class="filter-item" />
+      <el-input v-model="listQuery.salesTypeName" size="small" placeholder="销售类型代码/名称" style="width: 200px;" class="filter-item" />
       <el-button size="small" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
       <el-button size="small" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
     </div>
     <div class="contentDiv">
       <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
-        <el-table-column label="序号" type="index" width="100" align="center">
-        </el-table-column>
+        <el-table-column label="序号" type="index" width="100" align="center" />
         <el-table-column label="销售类型代码">
           <template slot-scope="{row}">
-            <span>{{row.salesTypeCode}}</span>
+            <span>{{ row.salesTypeCode }}</span>
           </template>
         </el-table-column>
         <el-table-column label="销售类型名称">
           <template slot-scope="{row}">
-            <span>{{row.salesTypeName}}</span>
+            <span>{{ row.salesTypeName }}</span>
           </template>
         </el-table-column>
         <el-table-column label="正常销售">
           <template slot-scope="{row}">
-            <span>{{row.priceRatio}}</span>
+            <span>{{ row.priceRatio }}</span>
           </template>
         </el-table-column>
         <el-table-column label="对应科目代码">
           <template slot-scope="{row}">
-            <span>{{row.coaCode}}</span>
+            <span>{{ row.coaCode }}</span>
           </template>
         </el-table-column>
         <el-table-column label="备注">
           <template slot-scope="{row}">
-            <span>{{row.remarks}}</span>
+            <span>{{ row.remarks }}</span>
           </template>
         </el-table-column>
         <el-table-column label="是否可用" align="center">
           <template slot-scope="{row}">
-            <span>{{row.isDisable==0?'是':'否'}}</span>
+            <span>{{ row.isDisable==0?'是':'否' }}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center" width="190">
           <template slot-scope="{row}">
             <el-button type="text" size="small" @click="handleCompile(row)">编辑</el-button>
             <el-button type="text" size="small" @click="handleDel(row.id)">删除</el-button>
-            <el-button type="text" size="small" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
+            <el-button type="text" size="small" @click="updateStatus(row)">{{ row.isDisable==0?'禁用':'解禁' }}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -82,11 +81,11 @@
 </template>
 
 <script>
-import { getSalesType,saveSalesType,delSalesType,updateSalesTypeDisabled } from '@/api/basedata'
+import { getSalesType, saveSalesType, delSalesType, updateSalesTypeDisabled } from '@/api/basedata'
 import { parseTime } from '@/utils'
-import Pagination from '@/components/Pagination' 
+import Pagination from '@/components/Pagination'
 export default {
-  name: 'baseSalesType',
+  name: 'BaseSalesType',
   components: { Pagination },
   data() {
     return {
@@ -103,8 +102,8 @@ export default {
         salesTypeName: '',
         salesTypeCode: '',
         priceRatio: 0,
-        coaCode:"",
-        remarks:'',
+        coaCode: '',
+        remarks: '',
         isDisable: 0
       },
       resetTemp: {
@@ -112,8 +111,8 @@ export default {
         salesTypeName: '',
         salesTypeCode: '',
         priceRatio: 0,
-        coaCode:"",
-        remarks:'',
+        coaCode: '',
+        remarks: '',
         isDisable: 0
       },
       dialogFormVisible: false,
@@ -123,7 +122,7 @@ export default {
         salesTypeCode: [{ required: true, message: '代码不能为空', trigger: 'change' }],
         priceRatio: [{ required: true, message: '价格比不能为空', trigger: 'change' }],
         coaCode: [{ required: true, message: '对应科目代码不能为空', trigger: 'change' }],
-        isDisable:[{required:false}]
+        isDisable: [{ required: false }]
       }
     }
   },
@@ -136,14 +135,14 @@ export default {
       getSalesType(this.listQuery).then(response => {
         this.listLoading = false
         this.tableData = response.data.data
-      }).catch(err=>{
+      }).catch(err => {
         this.listLoading = false
       })
     },
     handleAdd() {
       this.dialogFormVisible = true
       this.dialogStatus = 'create'
-      for (var key in this.temp){
+      for (var key in this.temp) {
         this.temp[key] = this.resetTemp[key]
       }
       this.$nextTick(() => {
@@ -153,7 +152,7 @@ export default {
     handleCompile(obj) {
       this.dialogFormVisible = true
       this.dialogStatus = 'update'
-      for (var key in this.temp){
+      for (var key in this.temp) {
         this.temp[key] = obj[key]
       }
       this.$nextTick(() => {
@@ -164,45 +163,45 @@ export default {
       this.listQuery.page = 1
       this.getList()
     },
-    updateStatus(data){
-      this.$confirm('确定'+(data.isDisable==1 ? '解禁？' : '禁用？'), '提示', {
+    updateStatus(data) {
+      this.$confirm('确定' + (data.isDisable == 1 ? '解禁？' : '禁用？'), '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        closeOnClickModal:false,
+        closeOnClickModal: false,
         type: 'warning'
       }).then(() => {
-        this.changeAvaiable(data);
-      });
+        this.changeAvaiable(data)
+      })
     },
-    changeAvaiable(data){
-      var obj = {id:data.id,isDisable:data.isDisable==1?0:1}
+    changeAvaiable(data) {
+      var obj = { id: data.id, isDisable: data.isDisable == 1 ? 0 : 1 }
       updateSalesTypeDisabled(obj).then(res => {
-            if(res.data.errorCode==0){
-              this.getList();
-          this.$message.success(data.isDisable==1?'解禁':'禁用'+'成功')
-            }else{
-              this.$message.error(res.data.msg)
-            }
-          })
+        if (res.data.errorCode == 0) {
+          this.getList()
+          this.$message.success(data.isDisable == 1 ? '解禁' : '禁用' + '成功')
+        } else {
+          this.$message.error(res.data.msg)
+        }
+      })
     },
-    handleDel(id){
+    handleDel(id) {
       this.$confirm('确定删除？', '提示', {
-        confirmButtonText: '确定',closeOnClickModal:false,
+        confirmButtonText: '确定', closeOnClickModal: false,
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
         this.delItem(id)
-      });
+      })
     },
-    handleModify(){
+    handleModify() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           saveSalesType(this.temp).then(res => {
-            if(res.data.errorCode==0){
-              this.getList();
+            if (res.data.errorCode == 0) {
+              this.getList()
               this.dialogFormVisible = false
               this.$message.success('修改成功')
-            }else{
+            } else {
               this.$message.error(res.data.msg)
             }
           })
@@ -213,11 +212,11 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           saveSalesType(this.temp).then(res => {
-            if(res.data.errorCode==0){
-              this.getList();
+            if (res.data.errorCode == 0) {
+              this.getList()
               this.dialogFormVisible = false
               this.$message.success('新增成功')
-            }else{
+            } else {
               this.$message.error(res.data.msg)
             }
           })
@@ -226,11 +225,11 @@ export default {
     },
     delItem(id) {
       delSalesType(id).then(res => {
-        if(res.data.errorCode==0){
-          this.getList();
+        if (res.data.errorCode == 0) {
+          this.getList()
           this.dialogFormVisible = false
           this.$message.success('删除成功')
-        }else{
+        } else {
           this.$message.error(res.data.msg)
         }
       })

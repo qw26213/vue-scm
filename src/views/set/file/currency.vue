@@ -1,49 +1,48 @@
 <template>
   <div class="app-container">
     <div class="filterDiv">
-      <el-input size="small" v-model="listQuery.currencyName" placeholder="币种代码/名称" style="width: 200px;" class="filter-item" />
+      <el-input v-model="listQuery.currencyName" size="small" placeholder="币种代码/名称" style="width: 200px;" class="filter-item" />
       <el-button size="small" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
       <el-button size="small" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
     </div>
     <div class="contentDiv">
       <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
-        <el-table-column label="序号" type="index" width="60" align="center">
-        </el-table-column>
+        <el-table-column label="序号" type="index" width="60" align="center" />
         <el-table-column label="币种代码">
           <template slot-scope="{row}">
-            <span>{{row.currencyCode}}</span>
+            <span>{{ row.currencyCode }}</span>
           </template>
         </el-table-column>
         <el-table-column label="币种名称" width="170">
           <template slot-scope="{row}">
-            <span>{{row.currencyName}}{{row.isDefault==1?'（默认）':''}}{{row.isBasecurrency==1?'（本位币）':''}}</span>
+            <span>{{ row.currencyName }}{{ row.isDefault==1?'（默认）':'' }}{{ row.isBasecurrency==1?'（本位币）':'' }}</span>
           </template>
         </el-table-column>
         <el-table-column label="币种符号" min-width="75">
           <template slot-scope="{row}">
-            <span>{{row.symbol}}</span>
+            <span>{{ row.symbol }}</span>
           </template>
         </el-table-column>
         <el-table-column label="单位" min-width="75">
           <template slot-scope="{row}">
-            <span>{{row.uom}}</span>
+            <span>{{ row.uom }}</span>
           </template>
         </el-table-column>
         <el-table-column label="汇率" min-width="75">
           <template slot-scope="{row}">
-            <span>{{row.exchangerate}}</span>
+            <span>{{ row.exchangerate }}</span>
           </template>
         </el-table-column>
         <el-table-column label="是否可用" min-width="75" align="center">
           <template slot-scope="{row}">
-            <span>{{row.isDisable==0?'是':'否'}}</span>
+            <span>{{ row.isDisable==0?'是':'否' }}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center" width="230">
           <template slot-scope="{row}">
             <el-button type="text" size="small" @click="handleCompile(row)">编辑</el-button>
             <el-button type="text" size="small" @click="handleDel(row.id)">删除</el-button>
-            <el-button type="text" size="small" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
+            <el-button type="text" size="small" @click="updateStatus(row)">{{ row.isDisable==0?'禁用':'解禁' }}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -80,9 +79,9 @@
 </template>
 
 <script>
-import { getCurrency,saveCurrency,delCurrency,updateCurrencyDisabled } from '@/api/basedata'
+import { getCurrency, saveCurrency, delCurrency, updateCurrencyDisabled } from '@/api/basedata'
 export default {
-  name: 'baseCurrency',
+  name: 'BaseCurrency',
   data() {
     return {
       tableKey: 0,
@@ -97,18 +96,18 @@ export default {
         id: '',
         currencyName: '',
         currencyCode: '',
-        uom:'',
+        uom: '',
         symbol: '',
-        exchangerate:'',
+        exchangerate: '',
         isDisable: 0
       },
       resetTemp: {
         id: '',
         currencyName: '',
         currencyCode: '',
-        uom:'',
+        uom: '',
         symbol: '',
-        exchangerate:'',
+        exchangerate: '',
         isDisable: 0
       },
       dialogFormVisible: false,
@@ -119,7 +118,7 @@ export default {
         uom: [{ required: true, message: '单位不能为空', trigger: 'change' }],
         symbol: [{ required: true, message: '币种符号不能为空', trigger: 'change' }],
         exchangerate: [{ required: false, message: '汇率不能为空', trigger: 'change' }],
-        isDisable:[{required:false}]
+        isDisable: [{ required: false }]
       }
     }
   },
@@ -132,14 +131,14 @@ export default {
       getCurrency(this.listQuery).then(response => {
         this.listLoading = false
         this.tableData = response.data.data
-      }).catch(err=>{
+      }).catch(err => {
         this.listLoading = false
       })
     },
     handleAdd(obj) {
       this.dialogFormVisible = true
       this.dialogStatus = 'create'
-      for(var key in this.temp){
+      for (var key in this.temp) {
         this.temp[key] = this.resetTemp[key]
       }
       this.$nextTick(() => {
@@ -149,7 +148,7 @@ export default {
     handleCompile(obj) {
       this.dialogFormVisible = true
       this.dialogStatus = 'update'
-      for(var key in this.temp){
+      for (var key in this.temp) {
         this.temp[key] = obj[key]
       }
       this.$nextTick(() => {
@@ -160,44 +159,44 @@ export default {
       this.listQuery.page = 1
       this.getList()
     },
-    handleDel(id){
+    handleDel(id) {
       this.$confirm('确定删除？', '提示', {
-        confirmButtonText: '确定',closeOnClickModal:false,
+        confirmButtonText: '确定', closeOnClickModal: false,
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
         this.delItem(id)
-      });
+      })
     },
-    updateStatus(data){
-      this.$confirm('确定'+(data.isDisable==1?'解禁？':'禁用？'), '提示', {
-        confirmButtonText: '确定',closeOnClickModal:false,
+    updateStatus(data) {
+      this.$confirm('确定' + (data.isDisable == 1 ? '解禁？' : '禁用？'), '提示', {
+        confirmButtonText: '确定', closeOnClickModal: false,
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.changeAvaiable(data);
-      });
+        this.changeAvaiable(data)
+      })
     },
-    changeAvaiable(data){
-      var obj = {id:data.id,isDisable:data.isDisable==1?0:1}
+    changeAvaiable(data) {
+      var obj = { id: data.id, isDisable: data.isDisable == 1 ? 0 : 1 }
       updateCurrencyDisabled(obj).then(res => {
-        if(res.data.errorCode==0){
+        if (res.data.errorCode == 0) {
           this.getList()
-          this.$message.success(data.isDisable==1?'解禁':'禁用'+'成功')
-        }else{
+          this.$message.success(data.isDisable == 1 ? '解禁' : '禁用' + '成功')
+        } else {
           this.$message.error(res.data.msg)
         }
       })
     },
-    handleModify(){
+    handleModify() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           saveCurrency(this.temp).then(res => {
-            if(res.data.errorCode==0){
-              this.getList();
+            if (res.data.errorCode == 0) {
+              this.getList()
               this.dialogFormVisible = false
               this.$message.success('修改成功')
-            }else{
+            } else {
               this.$message.error(res.data.msg)
             }
           })
@@ -208,11 +207,11 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           saveCurrency(this.temp).then(res => {
-            if(res.data.errorCode==0){
-              this.getList();
+            if (res.data.errorCode == 0) {
+              this.getList()
               this.dialogFormVisible = false
               this.$message.success('新增成功')
-            }else{
+            } else {
               this.$message.error(res.data.msg)
             }
           })
@@ -221,11 +220,11 @@ export default {
     },
     delItem(id) {
       delCurrency(id).then(res => {
-        if(res.data.errorCode==0){
-          this.getList();
+        if (res.data.errorCode == 0) {
+          this.getList()
           this.dialogFormVisible = false
           this.$message.success('删除成功')
-        }else{
+        } else {
           this.$message.error(res.data.msg)
         }
       })

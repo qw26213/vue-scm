@@ -101,7 +101,6 @@
 import COS from 'cos-js-sdk-v5'
 import { getItemById } from '@/api/basedata'
 import { getTabs, saveGood, getGood } from '@/api/mall'
-import { deepClone } from '@/utils/index'
 export default {
   data() {
     return {
@@ -261,7 +260,7 @@ export default {
         url: '/drp/file/cosFileInfo/getCOSFileName?suffix=' + filetype.split('/')[1]
       }).then(res => {
         const imgName = res.data.replace(/\s+/g, '')
-        var path = '/drp/mmjpg'
+        const path = '/drp/mmjpg'
         var bucket = 'drp-1300414844'
         cos.putObject({
           Bucket: bucket,
@@ -269,24 +268,25 @@ export default {
           Key: imgName,
           Body: file
         }, function(err, data) {
+          console.log(err)
           if (data && data.statusCode === 200) {
             // 上传成功得到的资源地址
             const url = 'https://' + bucket + '.cos.ap-beijing.myqcloud.com/' + imgName
-            if (type == 1) {
-              var obj = {
+            if (type === 1) {
+              const obj = {
                 fileType: 0,
                 verticalDirection: 0,
                 fileUrl: url
               }
               that.srcList1.push(obj)
             }
-            if (type == 2) {
-              var obj = {
+            if (type === 2) {
+              const data = {
                 fileType: 0,
                 verticalDirection: 1,
                 fileUrl: url
               }
-              that.srcList2.push(obj)
+              that.srcList2.push(data)
             }
             var lastIndex = imgName.lastIndexOf('/')
             var filename = imgName.slice(0 - lastIndex)

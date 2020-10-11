@@ -151,7 +151,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        delGoodsById({ id: id }).then(res => {
+        delGoodsById({ id }).then(res => {
           if (res.data.errorCode == 0) {
             this.$message.success('商品删除成功')
             this.getList()

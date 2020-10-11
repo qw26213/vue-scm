@@ -88,7 +88,6 @@
 import COS from 'cos-js-sdk-v5'
 import { getItemById } from '@/api/basedata'
 import { saveGoodDetail, getGoodDetail } from '@/api/mall'
-import { deepClone } from '@/utils/index'
 export default {
   data() {
     return {
@@ -239,11 +238,12 @@ export default {
           Key: imgName,
           Body: file
         }, function(err, data) {
+          console.log(err)
           if (data && data.statusCode === 200) {
             // 上传成功得到的资源地址
             const url = 'https://' + bucket + '.cos.ap-beijing.myqcloud.com/' + imgName
             if (type === 1) {
-              var obj = {
+              const obj = {
                 fileType: 0,
                 verticalDirection: 0,
                 fileUrl: url
@@ -251,12 +251,12 @@ export default {
               that.srcList1.push(obj)
             }
             if (type === 2) {
-              var obj = {
+              const data = {
                 fileType: 0,
                 verticalDirection: 1,
                 fileUrl: url
               }
-              that.srcList2.push(obj)
+              that.srcList2.push(data)
             }
             var lastIndex = imgName.lastIndexOf('/')
             var filename = imgName.slice(0 - lastIndex)

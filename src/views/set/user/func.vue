@@ -3,7 +3,19 @@
     <!-- <div class="filter-container">
       <el-button size="small" class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-plus" @click="handleAdd">新增权限</el-button>
     </div> -->
-    <el-table :key="tableKey" v-loading="listLoading" :data="tableData" size="small" empty-text="暂无权限" border fit highlight-current-row row-key="id" :indent="30" style="width: 100%;">
+    <el-table
+      :key="tableKey"
+      v-loading="listLoading"
+      :data="tableData"
+      size="small"
+      empty-text="暂无权限"
+      border
+      fit
+      highlight-current-row
+      row-key="id"
+      :indent="30"
+      style="width: 100%;"
+    >
       <el-table-column label="序号" type="index" width="100" align="center" />
       <el-table-column label="权限代码">
         <template slot-scope="{row}">
@@ -30,12 +42,12 @@ export default {
   data() {
     return {
       tableKey: 0,
-      tableData:[],
+      tableData: [],
       list: [],
-      listLoading:false,
+      listLoading: false,
       defaultProps: {
-          children: 'children',
-          label: 'label'
+        children: 'children',
+        label: 'label'
       }
     }
   },
@@ -44,49 +56,19 @@ export default {
     this.getData()
   },
   methods: {
-    showDetail(obj){
-      sessionStorage.roleInfo = JSON.stringify(obj);
+    showDetail(obj) {
+      sessionStorage.roleInfo = JSON.stringify(obj)
       this.$message.warning('暂无开发')
     },
-    getCheckedNodes(){
+    getCheckedNodes() {
       var permission = []
       var roles = this.$refs.tree.getCheckedNodes()
-      for(var i=0;i<roles.length;i++){
+      for (var i = 0; i < roles.length; i++) {
         permission.push(roles[i].id)
       }
       return permission
     },
-    createData(){
-      var obj = {
-        userCount:10,
-        name:this.roleName,
-        permissionIdList:this.getCheckedNodes()
-      }
-      addRole(obj).then(res => {
-        this.dialogFormVisible = false
-      }).catch(error => {
-
-      })
-    },
-    updateData() {
-      let obj = {
-        userCount:10,
-        name:this.roleName,
-        permissionIdList:this.getCheckedNodes()
-      };
-      obj.id = this.curItemId;
-      updateRole(obj).then(() => {
-        this.dialogFormVisible = false;
-        this.$message({
-          message: '修改成功',
-          type: 'success'
-        })
-      })
-    },
-    handleAdd() {
-      this.$router.push('/roleAdd')
-    },
-    async getData(){
+    async getData() {
       this.listLoading = true
       const { data } = await getFuncsTree()
       this.tableData = data.data

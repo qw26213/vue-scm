@@ -61,7 +61,7 @@ export default {
     changeVal(val) {
       this.curId = val
       for (var i = 0; i < this.itemList.length; i++) {
-        if (this.itemList[i].id == this.curId) {
+        if (this.itemList[i].id === this.curId) {
           this.curCode = this.itemList[i].itemCode
           this.curName = this.itemList[i].itemName
           this.curNorms = this.itemList[i].norms

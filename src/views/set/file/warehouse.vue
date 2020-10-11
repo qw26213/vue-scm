@@ -1,57 +1,56 @@
 <template>
   <div class="app-container">
     <div class="filterDiv">
-      <el-input size="small" v-model="listQuery.warehouseName" placeholder="仓库代码/名称" style="width: 200px;" class="filter-item" />
+      <el-input v-model="listQuery.warehouseName" size="small" placeholder="仓库代码/名称" style="width: 200px;" class="filter-item" />
       <el-button size="small" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
       <el-button size="small" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
     </div>
     <div class="contentDiv">
       <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
-        <el-table-column label="序号" type="index" width="50" align="center">
-        </el-table-column>
+        <el-table-column label="序号" type="index" width="50" align="center" />
         <el-table-column label="仓库代码">
           <template slot-scope="{row}">
-            <span>{{row.warehouseCode}}</span>
+            <span>{{ row.warehouseCode }}</span>
           </template>
         </el-table-column>
         <el-table-column label="仓库名称">
           <template slot-scope="{row}">
-            <span>{{row.warehouseName}}</span>
+            <span>{{ row.warehouseName }}</span>
           </template>
         </el-table-column>
         <el-table-column label="负责人">
           <template slot-scope="{row}">
-            <span>{{row.manager}}</span>
+            <span>{{ row.manager }}</span>
           </template>
         </el-table-column>
         <el-table-column label="电话">
           <template slot-scope="{row}">
-            <span>{{row.tel}}</span>
+            <span>{{ row.tel }}</span>
           </template>
         </el-table-column>
         <el-table-column label="是否主仓库" align="center">
           <template slot-scope="{row}">
-            <span>{{row.isMain==1?'是':'否'}}</span>
+            <span>{{ row.isMain==1?'是':'否' }}</span>
           </template>
         </el-table-column>
         <el-table-column label="是否虚拟仓库" align="center">
           <template slot-scope="{row}">
-            <span>{{row.isVirtual==1?'是':'否'}}</span>
+            <span>{{ row.isVirtual==1?'是':'否' }}</span>
           </template>
         </el-table-column>
         <el-table-column label="允许负库存" align="center">
           <template slot-scope="{row}">
-            <span>{{row.isNegative==1 ? '允许' : '不允许'}}</span>
+            <span>{{ row.isNegative==1 ? '允许' : '不允许' }}</span>
           </template>
         </el-table-column>
         <el-table-column label="是否冷藏" align="center">
           <template slot-scope="{row}">
-            <span>{{row.isRefrigerated==1 ? '是' : '否'}}</span>
+            <span>{{ row.isRefrigerated==1 ? '是' : '否' }}</span>
           </template>
         </el-table-column>
         <el-table-column label="是否可用" align="center">
           <template slot-scope="{row}">
-            <span>{{row.isDisable==0 ? '是' : '否'}}</span>
+            <span>{{ row.isDisable==0 ? '是' : '否' }}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center" width="260">
@@ -59,7 +58,7 @@
             <el-button type="text" size="small" @click="handleAssign(row)">分配用户</el-button>
             <el-button type="text" size="small" @click="handleCompile(row)">编辑</el-button>
             <el-button type="text" size="small" @click="handleDel(row.id)">删除</el-button>
-            <el-button type="text" size="small" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
+            <el-button type="text" size="small" @click="updateStatus(row)">{{ row.isDisable==0?'禁用':'解禁' }}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -112,18 +111,18 @@
     </el-dialog>
     <el-dialog :close-on-click-modal="false" title="分配用户" :visible.sync="dialogFormVisible1" :show-close="false" ::close-on-click-modal="false" width="500px">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="110px" style="width: 460px;">
-        <div class="curTit">当前仓库：{{handleObj.warehouseName}}({{handleObj.warehouseCode}})</div>
+        <div class="curTit">当前仓库：{{ handleObj.warehouseName }}({{ handleObj.warehouseCode }})</div>
         <el-table ref="checkTable" :data="userList" border fit highlight-current-row style="width: 100%;" size="small" @selection-change="handleSelectionChange" @select-all="selectAll">
-          <el-table-column type="selection" width="50" align="center" :reserve-selection="true"></el-table-column>
-          <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
+          <el-table-column type="selection" width="50" align="center" :reserve-selection="true" />
+          <el-table-column label="序号" type="index" width="50" align="center" />
           <el-table-column label="用户账号">
             <template slot-scope="{row}">
-              <span>{{row.userAccount}}</span>
+              <span>{{ row.userAccount }}</span>
             </template>
           </el-table-column>
           <el-table-column label="用户姓名">
             <template slot-scope="{row}">
-              <span>{{row.userName}}</span>
+              <span>{{ row.userName }}</span>
             </template>
           </el-table-column>
         </el-table>
@@ -138,16 +137,16 @@
 </template>
 
 <script>
-import { getWarehouse,saveWarehouse,delWarehouse,updateWarehouseDisabled,getUserListByWarehouseId,updateWarehouseIdByUserIdList,getUserList } from '@/api/basedata'
+import { getWarehouse, saveWarehouse, delWarehouse, updateWarehouseDisabled, getUserListByWarehouseId, updateWarehouseIdByUserIdList, getUserList } from '@/api/basedata'
 import { getStrByData } from '@/utils'
 export default {
-  name: 'baseWarehouse',
+  name: 'BaseWarehouse',
   data() {
     return {
       tableKey: 0,
-      handleObj:{},
-      userList:[],
-      selectIdArr:[],
+      handleObj: {},
+      userList: [],
+      selectIdArr: [],
       tableData: [],
       total: 0,
       listLoading: true,
@@ -158,14 +157,14 @@ export default {
       temp: {
         warehouseName: '',
         warehouseCode: '',
-        manager:'',
-        tel:'',
-        isMain:'1',
-        isVirtual:'0',
-        isNegative:'1',
-        isRefrigerated:'0',
-        remarks:'',
-        isDisable: "0"
+        manager: '',
+        tel: '',
+        isMain: '1',
+        isVirtual: '0',
+        isNegative: '1',
+        isRefrigerated: '0',
+        remarks: '',
+        isDisable: '0'
       },
       dialogFormVisible: false,
       dialogFormVisible1: false,
@@ -179,51 +178,51 @@ export default {
   created() {
     this.getList()
     getUserList().then(resp => {
-      this.userList = resp.data.data;
-    });
+      this.userList = resp.data.data
+    })
   },
   methods: {
-    cancelHanle(){
-      this.dialogFormVisible1 = false;
+    cancelHanle() {
+      this.dialogFormVisible1 = false
       this.$refs.checkTable.clearSelection()
     },
-    selectAll(selection){
-      var arr = [];
-      for(var i=0;i<selection.length;i++){
+    selectAll(selection) {
+      var arr = []
+      for (var i = 0; i < selection.length; i++) {
         arr.push(selection[i].id)
       }
-      this.selectIdArr = arr;
+      this.selectIdArr = arr
     },
     handleSelectionChange(selection) {
-      var arr = [];
+      var arr = []
       for (var i = 0; i < selection.length; i++) {
-          arr.push(selection[i].id)
+        arr.push(selection[i].id)
       }
-      this.selectIdArr = arr;
+      this.selectIdArr = arr
     },
-    handleAssign(row){
+    handleAssign(row) {
       this.dialogFormVisible1 = true
-      this.handleObj = row;
+      this.handleObj = row
       getUserListByWarehouseId({ warehouseId: row.id }).then(res => {
         this.selectIdArr = getStrByData(res.data.data)
         var selectIds = this.selectIdArr.join(',')
         this.userList.forEach(row => {
-          if(selectIds.indexOf(row.id) >= 0){
-            this.$refs.checkTable.toggleRowSelection(row,true)
+          if (selectIds.indexOf(row.id) >= 0) {
+            this.$refs.checkTable.toggleRowSelection(row, true)
           }
         })
       })
     },
-    updateWarehouse(){
+    updateWarehouse() {
       var obj = {
-        warehouseId:this.handleObj.id,
-        userIdList:this.selectIdArr
+        warehouseId: this.handleObj.id,
+        userIdList: this.selectIdArr
       }
       updateWarehouseIdByUserIdList(obj).then(res => {
-        if(res.data.errorCode==0){
-          this.cancelHanle();
+        if (res.data.errorCode == 0) {
+          this.cancelHanle()
           this.$message.success('分配用户成功')
-        }else{
+        } else {
           this.$message.error(res.data.msg)
         }
       })
@@ -233,7 +232,7 @@ export default {
       getWarehouse(this.listQuery).then(response => {
         this.listLoading = false
         this.tableData = response.data.data
-      }).catch(err=>{
+      }).catch(err => {
         this.listLoading = false
       })
     },
@@ -271,35 +270,35 @@ export default {
       this.listQuery.page = 1
       this.getList()
     },
-    updateStatus(data){
-      var obj = {id:data.id,isDisable:data.isDisable==1?0:1}
+    updateStatus(data) {
+      var obj = { id: data.id, isDisable: data.isDisable == 1 ? 0 : 1 }
       updateWarehouseDisabled(obj).then(res => {
-        if(res.data.errorCode==0){
-          this.getList();
+        if (res.data.errorCode == 0) {
+          this.getList()
           this.$message.success('修改状态成功')
-        }else{
+        } else {
           this.$message.error(res.data.msg)
         }
       })
     },
-    handleDel(id){
+    handleDel(id) {
       this.$confirm('你确认要删除吗?', '提示', {
-        confirmButtonText: '确定',closeOnClickModal:false,
+        confirmButtonText: '确定', closeOnClickModal: false,
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
         this.delItem(id)
-      });
+      })
     },
-    handleModify(){
+    handleModify() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           saveWarehouse(this.temp).then(res => {
-            if(res.data.errorCode==0){
-              this.getList();
+            if (res.data.errorCode == 0) {
+              this.getList()
               this.dialogFormVisible = false
               this.$message.success('修改成功')
-            }else{
+            } else {
               this.$message.error(res.data.msg)
             }
           })
@@ -310,11 +309,11 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           saveWarehouse(this.temp).then(res => {
-            if(res.data.errorCode==0){
-              this.getList();
+            if (res.data.errorCode == 0) {
+              this.getList()
               this.dialogFormVisible = false
               this.$message.success('新增成功')
-            }else{
+            } else {
               this.$message.error(res.data.msg)
             }
           })
@@ -323,11 +322,11 @@ export default {
     },
     delItem(id) {
       delWarehouse(id).then(res => {
-        if(res.data.errorCode==0){
-          this.getList();
+        if (res.data.errorCode == 0) {
+          this.getList()
           this.dialogFormVisible = false
           this.$message.success('删除成功')
-        }else{
+        } else {
           this.$message.error(res.data.msg)
         }
       })

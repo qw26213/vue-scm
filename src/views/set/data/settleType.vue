@@ -1,63 +1,62 @@
 <template>
   <div class="app-container">
     <div class="filterDiv">
-      <el-input size="small" v-model="listQuery.settleTypeName" placeholder="结算方式代码/名称" style="width: 200px;" class="filter-item" />
+      <el-input v-model="listQuery.settleTypeName" size="small" placeholder="结算方式代码/名称" style="width: 200px;" class="filter-item" />
       <el-button size="small" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
       <el-button size="small" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
     </div>
     <div class="contentDiv">
-      <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-CASHent-row style="width: 100%;" size="small">
-        <el-table-column label="序号" type="index" width="50" align="center">
-        </el-table-column>
+      <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-c-a-s-hent-row style="width: 100%;" size="small">
+        <el-table-column label="序号" type="index" width="50" align="center" />
         <el-table-column label="结算方式代码">
           <template slot-scope="{row}">
-            <span>{{row.settleTypeCode}}</span>
+            <span>{{ row.settleTypeCode }}</span>
           </template>
         </el-table-column>
         <el-table-column label="结算方式名称">
           <template slot-scope="{row}">
-            <span>{{row.settleTypeName}}</span>
+            <span>{{ row.settleTypeName }}</span>
           </template>
         </el-table-column>
         <el-table-column label="对应科目代码">
           <template slot-scope="{row}">
-            <span>{{row.coaCode}}</span>
+            <span>{{ row.coaCode }}</span>
           </template>
         </el-table-column>
         <el-table-column label="收付标志" align="center">
           <template slot-scope="{row}">
-            <span>{{row.arAp|format}}</span>
+            <span>{{ row.arAp|format }}</span>
           </template>
         </el-table-column>
         <el-table-column align="left" label="应用场景" min-width="200" show-overflow-tooltip>
           <template slot-scope="{row}">
             <span>
-            {{row.poEnable==1?'采购、':''}}
-            {{row.soEnable==1?'销售、':''}}
-            {{row.psEnable==1?'预收、':''}}
-            {{row.poReturnedEnable==1?'采购退款、':''}}
-            {{row.soReturnedEnable==1?'销售退款、':''}}
-            {{row.psReturnedEnable==1?'预收退款、':''}}
-            {{row.recEnable==1?'收款、':''}}
-            {{row.payEnable==1?'付款':''}}
+              {{ row.poEnable==1?'采购、':'' }}
+              {{ row.soEnable==1?'销售、':'' }}
+              {{ row.psEnable==1?'预收、':'' }}
+              {{ row.poReturnedEnable==1?'采购退款、':'' }}
+              {{ row.soReturnedEnable==1?'销售退款、':'' }}
+              {{ row.psReturnedEnable==1?'预收退款、':'' }}
+              {{ row.recEnable==1?'收款、':'' }}
+              {{ row.payEnable==1?'付款':'' }}
             </span>
           </template>
         </el-table-column>
         <el-table-column label="备注" show-overflow-tooltip>
           <template slot-scope="{row}">
-            <span>{{row.remarks}}</span>
+            <span>{{ row.remarks }}</span>
           </template>
         </el-table-column>
         <el-table-column label="是否可用" align="center">
           <template slot-scope="{row}">
-            <span>{{row.isDisable==0?'是':'否'}}</span>
+            <span>{{ row.isDisable==0?'是':'否' }}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center" width="190">
           <template slot-scope="{row}">
             <el-button type="text" size="small" @click="handleCompile(row)">编辑</el-button>
             <el-button type="text" size="small" @click="handleDel(row.id)">删除</el-button>
-            <el-button type="text" size="small" @click="updateStatus(row)">{{row.isDisable==0?'禁用':'解禁'}}</el-button>
+            <el-button type="text" size="small" @click="updateStatus(row)">{{ row.isDisable==0?'禁用':'解禁' }}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -86,14 +85,14 @@
           <el-radio v-model="temp.arAp" style="margin-right:10px" label="ADVR">预收</el-radio>
         </el-form-item>
         <el-form-item label="应用场景" prop="poEnable">
-            <el-checkbox style="margin-right:10px" v-model="temp.poEnable" :false-label="0" :true-label="1">采购</el-checkbox>
-            <el-checkbox style="margin-right:10px" v-model="temp.soEnable" :false-label="0" :true-label="1">销售</el-checkbox>
-            <el-checkbox style="margin-right:10px" v-model="temp.psEnable" :false-label="0" :true-label="1">预收</el-checkbox>
-            <el-checkbox style="margin-right:10px" v-model="temp.poReturnedEnable" :false-label="0" :true-label="1">采购退款</el-checkbox>
-            <el-checkbox style="margin-right:10px" v-model="temp.soReturnedEnable" :false-label="0" :true-label="1">销售退款</el-checkbox>
-            <el-checkbox style="margin-right:10px" v-model="temp.psReturnedEnable" :false-label="0" :true-label="1">预收退款</el-checkbox>
-            <el-checkbox style="margin-right:10px" v-model="temp.recEnable" :false-label="0" :true-label="1">收款</el-checkbox>
-            <el-checkbox v-model="temp.payEnable" :false-label="0" :true-label="1">付款</el-checkbox>
+          <el-checkbox v-model="temp.poEnable" style="margin-right:10px" :false-label="0" :true-label="1">采购</el-checkbox>
+          <el-checkbox v-model="temp.soEnable" style="margin-right:10px" :false-label="0" :true-label="1">销售</el-checkbox>
+          <el-checkbox v-model="temp.psEnable" style="margin-right:10px" :false-label="0" :true-label="1">预收</el-checkbox>
+          <el-checkbox v-model="temp.poReturnedEnable" style="margin-right:10px" :false-label="0" :true-label="1">采购退款</el-checkbox>
+          <el-checkbox v-model="temp.soReturnedEnable" style="margin-right:10px" :false-label="0" :true-label="1">销售退款</el-checkbox>
+          <el-checkbox v-model="temp.psReturnedEnable" style="margin-right:10px" :false-label="0" :true-label="1">预收退款</el-checkbox>
+          <el-checkbox v-model="temp.recEnable" style="margin-right:10px" :false-label="0" :true-label="1">收款</el-checkbox>
+          <el-checkbox v-model="temp.payEnable" :false-label="0" :true-label="1">付款</el-checkbox>
         </el-form-item>
         <el-form-item label="备注" prop="remarks">
           <el-input v-model="temp.remarks" placeholder="备注" />
@@ -113,26 +112,17 @@
 </template>
 
 <script>
-import { getSettleType,saveSettleType,delSettleType,updateSettleTypeDisabled } from '@/api/basedata'
+import { getSettleType, saveSettleType, delSettleType, updateSettleTypeDisabled } from '@/api/basedata'
 
 import { parseTime } from '@/utils'
-import Pagination from '@/components/Pagination' 
+import Pagination from '@/components/Pagination'
 export default {
-  name: 'baseSettleType',
+  name: 'BaseSettleType',
   components: { Pagination },
   filters: {
-      format: function(str) {
-          if (str=='AR') { return '应收(赊销)' }
-          else if (str=='CASH') { return '现金' }
-          else if (str=='BANK') { return '银行存款' }
-          else if (str=='ALIPAY') { return '支付宝' }
-          else if (str=='WECHATPAY') { return '微信支付' }
-          else if (str=='CC') { return '信用卡' }
-          else if (str=='AP') { return '应付' }
-          else if (str=='ADVP') { return '预付' }
-          else if (str=='ADVR') { return '预收' }
-          else {return '——'}
-      }
+    format: function(str) {
+      if (str == 'AR') { return '应收(赊销)' } else if (str == 'CASH') { return '现金' } else if (str == 'BANK') { return '银行存款' } else if (str == 'ALIPAY') { return '支付宝' } else if (str == 'WECHATPAY') { return '微信支付' } else if (str == 'CC') { return '信用卡' } else if (str == 'AP') { return '应付' } else if (str == 'ADVP') { return '预付' } else if (str == 'ADVR') { return '预收' } else { return '——' }
+    }
   },
   data() {
     return {
@@ -148,9 +138,9 @@ export default {
         id: '',
         settleTypeName: '',
         settleTypeCode: '',
-        coaCode:'',
-        arAp:'',
-        remarks:'',
+        coaCode: '',
+        arAp: '',
+        remarks: '',
         poEnable: 1,
         soEnable: 1,
         psEnable: 1,
@@ -165,9 +155,9 @@ export default {
         id: '',
         settleTypeName: '',
         settleTypeCode: '',
-        coaCode:'',
-        arAp:'',
-        remarks:'',
+        coaCode: '',
+        arAp: '',
+        remarks: '',
         poEnable: 1,
         soEnable: 1,
         psEnable: 1,
@@ -184,8 +174,8 @@ export default {
         settleTypeCode: [{ required: true, message: '结算方式代码不能为空', trigger: 'change' }],
         settleTypeName: [{ required: true, message: '结算方式名称不能为空', trigger: 'change' }],
         coaCode: [{ required: true, message: '对应科目代码不能为空', trigger: 'change' }],
-        arAp:[{required:true}],
-        isDisable:[{required:true}]
+        arAp: [{ required: true }],
+        isDisable: [{ required: true }]
       }
     }
   },
@@ -198,14 +188,14 @@ export default {
       getSettleType(this.listQuery).then(response => {
         this.listLoading = false
         this.tableData = response.data.data
-      }).catch(err=>{
+      }).catch(err => {
         this.listLoading = false
       })
     },
     handleAdd() {
       this.dialogFormVisible = true
       this.dialogStatus = 'create'
-      for (var key in this.temp){
+      for (var key in this.temp) {
         this.temp[key] = this.resetTemp[key]
       }
       this.$nextTick(() => {
@@ -215,7 +205,7 @@ export default {
     handleCompile(obj) {
       this.dialogFormVisible = true
       this.dialogStatus = 'update'
-      for (var key in this.temp){
+      for (var key in this.temp) {
         this.temp[key] = obj[key]
       }
       this.$nextTick(() => {
@@ -226,44 +216,44 @@ export default {
       this.listQuery.page = 1
       this.getList()
     },
-    updateStatus(data){
-      this.$confirm('确定'+(data.isDisable==1?'解禁？':'禁用？'), '提示', {
-        confirmButtonText: '确定',closeOnClickModal:false,
+    updateStatus(data) {
+      this.$confirm('确定' + (data.isDisable == 1 ? '解禁？' : '禁用？'), '提示', {
+        confirmButtonText: '确定', closeOnClickModal: false,
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.changeAvaiable(data);
-      });
+        this.changeAvaiable(data)
+      })
     },
-    changeAvaiable(data){
-      var obj = {id:data.id,isDisable:data.isDisable==1?0:1}
+    changeAvaiable(data) {
+      var obj = { id: data.id, isDisable: data.isDisable == 1 ? 0 : 1 }
       updateSettleTypeDisabled(obj).then(res => {
-        if(res.data.errorCode==0){
-          this.getList();
-          this.$message.success(data.isDisable==1?'解禁':'禁用'+'成功')
-        }else{
+        if (res.data.errorCode == 0) {
+          this.getList()
+          this.$message.success(data.isDisable == 1 ? '解禁' : '禁用' + '成功')
+        } else {
           this.$message.error(res.data.msg)
         }
       })
     },
-    handleDel(id){
+    handleDel(id) {
       this.$confirm('确定删除？', '提示', {
-        confirmButtonText: '确定',closeOnClickModal:false,
+        confirmButtonText: '确定', closeOnClickModal: false,
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
         this.delItem(id)
-      });
+      })
     },
-    handleModify(){
+    handleModify() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           saveSettleType(this.temp).then(res => {
-            if(res.data.errorCode==0){
-              this.getList();
+            if (res.data.errorCode == 0) {
+              this.getList()
               this.dialogFormVisible = false
               this.$message.success('修改成功')
-            }else{
+            } else {
               this.$message.error(res.data.msg)
             }
           })
@@ -274,11 +264,11 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           saveSettleType(this.temp).then(res => {
-            if(res.data.errorCode==0){
-              this.getList();
+            if (res.data.errorCode == 0) {
+              this.getList()
               this.dialogFormVisible = false
               this.$message.success('新增成功')
-            }else{
+            } else {
               this.$message.error(res.data.msg)
             }
           })
@@ -287,11 +277,11 @@ export default {
     },
     delItem(id) {
       delSettleType(id).then(res => {
-        if(res.data.errorCode==0){
-          this.getList();
+        if (res.data.errorCode == 0) {
+          this.getList()
           this.dialogFormVisible = false
           this.$message.success('删除成功')
-        }else{
+        } else {
           this.$message.error(res.data.msg)
         }
       })
