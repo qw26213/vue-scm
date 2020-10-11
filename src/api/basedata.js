@@ -667,7 +667,7 @@ export function delSalesType(id) {
   return request({
     url: '/drp/bd/salesType/deleteById',
     method: 'post',
-    data: { id: id }
+    data: { id }
   })
 }
 
@@ -1176,6 +1176,38 @@ export function getCustListByChannelTypeId(data) {
 export function getCustListByCustTypeId(data) {
   return request({
     url: '/drp/bd/cust/getCustListByCustTypeId',
+    method: 'post',
+    data
+  })
+}
+
+export function getLabel(data) {
+  return request({
+    url: '/drp/bd/label/getAll',
+    method: 'post',
+    data
+  })
+}
+
+export function saveLabel(data) {
+  return request({
+    url: '/drp/bd/label/save',
+    method: 'post',
+    data
+  })
+}
+
+export function delLabel(id) {
+  return request({
+    url: '/drp/bd/label/deleteById',
+    method: 'post',
+    data: { id: id }
+  })
+}
+
+export function updateLabelDisabled(data) {
+  return request({
+    url: '/drp/bd/label/updateIsDisableById',
     method: 'post',
     data
   })

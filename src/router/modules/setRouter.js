@@ -74,6 +74,14 @@ const setRouter = {
                 roles: ['601038'],
                 title: '付款方式'
             }
+        }, {
+            path: 'label',
+            component: () => import ('@/views/set/data/label'),
+            name: 'label',
+            meta: {
+                roles: ['601042'],
+                title: '业务标签'
+            }
         }]
     }, {
         path: 'file',
