@@ -36,7 +36,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="本位币" prop="baseCurrencyCode" label-width="56px">
-          <el-select v-model="temp.baseCurrencyCode" style="width:185px" :disabled="!!userInfo.glBookEntity">
+          <el-select v-model="temp.baseCurrencyCode" style="width:185px" disabled>
             <el-option v-for="item in currencyList" :key="item.id" :label="item.text" :value="item.id" />
           </el-select>
         </el-form-item>
@@ -110,6 +110,7 @@
           <el-checkbox v-model="temp.autoAuditFlag" :false-label="0" :true-label="1" style="margin-right:10px" :disabled="temp.isAutoTransfer==1">结账时自动审核凭证</el-checkbox>
           <el-checkbox v-model="temp.isAutoTransfer" :false-label="0" :true-label="1" style="margin-right:10px" @change="autoTransferChange">期末自动结转、结账</el-checkbox>
           <el-checkbox v-if="temp.isAutoTransfer==1" v-model="temp.isAutoJzdtfy" :false-label="0" :true-label="1" style="margin-right:10px">自动结转待摊费用</el-checkbox>
+          <el-checkbox v-if="temp.isAutoTransfer==1" v-model="temp.isAutoJzwjzzs" :false-label="0" :true-label="1" style="margin-right:10px">自动结转未缴增值税</el-checkbox>
           <el-checkbox v-if="temp.isAutoTransfer==1" v-model="temp.isAutoJtzj" :false-label="0" :true-label="1" style="margin-right:10px">自动计提折旧</el-checkbox>
           <el-checkbox v-if="temp.isAutoTransfer==1" v-model="temp.isAutoJtgz" :false-label="0" :true-label="1" style="margin-right:10px">自动计提工资</el-checkbox>
           <el-checkbox v-if="temp.isAutoTransfer==1" v-model="temp.isAutoJzwfplr" :false-label="0" :true-label="1" style="margin-right:10px">自动结转未分配利润(年末结转)</el-checkbox>
@@ -175,12 +176,13 @@ export default {
         autoVoucherType: 0,
         isVoucherMaxDate: 0,
         isDispName: 0,
-        isAutoJtfjs2: 0,
-        isAutoJtfjs3: 0,
-        isAutoJtfjs7: 0,
+        isAutoJtfjs2: 2,
+        isAutoJtfjs3: 3,
+        isAutoJtfjs7: 7,
+        isAutoJzwjzzs: 0,
         isAutoJtgz: 0,
         autoAuditFlag: 0,
-        isAutoJtsds: 0,
+        isAutoJtsds: 25,
         isAutoJtzj: 0,
         isAutoJzcb: 100,
         isAutoJzdtfy: 0,
@@ -261,11 +263,7 @@ export default {
     saveManageInfo() {
       this.$refs.dataForm.validate(valid => {
         if (valid) {
-          var str = '4'
-          for (let i = 0; i < this.temp.coaLevel; i++) {
-            str += this.codingRuleArr[i]
-          }
-          this.temp.codingRule = str
+          this.temp.codingRule = this.codingRuleArr.join('-')
           saveBook(this.temp).then(res => {
             if (this.userInfo.glBookEntity) {
               this.$message.success('修改账套成功')

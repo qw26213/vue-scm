@@ -74,7 +74,7 @@ const setRouter = {
                 roles: ['601038'],
                 title: '付款方式'
             }
-        }, ]
+        }]
     }, {
         path: 'file',
         component: setView,
