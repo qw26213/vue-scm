@@ -96,12 +96,12 @@
                     <el-input v-if="temp.isQuantity==1" :disabled="temp.noAuxiliary==1 || temp.leaf==0 || temp.usedFlag==1" v-model="temp.uom" placeholder="计量单位" style="width:100px" />
                 </el-form-item>
                 <el-form-item v-if="temp.isAuxiliary==1 && temp.noAuxiliary == 0" style="width:600px">
-                    <el-checkbox :checked="temp.auxiliary&&temp.auxiliary.charAt(0)==1" v-model="temp.auxiliaryName_0" :false-label="0" :true-label="1">供应商</el-checkbox>
-                    <el-checkbox :checked="temp.auxiliary&&temp.auxiliary.charAt(1)==1" v-model="temp.auxiliaryName_1" :false-label="0" :true-label="1">客户</el-checkbox>
-                    <el-checkbox :checked="temp.auxiliary&&temp.auxiliary.charAt(2)==1" v-model="temp.auxiliaryName_2" :false-label="0" :true-label="1">部门</el-checkbox>
-                    <el-checkbox :checked="temp.auxiliary&&temp.auxiliary.charAt(3)==1" v-model="temp.auxiliaryName_3" :false-label="0" :true-label="1">职员</el-checkbox>
-                    <el-checkbox :checked="temp.auxiliary&&temp.auxiliary.charAt(4)==1" v-model="temp.auxiliaryName_4" :false-label="0" :true-label="1">存货</el-checkbox>
-                    <el-checkbox :checked="temp.auxiliary&&temp.auxiliary.charAt(5)==1" v-model="temp.auxiliaryName_5" :false-label="0" :true-label="1">项目</el-checkbox>
+                    <el-checkbox :checked="temp.auxiliary&&temp.auxiliary[0]==1" v-model="temp.auxiliary[0]" false-label="0" true-label="1">供应商</el-checkbox>
+                    <el-checkbox :checked="temp.auxiliary&&temp.auxiliary[1]==1" v-model="temp.auxiliary[1]" false-label="0" true-label="1">客户</el-checkbox>
+                    <el-checkbox :checked="temp.auxiliary&&temp.auxiliary[2]==1" v-model="temp.auxiliary[2]" false-label="0" true-label="1">部门</el-checkbox>
+                    <el-checkbox :checked="temp.auxiliary&&temp.auxiliary[3]==1" v-model="temp.auxiliary[3]" false-label="0" true-label="1">职员</el-checkbox>
+                    <el-checkbox :checked="temp.auxiliary&&temp.auxiliary[4]==1" v-model="temp.auxiliary[4]" false-label="0" true-label="1">存货</el-checkbox>
+                    <el-checkbox :checked="temp.auxiliary&&temp.auxiliary[5]==1" v-model="temp.auxiliary[5]" false-label="0" true-label="1">项目</el-checkbox>
                 </el-form-item>
                 <el-form-item label="" style="width:610px">
                     <el-checkbox v-model="temp.isDisable" :disabled="!(dialogStatus=='update'&&temp.leaf==1 && temp.unchageableFlag==0)" :false-label="0" :true-label="1">是否禁用</el-checkbox>
@@ -119,6 +119,7 @@
 import { mapGetters } from 'vuex'
 import { getCoaDatatables, coaClassification, delCoa, updateDisabledCoa, saveCoa, updateDispName, getGlCoaCode } from '@/api/user'
 import { getCoaCodeUsedByIdNoSysTemplet, getChildrenCountByParentId, getCoaCodeUsedById, getChildCountById, getMsgBeforeDelete } from '@/api/user'
+import { deepClone } from '@/utils/index.js'
 export default {
     data() {
         return {
@@ -138,7 +139,7 @@ export default {
                 isDisableChildren: 0,
                 cashFlowFlag: 0,
                 crDr: 1,
-                auxiliary: '',
+                auxiliary: [],
                 unchageableFlag: 0,
                 coaHierarchyId: '',
                 coaLevel: '',
@@ -164,7 +165,7 @@ export default {
                 isDisableChildren: 0,
                 cashFlowFlag: 0,
                 crDr: 1,
-                auxiliary: '',
+                auxiliary: [],
                 unchageableFlag: 0,
                 coaHierarchyId: '',
                 coaLevel: '',
@@ -200,6 +201,9 @@ export default {
         handleCompile(row) {
             for (var key in this.temp) {
                 this.temp[key] = row[key]
+            }
+            if (row.auxiliary) {
+                this.temp.auxiliary = row.auxiliary.split('')
             }
             this.dialogStatus = 'update'
             this.dialogFormVisible = true
@@ -282,7 +286,8 @@ export default {
         save() {
             this.$refs['dataForm'].validate((valid) => {
                 if (valid) {
-                    var obj = this.temp
+                    let obj = deepClone(this.temp)
+                    obj.auxiliary = this.temp.auxiliary.join('')
                     saveCoa(obj).then(res => {
                         if (res.data.errorCode == 0) {
                             this.getData()

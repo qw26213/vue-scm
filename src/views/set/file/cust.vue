@@ -82,7 +82,7 @@
                         <span>{{row.advrBalance|Fixed}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="赊销金额" align="right" width="100">
+                <el-table-column label="赊销额度" align="right" width="100">
                     <template slot-scope="{row}">
                         <span>{{row.creditLimit|Fixed}}</span>
                     </template>

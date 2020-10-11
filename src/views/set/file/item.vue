@@ -210,7 +210,7 @@
                         </el-radio-group>
                     </el-form-item>
                     <el-form-item label="" prop="isIndivisible">
-                        <el-checkbox v-model="temp.isIndivisible" :false-label="0" :true-label="1" style="margin-right:10px">允许拆箱</el-checkbox>
+                        <el-checkbox v-model="temp.isIndivisible" :false-label="0" :true-label="1" style="margin-right:10px">不允许拆箱</el-checkbox>
                     </el-form-item>
                     <el-form-item label="" prop="isBatch">
                         <el-checkbox v-model="temp.isBatch" :false-label="0" :true-label="1" style="margin-right:10px">序列号管理</el-checkbox>

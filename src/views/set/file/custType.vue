@@ -183,6 +183,7 @@ export default {
             for (var key in this.temp) {
                 this.temp[key] = obj[key]
             }
+            this.temp.parentId = this.parentId
             this.$nextTick(() => {
                 this.$refs['dataForm'].clearValidate()
             })
@@ -242,7 +243,7 @@ export default {
         handleCreate() {
             this.$refs['dataForm'].validate((valid) => {
                 if (valid) {
-                    this.temp.parentId = this.temp.parentId
+                    this.temp.parentId = this.parentId
                     saveCustType(this.temp).then(res => {
                         if (res.data.errorCode == 0) {
                             this.getList()
