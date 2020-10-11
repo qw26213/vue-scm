@@ -1,6 +1,6 @@
 <template>
   <el-select v-model="curId" filterable size="small" class="filter-item custInput" @change="changeVal" placeholder="">
-    <el-option v-for="item in itemList" :key="item.id" :label="item.itemName" :value="item.id">
+    <el-option v-for="item in itemList" :key="item.id" :label="item.itemCode + ' ' +item.itemName" :value="item.id">
     </el-option>
   </el-select>
 </template>
@@ -16,7 +16,6 @@ export default {
         curSubUom:"",
         curExchangeRate:"",
         curSalePriceType: '',
-        curCode:"",
         curNorms:"",
         curUom:"",
         curPrice: ''
@@ -33,7 +32,6 @@ export default {
           this.itemList.forEach(item => {
             if(item.id == this.curId){
               this.curCode = item.itemCode
-              this.curName = item.itemName
               this.curNorms = item.norms
               this.curUom = item.uom
               this.curSubUom = item.subUom

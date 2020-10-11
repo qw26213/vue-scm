@@ -79,14 +79,9 @@
         <div class="contentDiv">
             <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="small" cell-class-name="tdCell">
                 <el-table-column label="序号" type="index" width="50" align="center" />
-                <el-table-column label="商品名称" width="160">
+                <el-table-column label="商品" width="300">
                     <template slot-scope="scope">
                         <itemList :selectId="scope.row.itemId" :index="scope.$index" :item-list="item_list" @changeVal="changeVal" />
-                    </template>
-                </el-table-column>
-                <el-table-column label="商品代码" width="160">
-                    <template slot-scope="{row}">
-                        <input type="text" class="inputCell" v-model="row.itemCode" disabled />
                     </template>
                 </el-table-column>
                 <el-table-column label="规格">
@@ -191,10 +186,9 @@ import custList from '@/components/selects/custList'
 import truckList from '@/components/selects/truckList'
 import warehouseList from '@/components/selects/warehouseList'
 import paymentTypeList from '@/components/selects/paymentTypeList'
-import itemList from '@/components/selects/saleItemList'
+import itemList from '@/components/selects/itemList'
 import settleTypeList from "@/components/selects/settleTypeList"
 import salesTypeList from "@/components/selects/salesTypeList"
-import { getResPageByFuzzyCustId } from '@/api/store'
 import { getName, getNowDate } from '@/utils/auth'
 var userInfo = JSON.parse(sessionStorage.userInfo)
 export default {
@@ -270,7 +264,6 @@ export default {
                         }
                     }
                     this.settleData = addNullObj2(res.data.data.settleTypeDetail || [])
-                    this.getItemList()
                 }
             })
         }
@@ -343,21 +336,6 @@ export default {
                 this.temp.warehouseName = ''
                 this.temp.warehouseId = ''
             }
-            if (obj.custId) {
-                this.getItemList()
-            }
-        },
-        getItemList() {
-            const obj = {
-              pageIndex: 1,
-              pageNum: 100,
-              queryParam:{
-                custId: this.temp.custId
-              }
-            }
-            getResPageByFuzzyCustId(obj).then(res => {
-                this.item_list = res.data.data;
-            })
         },
         changeVal(obj) {
             for (var key in obj) {

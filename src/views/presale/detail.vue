@@ -37,14 +37,9 @@
         <div class="contentDiv">
             <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="small" cell-class-name="tdCell" max-height="600">
                 <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
-                <el-table-column label="商品代码" width="160" v-if="temp.presaleType=='1'">
+                <el-table-column label="商品" width="300" v-if="temp.presaleType=='1'">
                     <template slot-scope="{row}">
-                        <span>{{row.itemCode}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column label="商品名称" width="160" v-if="temp.presaleType=='1'">
-                    <template slot-scope="{row}">
-                        <span>{{row.itemName}}</span>
+                        <span>{{row.itemCode + ' ' + row.itemName }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="规格" v-if="temp.presaleType=='1'">

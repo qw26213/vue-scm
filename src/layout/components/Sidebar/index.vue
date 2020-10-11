@@ -8,6 +8,7 @@
         :text-color="variables.menuText"
         :unique-opened="true"
         :active-text-color="variables.menuActiveText"
+        :collapse="isCollapse"
         :collapse-transition="false"
         mode="vertical" :default-openeds="openeds"
       >

@@ -41,14 +41,9 @@
         <div class="contentDiv">
             <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="small" cell-class-name="tdCell" max-height="600">
                 <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
-                <el-table-column label="商品代码" width="160" v-if="temp.presaleType=='1'">
+                <el-table-column label="商品" width="300" v-if="temp.presaleType=='1'">
                     <template slot-scope="scope">
                         <itemList :selectCode="scope.row.itemCode" :selectId="scope.row.itemId" :index="scope.$index" @changeVal="changeVal"></itemList>
-                    </template>
-                </el-table-column>
-                <el-table-column label="商品名称" width="160" v-if="temp.presaleType=='1'">
-                    <template slot-scope="{row}">
-                        <input type="text" class="inputCell" v-model="row.itemName" disabled>
                     </template>
                 </el-table-column>
                 <el-table-column label="规格" v-if="temp.presaleType=='1'">

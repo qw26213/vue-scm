@@ -1,6 +1,6 @@
 <template>
   <el-select v-model="curId" filterable remote reserve-keyword :remote-method="remoteGet" size="small" class="filter-item custInput" @focus="searchThis($event)" @change="changeVal" placeholder="">
-    <el-option v-for="item in itemList" :key="item.id" :label="item.itemCode" :value="item.id" />
+    <el-option v-for="item in itemList" :key="item.id" :label="item.itemCode + ' ' + item.itemName" :value="item.id" />
   </el-select>
 </template>
 <script>
@@ -20,13 +20,12 @@ export default {
         },
         curIndex:this.index,
         curId:this.selectId,
-        curName:"",
-        curSubUom: "",
-        curExchangeRate: "",
+        curSubUom: '',
+        curExchangeRate: '',
         curSalePriceType: '',
-        curCode: "",
-        curNorms: "",
-        curUom: "",
+        curCode: '',
+        curNorms: '',
+        curUom: '',
         itemList: []
       }
     },
@@ -62,8 +61,6 @@ export default {
           this.curId = val;
           for(var i=0;i<this.itemList.length;i++){
             if(this.itemList[i].id==this.curId){
-              this.curCode = this.itemList[i].itemCode
-              this.curName = this.itemList[i].itemName
               this.curNorms = this.itemList[i].norms
               this.curUom = this.itemList[i].uom
               this.curSubUom = this.itemList[i].subUom
@@ -72,8 +69,6 @@ export default {
             }
           }
           var obj = {
-            itemCode:this.curCode,
-            itemName:this.curName,
             norms:this.curNorms,
             uom:this.curUom,
             itemId:this.curId,

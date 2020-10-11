@@ -139,7 +139,7 @@ export default {
                 isDisableChildren: 0,
                 cashFlowFlag: 0,
                 crDr: 1,
-                auxiliary: [],
+                auxiliary: [0,0,0,0,0,0,0],
                 unchageableFlag: 0,
                 coaHierarchyId: '',
                 coaLevel: '',
@@ -165,7 +165,7 @@ export default {
                 isDisableChildren: 0,
                 cashFlowFlag: 0,
                 crDr: 1,
-                auxiliary: [],
+                auxiliary: [0,0,0,0,0,0,0],
                 unchageableFlag: 0,
                 coaHierarchyId: '',
                 coaLevel: '',
@@ -202,9 +202,7 @@ export default {
             for (var key in this.temp) {
                 this.temp[key] = row[key]
             }
-            if (row.auxiliary) {
-                this.temp.auxiliary = row.auxiliary.split('')
-            }
+            this.temp.auxiliary = (row.auxiliary || '000000000000').split('')
             this.dialogStatus = 'update'
             this.dialogFormVisible = true
             this.$nextTick(() => {
