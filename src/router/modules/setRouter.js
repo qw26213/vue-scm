@@ -63,7 +63,7 @@ const setRouter = {
             component: () => import ('@/views/set/data/referCoa'),
             name: 'referCoa',
             meta: {
-                roles: ['601030'],
+                roles: ['601036'],
                 title: '科目对照'
             }
         }, {

@@ -51,10 +51,8 @@
         <el-button type="primary" @click="handleModify()">确定</el-button>
       </div>
     </el-dialog>
-
   </div>
 </template>
-
 <script>
 import { getReferCoa, saveReferCoa } from '@/api/basedata'
 import { parseTime } from '@/utils'
