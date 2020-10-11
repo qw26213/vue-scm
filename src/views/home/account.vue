@@ -19,15 +19,17 @@
                     <div class="listItem">
                         <label>详细地址:</label>{{managementInfo.invoiceAddr}}</div>
                     <div class="listItem">
-                        <label>纳税类型:</label>{{managementInfo.taxFilingCategoryName}}</div>
+                        <label>纳税类型:</label>{{managementInfo.taxFilingCategoryName}}(纳税识别号:{{managementInfo.taxRegistrationCertificateNo}})</div>
                     <div class="listItem">
-                        <label>纳税识别号:</label>{{managementInfo.taxRegistrationCertificateNo}}</div>
+                        <label>资源容量:</label>{{managementInfo.cosResSize}}GB(已使用{{managementInfo.cosResUsedSize}}GB)
+                    </div>
                     <!-- <div class="listItem"><label>业务有效期:</label>{{managementInfo.bizExpirationDate}}</div> -->
                     <!-- <div class="listItem"><label>账套名称:</label>{{managementInfo.bookName}}</div> -->
                     <div class="listItem" style="color:#F56C6C">
                         <label>试用期:</label>{{managementInfo.bizExpirationDate}}</div>
                     <div class="listItem" style="color:#F56C6C">
-                        <label>账号月数:</label>{{managementInfo.lisenseNum+managementInfo.lisenseNum1}}(购买{{managementInfo.lisenseNum}}，赠送{{managementInfo.lisenseNum1}})</div>
+                        <label>账号月数:</label>{{managementInfo.lisenseNum+managementInfo.lisenseNum1}}(购买{{managementInfo.lisenseNum}}，赠送{{managementInfo.lisenseNum1}})
+                    </div>
                 </el-card>
             </el-col>
             <el-col :xs="12" :sm="12" :lg="12" class="card-panel-col">
