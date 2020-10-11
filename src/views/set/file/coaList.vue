@@ -202,7 +202,7 @@ export default {
             for (var key in this.temp) {
                 this.temp[key] = row[key]
             }
-            this.temp.auxiliary = (row.auxiliary || '000000000000').split('')
+            this.temp.auxiliary = (row.auxiliary || '000000000000000').split('')
             this.dialogStatus = 'update'
             this.dialogFormVisible = true
             this.$nextTick(() => {

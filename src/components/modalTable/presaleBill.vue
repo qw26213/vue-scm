@@ -2,15 +2,15 @@
     <div>
         <el-dialog :close-on-click-modal="false" title="请选择预收单" :visible.sync="visible" width="720px">
             <div class="filter-container">
-                <el-date-picker :editable="false" v-model="listQuery.queryParam.date1" type="date" placeholder="开始日期" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+                <el-date-picker :editable="false" v-model="listQuery.queryParam.date1" type="date" placeholder="开始日期" style="width:130px" size="small" :clearable="false" value-format="yyyy-MM-dd" />
                 <span class="zhi">至</span>
-                <el-date-picker :editable="false" v-model="listQuery.queryParam.date2" type="date" placeholder="结束日期" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+                <el-date-picker :editable="false" v-model="listQuery.queryParam.date2" type="date" placeholder="结束日期" style="width:130px" size="small" :clearable="false" value-format="yyyy-MM-dd" />
                 <el-input size="small" v-model="listQuery.queryParam.billNo" placeholder="单据号" style="width: 120px;" />
                 <custList @selectChange="selectChange" ctrType="list"></custList>
-                <el-button size="small" type="primary" @click="getList">查询</el-button>
+                <el-button size="mini" type="primary" @click="getList">查询</el-button>
             </div>
             <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
-                <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
+                <el-table-column label="序号" type="index" width="50" align="center" />
                 <el-table-column label="单据日期" align="center" width="100">
                     <template slot-scope="{row}">
                         <span>{{row.billDate}}</span>
@@ -43,11 +43,11 @@
                 </el-table-column>
                 <el-table-column label="操作" align="center" width="80">
                     <template slot-scope="{row}">
-                        <el-button type="primary" size="small" @click="handleSelect(row.id)">选择</el-button>
+                        <el-button type="primary" size="mini" @click="handleSelect(row.id)">选择</el-button>
                     </template>
                 </el-table-column>
             </el-table>
-            <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
+            <pagination v-show="total>10" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
         </el-dialog>
     </div>
 </template>
@@ -69,7 +69,7 @@ export default {
             listLoading: true,
             listQuery: {
                 pageIndex: 1,
-                pageNum: 20,
+                pageNum: 10,
                 queryParam: {
                     date1: '2019-01-01',
                     date2: getNowDate(),
@@ -100,6 +100,7 @@ export default {
             getPresale(this.listQuery).then(res => {
                 this.listLoading = false
                 this.tableData = res.data.data
+                this.total = res.data.totalNum
             }).catch(err => {
                 this.listLoading = false
             })
@@ -120,7 +121,7 @@ export default {
 <style lang="scss" scoped>
 /deep/.el-dialog .el-dialog__body {
     min-height: 240px;
-    max-height: 480px;
+    max-height: 570px;
     padding-top: 10px !important
 }
 </style>

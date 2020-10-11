@@ -67,7 +67,7 @@
                         <span>{{row.remarks}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" align="center" width="200">
+                <el-table-column label="操作" align="center" width="260">
                     <template slot-scope="{row}">
                         <span class="ctrl" v-if="row.status<=0" @click="handleCompile(row.id)">编辑</span>
                         <span class="ctrl" v-if="row.status==-1" @click="handleScan(row.id,1)">查看审核意见</span>

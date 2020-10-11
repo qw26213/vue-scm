@@ -22,7 +22,7 @@ module.exports = {
   outputDir: 'dist',
   assetsDir: 'static',
   // lintOnSave: process.env.NODE_ENV !== 'production',
-  lintOnSave: false,
+  lintOnSave: true,
   productionSourceMap: false,
   // productionGzip: true,
   // productionGzipExtensions: ['js', 'css'],

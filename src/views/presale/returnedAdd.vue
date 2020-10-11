@@ -108,15 +108,13 @@
                 </el-form>
                 <el-form :inline="true" label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
                     <el-form-item label="制单日期:" prop="recordDate">
-                        <el-date-picker :editable="false" v-model="temp.recordDate" type="date" placeholder="制单日期" size="small" style="width:145px" :clearable="false" value-format="yyyy-MM-dd">
-                        </el-date-picker>
+                        <el-date-picker :editable="false" v-model="temp.recordDate" type="date" placeholder="制单日期" size="small" style="width:145px" :clearable="false" value-format="yyyy-MM-dd" />
                     </el-form-item>
                     <el-form-item label="制单人:" prop="recorderId">
                         <el-input size="small" v-model="temp.recorder" placeholder="制单人" />
                     </el-form-item>
                     <el-form-item label="审核日期:" prop="auditDate">
-                        <el-date-picker :editable="false" v-model="temp.auditDate" type="date" placeholder="审核日期" size="small" style="width:145px" :clearable="false" value-format="yyyy-MM-dd">
-                        </el-date-picker>
+                        <el-date-picker :editable="false" v-model="temp.auditDate" type="date" placeholder="审核日期" size="small" style="width:145px" :clearable="false" value-format="yyyy-MM-dd" />
                     </el-form-item>
                     <el-form-item label="审核人:" prop="auditorId">
                         <el-input size="small" v-model="temp.auditor" placeholder="审核人" />

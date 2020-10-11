@@ -174,7 +174,7 @@ export default {
         checkItem(obj) {
             let data = obj
             data.id = this.curBillId
-            data.id = this.curBillDate
+            data.billDate = this.curBillDate
             auditOutboundOrder(data).then(res => {
                 if (res.data.errorCode == 0) {
                     this.getList()

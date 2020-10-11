@@ -5,7 +5,7 @@ import { MessageBox, Message } from 'element-ui'
 import router from '@/router'
 // axios 配置
 axios.defaults.timeout = 60000;
-axios.defaults.baseURL = process.env.VUE_APP_BASE_API;
+axios.defaults.baseURL = '/'
 
 // http request 拦截器
 axios.interceptors.request.use(
