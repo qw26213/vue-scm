@@ -1,6 +1,6 @@
 <template>
   <el-select v-model="curId" filterable size="small" class="filter-item custInput" @change="changeVal" placeholder="">
-    <el-option v-for="item in itemList" :key="item.id" :label="item.itemCode + ' ' +item.itemName" :value="item.id">
+    <el-option v-for="item in itemList" :key="item.itemId" :label="item.itemCode + ' ' +item.itemName" :value="item.itemId">
     </el-option>
   </el-select>
 </template>
