@@ -249,7 +249,7 @@ export default {
             }).then(() => {
                 resetAccount().then(res => {
                     if (res.data.errorCode == 0) {
-                        this.$message.success('账套已被清除！')
+                        this.$message.success('账套已重置！')
                         this.$store.dispatch('user/logout').then(() => {
                             this.$router.replace('/login')
                         })

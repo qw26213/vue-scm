@@ -8,17 +8,26 @@
                         <el-button v-if="userInfo.isAdmin == 1" type="primary" style="float: right;" size="small" @click="showCompile">编辑</el-button>
                         <el-button v-if="userInfo.isAdmin == 1" type="danger" style="float: right;margin-right:10px" size="small" @click="closeCurAccount">注销企业</el-button>
                     </div>
-                    <div class="listItem"><label>企业代码:</label>{{managementInfo.orgCode}}</div>
-                    <div class="listItem"><label>企业名称:</label>{{managementInfo.orgName}}</div>
-                    <div class="listItem"><label>所属行业:</label>{{managementInfo.industryName}}</div>
-                    <div class="listItem"><label>企业所在地:</label>{{managementInfo.areaName}}</div>
-                    <div class="listItem"><label>详细地址:</label>{{managementInfo.invoiceAddr}}</div>
-                    <div class="listItem"><label>纳税类型:</label>{{managementInfo.taxFilingCategoryName}}</div>
-                    <div class="listItem"><label>纳税识别号:</label>{{managementInfo.taxRegistrationCertificateNo}}</div>
+                    <div class="listItem">
+                        <label>企业代码:</label>{{managementInfo.orgCode}}</div>
+                    <div class="listItem">
+                        <label>企业名称:</label>{{managementInfo.orgName}}</div>
+                    <div class="listItem">
+                        <label>所属行业:</label>{{managementInfo.industryName}}</div>
+                    <div class="listItem">
+                        <label>企业所在地:</label>{{managementInfo.areaName}}</div>
+                    <div class="listItem">
+                        <label>详细地址:</label>{{managementInfo.invoiceAddr}}</div>
+                    <div class="listItem">
+                        <label>纳税类型:</label>{{managementInfo.taxFilingCategoryName}}</div>
+                    <div class="listItem">
+                        <label>纳税识别号:</label>{{managementInfo.taxRegistrationCertificateNo}}</div>
                     <!-- <div class="listItem"><label>业务有效期:</label>{{managementInfo.bizExpirationDate}}</div> -->
                     <!-- <div class="listItem"><label>账套名称:</label>{{managementInfo.bookName}}</div> -->
-                    <div class="listItem" style="color:#F56C6C"><label>试用期:</label>{{managementInfo.bizExpirationDate}}</div>
-                    <div class="listItem" style="color:#F56C6C"><label>账号月数:</label>{{managementInfo.lisenseNum+managementInfo.lisenseNum1}}(购买{{managementInfo.lisenseNum}}，赠送{{managementInfo.lisenseNum1}})</div>
+                    <div class="listItem" style="color:#F56C6C">
+                        <label>试用期:</label>{{managementInfo.bizExpirationDate}}</div>
+                    <div class="listItem" style="color:#F56C6C">
+                        <label>账号月数:</label>{{managementInfo.lisenseNum+managementInfo.lisenseNum1}}(购买{{managementInfo.lisenseNum}}，赠送{{managementInfo.lisenseNum1}})</div>
                 </el-card>
             </el-col>
             <el-col :xs="12" :sm="12" :lg="12" class="card-panel-col">
@@ -27,15 +36,24 @@
                         <span style="display:inline-block;line-height:28px">用户信息</span>
                         <el-button v-if="userInfo.isAdmin == 1" type="danger" style="float: right;" size="small" @click="resetBookInfo">清除账套</el-button>
                     </div>
-                    <div class="listItem"><label>企业代码:</label>{{userInfo.orgCode}}</div>
-                    <div class="listItem"><label>用户账号:</label>{{userInfo.userAccount}}</div>
-                    <div class="listItem"><label>用户姓名:</label>{{userInfo.userName}}</div>
-                    <div class="listItem"><label>审核人签名:</label>{{userInfo.sign2}}</div>
-                    <div class="listItem"><label>手机号:</label>{{userInfo.mobile}}</div>
-                    <div class="listItem"><label>邮箱:</label>{{userInfo.mail}}</div>
-                    <div class="listItem"><label>管理员:</label>{{userInfo.isAdmin == 1?'是':'否'}}</div>
-                    <div class="listItem"><label style="width:100px">单据查询权限:</label>{{userInfo.queryType == 0?'自己':'部门'}}</div>
-                    <div class="listItem"><label>角色:</label>{{userInfo.roleName}}</div>
+                    <div class="listItem">
+                        <label>企业代码:</label>{{userInfo.orgCode}}</div>
+                    <div class="listItem">
+                        <label>用户账号:</label>{{userInfo.userAccount}}</div>
+                    <div class="listItem">
+                        <label>用户姓名:</label>{{userInfo.userName}}</div>
+                    <div class="listItem">
+                        <label>审核人签名:</label>{{userInfo.sign2}}</div>
+                    <div class="listItem">
+                        <label>手机号:</label>{{userInfo.mobile}}</div>
+                    <div class="listItem">
+                        <label>邮箱:</label>{{userInfo.mail}}</div>
+                    <div class="listItem">
+                        <label>管理员:</label>{{userInfo.isAdmin == 1?'是':'否'}}</div>
+                    <div class="listItem">
+                        <label style="width:100px">单据查询权限:</label>{{userInfo.queryType == 0?'自己':'部门'}}</div>
+                    <div class="listItem">
+                        <label>角色:</label>{{userInfo.roleName}}</div>
                 </el-card>
             </el-col>
             <el-col :xs="24" :sm="24" :lg="24" class="card-panel-col">
@@ -287,7 +305,7 @@ export default {
         getStaff().then(res => {
             this.staffList = res.data.data
         })
-        getRole({ page: 1}).then(res => {
+        getRole({ page: 1 }).then(res => {
             this.rolelist = res.data.data
         })
     },
@@ -308,7 +326,9 @@ export default {
                     closeAccount().then(res => {
                         if (res.data.errorCode == 0) {
                             this.$message.success('注销企业成功')
-                            this.$router.replace('/login')
+                            this.$store.dispatch('user/logout').then(() => {
+                                this.$router.replace('/login')
+                            })
                         } else {
                             this.$message.warning(res.data.msg)
                         }
@@ -332,7 +352,9 @@ export default {
                     resetBook({}).then(res => {
                         if (res.data.errorCode == 0) {
                             this.$message.success('清除账套成功')
-                            this.$router.replace('/login')
+                            this.$store.dispatch('user/logout').then(() => {
+                                this.$router.replace('/login')
+                            })
                         } else {
                             this.$message.warning(res.data.msg)
                         }
