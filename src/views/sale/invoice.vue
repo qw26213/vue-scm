@@ -111,7 +111,7 @@ export default {
             remarklist: [],
             curBillId: '',
             isinvoiceDate: '0',
-            curinvoiceDate: '',
+            curInvoiceDate: '',
             listQuery: {
                 pageIndex: 1,
                 pageNum: 20,
@@ -136,7 +136,7 @@ export default {
     },
     methods: {
         printBill(row) {
-            printByHeaderId('/ic/invoice', row.id, row.billDate).then(res => {
+            printByHeaderId('/so/invoice', row.id, row.invoiceDate).then(res => {
                 if (res.data.errorCode == 0) {
                     window.open("http://" + window.location.host + res.data.data)
                 } else {
@@ -163,16 +163,16 @@ export default {
                 this.listLoading = false
             })
         },
-        handleCheck(id, billDate) {
+        handleCheck(id, invoiceDate) {
             this.auditType = 'create'
             this.auditModalVisible = true
             this.curBillId = id
-            this.curBillDate = billDate
+            this.curInvoiceDate = invoiceDate
         },
         checkItem(obj) {
             let data = obj
             data.id = this.curBillId
-            data.billDate = this.curBillDate
+            data.invoiceDate = this.curInvoiceDate
             auditInvoice(data).then(res => {
                 if (res.data.errorCode == 0) {
                     this.getList();
@@ -204,27 +204,24 @@ export default {
                 this.$router.push('/voucher/add?id=' + id2)
             } else {
                 this.curBillId = id1
-                this.curinvoiceDate = invoiceDate
+                this.curInvoiceDate = invoiceDate
                 this.dialogFormVisible2 = true
             }
         },
-        handleDel(id, date) {
+        handleDel(id, invoiceDate) {
             this.$confirm('确定删除吗?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                this.delItem(id, date)
-            });
-        },
-        delItem(id) {
-            delInvoice(id).then(res => {
-                if (res.data.errorCode == 0) {
-                    this.getList()
-                    this.$message.success('删除成功')
-                } else {
-                    this.$message.error(res.data.msg)
-                }
+                delInvoice(id, invoiceDate).then(res => {
+                    if (res.data.errorCode == 0) {
+                        this.getList()
+                        this.$message.success('删除成功')
+                    } else {
+                        this.$message.error(res.data.msg)
+                    }
+                })
             })
         }
     }

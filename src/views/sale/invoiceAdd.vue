@@ -176,8 +176,9 @@ export default {
     created() {
         if (this.$route.query.id) {
             this.id = this.$route.query.id
-            var date = this.$route.query.invoiceDate
-            getInvoiceById(this.id, date).then(res => {
+            var id = this.id
+            var invoiceDate = this.$route.query.invoiceDate
+            getInvoiceById(id, invoiceDate).then(res => {
                 if (res.data.data) {
                     for (var key in this.temp) {
                         this.temp[key] = res.data.data[key]

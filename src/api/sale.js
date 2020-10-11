@@ -58,11 +58,11 @@ export function buildSaleVoucherByHeaderId(data) {
     })
 }
 
-export function printByHeaderId(url, id, billDate) {
+export function printByHeaderId(url, id, invoiceDate) {
     return request({
         url: '/drp' + url + '/printByHeaderId',
         method: 'post',
-        data: { id, billDate }
+        data: { id, invoiceDate }
     })
 }
 
@@ -265,11 +265,11 @@ export function getInvoice(data) {
     })
 }
 
-export function getInvoiceById(id) {
+export function getInvoiceById(id, invoiceDate) {
     return request({
         url: '/drp/so/invoice/getByHeaderId',
         method: 'post',
-        data: { id: id }
+        data: { id, invoiceDate }
     })
 }
 
@@ -281,11 +281,11 @@ export function saveInvoice(data) {
     })
 }
 
-export function delInvoice(id) {
+export function delInvoice(data) {
     return request({
         url: '/drp/so/invoice/deleteByHeaderId',
         method: 'post',
-        data: { id: id }
+        data
     })
 }
 

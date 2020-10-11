@@ -8,8 +8,8 @@
                 <el-form-item label="单据号:" prop="billNo" label-width="50px">
                     <el-input size="small" v-model="temp.billNo" placeholder="单据号" disabled />
                 </el-form-item>
-                <el-form-item label="供应商:" prop="custId" label-width="50px">
-                    <supplierList @selectChange="selectChange" keyType="custId" :selectId="temp.custId" :selectName="temp.custName"></supplierList>
+                <el-form-item label="供应商:" prop="supplierId" label-width="50px">
+                    <supplierList @selectChange="selectChange" :selectId="temp.supplierId" :selectName="temp.supplierName"></supplierList>
                 </el-form-item>
                 <el-form-item label="业务员:" prop="staffId" label-width="50px">
                     <staffList @selectChange="selectChange" :selectId="temp.staffId"></staffList>
@@ -18,17 +18,12 @@
                     <el-input size="small" v-model="temp.amount" placeholder="现结金额" style="width:75px" disabled />
                     <el-button size="small" style="width:45px;padding:8px" @click="showSettleType">选择</el-button>
                 </el-form-item>
-                <el-button size="small" class="filter-item" type="primary" @click="showSaleBill">选择采购单</el-button>
+                <el-button size="small" style="margin-top:3px" :disabled="!temp.supplierId" type="primary" @click="showSaleBill">选择采购单</el-button>
             </el-form>
         </div>
         <div class="contentDiv">
-            <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" size="small" max-height="600">
+            <el-table :data="tableData" border fit highlight-current-row style="width: 100%;" cell-class-name="tdCell" size="mini" max-height="600">
                 <el-table-column label="序号" type="index" width="50" align="center" />
-                <el-table-column label="供应商" align="center">
-                    <template slot-scope="{row}">
-                        <span>{{ row.supplierName }}</span>
-                    </template>
-                </el-table-column>
                 <el-table-column label="单据日期" align="center">
                     <template slot-scope="{row}">
                         <span>{{ row.billDate }}</span>
@@ -51,7 +46,7 @@
                 </el-table-column>
                 <el-table-column label="收款金额" align="right">
                     <template slot-scope="{row}">
-                        <input class="amount" @focus="$event.target.select()" v-model="row.amount" />
+                        <input class="inputCell tx-r" style="height:32px" @focus="$event.target.select()" v-model="row.amount" />
                     </template>
                 </el-table-column>
             </el-table>
@@ -67,8 +62,13 @@
                 <el-date-picker :editable="false" v-model="modalQuery.billDate2" type="date" placeholder="结束日期" size="small" :clearable="false" value-format="yyyy-MM-dd" style="width:140px;" />
                 <el-button size="small" type="primary" @click="getPurechaseList">查询</el-button>
             </div>
-            <el-table ref="dataTable" :data="modalData" border fit highlight-current-row style="width: 100%;" size="small" @selection-change="handleSelectionChange">
+            <el-table ref="dataTable" :data="modalData" border fit highlight-current-row style="width: 100%;" size="mini" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="50" align="center" :reserve-selection="true" />
+                <el-table-column label="供应商" align="center">
+                    <template slot-scope="{row}">
+                        <span>{{ row.supplierName }}</span>
+                    </template>
+                </el-table-column>
                 <el-table-column label="单据日期" align="center">
                     <template slot-scope="{row}">
                         <span>{{ row.billDate }}</span>
@@ -99,8 +99,7 @@
             <el-table :data="settleData" border fit highlight-current-row style="width: 100%;" size="small" cell-class-name="tdCell">
                 <el-table-column label="名称" width="146">
                     <template slot-scope="scope">
-                        <settleTypeList :settleTypeArr="settleTypeArr" :selectCode="scope.row.settleTypeCode" :selectArap="scope.row.arAp" :selectName="scope.row.settleTypeName" :index="scope.$index" @settleTypeChange="settleTypeChange">
-                        </settleTypeList>
+                        <settleTypeList :settleTypeArr="settleTypeArr" :selectCode="scope.row.settleTypeCode" :selectArap="scope.row.arAp" :selectName="scope.row.settleTypeName" :index="scope.$index" @settleTypeChange="settleTypeChange" />
                     </template>
                 </el-table-column>
                 <el-table-column label="预付应付标志" width="120">
@@ -149,9 +148,8 @@ export default {
             temp: {
                 billNo: '',
                 billDate: getNowDate(),
-                supplierId: '',
                 staffId: '',
-                custId: '',
+                supplierId: '',
                 crDr: -1,
                 amount: 0
             },
@@ -256,6 +254,3 @@ export default {
     }
 }
 </script>
-<style scoped>
-.amount{width: 100%;height:30px;border:none;display: block;outline: none;text-align: right;padding-right: 5px}
-</style>
