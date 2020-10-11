@@ -218,7 +218,7 @@ export default {
             })
         },
         downloadFile() {
-            window.location.href = 'http://49.232.47.16/drp/business/employee.xlsx'
+            window.location.href = '/drp/business/employee.xlsx'
         },
         handImport() {
             this.dialogVisible2 = true

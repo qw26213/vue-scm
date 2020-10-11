@@ -30,7 +30,7 @@
                         <span>{{row.isDisable==0?'是':'否'}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" align="center" width="250">
+                <el-table-column label="操作" align="center" width="220">
                     <template slot-scope="{row}">
                         <el-button type="text" size="small" @click="handleCompile(row)">编辑</el-button>
                         <el-button type="text" size="small" @click="handleDel(row.id)">删除</el-button>
@@ -93,16 +93,16 @@ export default {
                 custTypeName: '',
                 custTypeCode: '',
                 remarks: '',
-                isDisable: 0,
-                parentId: ""
+                parentId: '',
+                isDisable: 0
             },
             resetTemp: {
                 id: '',
                 custTypeName: '',
                 custTypeCode: '',
                 remarks: '',
-                isDisable: 0,
-                parentId: ""
+                parentId: '',
+                isDisable: 0
             },
             dialogFormVisible: false,
             showModal: false,
@@ -242,10 +242,11 @@ export default {
         handleCreate() {
             this.$refs['dataForm'].validate((valid) => {
                 if (valid) {
+                    this.temp.parentId = this.temp.parentId
                     saveCustType(this.temp).then(res => {
                         if (res.data.errorCode == 0) {
-                            this.getList();
-                            this.getLeftTree();
+                            this.getList()
+                            this.getLeftTree()
                             this.dialogFormVisible = false
                             this.$message.success('新增成功')
                         } else {
@@ -260,7 +261,8 @@ export default {
         delItem(id) {
             delCustType(id).then(res => {
                 if (res.data.errorCode == 0) {
-                    this.getList();
+                    this.getList()
+                    this.getLeftTree()
                     this.dialogFormVisible = false
                     this.$message.success('删除成功')
                 } else {

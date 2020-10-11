@@ -5,8 +5,8 @@
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
                         <span style="display:inline-block;line-height:28px">企业信息</span>
-                        <el-button v-if="userInfo.isAdmin == 1" type="primary" style="float: right;" size="small" @click="showCompile">编辑</el-button>
-                        <el-button v-if="userInfo.isAdmin == 1" type="danger" style="float: right;margin-right:10px" size="small" @click="closeCurAccount">注销企业</el-button>
+                        <el-button v-if="userInfo.isAdmin == 1" type="primary" style="float: right;" size="mini" @click="showCompile">编辑</el-button>
+                        <el-button v-if="userInfo.isAdmin == 1" type="danger" style="float: right;margin-right:10px" size="mini" @click="closeCurAccount">注销企业</el-button>
                     </div>
                     <div class="listItem">
                         <label>企业代码:</label>{{managementInfo.orgCode}}</div>
@@ -34,7 +34,7 @@
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
                         <span style="display:inline-block;line-height:28px">用户信息</span>
-                        <el-button v-if="userInfo.isAdmin == 1" type="danger" style="float: right;" size="small" @click="resetBookInfo">清除账套</el-button>
+                        <el-button v-if="userInfo.isAdmin == 1" type="danger" style="float: right;" size="mini" @click="resetBookInfo">清除账套</el-button>
                     </div>
                     <div class="listItem">
                         <label>企业代码:</label>{{userInfo.orgCode}}</div>
@@ -60,7 +60,7 @@
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
                         <span style="display:inline-block;line-height:28px">用户列表</span>
-                        <el-button v-if="userInfo.isAdmin == 1" type="primary" style="float: right;" size="small" @click="handleAdd">新增用户</el-button>
+                        <el-button v-if="userInfo.isAdmin == 1" type="primary" style="float: right;" size="mini" @click="handleAdd">新增用户</el-button>
                     </div>
                     <el-table :data="tableData" border fit resize>
                         <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
@@ -91,9 +91,9 @@
                         </el-table-column>
                         <el-table-column label="操作" min-width="80" align="center">
                             <template slot-scope="{row}">
-                                <el-button type="default" size="small" @click="handleCompile(row)">编辑</el-button>
-                                <el-button v-if="userInfo.isAdmin == 1 && userInfo.id != row.id" type="primary" size="small" @click="resetPsw(row)">重置密码</el-button>
-                                <el-button v-if="userInfo.isAdmin == 1 && userInfo.id != row.id" type="danger" size="small" @click="killUser(row.id)">强制下线</el-button>
+                                <el-button type="text" size="small" @click="handleCompile(row)">编辑</el-button>
+                                <el-button v-if="userInfo.isAdmin == 1 && userInfo.id != row.id" type="text" size="small" @click="resetPsw(row)">重置密码</el-button>
+                                <el-button v-if="userInfo.isAdmin == 1 && userInfo.id != row.id" type="text" size="small" @click="killUser(row.id)">强制下线</el-button>
                             </template>
                         </el-table-column>
                     </el-table>

@@ -32,8 +32,6 @@
         </div>
         <div class="contentDiv">
             <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
-                <el-table-column label="序号" type="index" width="50" align="center">
-                </el-table-column>
                 <el-table-column label="客户代码">
                     <template slot-scope="{row}">
                         <span>{{row.custCode}}</span>
@@ -69,7 +67,7 @@
                         <span>{{row.area}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="电话">
+                <el-table-column label="电话" align="center" width="100">
                     <template slot-scope="{row}">
                         <span>{{row.tel}}</span>
                     </template>
@@ -109,7 +107,7 @@
                         <span>{{row.isDisable==0?'是':'否'}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" align="center" width="280">
+                <el-table-column label="操作" align="center" width="240">
                     <template slot-scope="{row}">
                         <el-button type="text" size="small" @click="handleUpdate(row.overdraftBalance, row.id)">改已赊销金额</el-button>
                         <el-button type="text" size="small" @click="handleCompile(row)">编辑</el-button>
@@ -120,63 +118,63 @@
             </el-table>
             <pagination v-show="total>20" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
         </div>
-        <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增客户':'修改客户'" :visible.sync="dialogFormVisible" width="635px">
-            <el-form ref="dataForm" :rules="rules" :model="temp" :inline="true" label-position="right" label-width="95px" style="width: 600px; margin-left:10px;">
+        <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增客户':'修改客户'" :visible.sync="dialogFormVisible" width="935px">
+            <el-form ref="dataForm" :rules="rules" :model="temp" :inline="true" label-position="right" label-width="95px" style="width: 900px; margin-left:10px;">
                 <el-form-item label="客户代码" prop="custCode">
-                    <el-input v-model="temp.custCode" placeholder="客户代码" />
+                    <el-input size="small" v-model="temp.custCode" placeholder="客户代码" />
                 </el-form-item>
                 <el-form-item label="客户名称" prop="custName">
-                    <el-input v-model="temp.custName" placeholder="客户名称" />
+                    <el-input size="small" v-model="temp.custName" placeholder="客户名称" />
                 </el-form-item>
                 <el-form-item label="助记码" prop="mnemonicCode">
-                    <el-input v-model="temp.mnemonicCode" placeholder="助记码" disabled />
+                    <el-input size="small" v-model="temp.mnemonicCode" placeholder="助记码" disabled />
                 </el-form-item>
                 <el-form-item label="简称" prop="abbr">
-                    <el-input v-model="temp.abbr" placeholder="简称" />
+                    <el-input size="small" v-model="temp.abbr" placeholder="简称" />
                 </el-form-item>
                 <el-form-item label="联系人" prop="contact">
-                    <el-input v-model="temp.contact" placeholder="联系人" />
+                    <el-input size="small" v-model="temp.contact" placeholder="联系人" />
                 </el-form-item>
                 <el-form-item label="电话" prop="tel">
-                    <el-input v-model="temp.tel" placeholder="电话" />
+                    <el-input size="small" v-model="temp.tel" placeholder="电话" />
                 </el-form-item>
                 <el-form-item label="邮箱" prop="email">
-                    <el-input v-model="temp.email" placeholder="邮箱" />
+                    <el-input size="small" v-model="temp.email" placeholder="邮箱" />
                 </el-form-item>
                 <el-form-item label="开户行" prop="bankName">
-                    <el-input v-model="temp.bankName" placeholder="开户行" />
+                    <el-input size="small" v-model="temp.bankName" placeholder="开户行" />
                 </el-form-item>
-                <el-form-item label="账号" prop="bankAccount">
-                    <el-input v-model="temp.bankAccount" placeholder="账号" />
+                <el-form-item label="银行卡账号" prop="bankAccount">
+                    <el-input size="small" v-model="temp.bankAccount" placeholder="银行卡账号" />
                 </el-form-item>
                 <el-form-item label="微信号" prop="wechat">
-                    <el-input v-model="temp.wechat" placeholder="微信号" />
+                    <el-input size="small" v-model="temp.wechat" placeholder="微信号" />
                 </el-form-item>
                 <el-form-item label="省市区" prop="addr">
-                    <el-input v-model="temp.province" placeholder="省" style="width:60px" />
-                    <el-input v-model="temp.city" placeholder="市" style="width:60px" />
-                    <el-input v-model="temp.district" placeholder="县" style="width:60px" />
+                    <el-input size="small" v-model="temp.province" placeholder="省" style="width:60px" />
+                    <el-input size="small" v-model="temp.city" placeholder="市" style="width:60px" />
+                    <el-input size="small" v-model="temp.district" placeholder="县" style="width:60px" />
                 </el-form-item>
                 <el-form-item label="地址" prop="addr">
-                    <el-input v-model="temp.addr" placeholder="地址" />
+                    <el-input size="small" v-model="temp.addr" placeholder="地址" />
                 </el-form-item>
                 <el-form-item label="区域" prop="area">
-                    <el-input v-model="temp.area" maxLength="8" placeholder="区域" />
+                    <el-input size="small" v-model="temp.area" maxLength="8" placeholder="区域" />
                 </el-form-item>
                 <el-form-item label="赊销金额" prop="creditLimit">
-                    <el-input v-model="temp.creditLimit" placeholder="赊销金额" />
+                    <el-input size="small" v-model="temp.creditLimit" placeholder="赊销金额" />
                 </el-form-item>
                 <el-form-item label="拜访周期(天)" prop="visitCycle">
-                    <el-input v-model="temp.visitCycle" placeholder="拜访周期" />
+                    <el-input size="small" v-model="temp.visitCycle" placeholder="拜访周期" />
                 </el-form-item>
                 <el-form-item label="渠道类型" prop="bizTypeId">
                     <el-dropdown trigger="click">
                         <span class="el-dropdown-link" id="dropTit1">
-                            <el-input v-model="temp.channelTypeName" placeholder="渠道类型" />
+                            <el-input size="small" v-model="temp.channelTypeName" placeholder="渠道类型" />
                         </span>
                         <el-dropdown-menu slot="dropdown" :visible-change="menuVisible1">
                             <div style="width:185px;max-height:260px">
-                                <el-tree :data="treeData1" :props="defaultProps1" @node-click="handleNodeClick1" default-expand-all></el-tree>
+                                <el-tree :data="treeData1" :props="defaultProps1" @node-click="handleNodeClick1" default-expand-all />
                             </div>
                         </el-dropdown-menu>
                     </el-dropdown>
@@ -184,26 +182,33 @@
                 <el-form-item label="客户类别" prop="custTypeId">
                     <el-dropdown trigger="click">
                         <span class="el-dropdown-link" id="dropTit2">
-                            <el-input v-model="temp.custTypeName" placeholder="客户类别" />
+                            <el-input size="small" v-model="temp.custTypeName" placeholder="客户类别" />
                         </span>
                         <el-dropdown-menu slot="dropdown">
                             <div style="width:185px;max-height:260px">
-                                <el-tree :data="treeData2" :props="defaultProps2" @node-click="handleNodeClick2" default-expand-all></el-tree>
+                                <el-tree :data="treeData2" :props="defaultProps2" @node-click="handleNodeClick2" default-expand-all />
                             </div>
                         </el-dropdown-menu>
                     </el-dropdown>
                 </el-form-item>
                 <el-form-item label="价格组" prop="priceGroupId">
-                    <el-select v-model="temp.priceGroupId" style="width:185px" class="filter-item">
-                        <el-option v-for="item in priceGroupList" :key="item.id" :label="item.priceGroupName" :value="item.id">
-                        </el-option>
+                    <el-select v-model="temp.priceGroupId" style="width:185px" size="small" class="filter-item" placeholder="价格组">
+                        <el-option v-for="item in priceGroupList" :key="item.id" :label="item.priceGroupName" :value="item.id" />
                     </el-select>
                 </el-form-item>
-                <el-form-item label="备注" prop="remarks">
-                    <el-input v-model="temp.remarks" placeholder="备注" />
+                <el-form-item label="纳税人识别号" prop="taxRegistrationCertificateNo" label-width="110px">
+                    <el-input size="small" v-model="temp.taxRegistrationCertificateNo" placeholder="统一社会信用代码或纳税人识别号" style="width:465px" />
                 </el-form-item>
-                <el-form-item label="纳税人识别号" prop="taxRegistrationCertificateNo" label-width="134px">
-                    <el-input v-model="temp.taxRegistrationCertificateNo" placeholder="统一社会信用代码或纳税人识别号" style="width:440px" />
+                <el-form-item label="备注" prop="remarks">
+                    <el-input size="small" v-model="temp.remarks" placeholder="备注" />
+                </el-form-item>
+                <el-form-item label="销售人员" prop="remarks">
+                    <el-select v-model="temp.salesMan" style="width:185px" size="small" class="filter-item" placeholder="销售人员">
+                        <el-option v-for="item in staffList" :key="item.id" :label="item.staffName" :value="item.id" />
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="建档日期" prop="remarks">
+                    <el-date-picker :editable="false" v-model="temp.createDate" type="date" placeholder="建档日期" size="small" :clearable="false" value-format="yyyy-MM-dd" style="width:185px"/>
                 </el-form-item>
                 <el-form-item label="是否开票" prop="isInvoice">
                     <el-radio v-model="temp.isInvoice" :label="1">是</el-radio>
@@ -225,7 +230,7 @@
     </div>
 </template>
 <script>
-import { getCust, saveCust, delCust, updateCustDisabled, updateOverdraftBalanceById1, getChannelTree, getCustTypeTree, getPriceGroup } from '@/api/basedata';
+import { getStaff, getCust, saveCust, delCust, updateCustDisabled, updateOverdraftBalanceById1, getChannelTree, getCustTypeTree, getPriceGroup } from '@/api/basedata';
 import Pagination from '@/components/Pagination';
 import Areas from "@/components/areas";
 export default {
@@ -250,6 +255,7 @@ export default {
             menuVisible1: false,
             total: 0,
             listLoading: true,
+            staffList: [],
             listQuery: {
                 pageIndex: 1,
                 pageNum: 20,
@@ -278,6 +284,8 @@ export default {
                 city: '',
                 area: '',
                 district: '',
+                salesMan: '',
+                createDate: '',
                 priceGroupId: '',
                 custTypeName: '',
                 isInvoice: 0,
@@ -300,6 +308,8 @@ export default {
                 city: '',
                 area: '',
                 district: '',
+                salesMan: '',
+                createDate: '',
                 priceGroupId: '',
                 custTypeName: '',
                 isInvoice: 0,
@@ -322,6 +332,7 @@ export default {
     mounted() {
         this.getList();
         this.getTree();
+        this.getStaffList()
     },
     filters: {
         Fixed: function(num) {
@@ -349,6 +360,13 @@ export default {
                 map.addOverlay(marker)
             })
 
+        },
+        getStaffList() {
+            getStaff().then(res => {
+                this.staffList = res.data.data
+            }).catch(err => {
+                console.log('员工列表获取失败')
+            })
         },
         showLine() {
             this.dialogVisible = true
@@ -489,18 +507,18 @@ export default {
             })
         },
         handleUpdate(val, id) {
-            this.$prompt('已赊销金额', '修改已赊销金额', {
+            this.$prompt('已赊销金额(元)', '修改已赊销金额', {
                 confirmButtonText: '确定',
                 closeOnClickModal: false,
                 cancelButtonText: '取消',
-                inputValue: parseFloat(val).toFixed(2),
+                inputValue: val ? parseFloat(val).toFixed(2) : 0.00,
                 closeOnClickModal: false,
                 inputType: 'text',
                 inputPattern: /^\d+$|^\d*\.\d*$/,
                 inputErrorMessage: '格式不正确'
             }).then(({ value }) => {
                 this.updateValue(id, value)
-            });
+            }).catch(() => {})
         },
         updateValue(id, value) {
             var obj = { id: id, overdraftBalance: value }
@@ -533,6 +551,7 @@ export default {
 }
 </style>
 <style scoped>
+.app-container{min-width: 1220px}
 #allmap {
     width: 960px;
     height: 600px;

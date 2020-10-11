@@ -64,7 +64,7 @@
                     <span>{{row.isDisable==0?'是':'否'}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" width="180">
+            <el-table-column label="操作" align="center" width="150">
                 <template slot-scope="{row}">
                     <el-button type="text" size="small" @click="handleCompile(row)">编辑</el-button>
                     <el-button type="text" size="small" @click="handleDel(row.id)">删除</el-button>
@@ -102,6 +102,12 @@
                 </el-form-item>
                 <el-form-item label="开户账号" prop="account">
                     <el-input v-model="temp.account" placeholder="开户账号" />
+                </el-form-item>
+                <el-form-item label="预付款余额" prop="advpBalance">
+                    <el-input v-model="temp.advpBalance" placeholder="预付款余额" />
+                </el-form-item>
+                <el-form-item label="应付款余额" prop="overdraftBalance">
+                    <el-input v-model="temp.overdraftBalance" placeholder="应付款余额" />
                 </el-form-item>
                 <el-form-item label="地址" prop="addr">
                     <el-input v-model="temp.addr" placeholder="详细地址" />
@@ -152,6 +158,8 @@ export default {
                 tel: '',
                 email: '',
                 wechat: '',
+                advpBalance: '',
+                overdraftBalance: '',
                 bank: '',
                 account: '',
                 addr: '',
