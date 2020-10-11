@@ -260,7 +260,6 @@ export default {
         url: '/drp/file/cosFileInfo/getCOSFileName?suffix=' + filetype.split('/')[1]
       }).then(res => {
         const imgName = res.data.replace(/\s+/g, '')
-        const path = '/drp/mmjpg'
         var bucket = 'drp-1300414844'
         cos.putObject({
           Bucket: bucket,
