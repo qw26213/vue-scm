@@ -304,6 +304,22 @@ export function buildInvoice(data) {
   })
 }
 
+export function buildSalesInvoice(data) {
+  return request({
+    url: '/drp/so/sales/buildInvoiceByHeaderId',
+    method: 'post',
+    data
+  })
+}
+
+export function buildOrderInvoice(data) {
+  return request({
+    url: '/drp/so/salesOrder/buildInvoiceByHeaderId',
+    method: 'post',
+    data
+  })
+}
+
 // -------------------------------------销售日结----------------------------------------
 export function getEverydayTotal(data) {
   return request({

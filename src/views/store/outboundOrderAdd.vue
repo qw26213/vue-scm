@@ -121,8 +121,8 @@
     <el-dialog :close-on-click-modal="false" title="选择拆分方式" :visible.sync="dialogFormVisible" width="400px">
       <el-form style="margin-top:30px;text-align:center;">
         <el-form-item label="">
-          <el-radio v-model="splitBillType" :label="0" style="margin-right:10px">拆分</el-radio>
-          <el-radio v-model="splitBillType" :label="1">复制</el-radio>
+          <el-radio v-model="splitBillType" :label="1" style="margin-right:10px">拆分</el-radio>
+          <el-radio v-model="splitBillType" :label="2">复制</el-radio>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer" align="center">
@@ -151,7 +151,7 @@ export default {
       status: this.$route.query.status,
       taxFilingCategoryCode: userInfo.taxFilingCategoryCode,
       tableData: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
-      splitBillType: 0,
+      splitBillType: 1,
       dialogFormVisible: false,
       temp: {
         remarks: '',

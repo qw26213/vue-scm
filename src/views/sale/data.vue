@@ -92,7 +92,6 @@
             <span v-if="row.status==0" class="ctrl" @click="handleCheck(row.id, row.billDate)">审核</span>
             <span v-if="row.status<=0" class="ctrl del" @click="handleDel(row.id, row.billDate)">删除</span>
             <span v-if="row.status==1" class="ctrl" @click="handleCreateBill(row.isOutboundOrder,row.id,row.outboundOrderHeaderId,row.billDate)">{{ row.isOutboundOrder==0 ? '生成' : '查看' }}出库单</span>
-            <span v-if="row.status==1" class="ctrl" @click="handleCreateVouter(row.isDelivery,row.id,row.jeHeaderId,row.billDate)">{{ row.isDelivery==0?'生成':'查看' }}发票</span>
             <span v-if="row.status==1" class="ctrl" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId,row.billDate)">{{ row.isJeHeader==0?'生成':'查看' }}销售凭证</span>
             <span class="ctrl" @click="printBill(row)">打印</span>
           </template>
@@ -128,7 +127,7 @@
   </div>
 </template>
 <script>
-import { getSales, delSales, auditSales, buildSales, buildSaleVoucherByHeaderId, buildInvoice, getAuditInfoByHeaderId, printByHeaderId } from '@/api/sale'
+import { getSales, delSales, auditSales, buildSales, buildSaleVoucherByHeaderId, buildInvoice, getAuditInfoByHeaderId, printByHeaderId, buildOrderInvoice } from '@/api/sale'
 import staffList from '@/components/selects/staffList'
 import Auditconfirm from '@/components/Auditconfirm/index'
 import custList from '@/components/selects/custList'
@@ -231,7 +230,7 @@ export default {
     },
     handleCreateBill(status, id1, id2, billDate) {
       if (status !== 0) {
-        this.$router.push('/store/outboundOrderModify?id=' + id2 + '&status=' + status)
+        this.$router.push('/store/outboundOrderDetail?id=' + id2 + '&status=' + status)
       } else {
         this.curBillId = id1
         this.curBillDate = billDate
@@ -275,7 +274,7 @@ export default {
     createVouter() {
       var obj = { isBillDate: this.isBillDate, id: this.curBillId, billDate: this.curBillDate }
       buildSaleVoucherByHeaderId(obj).then(res => {
-        if (res.data.errorCode == 0) {
+        if (res.data.errorCode === '0') {
           this.dialogFormVisible2 = false
           this.getList()
           this.$message.success('生成销售凭证成功！')

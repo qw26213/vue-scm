@@ -156,8 +156,8 @@ export default {
         }
         this.tableData = addNullObj(res.data.data.warehousingEntryReturnedLine)
         this.tableData.forEach(item => {
-          if (item[i].taxRate < 1) {
-            item[i].taxRate = item[i].taxRate * 100
+          if (item.taxRate < 1) {
+            item.taxRate = item.taxRate * 100
           }
         })
       })

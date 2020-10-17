@@ -2,11 +2,11 @@
     <div>
         <el-dialog :close-on-click-modal="false" title="请选择销售单" :visible.sync="visible" width="800px">
             <div class="filter-container">
-                <el-date-picker :editable="false" v-model="listQuery.queryParam.date1" type="date" placeholder="开始日期" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+                <el-date-picker :editable="false" v-model="listQuery.queryParam.date1" type="date" placeholder="开始日期" style="width:130px" size="small" :clearable="false" value-format="yyyy-MM-dd" />
                 <span class="zhi">至</span>
-                <el-date-picker :editable="false" v-model="listQuery.queryParam.date2" type="date" placeholder="结束日期" size="small" :clearable="false" value-format="yyyy-MM-dd"></el-date-picker>
+                <el-date-picker :editable="false" v-model="listQuery.queryParam.date2" type="date" placeholder="结束日期" style="width:130px" size="small" :clearable="false" value-format="yyyy-MM-dd" />
                 <el-input size="small" v-model="listQuery.queryParam.billNo" placeholder="单据号" style="width: 120px;" />
-                <custList @selectChange="selectChange" ctrType="list"></custList>
+                <custList @selectChange="selectChange" ctrType="list" />
                 <el-button size="small" type="primary" @click="getList">查询</el-button>
             </div>
             <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">

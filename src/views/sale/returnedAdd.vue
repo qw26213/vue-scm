@@ -265,7 +265,13 @@ export default {
           this.temp[key] = res.data.data[key]
         }
         this.tableData = addNullObj(res.data.data.salesReturnedLine)
+        this.tableData.forEach(item => {
+          if (item.taxRate < 1) {
+            item.taxRate = item.taxRate * 100
+          }
+        })
         this.settleData = addNullObj2(res.data.data.settleTypeReturnedDetail)
+        this.getItemList()
       })
     },
     calculate(index) {
