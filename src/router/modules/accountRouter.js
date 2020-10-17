@@ -69,6 +69,14 @@ const accountRouter = {
                 title: '凭证汇总表',
                 roles: ['381040']
             }
+        }, {
+            path: 'createvoucher',
+            component: () => import ('@/views/voucher/createvoucher'),
+            name: 'createvoucher',
+            meta: {
+                title: '生成凭证',
+                roles: ['381040']
+            }
         }]
     }, {
         path: '/accbook',

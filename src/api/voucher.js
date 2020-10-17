@@ -142,6 +142,22 @@ export function delVoucher(data) {
   })
 }
 
+export function buildVoucherByBill(data) {
+  return request({
+    url: '/drp/gl/voucher/buildVoucherByBill',
+    method: 'post',
+    data
+  })
+}
+
+export function voucherLogList(data) {
+  return request({
+    url: '/drp/log/voucher/voucherLogList',
+    method: 'post',
+    data
+  })
+}
+
 export function getVoucherAuditList(data) {
   return request({
     url: '/drp/gl/voucher/getVoucherAuditList',
