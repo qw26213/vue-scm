@@ -37,7 +37,7 @@ const saleRouter = {
         }
     }, {
         path: 'detail',
-        component: () => import('@/views/sale/detail'),
+        component: () => import('@/views/sale/add'),
         name: 'saleDetail',
         hidden: true,
         meta: {
@@ -98,7 +98,7 @@ const saleRouter = {
         }
     }, {
         path: 'returnedDetail',
-        component: () => import('@/views/sale/returnedDetail'),
+        component: () => import('@/views/sale/returnedAdd'),
         name: 'saleReturnedDetail',
         hidden:true,
         meta: {
@@ -132,6 +132,15 @@ const saleRouter = {
             title: '编辑销售配送'
         }
     }, {
+        path: 'deliveryDetail',
+        component: () => import('@/views/sale/deliveryAdd'),
+        name: 'deliveryDetail',
+        hidden: true,
+        meta: {
+            roles: ['144020'],
+            title: '查看销售配送'
+        }
+    }, {
         path: 'invoice',
         component: () => import('@/views/sale/invoice'),
         name: 'saleInvoice',
@@ -158,6 +167,14 @@ const saleRouter = {
             title: '编辑销售发票'
         }
     }, {
+        path: 'invoiceDeail',
+        component: () => import('@/views/sale/invoiceAdd'),
+        name: 'invoiceAdd',
+        meta: {
+            roles: ['1460'],
+            title: '查看销售发票'
+        }
+    }, {
         path: 'everyday',
         component: () => import('@/views/sale/everyday'),
         name: 'saleInvoice',
@@ -182,6 +199,15 @@ const saleRouter = {
         meta: {
             roles: ['146020'],
             title: '编辑销售日结'
+        }
+    }, {
+        path: 'everydayDetail',
+        component: () => import('@/views/sale/everydayAdd'),
+        name: 'everydayAdd',
+        hidden: true,
+        meta: {
+            roles: ['146020'],
+            title: '查看销售日结'
         }
     }]
 }

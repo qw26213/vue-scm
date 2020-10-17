@@ -21,7 +21,7 @@
           <div class="listItem">
             <label>纳税类型:</label>{{ managementInfo.taxFilingCategoryName }}(纳税识别号:{{ managementInfo.taxRegistrationCertificateNo }})</div>
           <div class="listItem">
-            <label>资源容量:</label>{{ managementInfo.cosResSize }}GB(已使用{{ managementInfo.cosResUsedSize }}GB)
+            <label>资源容量:</label>{{ managementInfo.cosResSize | Fixed }}GB (已使用{{ managementInfo.cosResUsedSize | Fixed }}GB)
           </div>
           <!-- <div class="listItem"><label>业务有效期:</label>{{managementInfo.bizExpirationDate}}</div> -->
           <!-- <div class="listItem"><label>账套名称:</label>{{managementInfo.bookName}}</div> -->
@@ -216,6 +216,12 @@ import { getmanagementInfo, getMapById, getUserList, registerLoadArea, registerL
 import { updateInfo, closeAccount, resetBook, saveUser, updatePSW, getRole } from '@/api/user'
 import { getStaff } from '@/api/basedata'
 export default {
+  filters: {
+    Fixed: function(num) {
+      if (!num) { return '0.00' }
+      return parseFloat(num).toFixed(2)
+    }
+  },
   data() {
     return {
       dialogFormVisible1: false,

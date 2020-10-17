@@ -63,11 +63,6 @@
             <span>{{ row.itemAmount|Fixed }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="销售费用" align="right">
-          <template slot-scope="{row}">
-            <span>{{ row.rebateAmount|Fixed }}</span>
-          </template>
-        </el-table-column>
         <el-table-column label="状态" align="center">
           <template slot-scope="{row}">
             <span>{{ row.status==1?'已审核':row.status==2?'已生成':'待审核' }}</span>

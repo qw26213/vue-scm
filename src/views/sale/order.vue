@@ -284,7 +284,7 @@ export default {
       this.$router.push('/sale/orderModify?id=' + row.id + '&billDate=' + row.billDate)
     },
     handleScan(row) {
-      this.$router.push('/sale/orderAdd?id=' + row.id + '&billDate=' + row.billDate)
+      this.$router.push('/sale/orderDetail?id=' + row.id + '&billDate=' + row.billDate)
     },
     handleCreateVouter(status, id1, id2, billDate) {
       if (status !== 0) {

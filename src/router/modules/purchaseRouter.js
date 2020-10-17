@@ -37,7 +37,7 @@ const purchaseRouter = {
         }
     }, {
         path: 'detail',
-        component: () => import ('@/views/purchase/detail'),
+        component: () => import ('@/views/purchase/add'),
         name: 'purchaseDetail',
         hidden: true,
         meta: {
@@ -72,29 +72,13 @@ const purchaseRouter = {
         }
     }, {
         path: 'returnedDetail',
-        component: () => import ('@/views/purchase/returnedDetail'),
+        component: () => import ('@/views/purchase/returnedAdd'),
         name: 'purchaseReturnedDetail',
         hidden: true,
         meta: {
             roles: ['1030'],
             title: '查看采购退货'
         }
-    // }, {
-    //     path: 'purchaseOrder',
-    //     component: () => import ('@/views/purchase/list'),
-    //     name: 'purchaseOrder',
-    //     meta: {
-    //         roles: ['1100'],
-    //         title: '采购订单'
-    //     }
-    // }, {
-    //     path: 'purchaseInvoice',
-    //     component: () => import ('@/views/purchase/invoice'),
-    //     name: 'purchaseInvoice',
-    //     meta: {
-    //         roles: ['1100'],
-    //         title: '采购发票'
-    //     }
     }]
 }
 export default purchaseRouter;

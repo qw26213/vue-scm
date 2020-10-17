@@ -222,6 +222,10 @@ export default {
       this.$store.dispatch('tagsView/delView', this.$route)
       this.$router.push('/sale/everydayModify?id=' + id)
     },
+    handleScan(id) {
+      this.$store.dispatch('tagsView/delView', this.$route)
+      this.$router.push('/sale/everydayDetail?id=' + id)
+    },
     handleDel(id) {
       this.$confirm('确定删除吗?', '提示', {
         confirmButtonText: '确定',

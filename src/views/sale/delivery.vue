@@ -276,7 +276,7 @@ export default {
       this.$router.push('/sale/deliveryModify?id=' + row.id + '&billDate=' + row.billDate)
     },
     handleScan(row) {
-      this.$router.push('/sale/deliveryAdd?id=' + row.id + '&billDate=' + row.billDate)
+      this.$router.push('/sale/deliveryDetail?id=' + row.id + '&billDate=' + row.billDate)
     },
     handleDel(id, date) {
       this.$confirm('确定要删除吗?', '提示', {

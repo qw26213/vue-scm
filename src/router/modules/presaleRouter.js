@@ -38,7 +38,7 @@ const presaleRouter = {
         }
     }, {
         path: 'detail',
-        component: () => import ('@/views/presale/detail'),
+        component: () => import ('@/views/presale/add'),
         name: 'presaleDetail',
         hidden: true,
         meta: {
@@ -73,7 +73,7 @@ const presaleRouter = {
         }
     }, {
         path: 'returnedDetail',
-        component: () => import ('@/views/presale/returnedDetail'),
+        component: () => import ('@/views/presale/returnedAdd'),
         name: 'presaleReturnedDetail',
         hidden: true,
         meta: {

@@ -124,8 +124,9 @@
           </el-form-item>
         </el-form>
       </div>
-      <div v-if="status!=1&&status!=2" class="tx-c" style="margin-top:15px">
-        <el-button class="filter-item" type="primary" @click="save">保存</el-button>
+      <div class="tx-c" style="margin-top:15px">
+        <el-button v-if="$route.path.indexOf('etail') < 0" class="submitBtn" type="primary" @click="save">保 存</el-button>
+        <el-button v-else class="submitBtn" type="primary" @click="$store.dispatch('tagsView/delView', $route)">关 闭</el-button>
       </div>
     </div>
     <el-dialog :close-on-click-modal="false" title="结算方式" :visible.sync="dialogFormVisible" width="392px">
@@ -177,7 +178,7 @@ export default {
       dialogFormVisible: false,
       tableData: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
       settleData: [{}, {}, {}, {}, {}],
-      keys: ['itemId', 'norms', 'uom', 'subUom', 'exchangeRate', 'batchNo', 'productionDate', 'qualityName', 'qualityDays', 'qty', 'vatPrice', 'taxRate', 'taxAmount', 'vatAmount', 'invoiceNo', 'bGift'],
+      keys: ['itemId', 'norms', 'uom', 'subUom', 'exchangeRate', 'batchNo', 'productionDate', 'qualityName', 'qualityDays', 'qty', 'vatPrice', 'taxRate', 'taxAmount', 'vatAmount', 'invoiceNo', 'bGift', 'amount'],
       temp: {
         billDate: getNowDate(),
         billNo: '',

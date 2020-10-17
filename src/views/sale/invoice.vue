@@ -196,7 +196,7 @@ export default {
       this.$router.push('/sale/invoiceModify?id=' + row.id + '&invoiceDate=' + row.invoiceDate)
     },
     handleScan(row) {
-      this.$router.push('/sale/detail?id=' + row.id + '&invoiceDate=' + row.invoiceDate)
+      this.$router.push('/sale/invoiceDetail?id=' + row.id + '&invoiceDate=' + row.invoiceDate)
     },
     handleCreateVouter(status, id1, id2, invoiceDate) {
       if (status !== 0) {
