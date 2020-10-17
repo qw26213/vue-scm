@@ -69,5 +69,5 @@ export default {
 .label:first-child {
     margin-left: 0
 }
-.label-item{margin-right:  15px; float: left;}
+.label-item{margin-right:  15px; float: left;font-size: 14px;}
 </style>
