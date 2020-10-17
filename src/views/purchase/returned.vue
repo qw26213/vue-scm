@@ -38,16 +38,6 @@
             <span>{{ row.supplierName }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="收款方式">
-          <template slot-scope="{row}">
-            <span>{{ row.paymentTypeName }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="收款到期日" align="center">
-          <template slot-scope="{row}">
-            <span>{{ row.paymentDueDate }}</span>
-          </template>
-        </el-table-column>
         <el-table-column label="使用预收" align="right">
           <template slot-scope="{row}">
             <span>{{ row.advPayAmount|Fixed }}</span>

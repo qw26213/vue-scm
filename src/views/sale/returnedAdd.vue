@@ -23,12 +23,6 @@
         <el-form-item label="业务员:" prop="staffId">
           <staffList :select-id="temp.staffId" @selectChange="selectChange" />
         </el-form-item>
-        <el-form-item label="收款方式:" prop="paymentTypeId">
-          <paymentTypeList :select-id="temp.paymentTypeId" @selectChange="selectChange" />
-        </el-form-item>
-        <el-form-item label="收款到期日:" prop="paymentDueDate">
-          <el-date-picker v-model="temp.paymentDueDate" :editable="false" type="date" placeholder="收款到期日" size="small" :clearable="false" value-format="yyyy-MM-dd" />
-        </el-form-item>
         <el-form-item label="合计金额:" prop="itemAmount">
           <el-input v-model="temp.itemAmount" size="small" placeholder="合计金额" disabled />
         </el-form-item>
@@ -48,9 +42,9 @@
         </el-form-item>
         <el-form-item label="退款类型:" prop="returnedType">
           <el-select v-model="temp.returnedType" placeholder="退款类型" size="small">
-            <el-option label="退款退货" :value="0" />
-            <el-option label="退换货" :value="1" />
-            <el-option label="只退款" :value="2" />
+            <el-option label="退款退货" value="0" />
+            <el-option label="退换货" value="1" />
+            <el-option label="只退款" value="2" />
           </el-select>
         </el-form-item>
       </el-form>
@@ -103,11 +97,6 @@
             <input v-model="scope.row.qty" type="text" class="inputCell tx-r" @change="calculate(scope.$index)">
           </template>
         </el-table-column>
-        <el-table-column label="金额">
-          <template slot-scope="{row}">
-            <input v-model="row.amount" type="text" class="inputCell tx-r" disabled>
-          </template>
-        </el-table-column>
         <el-table-column label="税率(%)">
           <template slot-scope="scope">
             <input v-model="scope.row.taxRate" type="text" class="inputCell tx-r" @change="calculate(scope.$index)">
@@ -121,6 +110,11 @@
         <el-table-column label="价税合计">
           <template slot-scope="{row}">
             <input v-model="row.vatAmount" type="text" class="inputCell tx-r" disabled>
+          </template>
+        </el-table-column>
+        <el-table-column label="金额">
+          <template slot-scope="{row}">
+            <input v-model="row.amount" type="text" class="inputCell tx-r" disabled>
           </template>
         </el-table-column>
       </el-table>

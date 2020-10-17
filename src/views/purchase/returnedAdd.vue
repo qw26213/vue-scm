@@ -17,12 +17,6 @@
         <el-form-item label="业务员:" prop="staffId">
           <staffList :select-id="temp.staffId" @selectChange="selectChange" />
         </el-form-item>
-        <el-form-item label="收款方式:" prop="paymentTypeId">
-          <paymentTypeList :select-id="temp.paymentTypeId" @selectChange="selectChange" />
-        </el-form-item>
-        <el-form-item label="收款到期日:" prop="paymentDueDate">
-          <el-date-picker v-model="temp.paymentDueDate" :editable="false" type="date" placeholder="付款到期日" size="small" :clearable="false" value-format="yyyy-MM-dd" />
-        </el-form-item>
         <el-form-item label="合计金额:" prop="itemAmount">
           <el-input v-model="temp.itemAmount" size="small" placeholder="合计金额" disabled />
         </el-form-item>

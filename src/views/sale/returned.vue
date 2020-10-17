@@ -37,16 +37,6 @@
             <span>{{ row.truckName }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="付款方式" align="center">
-          <template slot-scope="{row}">
-            <span>{{ row.paymentTypeName }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="付款到期日" width="100" align="center">
-          <template slot-scope="{row}">
-            <span>{{ row.paymentDueDate }}</span>
-          </template>
-        </el-table-column>
         <el-table-column label="使用预付" align="right">
           <template slot-scope="{row}">
             <span>{{ row.advPayAmount|Fixed }}</span>
@@ -60,11 +50,6 @@
         <el-table-column label="价税合计" align="right">
           <template slot-scope="{row}">
             <span>{{ row.itemAmount|Fixed }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="返利金额" align="right">
-          <template slot-scope="{row}">
-            <span>{{ row.rebateAmount|Fixed }}</span>
           </template>
         </el-table-column>
         <el-table-column label="状态" align="center">
