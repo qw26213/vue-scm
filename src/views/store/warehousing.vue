@@ -79,7 +79,7 @@
         <el-button type="primary" @click="createBill">确定</el-button>
       </div>
     </el-dialog>
-    <Auditconfirm :dialogvisible.sync="auditModalVisible" @auditBill="checkItem" />
+    <Auditconfirm :dialogvisible.sync="auditModalVisible" :type="auditType" :remarklist="remarklist" @auditBill="checkItem" />
   </div>
 </template>
 <script>
@@ -105,6 +105,7 @@ export default {
       auditType: '',
       remarklist: [],
       listLoading: true,
+      auditType: '',
       listQuery: {
         pageIndex: 1,
         pageNum: 20,
@@ -178,7 +179,7 @@ export default {
     },
     handleCreateBill(status, id1, id2) {
       if (status !== 0) {
-        this.$router.push('/purchase/modify?id=' + id2 + '&status=' + status)
+        this.$router.push('/purchase/detail?id=' + id2 + '&status=' + status)
       } else {
         this.curBillId = id1
         this.dialogFormVisible = true

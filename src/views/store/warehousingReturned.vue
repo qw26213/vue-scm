@@ -178,7 +178,7 @@ export default {
     },
     handleCreateBill(status, id1, id2) {
       if (status !== 0) {
-        this.$router.push('/purchaseReturned/modify?id=' + id2 + '&status=' + status)
+        this.$router.push('/purchase/returnedAdd?id=' + id2 + '&status=' + status)
       } else {
         this.curBillId = id1
         this.dialogFormVisible = true
