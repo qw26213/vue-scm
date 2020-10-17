@@ -165,6 +165,7 @@ import itemList from '@/components/selects/itemList'
 import bizTypeList from '@/components/selects/bizTypeList'
 import settleTypeList from '@/components/selects/settleTypeList'
 import { getName, getNowDate } from '@/utils/auth'
+var userInfo = JSON.parse(sessionStorage.userInfo)
 export default {
   name: 'PurchaseReturnedAdd',
   components: { staffList, warehouseList, supplierList, bizTypeList, paymentTypeList, itemList, settleTypeList },
@@ -172,10 +173,11 @@ export default {
     return {
       id: '',
       status: this.$route.query.status,
+      taxFilingCategoryCode: userInfo.taxFilingCategoryCode,
       dialogFormVisible: false,
       tableData: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
       settleData: [{}, {}, {}, {}, {}],
-      keys: ['itemId', 'itemCode', 'itemName', 'norms', 'uom', 'subUom', 'exchangeRate', 'batchNo', 'productionDate', 'qualityName', 'qualityDays', 'qty', 'price', 'amount', 'taxRate', 'taxAmount', 'vatAmount', 'invoiceNo', 'bGift'],
+      keys: ['itemId', 'norms', 'uom', 'subUom', 'exchangeRate', 'batchNo', 'productionDate', 'qualityName', 'qualityDays', 'qty', 'vatPrice', 'taxRate', 'taxAmount', 'vatAmount', 'invoiceNo', 'bGift'],
       temp: {
         billDate: getNowDate(),
         remarks: '',

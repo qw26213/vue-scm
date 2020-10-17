@@ -43,7 +43,7 @@
         <el-table-column label="序号" type="index" width="50" align="center" />
         <el-table-column label="商品" width="300">
           <template slot-scope="scope">
-            <itemList :select-id="scope.row.itemId" :select-code="scope.row.itemCode" :index="scope.$index" @changeVal="changeVal" />
+            <itemList :select-id="scope.row.itemId" :index="scope.$index" @changeVal="changeVal" />
           </template>
         </el-table-column>
         <el-table-column label="规格">
@@ -172,12 +172,12 @@ export default {
       id: '',
       isAdmin: userInfo.isAdmin === 1,
       userSalePriceType: userInfo.salePriceType,
-      taxFilingCategoryCode: sessionStorage.taxFilingCategoryCode,
+      taxFilingCategoryCode: userInfo.taxFilingCategoryCode,
       status: this.$route.query.status,
       dialogFormVisible: false,
       tableData: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
       settleData: [{}, {}, {}, {}, {}],
-      keys: ['itemId', 'itemCode', 'itemName', 'norms', 'uom', 'subUom', 'exchangeRate', 'batchNo', 'productionDate', 'qualityName', 'qualityDays', 'qty', 'price', 'amount', 'taxRate', 'taxAmount', 'vatAmount', 'invoiceNo', 'bGift'],
+      keys: ['itemId', 'norms', 'uom', 'subUom', 'exchangeRate', 'batchNo', 'productionDate', 'qualityName', 'qualityDays', 'qty', 'vatPrice', 'taxRate', 'taxAmount', 'vatAmount', 'invoiceNo', 'bGift'],
       temp: {
         billDate: getNowDate(),
         billNo: '',
@@ -240,11 +240,9 @@ export default {
           var amount = parseFloat(Number(qty) * Number(price)).toFixed(2)
           var taxAmount = parseFloat(Number(vatAmount) - Number(amount)).toFixed(2)
           this.$set(this.tableData[index], 'taxAmount', taxAmount)
-          this.$set(this.tableData[index], 'price', price)
           this.$set(this.tableData[index], 'amount', amount)
         } else {
           this.$set(this.tableData[index], 'taxRate', 0)
-          this.$set(this.tableData[index], 'price', 0)
           this.$set(this.tableData[index], 'amount', 0)
         }
         this.calculateTotal()

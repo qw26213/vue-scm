@@ -38,7 +38,8 @@ export default {
                     index: this.curIndex,
                     subUom: obj.subUom,
                     exchangeRate: obj.exchangeRate,
-                    salePriceType: obj.salePriceType
+                    salePriceType: obj.salePriceType,
+                    qualityDays: obj.qualityDays
                 }
                 this.$emit('changeVal', data)
             }
