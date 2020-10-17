@@ -83,11 +83,6 @@
             <input v-model="row.amount" type="text" class="inputCell tx-r" disabled>
           </template>
         </el-table-column>
-        <el-table-column label="是否赠品" align="center">
-          <template slot-scope="{row}">
-            <el-checkbox v-model="row.salesTypeCode" false-label="0" true-label="1" />
-          </template>
-        </el-table-column>
       </el-table>
       <div class="dataTable" style="margin-top: 10px">
         <el-form label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
@@ -160,6 +155,11 @@ export default {
           this.temp[key] = res.data.data[key]
         }
         this.tableData = addNullObj(res.data.data.warehousingEntryLine)
+        this.tableData.forEach(item => {
+          if (item[i].taxRate < 1) {
+            item[i].taxRate = item[i].taxRate * 100
+          }
+        })
       })
     }
   },

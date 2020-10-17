@@ -60,7 +60,7 @@
             <span v-if="row.status==0" class="ctrl" @click="handleCheck(row.id)">审核</span>
             <span v-if="row.status==-1" class="ctrl" @click="showAuditInfo(row.id)">查看审核意见</span>
             <span v-if="row.status<=0" class="ctrl del" @click="handleDel(row.id)">删除</span>
-            <span v-if="row.status==1" class="ctrl" @click="handleCreateBill(row.isPurchase,row.id,row.purchaseHeaderId)">{{ row.isPurchase==0?'生成':'查看' }}采购退货单</span>
+            <span v-if="row.status==1" class="ctrl" @click="handleCreateBill(row.isPurchaseReturned,row.id,row.purchaseReturnedHeaderId)">{{ row.isPurchaseReturned==0?'生成':'查看' }}采购退货单</span>
             <span class="ctrl" @click="printBill(row)">打印</span>
           </template>
         </el-table-column>

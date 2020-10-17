@@ -144,6 +144,11 @@ export default {
           this.temp[key] = res.data.data[key]
         }
         this.tableData = addNullObj(res.data.data.movementLine)
+        this.tableData.forEach(item => {
+          if (item[i].taxRate < 1) {
+            item[i].taxRate = item[i].taxRate * 100
+          }
+        })
       })
     }
   },

@@ -213,7 +213,7 @@ export default {
         rebateAmount: 0,
         withoutPayAmount: 0,
         auditDate: '',
-        returnedType: 0,
+        returnedType: '0',
         auditor: '',
         recordDate: getNowDate() + ' 00:00:00',
         recorder: getName()
@@ -228,7 +228,9 @@ export default {
   },
   created() {
     this.$store.dispatch('basedata/getSalesReturnedSettleType')
+    this.$store.dispatch('basedata/getSalesTypeArr')
     if (this.$route.query.id) {
+      this.getItemList()
       this.id = this.$route.query.id
       getSalesReturnedById(this.id).then(res => {
         if (res.data.data) {
@@ -239,6 +241,9 @@ export default {
           for (var i = 0; i < res.data.data.salesReturnedLine.length; i++) {
             for (var j = 0; j < this.keys.length; j++) {
               this.tableData[i][this.keys[j]] = res.data.data.salesReturnedLine[i][this.keys[j]]
+              if (this.tableData[i].taxRate < 1) {
+                this.tableData[i].taxRate = this.tableData[i].taxRate * 100
+              }
             }
           }
           this.settleData = addNullObj2(res.data.data.settleTypeDetail || [])
@@ -249,7 +254,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch('basedata/getPresaleReturnedSettleType')
-    if (!this.status) {
+    if (this.$route.path.indexOf('Add') > 0) {
       this.modalTableVisible = true
     }
   },

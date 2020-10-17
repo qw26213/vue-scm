@@ -186,6 +186,11 @@ export default {
           this.temp.autoAdvr = true
           const resp = res.data.data.inventoryLine || []
           this.tableData = addNullObj(resp)
+          this.tableData.forEach(item => {
+            if (item[i].taxRate < 1) {
+              item[i].taxRate = item[i].taxRate * 100
+            }
+          })
           this.getItemList()
         }
       })
