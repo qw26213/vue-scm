@@ -71,6 +71,15 @@ const saleRouter = {
             title: '编辑销售订单'
         }
     }, {
+        path: 'orderDetail',
+        component: () => import('@/views/sale/orderDetail'),
+        hidden:true,
+        name: 'orderDetail',
+        meta: {
+            roles: ['141020'],
+            title: '查看销售订单'
+        }
+    }, {
         path: 'returned',
         component: () => import('@/views/sale/returned'),
         name: 'saleReturned',
