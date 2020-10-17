@@ -6,16 +6,16 @@
             <el-button size="small" type="primary" @click="createvoucher">生成凭证</el-button>
             <el-button size="small" type="primary" @click="queryLog">查看日志</el-button>
         </div>
-        <div class="contentDiv">
-            <el-checkbox :false-label="0" :true-label="1" style="float:left;margin-right:5px" v-model="rep.isPurchase" /><span style="float:left">进货单</span>
-            <el-checkbox :false-label="0" :true-label="1" style="float:left;margin-right:5px" v-model="rep.isPurchaseReturned" /><span style="float:left">采购退货单</span>
-            <el-checkbox :false-label="0" :true-label="1" style="float:left;margin-right:5px" v-model="rep.isSales" /><span style="float:left">销售单/销售订单</span>
-            <el-checkbox :false-label="0" :true-label="1" style="float:left;margin-right:5px" v-model="rep.isSalesReturned" /><span style="float:left">销售退货单</span>
-            <el-checkbox :false-label="0" :true-label="1" style="float:left;margin-right:5px" v-model="rep.isPresale" /><span style="float:left">预收单</span>
-            <el-checkbox :false-label="0" :true-label="1" style="float:left;margin-right:5px" v-model="rep.isPresaleReturned" /><span style="float:left">预收退款单</span>
-            <el-checkbox :false-label="0" :true-label="1" style="float:left;margin-right:5px" v-model="rep.isReceive" /><span style="float:left">收款单</span>
-            <el-checkbox :false-label="0" :true-label="1" style="float:left;margin-right:5px" v-model="rep.isPayment" /><span style="float:left">付款单</span>
-            <el-checkbox :false-label="0" :true-label="1" style="float:left;margin-right:5px" v-model="rep.isInventory" /><span style="float:left">盘点单</span>
+        <div class="contentDiv clearfix">
+            <el-checkbox :false-label="0" :true-label="1" style="float:left;margin-right:5px" v-model="rep.isPurchase" /><span class="label-item">进货单</span>
+            <el-checkbox :false-label="0" :true-label="1" style="float:left;margin-right:5px" v-model="rep.isPurchaseReturned" /><span class="label-item">采购退货单</span>
+            <el-checkbox :false-label="0" :true-label="1" style="float:left;margin-right:5px" v-model="rep.isSales" /><span class="label-item">销售单/销售订单</span>
+            <el-checkbox :false-label="0" :true-label="1" style="float:left;margin-right:5px" v-model="rep.isSalesReturned" /><span class="label-item">销售退货单</span>
+            <el-checkbox :false-label="0" :true-label="1" style="float:left;margin-right:5px" v-model="rep.isPresale" /><span class="label-item">预收单</span>
+            <el-checkbox :false-label="0" :true-label="1" style="float:left;margin-right:5px" v-model="rep.isPresaleReturned" /><span class="label-item">预收退款单</span>
+            <el-checkbox :false-label="0" :true-label="1" style="float:left;margin-right:5px" v-model="rep.isReceive" /><span class="label-item">收款单</span>
+            <el-checkbox :false-label="0" :true-label="1" style="float:left;margin-right:5px" v-model="rep.isPayment" /><span class="label-item">付款单</span>
+            <el-checkbox :false-label="0" :true-label="1" style="float:left;margin-right:5px" v-model="rep.isInventory" /><span class="label-item">盘点单</span>
         </div>
     </div>
 </template>
@@ -46,7 +46,7 @@ export default {
         createvoucher() {
             buildVoucherByBill(this.rep).then(res => {
                 if (res.data.errorCode === '0') {
-                    console.log(res.data.data)
+                    this.$message.success('生成日志成功')
                 }
             })
         },
@@ -69,4 +69,5 @@ export default {
 .label:first-child {
     margin-left: 0
 }
+.label-item{margin-right:  15px; float: left;}
 </style>
