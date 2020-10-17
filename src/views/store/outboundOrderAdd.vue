@@ -113,8 +113,9 @@
           </el-form-item>
         </el-form>
       </div>
-      <div v-if="status!=1&&status!=2" class="tx-c" style="margin-top:15px">
-        <el-button class="filter-item" type="primary" @click="save">保存</el-button>
+      <div class="tx-c" style="margin-top:15px">
+        <el-button v-if="$route.path.indexOf('etail') < 0" class="submitBtn" type="primary" @click="save">保 存</el-button>
+        <el-button v-else class="submitBtn" type="primary" @click="$store.dispatch('tagsView/delView', $route);$router.replace('/store/outboundOrder')">返 回</el-button>
       </div>
     </div>
     <el-dialog :close-on-click-modal="false" title="选择拆分方式" :visible.sync="dialogFormVisible" width="400px">

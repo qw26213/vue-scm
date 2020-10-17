@@ -223,7 +223,7 @@ export default {
       this.$router.push('/store/inventoryModify?id=' + id)
     },
     handleScan(id) {
-      this.$router.push('/store/inventoryModify?id=' + id)
+      this.$router.push('/store/inventoryDetail?id=' + id)
     },
     handleDel(id) {
       this.$confirm('确认要删除吗?', '提示', {

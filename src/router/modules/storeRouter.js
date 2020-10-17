@@ -36,6 +36,15 @@ const storeRouter = {
             title: '编辑入库单'
         }
     }, {
+        path: 'warehousingDetail',
+        component: () => import ('@/views/store/warehousingAdd'),
+        name: 'warehousingDetail',
+        hidden: true,
+        meta: {
+            roles: ['261020'],
+            title: '查看入库单'
+        }
+    }, {
         path: 'outboundOrderReturned',
         component: () => import ('@/views/store/outboundOrderReturned'),
         name: 'outboundOrderReturned',
@@ -60,6 +69,15 @@ const storeRouter = {
         meta: {
             roles: ['261420'],
             title: '编辑销售退货入库'
+        }
+    }, {
+        path: 'outboundOrderReturnedDetail',
+        component: () => import ('@/views/store/outboundOrderReturnedAdd'),
+        name: 'outboundOrderReturnedDetail',
+        hidden: true,
+        meta: {
+            roles: ['261420'],
+            title: '查看销售退货入库'
         }
     }, {
         path: 'outboundOrder',
@@ -88,6 +106,15 @@ const storeRouter = {
             title: '编辑出库单'
         }
     }, {
+        path: 'outboundOrderDetail',
+        component: () => import ('@/views/store/outboundOrderAdd'),
+        name: 'outboundOrderDetail',
+        hidden: true,
+        meta: {
+            roles: ['262620'],
+            title: '查看出库单'
+        }
+    }, {
         path: 'allocation',
         component: () => import ('@/views/store/allocation'),
         name: 'allocation',
@@ -112,6 +139,15 @@ const storeRouter = {
         meta: {
             roles: ['261820'],
             title: '编辑调拨单'
+        }
+    }, {
+        path: 'allocationDetail',
+        component: () => import ('@/views/store/allocationAdd'),
+        name: 'allocationDetail',
+        hidden: true,
+        meta: {
+            roles: ['261820'],
+            title: '查看调拨单'
         }
     }, {
         path: 'movement',
@@ -140,6 +176,15 @@ const storeRouter = {
             title: '编辑移库单'
         }
     }, {
+        path: 'movementDetail',
+        component: () => import ('@/views/store/movementAdd'),
+        name: 'movementDetail',
+        hidden: true,
+        meta: {
+            roles: ['262220'],
+            title: '查看移库单'
+        }
+    }, {
         path: 'warehousingReturned',
         component: () => import ('@/views/store/warehousingReturned'),
         name: 'warehousingReturned',
@@ -166,6 +211,15 @@ const storeRouter = {
             title: '编辑采购退货出库'
         }
     }, {
+        path: 'warehousingReturnedDetail',
+        component: () => import ('@/views/store/warehousingReturnedAdd'),
+        hidden: true,
+        name: 'warehousingReturnedDetail',
+        meta: {
+            roles: ['263020'],
+            title: '查看采购退货出库'
+        }
+    }, {
         path: 'inventory',
         component: () => import ('@/views/store/inventory'),
         name: 'saleInventory',
@@ -190,6 +244,15 @@ const storeRouter = {
         meta: {
             roles: ['145020'],
             title: '编辑盘点单'
+        }
+    }, {
+        path: 'inventoryDetail',
+        component: () => import ('@/views/store/inventoryAdd'),
+        name: 'inventoryDetail',
+        hidden: true,
+        meta: {
+            roles: ['145020'],
+            title: '查看盘点单'
         }
     }]
 }

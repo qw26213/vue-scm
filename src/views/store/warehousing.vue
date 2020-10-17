@@ -55,7 +55,8 @@
         </el-table-column>
         <el-table-column label="操作" align="center" width="200">
           <template slot-scope="{row}">
-            <span class="ctrl" @click="handleCompile(row.id,row.status)">{{ row.status<=0?'编辑':'查看' }}</span>
+            <span v-if="row.status<=0" class="ctrl" @click="handleCompile(row.id)">编辑</span>
+            <span v-if="row.status>=1" class="ctrl" @click="handleScan(row.id)">查看</span>
             <span v-if="row.status==0" class="ctrl" @click="handleCheck(row.id)">审核</span>
             <span v-if="row.status==-1" class="ctrl" @click="showAuditInfo(row.id)">查看审核意见</span>
             <span v-if="row.status<=0" class="ctrl del" @click="handleDel(row.id)">删除</span>
@@ -204,6 +205,9 @@ export default {
     handleCompile(id, status) {
       this.$store.dispatch('tagsView/delView', this.$route)
       this.$router.replace('/store/warehousingModify?id=' + id + '&status=' + status)
+    },
+    handleScan(id) {
+      this.$router.push('/store/warehousingDetail?id=' + id)
     },
     handleDel(id) {
       this.$confirm('确定删除吗?', '提示', {

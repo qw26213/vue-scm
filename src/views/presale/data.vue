@@ -70,8 +70,8 @@
         <el-table-column label="操作" align="center" width="260">
           <template slot-scope="{row}">
             <span v-if="row.status<=0" class="ctrl" @click="handleCompile(row.id)">编辑</span>
-            <span v-if="row.status==-1" class="ctrl" @click="handleScan(row.id,1)">查看审核意见</span>
-            <span v-if="row.status==1" class="ctrl" @click="handleScan(row.id)">查看</span>
+            <span v-if="row.status> 1" class="ctrl" @click="handleScan(row.id)">查看</span>
+            <span v-if="row.status==-1" class="ctrl" @click="showAuditInfo(row.id)">查看审核意见</span>
             <span v-if="row.status==0" class="ctrl" @click="handleCheck(row.id)">审核</span>
             <span v-if="row.status<=0" class="ctrl del" @click="handleDel(row.id)">删除</span>
             <span v-if="row.status==1&&row.balance>0" class="ctrl" @click="handBuildBill(row.id)">退款</span>

@@ -63,9 +63,9 @@
         </el-table-column>
         <el-table-column label="操作" align="center" width="200">
           <template slot-scope="{row}">
-            <span v-if="row.status<=0" class="ctrl" @click="handleScan(row.id,1)">编辑</span>
-            <span v-if="row.status==-1" class="ctrl" @click="handleScan(row.id,1)">查看审核意见</span>
-            <span v-if="row.status==1" class="ctrl" @click="handleScan(row.id,1)">查看</span>
+            <span v-if="row.status<=0" class="ctrl" @click="handleCompile(row.id)">编辑</span>
+            <span v-if="row.status> 1" class="ctrl" @click="handleScan(row.id)">查看</span>
+            <span v-if="row.status==-1" class="ctrl" @click="showAuditInfo(row.id,1)">查看审核意见</span>
             <span v-if="row.status==0" class="ctrl" @click="handleCheck(row.id)">审核</span>
             <span v-if="row.status<=0" class="ctrl del" @click="handleDel(row.id)">删除</span>
             <span v-if="row.status==1" class="ctrl" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId)">{{ row.isJeHeader==0?'生成':'查看' }}预收退款凭证</span>
@@ -212,6 +212,10 @@ export default {
     handleAdd(obj) {
       this.$store.dispatch('tagsView/delView', this.$route)
       this.$router.push('/presale/returnedAdd')
+    },
+    handleCompile(id) {
+      this.$store.dispatch('tagsView/delView', this.$route)
+      this.$router.push('/presale/modify?id=' + id)
     },
     handleScan(id) {
       this.$router.push('/presale/returnedDetail?id=' + id)
