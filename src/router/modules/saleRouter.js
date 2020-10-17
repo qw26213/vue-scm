@@ -170,6 +170,7 @@ const saleRouter = {
         path: 'invoiceDeail',
         component: () => import('@/views/sale/invoiceAdd'),
         name: 'invoiceAdd',
+        hidden: true,
         meta: {
             roles: ['1460'],
             title: '查看销售发票'

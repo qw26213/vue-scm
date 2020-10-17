@@ -192,7 +192,7 @@ export default {
       settleData: [{}, {}, {}, {}, {}],
       dialogFormVisible: false,
       tableData: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
-      keys: ['itemId', 'itemCode', 'itemName', 'norms', 'uom', 'subUom', 'exchangeRate', 'batchNo', 'productionDate', 'qualityName', 'qualityDays', 'qty', 'vatPrice', 'amount', 'taxRate', 'taxAmount', 'vatAmount', 'invoiceNo', 'salesTypeCode'],
+      keys: ['itemId', 'norms', 'uom', 'subUom', 'exchangeRate', 'batchNo', 'productionDate', 'qualityName', 'qualityDays', 'qty', 'vatPrice', 'amount', 'taxRate', 'taxAmount', 'vatAmount', 'invoiceNo', 'salesTypeCode'],
       item_list: [],
       temp: {
         billDate: getNowDate(),
