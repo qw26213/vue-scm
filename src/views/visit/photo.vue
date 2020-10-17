@@ -4,6 +4,9 @@
       <el-date-picker v-model="listQuery.queryParam.uploadDate1" :editable="false" type="date" placeholder="开始日期" size="small" :clearable="false" value-format="yyyy-MM-dd" />
       <span class="zhi">至</span>
       <el-date-picker v-model="listQuery.queryParam.uploadDate2" :editable="false" type="date" placeholder="结束日期" size="small" :clearable="false" value-format="yyyy-MM-dd" />
+      <el-select v-model="listQuery.queryParam.labelName" style="width:145px" placeholder="选择业务标签" size="small" @change="changeVal">
+          <el-option v-for="item in labellist" :label="item.labelName" :value="item.id" :key="item.id"></el-option>
+      </el-select>
       <custList ctr-type="list" @selectChange="selectChange" />
       <staffList ctr-type="list" :select-id="listQuery.queryParam.staffId" @selectChange="selectChange" />
       <el-button size="small" type="primary" @click="getList">查询</el-button>
@@ -70,6 +73,7 @@
 </template>
 <script>
 import { getCrmFileInfo, deleteFileById, deleteFileByIds } from '@/api/visit'
+import { getLabel } from '@/api/basedata'
 import Pagination from '@/components/Pagination'
 import { getNowDate } from '@/utils/auth'
 import { parseTime } from '@/utils/index'
@@ -96,12 +100,14 @@ export default {
       listLoading: true,
       imgUrl: '',
       visitIdArr: [],
+      labellist: [],
       listQuery: {
         pageIndex: 1,
         pageNum: 20,
         queryParam: {
           uploadDate1: start,
           uploadDate2: end,
+          labelName: '',
           headerId: this.$route.query.id,
           sign: 1,
           desc: 1
@@ -111,6 +117,9 @@ export default {
   },
   created() {
     this.getList()
+    getLabel().then(res => {
+      this.labellist = res.data.data
+    })
   },
   methods: {
     selectionChange(val) {

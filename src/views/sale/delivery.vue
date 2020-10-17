@@ -245,7 +245,7 @@ export default {
       }
     },
     handleCreateBill(id) {
-      this.$router.push('/sale/saleOrderDetail?id=' + id)
+      this.$router.push('/sale/orderDetail?id=' + id)
     },
     createBill() {
       var obj = { isBillDate: this.isBillDate, id: this.curBillId, billDate: this.curBillDate }

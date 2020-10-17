@@ -5,8 +5,8 @@
         <el-form-item label="单据日期:" prop="billDate">
           <el-date-picker v-model="temp.billDate" :editable="false" type="date" placeholder="单据日期" size="small" :clearable="false" value-format="yyyy-MM-dd" />
         </el-form-item>
-        <el-form-item label="单据号:" prop="billNo">
-          <el-input v-model="temp.billNo" size="small" placeholder="单据号" disabled />
+        <el-form-item label="配送单号:" prop="deliveryNo">
+          <el-input v-model="temp.deliveryNo" size="small" placeholder="配送单号" disabled />
         </el-form-item>
         <el-form-item label="业务员:" prop="staffId">
           <staffList :disabled="!userInfo.isAdmin" :select-id="temp.staffId" @selectChange="selectChange" />
@@ -201,7 +201,7 @@ export default {
       item_list: [],
       temp: {
         billDate: getNowDate(),
-        billNo: '',
+        deliveryNo: '',
         bizTypeId: '',
         autoAdvr: 1,
         custId: '',
