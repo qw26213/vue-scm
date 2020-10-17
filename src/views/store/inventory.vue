@@ -71,7 +71,7 @@
           <template slot-scope="{row}">
             <span v-if="row.status<=0" class="ctrl" @click="handleCompile(row.id)">编辑</span>
             <span v-if="row.status==-1" class="ctrl" @click="showAuditInfo(row.id)">查看审核意见</span>
-            <span v-if="row.status==1" class="ctrl" @click="handleScan(row.id)">查看</span>
+            <span v-if="row.status>=1" class="ctrl" @click="handleScan(row.id)">查看</span>
             <span v-if="row.status==0" class="ctrl" @click="handleCheck(row.id)">审核</span>
             <span v-if="row.status<=0" class="ctrl del" @click="handleDel(row.id)">删除</span>
             <span v-if="row.status==1" class="ctrl" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId)">{{ !row.isJeHeader?'生成':'查看' }}盘点凭证</span>

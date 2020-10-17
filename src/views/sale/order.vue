@@ -111,7 +111,7 @@
           <template slot-scope="{row}">
             <span v-if="row.status<=0" class="ctrl" @click="handleCompile(row)">编辑</span>
             <span v-if="row.status==-1" class="ctrl" @click="showAuditInfo(row.id)">查看审核意见</span>
-            <span v-if="row.status==1" class="ctrl" @click="handleScan(row)">查看</span>
+            <span v-if="row.status>=1" class="ctrl" @click="handleScan(row)">查看</span>
             <span v-if="row.status==0" class="ctrl" @click="handleCheck(row.id, row.billDate)">审核</span>
             <span v-if="row.status<=0" class="ctrl del" @click="handleDel(row.id, row.billDate)">删除</span>
             <span v-if="row.status==1" class="ctrl" @click="handleCreateBill(row.isOutboundOrder,row.id,row.outboundOrderHeaderId,row.billDate)">{{ row.isOutboundOrder==0?'生成':'查看' }}出库单</span>
