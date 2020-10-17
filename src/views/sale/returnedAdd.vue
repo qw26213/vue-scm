@@ -89,12 +89,22 @@
         </el-table-column>
         <el-table-column label="含税价(元)">
           <template slot-scope="scope">
-            <input v-model="scope.row.vatPrice" type="text" class="inputCell tx-r" :disables="userInfo.returnPriceType + scope.row.salePriceType <= 1" @change="calculate(scope.$index)">
+            <input v-model="scope.row.vatPrice" type="text" class="inputCell tx-r" :disables="userInfo.userSalePriceType + scope.row.salePriceType <= 1" @change="calculate(scope.$index)">
           </template>
         </el-table-column>
         <el-table-column label="数量">
           <template slot-scope="scope">
             <input v-model="scope.row.qty" type="text" class="inputCell tx-r" @change="calculate(scope.$index)">
+          </template>
+        </el-table-column>
+        <el-table-column label="价税合计">
+          <template slot-scope="{row}">
+            <input v-model="row.vatAmount" type="text" class="inputCell tx-r" disabled>
+          </template>
+        </el-table-column>
+        <el-table-column label="销售方式">
+          <template slot-scope="scope">
+            <salesTypeList :select-id="scope.row.salesTypeCode" :index="scope.$index" @selectChange="salesTypeChange" />
           </template>
         </el-table-column>
         <el-table-column label="税率(%)">
@@ -105,16 +115,6 @@
         <el-table-column label="税额">
           <template slot-scope="{row}">
             <input v-model="row.taxAmount" type="text" class="inputCell tx-r" disabled>
-          </template>
-        </el-table-column>
-        <el-table-column label="价税合计">
-          <template slot-scope="{row}">
-            <input v-model="row.vatAmount" type="text" class="inputCell tx-r" disabled>
-          </template>
-        </el-table-column>
-        <el-table-column label="金额">
-          <template slot-scope="{row}">
-            <input v-model="row.amount" type="text" class="inputCell tx-r" disabled>
           </template>
         </el-table-column>
       </el-table>

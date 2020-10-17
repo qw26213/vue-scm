@@ -229,7 +229,7 @@ export default {
   mounted() {
     this.$store.dispatch('basedata/getPresaleReturnedSettleType')
     this.$store.dispatch('basedata/getitemlist')
-    if (!this.status) {
+    if (this.$route.path.indexOf('Detail') < 0) {
       this.modalTableVisible = true
     }
   },

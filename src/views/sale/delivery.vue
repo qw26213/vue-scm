@@ -119,7 +119,7 @@
             <span v-if="row.status>=1" class="ctrl" @click="handleScan(row)">查看</span>
             <span v-if="row.status<=0" class="ctrl" @click="handleCheck(row.id, row.billDate)">审核</span>
             <span v-if="row.status==0" class="ctrl del" @click="handleDel(row.id, row.billDate)">删除</span>
-            <span v-if="row.status==1" class="ctrl" @click="handleCreateBill(row.isOutboundOrder,row.id,row.outboundOrderHeaderId,row.billDate)">{{ row.isOutboundOrder==0?'生成':'查看' }}出库单</span>
+            <span v-if="row.status==1 && row.salesHeaderId" class="ctrl" @click="handleCreateBill(row.salesHeaderId)">查看销售订单</span>
             <span class="ctrl" @click="printBill(row)">打印</span>
           </template>
         </el-table-column>
@@ -244,14 +244,8 @@ export default {
         this.listQuery.queryParam[key] = obj[key]
       }
     },
-    handleCreateBill(status, id1, id2, billDate) {
-      if (status !== 0) {
-        this.$router.push('/store/outboundOrderModify?id=' + id2 + '&status=' + status)
-      } else {
-        this.curBillId = id1
-        this.curBillDate = billDate
-        this.dialogFormVisible1 = true
-      }
+    handleCreateBill(id) {
+      this.$router.push('/sale/saleOrderDetail?id=' + id)
     },
     createBill() {
       var obj = { isBillDate: this.isBillDate, id: this.curBillId, billDate: this.curBillDate }
