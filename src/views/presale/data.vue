@@ -70,7 +70,7 @@
         <el-table-column label="操作" align="center" width="260">
           <template slot-scope="{row}">
             <span v-if="row.status<=0" class="ctrl" @click="handleCompile(row.id)">编辑</span>
-            <span v-if="row.status> 1" class="ctrl" @click="handleScan(row.id)">查看</span>
+            <span v-if="row.status>=1" class="ctrl" @click="handleScan(row.id)">查看</span>
             <span v-if="row.status==-1" class="ctrl" @click="showAuditInfo(row.id)">查看审核意见</span>
             <span v-if="row.status==0" class="ctrl" @click="handleCheck(row.id)">审核</span>
             <span v-if="row.status<=0" class="ctrl del" @click="handleDel(row.id)">删除</span>
@@ -209,6 +209,7 @@ export default {
       auditPresale(data).then(res => {
         if (res.data.errorCode == 0) {
           this.getList()
+          this.auditModalVisible = false
           this.$message.success('审核成功')
         } else {
           this.$message.error(res.data.msg)

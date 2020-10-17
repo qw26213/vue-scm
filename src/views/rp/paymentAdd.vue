@@ -39,12 +39,12 @@
             <span>{{ row.billAmount }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="应收金额" align="right">
+        <el-table-column label="应付金额" align="right">
           <template slot-scope="{row}">
             <span>{{ row.billBalance }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="收款金额" align="right">
+        <el-table-column label="付款金额" align="right">
           <template slot-scope="{row}">
             <input v-model="row.amount" class="inputCell tx-r" style="height:32px" @focus="$event.target.select()">
           </template>
