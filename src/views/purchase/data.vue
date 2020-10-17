@@ -269,7 +269,7 @@ export default {
       this.$router.push('/purchase/modify?id=' + id)
     },
     handleScan(id) {
-      this.$router.push('/purchase/detail?id=' + id)
+      this.$router.push('/purchase/modify?id=' + id)
     },
     handleDel(id) {
       this.$confirm('确定删除吗?', '提示', {

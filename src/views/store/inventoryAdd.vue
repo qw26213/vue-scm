@@ -177,6 +177,7 @@ export default {
     }
   },
   created() {
+    this.$store.dispatch('basedata/getitemlist')
     if (this.$route.query.id) {
       this.id = this.$route.query.id
       getInventoryById(this.id).then(res => {

@@ -124,6 +124,7 @@ import supplierList from '@/components/selects/supplierList'
 import warehouseList from '@/components/selects/warehouseList'
 import itemList from '@/components/selects/itemList'
 import { getName, getNowDate } from '@/utils/auth'
+const userInfo = JSON.parse(sessionStorage.userInfo)
 export default {
   name: 'WarehousingReturnedAdd',
   components: { staffList, warehouseList, supplierList, itemList },
@@ -131,6 +132,7 @@ export default {
     return {
       id: '',
       status: this.$route.query.satus,
+      taxFilingCategoryCode: userInfo.taxFilingCategoryCode,
       tableData: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
       temp: {
         remarks: '',
@@ -149,6 +151,7 @@ export default {
     }
   },
   created() {
+    this.$store.dispatch('basedata/getitemlist')
     if (this.$route.query.id) {
       this.id = this.$route.query.id
       getWarehousingReturnedById(this.id).then(res => {

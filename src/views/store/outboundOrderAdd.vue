@@ -141,6 +141,7 @@ import truckList from '@/components/selects/truckList'
 import bizTypeList from '@/components/selects/bizTypeList'
 import itemList from '@/components/selects/itemList'
 import { getName, getNowDate } from '@/utils/auth'
+const userInfo = JSON.parse(sessionStorage.userInfo)
 export default {
   name: 'OutboundOrderAdd',
   components: { custList, bizTypeList, staffList, warehouseList, truckList, itemList },
@@ -148,6 +149,7 @@ export default {
     return {
       id: '',
       status: this.$route.query.status,
+      taxFilingCategoryCode: userInfo.taxFilingCategoryCode,
       tableData: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
       splitBillType: 0,
       dialogFormVisible: false,
@@ -170,6 +172,7 @@ export default {
     }
   },
   created() {
+    this.$store.dispatch('basedata/getitemlist')
     if (this.$route.query.id) {
       this.id = this.$route.query.id
       getOutboundOrderById({ id: this.id, billDate: this.$route.query.billDate }).then(res => {

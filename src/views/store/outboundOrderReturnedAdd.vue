@@ -155,6 +155,7 @@ export default {
     }
   },
   created() {
+    this.$store.dispatch('basedata/getitemlist')
     if (this.$route.query.id) {
       this.id = this.$route.query.id
       getOutboundOrderReturnedById(this.id).then(res => {

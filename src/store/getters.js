@@ -20,7 +20,8 @@ const getters = {
   salesTypeArr: state => state.basedata.salesTypeArr,
   summaryTable: state => state.voucher.summaryTable,
   periodArr: state => state.voucher.periodArr,
-  userInfo: state => state.user.userInfo
+  userInfo: state => state.user.userInfo,
+  itemList: state => state.basedata.itemList
 }
 
 export default getters
