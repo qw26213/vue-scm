@@ -93,17 +93,15 @@
 </template>
 <script>
 import { saveAllocation, getAllocationById } from '@/api/store'
-import { getDept, getStaff } from '@/api/basedata'
 import { deleteEmptyProp, addNullObj } from '@/utils'
 import staffList from '@/components/selects/staffList'
 import warehouseList from '@/components/selects/warehouseList'
-import bizTypeList from '@/components/selects/bizTypeList'
 import itemList from '@/components/selects/itemList'
 import { getName, getNowDate } from '@/utils/auth'
 export default {
   name: 'AllocationAdd',
   components: {
-    staffList, warehouseList, bizTypeList, itemList
+    staffList, warehouseList, itemList
   },
   data() {
     return {
@@ -147,7 +145,7 @@ export default {
       for (var key in obj) {
         this.tableData[obj.index][key] = obj[key]
       }
-      if (obj.index + 1 == this.tableData.length) {
+      if (obj.index + 1 === this.tableData.length) {
         this.tableData.push({})
         this.$nextTick(() => {
           const container = this.$el.querySelector('.el-table__body-wrapper')
@@ -159,8 +157,8 @@ export default {
       this.temp.id = this.id
       this.temp.allocationLine = deleteEmptyProp(this.tableData)
       saveAllocation(this.temp).then(res => {
-        if (res.data.errorCode == 0) {
-          this.$message.success(this.temp.id == '' ? '新增成功' : '修改成功')
+        if (res.data.errorCode === '0') {
+          this.$message.success(this.temp.id === '' ? '新增成功' : '修改成功')
           this.$store.dispatch('tagsView/delView', this.$route)
           this.$router.replace('/store/allocation')
         } else {

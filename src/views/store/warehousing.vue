@@ -127,7 +127,7 @@ export default {
   methods: {
     printBill(row) {
       printByHeaderId('/ic/warehousingEntry', row.id).then(res => {
-        if (res.data.errorCode == 0) {
+        if (res.data.errorCode === '0') {
           window.open('http://' + window.location.host + res.data.data)
         } else {
           this.$messae.warning('文件生成失败')
@@ -137,7 +137,7 @@ export default {
     showAuditInfo(id) {
       this.auditType = 'record'
       getAuditInfoByHeaderId(id).then(res => {
-        if (res.data.errorCode == 0) {
+        if (res.data.errorCode === '0') {
           this.auditModalVisible = true
           this.remarklist = res.data.data || []
         }
@@ -167,7 +167,7 @@ export default {
       const data = obj
       data.id = this.curBillId
       auditWarehousing(data).then(res => {
-        if (res.data.errorCode == 0) {
+        if (res.data.errorCode === '0') {
           this.getList()
           this.auditModalVisible = false
           this.$message.success('审核成功')
@@ -187,7 +187,7 @@ export default {
     createBill() {
       var obj = { isBillDate: this.isBillDate, id: this.curBillId }
       buildWarehousingEntry(obj).then(res => {
-        if (res.data.errorCode == 0) {
+        if (res.data.errorCode === '0') {
           this.dialogFormVisible = false
           this.getList()
           this.$message.success('生成进货单成功')
@@ -216,7 +216,7 @@ export default {
         type: 'warning'
       }).then(() => {
         delWarehousing(id).then(res => {
-          if (res.data.errorCode == 0) {
+          if (res.data.errorCode === '0') {
             this.getList()
             this.dialogFormVisible = false
             this.$message.success('删除成功')

@@ -97,8 +97,7 @@
   </div>
 </template>
 <script>
-import { getInventory, delInventory, auditInventory, buildInventory, buildInventoryVoucher, getAuditInfoByHeaderId, printByHeaderId } from '@/api/sale'
-import { parseTime } from '@/utils'
+import { getInventory, delInventory, auditInventory, buildInventoryVoucher, getAuditInfoByHeaderId, printByHeaderId } from '@/api/sale'
 import staffList from '@/components/selects/staffList'
 import custList from '@/components/selects/custList'
 import Auditconfirm from '@/components/Auditconfirm/index'
@@ -145,7 +144,7 @@ export default {
   methods: {
     printBill(row) {
       printByHeaderId('/ic/inventory', row.id).then(res => {
-        if (res.data.errorCode == 0) {
+        if (res.data.errorCode === '0') {
           window.open('http://' + window.location.host + res.data.data)
         } else {
           this.$messae.warning('文件生成失败')
@@ -155,7 +154,7 @@ export default {
     showAuditInfo(id) {
       this.auditType = 'record'
       getAuditInfoByHeaderId(id).then(res => {
-        if (res.data.errorCode == 0) {
+        if (res.data.errorCode === '0') {
           this.auditModalVisible = true
           this.remarklist = res.data.data || []
         }
@@ -167,7 +166,7 @@ export default {
         this.listLoading = false
         this.tableData = res.data.data
         this.total = res.data.totalNum
-      }).catch(err => {
+      }).catch(() => {
         this.listLoading = false
       })
     },
@@ -180,7 +179,7 @@ export default {
       const data = obj
       data.id = this.curBillId
       auditInventory(data).then(res => {
-        if (res.data.errorCode == 0) {
+        if (res.data.errorCode === '0') {
           this.getList()
           this.auditModalVisible = false
           this.$message.success('审核成功')
@@ -195,7 +194,7 @@ export default {
       }
     },
     handleCreateVouter(status, id1, id2) {
-      if (status == 1) {
+      if (status === 1) {
         this.$router.push('/voucher/add?id=' + id2)
       } else {
         this.curBillId = id1
@@ -205,7 +204,7 @@ export default {
     createVouter() {
       var obj = { isBillDate: this.isBillDate, id: this.curBillId }
       buildInventoryVoucher(obj).then(res => {
-        if (res.data.errorCode == 0) {
+        if (res.data.errorCode === '0') {
           this.dialogFormVisible2 = false
           this.getList()
           this.$message.success('生成盘点凭证成功！')
@@ -236,7 +235,7 @@ export default {
     },
     delItem(id) {
       delInventory(id).then(res => {
-        if (res.data.errorCode == 0) {
+        if (res.data.errorCode === '0') {
           this.getList()
           this.dialogFormVisible1 = false
           this.$message.success('删除成功')

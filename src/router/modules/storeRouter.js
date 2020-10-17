@@ -106,6 +106,15 @@ const storeRouter = {
             title: '编辑出库单'
         }
     }, {
+        path: 'outboundOrderSplit',
+        component: () => import ('@/views/store/outboundOrderAdd'),
+        name: 'outboundOrderSplit',
+        hidden: true,
+        meta: {
+            roles: ['262620'],
+            title: '拆分出库单'
+        }
+    }, {
         path: 'outboundOrderDetail',
         component: () => import ('@/views/store/outboundOrderAdd'),
         name: 'outboundOrderDetail',

@@ -101,20 +101,16 @@
 import { saveMovement, getMovementById } from '@/api/store'
 import { deleteEmptyProp, addNullObj } from '@/utils'
 import staffList from '@/components/selects/staffList'
-import deptList from '@/components/selects/deptList'
 import warehouseList from '@/components/selects/warehouseList'
 import truckList from '@/components/selects/truckList'
-import bizTypeList from '@/components/selects/bizTypeList'
 import itemList from '@/components/selects/itemList'
 import { getName, getNowDate } from '@/utils/auth'
 export default {
   name: 'MovementAdd',
   components: {
     staffList,
-    deptList,
     warehouseList,
     truckList,
-    bizTypeList,
     itemList
   },
   data() {
@@ -173,7 +169,7 @@ export default {
       for (var key in obj) {
         this.tableData[obj.index][key] = obj[key]
       }
-      if (obj.index + 1 == this.tableData.length) {
+      if (obj.index + 1 === this.tableData.length) {
         this.tableData.push({})
         this.$nextTick(() => {
           const container = this.$el.querySelector('.el-table__body-wrapper')
@@ -185,8 +181,8 @@ export default {
       this.temp.id = this.id
       this.temp.movementLine = deleteEmptyProp(this.tableData)
       saveMovement(this.temp).then(res => {
-        if (res.data.errorCode == 0) {
-          this.$message.success(this.temp.id == '' ? '新增成功' : '修改成功')
+        if (res.data.errorCode === '0') {
+          this.$message.success(this.temp.id === '' ? '新增成功' : '修改成功')
           this.$store.dispatch('tagsView/delView', this.$route)
           this.$router.replace('/store/movement')
         } else {

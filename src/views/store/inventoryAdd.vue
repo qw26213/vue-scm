@@ -122,18 +122,15 @@
 <script>
 import { saveInventory, getInventoryById, queryBookQtyList } from '@/api/sale'
 import { getItem, getWarehouse, getTruck } from '@/api/basedata'
-import { deleteEmptyProp, addNullObj, addNullObj2 } from '@/utils'
+import { deleteEmptyProp, addNullObj } from '@/utils'
 import { getResPageByFuzzyCustId } from '@/api/store'
 import staffList from '@/components/selects/staffList'
-import custList from '@/components/selects/custList'
 import warehouseList from '@/components/selects/warehouseList'
 import itemList from '@/components/selects/saleItemList'
-import settleTypeList from '@/components/selects/settleTypeList'
-import salesTypeList from '@/components/selects/salesTypeList'
 import { getName, getNowDate } from '@/utils/auth'
 export default {
   name: 'SaleAdd',
-  components: { staffList, warehouseList, custList, itemList },
+  components: { staffList, warehouseList, itemList },
   data() {
     return {
       id: '',
@@ -216,15 +213,6 @@ export default {
         this.truckList = res.data.data || []
       })
     },
-    initTableData(id) {
-      getInventoryBySalesHeaderId(id).then(res => {
-        for (var key in this.temp) {
-          this.temp[key] = res.data.data[key]
-        }
-        this.tableData = addNullObj(res.data.data.inventoryLine)
-        this.settleData = addNullObj2(res.data.data.settleTypeReturnedDetail)
-      })
-    },
     initInventory() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
@@ -297,8 +285,8 @@ export default {
       this.temp.id = this.id
       this.temp.inventoryLine = deleteEmptyProp(this.tableData)
       saveInventory(this.temp).then(res => {
-        if (res.data.errorCode == 0) {
-          this.$message.success(this.id == '' ? '新增成功' : '修改成功')
+        if (res.data.errorCode === '0') {
+          this.$message.success(this.id === '' ? '新增成功' : '修改成功')
           this.$store.dispatch('tagsView/delView', this.$route)
           this.$router.replace('/store/inventory')
         } else {

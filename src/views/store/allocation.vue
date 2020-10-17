@@ -114,7 +114,7 @@ export default {
   methods: {
     printBill(row) {
       printByHeaderId('/ic/allocation', row.id).then(res => {
-        if (res.data.errorCode == 0) {
+        if (res.data.errorCode === '0') {
           window.open('http://' + window.location.host + res.data.data)
         } else {
           this.$messae.warning('文件生成失败')
@@ -124,7 +124,7 @@ export default {
     showConfirmInfo(id) {
       this.confirmType = 'record'
       getConfirmInfoByHeaderId(id).then(res => {
-        if (res.data.errorCode == 0) {
+        if (res.data.errorCode === '0') {
           this.confirmModalVisible = true
           this.remarklist1 = res.data.data || []
         }
@@ -133,7 +133,7 @@ export default {
     showAuditInfo(id) {
       this.auditType = 'record'
       getAuditInfoByHeaderId(id).then(res => {
-        if (res.data.errorCode == 0) {
+        if (res.data.errorCode === '0') {
           this.auditModalVisible = true
           this.remarklist = res.data.data || []
         }
@@ -145,7 +145,7 @@ export default {
         this.listLoading = false
         this.tableData = res.data.data
         this.total = res.data.totalNum
-      }).catch(err => {
+      }).catch(() => {
         this.listLoading = false
       })
     },
@@ -158,7 +158,7 @@ export default {
       const data = obj
       data.id = this.curBillId
       confirmAllocation(data).then(res => {
-        if (res.data.errorCode == 0) {
+        if (res.data.errorCode === '0') {
           this.getList()
           this.confirmModalVisible = false
           this.$message.success('确认成功')
@@ -176,7 +176,7 @@ export default {
       const data = obj
       data.id = this.curBillId
       auditAllocation(data).then(res => {
-        if (res.data.errorCode == 0) {
+        if (res.data.errorCode === '0') {
           this.getList()
           this.auditModalVisible = false
           this.$message.success('审核成功')
@@ -209,7 +209,7 @@ export default {
         type: 'warning'
       }).then(() => {
         delAllocation(id).then(res => {
-          if (res.data.errorCode == 0) {
+          if (res.data.errorCode === '0') {
             this.getList()
             this.dialogFormVisible = false
             this.$message.success('删除成功')

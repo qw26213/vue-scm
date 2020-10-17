@@ -60,6 +60,11 @@
             <input v-model="scope.row.vatPrice" type="text" class="inputCell tx-r" @change="calculate(scope.$index)">
           </template>
         </el-table-column>
+        <el-table-column v-if="$route.path.indexOf('Split') > 0" label="原始数量">
+          <template slot-scope="scope">
+            <input v-model="scope.row.qty1" type="text" :index="scope.$index" class="inputCell tx-r" @change="calculate(scope.$index)">
+          </template>
+        </el-table-column>
         <el-table-column label="数量">
           <template slot-scope="scope">
             <input v-model="scope.row.qty" type="text" :index="scope.$index" class="inputCell tx-r" @change="calculate(scope.$index)">
@@ -139,13 +144,12 @@ import staffList from '@/components/selects/staffList'
 import custList from '@/components/selects/custList'
 import warehouseList from '@/components/selects/warehouseList'
 import truckList from '@/components/selects/truckList'
-import bizTypeList from '@/components/selects/bizTypeList'
 import itemList from '@/components/selects/itemList'
 import { getName, getNowDate } from '@/utils/auth'
 const userInfo = JSON.parse(sessionStorage.userInfo)
 export default {
   name: 'OutboundOrderAdd',
-  components: { custList, bizTypeList, staffList, warehouseList, truckList, itemList },
+  components: { custList, staffList, warehouseList, truckList, itemList },
   data() {
     return {
       id: '',
@@ -186,7 +190,7 @@ export default {
             if (this.tableData[i].taxRate < 1) {
               this.$set(this.tableData[i], 'taxRate', this.tableData[i].taxRate * 100)
             }
-            if (this.status == 3) {
+            if (this.$route.path.indexOf('Split') > 0) {
               this.$set(this.tableData[i], 'qty1', this.tableData[i].qty)
             }
           }
@@ -239,7 +243,7 @@ export default {
       for (var key in obj) {
         this.tableData[obj.index][key] = obj[key]
       }
-      if (obj.index + 1 == this.tableData.length) {
+      if (obj.index + 1 === this.tableData.length) {
         this.tableData.push({})
         this.$nextTick(() => {
           const container = this.$el.querySelector('.el-table__body-wrapper')
@@ -248,7 +252,7 @@ export default {
       }
     },
     save() {
-      if (this.status == 3) {
+      if (this.$route.path.indexOf('Split') > 0) {
         this.dialogFormVisible = true
         return
       }
@@ -258,9 +262,9 @@ export default {
       this.temp.id = this.id
       this.temp.outboundOrderLine = deleteEmptyProp(this.tableData)
       saveOutboundOrder(this.temp).then(res => {
-        if (res.data.errorCode == 0) {
+        if (res.data.errorCode === '0') {
           this.dialogFormVisible = false
-          this.$message.success(this.temp.id == '' ? '新增成功' : '保存成功')
+          this.$message.success(this.temp.id === '' ? '新增成功' : '保存成功')
           this.$store.dispatch('tagsView/delView', this.$route)
           this.$router.replace('/store/outboundOrder')
         } else {
