@@ -69,7 +69,8 @@ everyday<template>
         </el-form-item>
       </el-form>
       <div class="tx-c" style="margin-top:15px">
-        <el-button class="filter-item" type="primary" @click="save">保存</el-button>
+        <el-button v-if="$route.path.indexOf('etail') < 0" class="submitBtn" type="primary" @click="save">保 存</el-button>
+        <el-button v-else class="submitBtn" type="primary" @click="$store.dispatch('tagsView/delView', $route);$router.replace('/sale/everyday')">返 回</el-button>
       </div>
     </div>
     <el-dialog :close-on-click-modal="false" title="选择截止日期" :visible.sync="dialogFormVisible" :show-close="false" width="420px">

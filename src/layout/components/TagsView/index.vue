@@ -28,7 +28,6 @@
 <script>
 import ScrollPane from './ScrollPane'
 import path from 'path'
-
 export default {
   components: { ScrollPane },
   data() {
@@ -67,6 +66,9 @@ export default {
   },
   methods: {
     isActive(route) {
+      if (route.path === this.$route.path) {
+        this.$store.dispatch('tagsView/updateSelectedView', route)
+      }
       return route.path === this.$route.path
     },
     filterAffixTags(routes, basePath = '/') {
@@ -159,7 +161,7 @@ export default {
       } else {
         // now the default is to redirect to the home page if there is no tags-view,
         // you can adjust it according to your needs.
-        if (view.name === 'Dashboard') {
+        if (view.name === 'home') {
           // to reload home page
           this.$router.replace({ path: '/redirect' + view.fullPath })
         } else {

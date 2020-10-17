@@ -21,7 +21,8 @@ const getters = {
   summaryTable: state => state.voucher.summaryTable,
   periodArr: state => state.voucher.periodArr,
   userInfo: state => state.user.userInfo,
-  itemList: state => state.basedata.itemList
+  itemList: state => state.basedata.itemList,
+  selectedView: state => state.tagsView.selectedView
 }
 
 export default getters

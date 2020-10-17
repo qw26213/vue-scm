@@ -1,9 +1,15 @@
 const state = {
+  selectedView: {},
   visitedViews: [],
   cachedViews: []
 }
 
 const mutations = {
+  SET_VIEW: (state, data) => {
+    console.log(data)
+    state.selectedView = data
+  },
+
   ADD_VISITED_VIEW: (state, view) => {
     if (state.visitedViews.some(v => v.path === view.path)) return
     state.visitedViews.push(
@@ -12,6 +18,7 @@ const mutations = {
       })
     )
   },
+
   ADD_CACHED_VIEW: (state, view) => {
     if (state.cachedViews.includes(view.name)) return
     if (!view.meta.noCache) {
@@ -27,6 +34,7 @@ const mutations = {
       }
     }
   },
+
   DEL_CACHED_VIEW: (state, view) => {
     for (const i of state.cachedViews) {
       if (i === view.name) {
@@ -42,6 +50,7 @@ const mutations = {
       return v.meta.affix || v.path === view.path
     })
   },
+
   DEL_OTHERS_CACHED_VIEWS: (state, view) => {
     for (const i of state.cachedViews) {
       if (i === view.name) {
@@ -57,6 +66,7 @@ const mutations = {
     const affixTags = state.visitedViews.filter(tag => tag.meta.affix)
     state.visitedViews = affixTags
   },
+
   DEL_ALL_CACHED_VIEWS: state => {
     state.cachedViews = []
   },
@@ -154,6 +164,10 @@ const actions = {
 
   updateVisitedView({ commit }, view) {
     commit('UPDATE_VISITED_VIEW', view)
+  },
+
+  updateSelectedView({ commit }, view) {
+    commit('SET_VIEW', view)
   }
 }
 

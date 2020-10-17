@@ -126,7 +126,7 @@
       </div>
       <div class="tx-c" style="margin-top:15px">
         <el-button v-if="$route.path.indexOf('etail') < 0" class="submitBtn" type="primary" @click="save">保 存</el-button>
-        <el-button v-else class="submitBtn" type="primary" @click="$store.dispatch('tagsView/delView', $route)">关 闭</el-button>
+        <el-button v-else class="submitBtn" type="primary" @click="$store.dispatch('tagsView/delView', $route);$router.replace('/purchase/returned')">返 回</el-button>
       </div>
     </div>
     <el-dialog :close-on-click-modal="false" title="结算方式" :visible.sync="dialogFormVisible" width="392px">
