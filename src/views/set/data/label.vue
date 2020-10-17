@@ -183,7 +183,7 @@ export default {
     handleCreate() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          savelabel(this.temp).then(res => {
+          saveLabel(this.temp).then(res => {
             if (res.data.errorCode == 0) {
               this.getList()
               this.dialogFormVisible = false
@@ -196,7 +196,7 @@ export default {
       })
     },
     delItem(id) {
-      saveLabel(id).then(res => {
+      delLabel(id).then(res => {
         if (res.data.errorCode == 0) {
           this.getList()
           this.dialogFormVisible = false

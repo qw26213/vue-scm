@@ -1,6 +1,6 @@
 <template>
     <el-select v-model="curId" style="width:150px" placeholder="" size="small" @change="changeVal">
-        <el-option v-for="item in list" :label="item.measName" :value="item.id"></el-option>
+        <el-option v-for="item in list" :label="item.measName" :key="item.id" :value="item.id"></el-option>
     </el-select>
 </template>
 <script>

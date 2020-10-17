@@ -1,6 +1,6 @@
 <template>
     <el-select v-model="curId" style="width:145px" placeholder="选择付款方式" size="small" @change="changeVal">
-        <el-option v-for="item in list" :label="item.paymentTypeName" :value="item.id"></el-option>
+        <el-option v-for="item in list" :label="item.paymentTypeName" :key="item.id" :value="item.id"></el-option>
     </el-select>
 </template>
 <script>

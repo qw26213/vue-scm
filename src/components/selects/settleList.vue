@@ -1,6 +1,6 @@
 <template>
-    <el-select v-model="curCode" style="width:145px" filterable remote reserve-keyword :remote-method="remoteGet" size="small" class="filter-settleType" @focus="searchThis($event)" @change="changeVal">
-        <el-option v-for="settleType in settleTypeList" :key="settleType.id" :label="settleType.settleTypeName" :value="settleType.settleTypeCode">
+    <el-select v-model="curCode" style="width:145px" filterable remote reserve-keyword :remote-method="remoteGet" size="small" class="filter-item" @focus="searchThis($event)" @change="changeVal">
+        <el-option v-for="item in settleTypeList" :key="item.id" :label="item.settleTypeName" :value="item.settleTypeCode">
         </el-option>
     </el-select>
 </template>
