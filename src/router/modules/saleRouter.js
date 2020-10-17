@@ -72,7 +72,7 @@ const saleRouter = {
         }
     }, {
         path: 'orderDetail',
-        component: () => import('@/views/sale/orderDetail'),
+        component: () => import('@/views/sale/orderAdd'),
         hidden:true,
         name: 'orderDetail',
         meta: {
