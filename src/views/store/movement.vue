@@ -71,7 +71,7 @@
             <span v-if="row.status>=1" class="ctrl" @click="handleScan(row.id)">查看</span>
             <span v-if="row.status==-1" class="ctrl" @click="showAuditInfo(row.id)">查看审核意见</span>
             <span v-if="row.status==-2" class="ctrl" @click="showConfirmInfo(row.id)">查看确认意见</span>
-            <span v-if="row.status==1" class="ctrl" @click="confirmBill(row.id)">确认</span>
+            <span v-if="row.status==1" class="ctrl" @click="handleConfirm(row.id)">确认</span>
             <span v-if="row.status==0" class="ctrl" @click="handleCheck(row.id)">审核</span>
             <span v-if="row.status<=0" class="ctrl del" @click="handleDel(row.id)">删除</span>
             <span class="ctrl" @click="printBill(row)">打印</span>
