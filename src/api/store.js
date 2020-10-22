@@ -378,11 +378,11 @@ export function buildMovement(id) {
   })
 }
 
-export function confirmMovement(id) {
+export function confirmMovement(data) {
   return request({
     url: '/drp/ic/movement/confirmByHeaderId',
     method: 'post',
-    data: { id: id }
+    data
   })
 }
 
@@ -435,11 +435,11 @@ export function buildAllocation(id) {
   })
 }
 
-export function confirmAllocation(id) {
+export function confirmAllocation(data) {
   return request({
     url: '/drp/ic/allocation/confirmByHeaderId',
     method: 'post',
-    data: { id: id }
+    data
   })
 }
 
