@@ -58,7 +58,7 @@ export default {
         saveAudit() {
             this.$refs['dataForm'].validate((valid) => {
                 if (valid) {
-                    this.$emit('confirBill', this.form)
+                    this.$emit('confirmBill', this.form)
                 }
             })
         }
