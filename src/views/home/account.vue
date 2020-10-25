@@ -216,6 +216,7 @@ import { getmanagementInfo, getMapById, getUserList, registerLoadArea, registerL
 import { updateInfo, closeAccount, resetBook, saveUser, updatePSW, getRole } from '@/api/user'
 import { getStaff } from '@/api/basedata'
 export default {
+  name: 'accountInfo',
   filters: {
     Fixed: function(num) {
       if (!num) { return '0.00' }
@@ -331,7 +332,7 @@ export default {
         }).then(() => {
           closeAccount().then(res => {
             if (res.data.errorCode === '0') {
-              this.$message.success('注销企业成功')
+              this.$message.success(res.data.msg)
               this.$store.dispatch('user/logout').then(() => {
                 this.$router.replace('/login')
               })
@@ -357,7 +358,7 @@ export default {
         }).then(() => {
           resetBook({}).then(res => {
             if (res.data.errorCode === '0') {
-              this.$message.success('清除账套成功')
+              this.$message.success(res.data.msg)
               this.$store.dispatch('user/logout').then(() => {
                 this.$router.replace('/login')
               })
@@ -377,7 +378,7 @@ export default {
       }).then(() => {
         resetBook({ id }).then(res => {
           if (res.data.errorCode === '0') {
-            this.$message.success('强制下线成功')
+            this.$message.success(res.data.msg)
             this.$router.replace('/login')
           } else {
             this.$message.warning(res.data.msg)
@@ -389,7 +390,7 @@ export default {
       this.$refs.dataForm.validate(valid => {
         if (valid) {
           updateInfo(this.temp1).then(res => {
-            this.$message.success('修改企业信息成功')
+            this.$message.success(res.data.msg)
             this.getData1()
             this.dialogFormVisible1 = false
           })

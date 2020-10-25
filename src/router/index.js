@@ -65,13 +65,13 @@ export const constantRoutes = [{
     }, {
         path: '/accountinfo',
         component: () => import('@/views/home/account'),
-        name: 'accountinfo',
+        name: 'accountInfo',
         hidden: true,
         meta: { title: '账户信息' }
     }, {
         path: '/help',
         component: () => import('@/views/home/help'),
-        name: 'help',
+        name: 'usingHelp',
         hidden: true,
         meta: { title: '帮助' }
     }]

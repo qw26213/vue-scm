@@ -176,6 +176,7 @@ import staffList from '@/components/selects/staffList'
 import custList from '@/components/selects/custList'
 import warehouseList from '@/components/selects/warehouseList'
 export default {
+  name: 'enterprise',
   components: { staffList, warehouseList, custList },
   filters: {
     formatArr(arr) {

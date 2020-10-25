@@ -57,7 +57,7 @@
 <script>
 import { getCustomerData, getCustomerById } from '@/api/mall'
 export default {
-  name: 'MerchantList',
+  name: 'customerlist',
   data() {
     return {
       tableKey: 0,

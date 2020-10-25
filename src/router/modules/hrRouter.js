@@ -18,9 +18,9 @@ const hrRouter = {
             title: '人员管理'
         }
     }, {
-        path: 'pay',
-        component: () => import('@/views/hr/pay'),
-        name: 'pay',
+        path: 'salary',
+        component: () => import('@/views/hr/salary'),
+        name: 'salary',
         meta: {
             roles: ['4220'],
             title: '薪酬管理'

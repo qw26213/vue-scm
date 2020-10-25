@@ -247,7 +247,7 @@ import coaList from '@/components/voucher/coaList'
 import summaryList from '@/components/voucher/summaryList'
 var hexCas = ['A', 'B', 'C', 'D', 'E', 'F']
 export default {
-  name: 'VoucherAdd',
+  name: 'voucherAdd',
   components: { coaList, summaryList, Pagination },
   filters: {
     numberFormat: function(num) {
@@ -899,7 +899,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import './voucher.scss';
+@import '~@/styles/voucher.scss';
 >>>.el-icon-caret-left {
     font-size: 20px
 }
@@ -907,8 +907,6 @@ export default {
 >>>.el-icon-caret-right {
     font-size: 20px
 }
-</style>
-<style scoped>
 .number {
     width: 122px;
     padding: 4px 8px;

@@ -173,11 +173,10 @@
   </div>
 </template>
 <script>
-import CountTo from 'vue-count-to'
 import { home1TopN, home2TopN, home3TopN, home4TopN } from '@/api/login'
 import { getNowDate } from '@/utils/index'
 export default {
-  components: { CountTo },
+  name: 'usingHelp',
   filters: {
     toFix(val) {
       if (!val) { return '0.00' }

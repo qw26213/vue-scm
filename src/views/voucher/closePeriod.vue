@@ -242,14 +242,11 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import './voucher.scss';
-</style>
-<style scoped>
+@import '~@/styles/voucher.scss';
 .main {
     min-width: 1200px;
     padding: 20px 24px;
 }
-
 .itemTit {
     color: #333;
     font-size: 16px;

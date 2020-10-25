@@ -1,42 +1,18 @@
 <template>
   <div class="app-container">
-    <el-row :gutter="40" class="panel-group">
-      <el-col :xs="24" :sm="24" :lg="24" class="card-panel-col">
-        <el-card class="box-card">
-          <div slot="header" class="clearfix">
-            <span style="display:inline-block;line-height:28px">账套信息</span>
-            <el-button v-if="!!userInfo.glBookEntity" type="primary" style="float: right;margin-right:10px" size="small" @click="handleCompile">编辑</el-button>
-            <el-button v-if="!!userInfo.glBookEntity" type="danger" style="float: right;margin-right:20px" size="small" @click="resetAcc">重置</el-button>
-            <el-button v-if="!!!userInfo.glBookEntity" type="primary" style="float: right;margin-right:10px" size="small" @click="handleAdd">建账</el-button>
-          </div>
-          <div class="listItem"><label>企业代码:</label>{{ managementInfo.orgCode }}</div>
-          <div class="listItem"><label>企业名称:</label>{{ managementInfo.orgName }}</div>
-          <div class="listItem"><label>所属行业:</label>{{ managementInfo.industryName }}</div>
-          <div class="listItem"><label>所属区域:</label>{{ managementInfo.areaName }}</div>
-          <div class="listItem">
-            <label>纳税类型:</label>{{ managementInfo.taxFilingCategoryName }}
-            <el-button v-if="managementInfo.taxFilingCategoryId==0" type="default" style="margin-left:20px" size="small" @click="handleTransfer">转为一般纳税人</el-button>
-            <el-button v-if="managementInfo.taxFilingCategoryId==1" type="default" style="margin-left:20px" size="small" @click="handleTransfer">转为小规模纳税人</el-button>
-          </div>
-          <div class="listItem"><label>试用期:</label>{{ managementInfo.bizExpirationDate }}</div>
-          <div class="listItem"><label>账簿名称:</label>{{ managementInfo.bookName }}</div>
-          <!-- <div class="listItem"><label>审核级次:</label>{{managementInfo.auditLevel}}</div> -->
-          </ul>
-        </el-card>
-      </el-col>
-    </el-row>
-    <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新建账套':'修改账套'" :visible.sync="dialogFormVisible" width="832px">
-      <el-form ref="dataForm" :rules="rules1" inline :model="temp" label-position="left" label-width="70px" style="width: 780px; margin-left:10px;">
+    <div class="contentDiv">
+      <div class="title">{{ $route.path === '/init/billAdd' ? '新建账套信息' : '编辑账套信息' }}</div>
+      <el-form ref="dataForm" :rules="rules1" inline :model="temp" label-position="left" label-width="70px" style="width: 1020px; margin-left:10px;">
         <el-form-item label="账套名称" prop="bookName">
-          <el-input v-model="temp.bookName" placeholder="账套名称" />
+          <el-input v-model="temp.bookName" size="small" placeholder="账套名称" />
         </el-form-item>
         <el-form-item label="科目体系" prop="coahierarchyId">
-          <el-select v-model="temp.coahierarchyId" style="width:185px" :disabled="!!userInfo.glBookEntity">
+          <el-select v-model="temp.coahierarchyId" size="small" style="width:185px" :disabled="!!userInfo.glBookEntity">
             <el-option v-for="item in coaHierarchyList" :key="item.id" :label="item.coaHierarchyName" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item label="本位币" prop="baseCurrencyCode" label-width="56px">
-          <el-select v-model="temp.baseCurrencyCode" style="width:185px" disabled>
+          <el-select v-model="temp.baseCurrencyCode" size="small" style="width:185px" disabled>
             <el-option v-for="item in currencyList" :key="item.id" :label="item.text" :value="item.id" />
           </el-select>
         </el-form-item>
@@ -79,10 +55,12 @@
         </el-form-item>
         <el-form-item>
           <span>自定义增值税率</span>
-          <el-input v-model="temp.defaultTaxRateStr" placeholder="" size="small" style="width:60px;margin-right:5px" />%
+          <el-input v-model="temp.defaultTaxRateStr" placeholder="" size="mini" style="width:50px;margin-right:5px" />%
           <span style="font-size:12px;margin-right:10px">(小规模纳税人为3%，一般纳税人为13%)</span>
           <el-checkbox v-model="temp.isDispName" :false-label="0" :true-label="1" style="margin-right:10px">科目名称显示路径</el-checkbox>
           <el-checkbox v-model="temp.isCoaCobinationCode" :false-label="0" :true-label="1" style="margin-right:10px">凭证中显示辅助项编码组合</el-checkbox>
+        </el-form-item>
+        <el-form-item>
           <span>新增凭证时默认凭证日期</span>
           <el-radio-group v-model="temp.isVoucherMaxDate">
             <el-radio :label="0" style="margin-right:10px">当前日期</el-radio>
@@ -92,6 +70,8 @@
         <el-form-item>
           <el-checkbox v-model="temp.isQuantity" :false-label="0" :true-label="1" :disabled="!!userInfo.glBookEntity" style="margin-right:10px">启用数量核算</el-checkbox>
           <el-checkbox v-model="temp.isCurrency" :false-label="0" :true-label="1" style="margin-right:500px" disabled>启用币种核算</el-checkbox>
+        </el-form-item>
+        <el-form-item>
           <el-checkbox v-model="temp.isAuxSupplier" :false-label="0" :true-label="1" :disabled="!!userInfo.glBookEntity" style="margin-right:10px">启用供应商核算</el-checkbox>
           <el-checkbox v-model="temp.isAuxCust" :false-label="0" :true-label="1" :disabled="!!userInfo.glBookEntity" style="margin-right:10px">启用客户核算</el-checkbox>
           <el-checkbox v-model="temp.isAuxDept" :false-label="0" :true-label="1" :disabled="!!userInfo.glBookEntity" style="margin-right:10px">启用部门核算</el-checkbox>
@@ -101,7 +81,7 @@
         </el-form-item>
         <el-form-item>
           <span>自动凭证类型</span>
-          <el-select v-model="temp.autoVoucherType" style="width:160px" size="mini">
+          <el-select v-model="temp.autoVoucherType" style="width:160px; margin-right:10px" size="mini">
             <el-option label="全部单据每天自动生成" :value="0" />
             <el-option label="仅销售单据每天自动生成" :value="1" />
             <el-option label="全部单据手动生成" :value="2" />
@@ -141,25 +121,64 @@
           <span style="margin-left:5px">自动计提所得税</span>
           <el-input v-model="temp.isAutoJtsds" style="width:45px" size="small" />%
         </el-form-item>
+        <div style="font-size:14px">自动生成凭证:</div>
+        <el-form-item>
+          <el-checkbox v-model="temp.isPurchase" :false-label="0" :true-label="1">进货单</el-checkbox>
+          <el-checkbox v-model="temp.isPurchaseReturned" :false-label="0" :true-label="1">采购退货单</el-checkbox>
+          <el-checkbox v-model="temp.isSales" :false-label="0" :true-label="1">销售单/销售订单</el-checkbox>
+          <el-checkbox v-model="temp.isSalesReturned" :false-label="0" :true-label="1">销售退货单</el-checkbox>
+          <el-checkbox v-model="temp.isPresale" :false-label="0" :true-label="1">预收单</el-checkbox>
+          <el-checkbox v-model="temp.isPresaleReturned" :false-label="0" :true-label="1">预收退款单</el-checkbox>
+          <el-checkbox v-model="temp.isReceipt" :false-label="0" :true-label="1">收款单</el-checkbox>
+          <el-checkbox v-model="temp.isPayment" :false-label="0" :true-label="1">付款单</el-checkbox>
+          <el-checkbox v-model="temp.isInventory" :false-label="0" :true-label="1">盘点单</el-checkbox>
+        </el-form-item>
+        <div class="staffDiv">
+          <el-form-item label="制单人:" label-width="60px" prop="jeRecorderId">
+            <el-select ref="staff1" v-model="temp.jeRecorderId" style="width:110px" placeholder="制单人" size="small" @change="changeVal1">
+                <el-option v-for="item in stafflist" :label="item.staffName" :key="item.id" :value="item.id" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="签名:" label-width="45px" prop="sign1">
+            <el-input v-model="temp.sign1" size="small" placeholder="制单人签名" />
+          </el-form-item>
+          <el-form-item label="审核人:" label-width="60px" prop="jeAuditorId">
+            <el-select ref="staff2" v-model="temp.jeAuditorId" style="width:110px" placeholder="审核人" size="small" @change="changeVal2">
+                <el-option v-for="item in stafflist" :label="item.staffName" :key="item.id" :value="item.id" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="签名:" label-width="45px" prop="sign2">
+            <el-input v-model="temp.sign2" size="small" placeholder="审核人签名" />
+          </el-form-item>
+          <el-form-item label="记账人:" label-width="60px" prop="jePosterId">
+            <el-select ref="staff3" v-model="temp.jePosterId" style="width:110px" placeholder="记账人" size="small" @change="changeVal3">
+                <el-option v-for="item in stafflist" :label="item.staffName" :key="item.id" :value="item.id" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="签名:" label-width="45px" prop="sign3">
+            <el-input v-model="temp.sign3" size="small" placeholder="记账人签名" />
+          </el-form-item>
+        </div>
       </el-form>
-      <div slot="footer" class="dialog-footer" align="center">
-        <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button type="primary" @click="saveManageInfo()">保存</el-button>
+      <div class="tx-c" style="margin-top:25px">
+        <el-button @click="$store.dispatch('tagsView/delView', $route);$router.replace('/init/bill')">取 消</el-button>
+        <el-button type="primary" @click="saveManageInfo()">保 存</el-button>
       </div>
-    </el-dialog>
+    </div>
   </div>
 </template>
 <script>
-import { getmanagementInfo, registerLoadTaxfilingcategory, saveBook, resetAccount, getCurrencyList, getCoaHierarchy, updateTaxFilingCategory, getAccount } from '@/api/user'
+import { getmanagementInfo, registerLoadTaxfilingcategory, saveBook, getCurrencyList, getCoaHierarchy, getAccount, getStaff } from '@/api/user'
 export default {
+  name: 'createBill',
   data() {
     return {
       dialogFormVisible: false,
-      dialogStatus: 'create',
       managementInfo: {},
       accountInfo: {},
       userInfo: {},
       codingRuleArr: [4, 2, 2, 2, 2, 2, 2, 2],
+      stafflist: [],
       temp: {
         id: '',
         bookName: '',
@@ -170,7 +189,7 @@ export default {
         defaultTaxRateStr: '',
         isAutoAuditWhenAutoSave: 1,
         coaLevel: 5,
-        codingRule: '4-2-2-2-2',
+        codingRule: '4-2-2-2-2-2-2-2',
         isAutoJtfjs: 0,
         isCoaCobinationCode: 0,
         autoVoucherType: 0,
@@ -195,7 +214,22 @@ export default {
         isAuxProj: 0,
         isAuxStaff: 0,
         isAuxSupplier: 0,
-        isQuantity: 0
+        isQuantity: 0,
+        jeRecorderId: '',
+        jeAuditorId: '',
+        jePosterId: '',
+        sign1: '',
+        sign2: '',
+        sign3: '',
+        isPurchase: 1,
+        isPurchaseReturned: 1,
+        isSales: 1,
+        isSalesReturned: 1,
+        isPresale: 1,
+        isPresaleReturned: 1,
+        isReceive: 1,
+        isPayment: 1,
+        isInventory: 1
       },
       rules1: {
         orgName: [{ required: true, message: '企业全称不能为空', trigger: 'change' }],
@@ -221,44 +255,32 @@ export default {
     getCoaHierarchy().then(res => {
       this.coaHierarchyList = res.data.data
     })
+    getStaff().then(res => {
+        this.stafflist = res.data.data
+    }).catch(err => {
+        this.list = arr;
+    })
   },
   methods: {
+    changeVal1() {
+      this.$nextTick(() => {
+        this.temp.sign1 = this.$refs.staff1.selected.label
+      })
+    },
+    changeVal2() {
+      this.$nextTick(() => {
+        this.temp.sign2 = this.$refs.staff2.selected.label
+      })
+    },
+    changeVal3() {
+      this.$nextTick(() => {
+        this.temp.sign3 = this.$refs.staff3.selected.label
+      })
+    },
     autoTransferChange(val) {
       if (val) {
         this.temp.autoAuditFlag = 1
       }
-    },
-    handleTransfer() {
-      const obj = {
-        categoryId: this.managementInfo.taxFilingCategoryId == 0 ? '1' : '0'
-      }
-      updateTaxFilingCategory(obj).then(res => {
-        if (res.data.errorCode == 0) {
-          this.$message.success('修改纳税类型成功')
-          this.getData()
-        } else {
-          this.$message.warning(res.data.msg)
-        }
-      })
-    },
-    resetAcc() {
-      this.$confirm('账套的所有初始数据,包括科目,科目余额表等将全部被重置,确定要重置这个账套吗?', '警告', {
-        confirmButtonText: '确定',
-        closeOnClickModal: false,
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        resetAccount().then(res => {
-          if (res.data.errorCode == 0) {
-            this.$message.success('账套已重置！')
-            this.$store.dispatch('user/logout').then(() => {
-              this.$router.replace('/login')
-            })
-          } else {
-            this.$message.warning(res.data.msg)
-          }
-        })
-      })
     },
     saveManageInfo() {
       this.$refs.dataForm.validate(valid => {
@@ -266,45 +288,13 @@ export default {
           this.temp.codingRule = this.codingRuleArr.join('-')
           saveBook(this.temp).then(res => {
             if (this.userInfo.glBookEntity) {
-              this.$message.success('修改账套成功')
-              this.dialogFormVisible = false
+              this.$message.success(res.data.msg)
               this.getData()
             } else {
-              this.$alert(res.data.msg, '提示', {
-                confirmButtonText: '确定',
-                callback: () => {
-                  this.$store.dispatch('user/logout').then(() => {
-                    this.$router.push({ path: '/login' })
-                  })
-                }
-              })
+              this.$message.warning(res.data.msg)
             }
           })
         }
-      })
-    },
-    handleCompile() {
-      for (var key in this.temp) {
-        this.temp[key] = this.accountInfo[key]
-      }
-      this.temp.isAutoJzcb = 100
-      this.dialogFormVisible = true
-      this.dialogStatus = 'update'
-    },
-    handleAdd() {
-      var txt = '科目体系、本位币、启用期间、科目编码规则在建账后不可再更改；科目如果已被使用,则该科目的数量核算和辅助核算选择不可再更改。'
-      this.$confirm(txt, '提示', {
-        dangerouslyUseHTMLString: true,
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.dialogFormVisible = true
-        this.codingRuleArr = [4, 2, 2, 2, 2, 2, 2, 2]
-        this.temp.bookName = this.managementInfo.orgName
-        this.dialogStatus = 'create'
-      }).catch(() => {
-        this.dialogFormVisible = false
       })
     },
     formatNum(num) {
@@ -333,6 +323,15 @@ export default {
             this.accountInfo.isAutoJtsds = this.formatNum(this.accountInfo.isAutoJtsds * 100)
           }
         }
+        if (this.$route.path === '/init/billAdd') {
+          this.codingRuleArr = [4, 2, 2, 2, 2, 2, 2, 2]
+          this.temp.bookName = this.managementInfo.orgName
+        } else {
+          for (var key in this.temp) {
+            this.temp[key] = this.accountInfo[key]
+          }
+          this.temp.isAutoJzcb = 100
+        }
       })
     }
   }
@@ -345,21 +344,25 @@ export default {
     }
 }
 
-/deep/.el-card__header {
+/deep/ .el-card__header {
     padding: 10px 15px
 }
 
-/deep/.el-card__body {
+/deep/ .el-card__body {
     padding: 10px 20px 15px;
 }
+
 /deep/ .el-input__inner{
     padding: 0 5px;
 }
-/deep/.el-form-item {
+
+/deep/ .el-form-item {
     margin-bottom: 16px;
 }
+/deep/ .staffDiv .el-input{width: 96px;}
 </style>
 <style scoped>
+.title{margin-bottom: 15px; font-size: 16px; font-weight: bold; }
 .listItem {
     height: 42px;
     line-height: 42px;

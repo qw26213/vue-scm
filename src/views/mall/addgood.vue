@@ -102,6 +102,7 @@ import COS from 'cos-js-sdk-v5'
 import { getItemById } from '@/api/basedata'
 import { getTabs, saveGood, getGood } from '@/api/mall'
 export default {
+  name: 'addgood',
   data() {
     return {
       url: '',

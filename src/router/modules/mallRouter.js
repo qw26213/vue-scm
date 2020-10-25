@@ -79,9 +79,9 @@ const mallRouter = {
             title: '编辑商品明细'
         }
     }, {
-        path: 'order',
-        component: () => import('@/views/mall/order'),
-        name: 'order',
+        path: 'orderlist',
+        component: () => import('@/views/mall/orderlist'),
+        name: 'orderlist',
         meta: {
             roles: ['4220'],
             title: '订单管理'

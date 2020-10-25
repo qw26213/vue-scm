@@ -170,6 +170,7 @@ import { getNowDate, deepClone, toNumStr } from '@/utils/index'
 var userInfo = JSON.parse(sessionStorage.userInfo)
 var hexCas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 export default {
+  name: 'initialBalance',
   filters: {
     toFix(val) {
       if (!val) { return '0.00' }

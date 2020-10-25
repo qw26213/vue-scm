@@ -10,17 +10,35 @@ const initRouter = {
         icon: 'init'
     },
     children: [{
-        path: 'createBill',
-        component: () => import ('@/views/init/createBill'),
-        name: 'createBill',
+        path: 'bill',
+        component: () => import ('@/views/init/bill'),
+        name: 'buildBill',
         meta: {
             roles: ['7010'],
             title: '建账'
         }
     }, {
+        path: 'buildBill',
+        component: () => import ('@/views/init/billAdd'),
+        name: 'BillAdd',
+        hidden: true,
+        meta: {
+            roles: ['7010'],
+            title: '新建账套'
+        }
+    }, {
+        path: 'BillEdit',
+        component: () => import ('@/views/init/billAdd'),
+        name: 'BillEdit',
+        hidden: true,
+        meta: {
+            roles: ['7010'],
+            title: '修改账套'
+        }
+    }, {
         path: 'import',
         component: () => import ('@/views/init/import'),
-        name: 'import',
+        name: 'importData',
         meta: {
             roles: ['7030'],
             title: '导入'
@@ -28,7 +46,7 @@ const initRouter = {
     }, {
         path: 'balance',
         component: () => import ('@/views/init/balance'),
-        name: 'coaBalance',
+        name: 'initialBalance',
         meta: {
             roles: ['7020'],
             title: '期初余额'

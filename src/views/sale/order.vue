@@ -157,7 +157,7 @@ import custList from '@/components/selects/custList'
 import { getNowDate } from '@/utils/auth'
 import Pagination from '@/components/Pagination'
 export default {
-  name: 'SaleData',
+  name: 'OrderData',
   components: { staffList, custList, Pagination, Auditconfirm },
   filters: {
     Fixed: function(num) {

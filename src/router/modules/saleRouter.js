@@ -3,7 +3,7 @@ const saleRouter = {
     path: '/sale',
     component: Layout,
     redirect: '/sale/data',
-    name: 'sale',
+    name: 'Sale',
     meta: {
         roles: ['1410', '1420', '1430', '1440', '1450'],
         title: '销售',
@@ -12,7 +12,7 @@ const saleRouter = {
     children: [{
         path: 'data',
         component: () => import('@/views/sale/data'),
-        name: 'saleData',
+        name: 'SaleData',
         meta: {
             roles: ['1420'],
             title: '销售单'
@@ -20,7 +20,7 @@ const saleRouter = {
     }, {
         path: 'add',
         component: () => import('@/views/sale/add'),
-        name: 'saleAdd',
+        name: 'SaleAdd',
         hidden: true,
         meta: {
             roles: ['142010'],
@@ -29,7 +29,7 @@ const saleRouter = {
     }, {
         path: 'modify',
         component: () => import('@/views/sale/add'),
-        name: 'saleModify',
+        name: 'SaleModify',
         hidden: true,
         meta: {
             roles: ['142020'],
@@ -38,7 +38,7 @@ const saleRouter = {
     }, {
         path: 'detail',
         component: () => import('@/views/sale/add'),
-        name: 'saleDetail',
+        name: 'SaleDetail',
         hidden: true,
         meta: {
             roles: ['1420'],
@@ -47,7 +47,7 @@ const saleRouter = {
     }, {
         path: 'saleOrder',
         component: () => import('@/views/sale/order'),
-        name: 'saleOrder',
+        name: 'OrderData',
         meta: {
             roles: ['1410'],
             title: '销售订单'
@@ -56,7 +56,7 @@ const saleRouter = {
         path: 'orderAdd',
         component: () => import('@/views/sale/orderAdd'),
         hidden:true,
-        name: 'orderAdd',
+        name: 'OrderAdd',
         meta: {
             roles: ['141010'],
             title: '新增销售订单'
@@ -65,7 +65,7 @@ const saleRouter = {
         path: 'orderModify',
         component: () => import('@/views/sale/orderAdd'),
         hidden:true,
-        name: 'orderModify',
+        name: 'OrderModify',
         meta: {
             roles: ['141020'],
             title: '编辑销售订单'
@@ -74,7 +74,7 @@ const saleRouter = {
         path: 'orderDetail',
         component: () => import('@/views/sale/orderAdd'),
         hidden:true,
-        name: 'orderDetail',
+        name: 'OrderDetail',
         meta: {
             roles: ['141020'],
             title: '查看销售订单'
@@ -82,7 +82,7 @@ const saleRouter = {
     }, {
         path: 'returned',
         component: () => import('@/views/sale/returned'),
-        name: 'saleReturned',
+        name: 'SaleReturned',
         meta: {
             roles: ['1430'],
             title: '销售退货'
@@ -90,7 +90,7 @@ const saleRouter = {
     }, {
         path: 'returnedAdd',
         component: () => import('@/views/sale/returnedAdd'),
-        name: 'saleReturnedAdd',
+        name: 'SaleReturnedAdd',
         hidden:true,
         meta: {
             roles: ['143010'],
@@ -99,7 +99,7 @@ const saleRouter = {
     }, {
         path: 'returnedModify',
         component: () => import('@/views/sale/returnedAdd'),
-        name: 'saleReturnedModify',
+        name: 'SaleReturnedModify',
         hidden:true,
         meta: {
             roles: ['143020'],
@@ -108,7 +108,7 @@ const saleRouter = {
     }, {
         path: 'returnedDetail',
         component: () => import('@/views/sale/returnedAdd'),
-        name: 'saleReturnedDetail',
+        name: 'SaleReturnedDetail',
         hidden:true,
         meta: {
             roles: ['1430'],
@@ -117,7 +117,7 @@ const saleRouter = {
     }, {
         path: 'delivery',
         component: () => import('@/views/sale/delivery'),
-        name: 'delivery',
+        name: 'Delivery',
         meta: {
             roles: ['1440'],
             title: '销售配送'
@@ -125,7 +125,7 @@ const saleRouter = {
     }, {
         path: 'deliveryAdd',
         component: () => import('@/views/sale/deliveryAdd'),
-        name: 'deliveryAdd',
+        name: 'DeliveryAdd',
         hidden: true,
         meta: {
             roles: ['144010'],
@@ -134,7 +134,7 @@ const saleRouter = {
     }, {
         path: 'deliveryModify',
         component: () => import('@/views/sale/deliveryAdd'),
-        name: 'deliveryModify',
+        name: 'DeliveryModify',
         hidden: true,
         meta: {
             roles: ['144020'],
@@ -143,7 +143,7 @@ const saleRouter = {
     }, {
         path: 'deliveryDetail',
         component: () => import('@/views/sale/deliveryAdd'),
-        name: 'deliveryDetail',
+        name: 'DeliveryDetail',
         hidden: true,
         meta: {
             roles: ['144020'],
@@ -152,7 +152,7 @@ const saleRouter = {
     }, {
         path: 'invoice',
         component: () => import('@/views/sale/invoice'),
-        name: 'saleInvoice',
+        name: 'SaleInvoice',
         meta: {
             roles: ['1450'],
             title: '销售发票'
@@ -160,7 +160,7 @@ const saleRouter = {
     }, {
         path: 'invoiceAdd',
         component: () => import('@/views/sale/invoiceAdd'),
-        name: 'invoiceAdd',
+        name: 'InvoiceAdd',
         hidden: true,
         meta: {
             roles: ['145010'],
@@ -169,7 +169,7 @@ const saleRouter = {
     }, {
         path: 'invoiceModify',
         component: () => import('@/views/sale/invoiceAdd'),
-        name: 'invoiceAdd',
+        name: 'InvoiceAdd',
         hidden: true,
         meta: {
             roles: ['145020'],
@@ -178,7 +178,7 @@ const saleRouter = {
     }, {
         path: 'invoiceDeail',
         component: () => import('@/views/sale/invoiceAdd'),
-        name: 'invoiceAdd',
+        name: 'InvoiceAdd',
         hidden: true,
         meta: {
             roles: ['1460'],
@@ -187,7 +187,7 @@ const saleRouter = {
     }, {
         path: 'everyday',
         component: () => import('@/views/sale/everyday'),
-        name: 'saleInvoice',
+        name: 'EverydayData',
         meta: {
             roles: ['1460'],
             title: '销售日结'
@@ -195,7 +195,7 @@ const saleRouter = {
     }, {
         path: 'everydayAdd',
         component: () => import('@/views/sale/everydayAdd'),
-        name: 'everydayAdd',
+        name: 'EverydayAdd',
         hidden: true,
         meta: {
             roles: ['146010'],
@@ -204,7 +204,7 @@ const saleRouter = {
     }, {
         path: 'everydayModify',
         component: () => import('@/views/sale/everydayAdd'),
-        name: 'everydayAdd',
+        name: 'EverydayAdd',
         hidden: true,
         meta: {
             roles: ['146020'],
@@ -213,7 +213,7 @@ const saleRouter = {
     }, {
         path: 'everydayDetail',
         component: () => import('@/views/sale/everydayAdd'),
-        name: 'everydayAdd',
+        name: 'EverydayAdd',
         hidden: true,
         meta: {
             roles: ['146020'],

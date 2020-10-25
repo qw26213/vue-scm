@@ -108,7 +108,7 @@ import { getBalance, exportBalance, printBalance } from '@/api/accbook'
 import { mapGetters } from 'vuex'
 import Pagination from '@/components/Pagination'
 export default {
-  name: 'Balance',
+  name: 'coaBalance',
   components: { Pagination },
   filters: {
     Fixed: function(num) {

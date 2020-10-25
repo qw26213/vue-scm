@@ -69,7 +69,7 @@ import { getVoucherTable, getCatogery } from '@/api/accbook'
 import { getPeriodList } from '@/api/user'
 import { getNowMonth } from '@/utils/index'
 export default {
-  name: 'TotalAccount',
+  name: 'voucherTable',
   filters: {
     Fixed: function(str) {
       return parseFloat(str).toFixed(2)

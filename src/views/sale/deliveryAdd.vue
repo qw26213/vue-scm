@@ -188,7 +188,7 @@ import settleTypeList from '@/components/selects/settleTypeList'
 import salesTypeList from '@/components/selects/salesTypeList'
 import { getName, getNowDate } from '@/utils/auth'
 export default {
-  name: 'OrderAdd',
+  name: 'DeliveryAdd',
   components: { staffList, warehouseList, custList, truckList, itemList, settleTypeList, salesTypeList },
   data() {
     return {

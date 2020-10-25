@@ -129,7 +129,7 @@ import custList from '@/components/selects/custList'
 import settleTypeList from '@/components/selects/settleTypeList'
 import { getName, getNowDate } from '@/utils/auth'
 export default {
-  name: 'ReceiptAdd',
+  name: 'receiptAdd',
   components: { staffList, custList, settleTypeList },
   data() {
     return {

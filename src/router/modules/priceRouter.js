@@ -12,7 +12,7 @@ const priceRouter = {
         children: [{
             path: 'index',
             component: () => import('@/views/price/index'),
-            name: 'priceIndex',
+            name: 'PriceIndex',
             meta: {
                 roles: ['3020'],
                 title: '价格设定'
@@ -20,7 +20,7 @@ const priceRouter = {
         }, {
             path: 'group',
             component: () => import('@/views/price/group'),
-            name: 'priceGroup',
+            name: 'PriceGroup',
             meta: {
                 roles: ['3010'],
                 title: '价格组'

@@ -36,7 +36,7 @@
 import { getFlowData, getPeriodList } from '@/api/report'
 import { getNowMonth } from '@/utils/index'
 export default {
-  name: 'ReportFlow',
+  name: 'reportFlow',
   data() {
     return {
       tableKey: 0,

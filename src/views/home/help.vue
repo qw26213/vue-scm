@@ -79,6 +79,7 @@
 </template>
 <script>
 export default {
+  name: 'usingHelp',
   data() {
     return {
       info: {}

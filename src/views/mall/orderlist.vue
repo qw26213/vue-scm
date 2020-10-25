@@ -111,7 +111,7 @@ import { getOrderData, getOrderInfo, auditOrder } from '@/api/mall'
 import { buildOutboundOrderByHeaderId, buildDeliveryByHeaderId } from '@/api/sale'
 import nullImg from '@/assets/null.png'
 export default {
-  name: 'MerchantList',
+  name: 'orderlist',
   filters: {
     Fixed(num) {
       if (!num) { return '0.00' }

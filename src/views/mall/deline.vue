@@ -58,7 +58,7 @@ import { getItem } from '@/api/basedata'
 import Pagination from '@/components/Pagination'
 import nullImg from '@/assets/null.png'
 export default {
-  name: 'MerchantList',
+  name: 'goodDeline',
   components: { Pagination },
   filters: {
     Fixed(num) {

@@ -93,7 +93,7 @@ import Auditconfirm from '@/components/Auditconfirm/index'
 import Confirmconfirm from '@/components/Confirmconfirm/index'
 import { getNowDate } from '@/utils/auth'
 export default {
-  name: 'EverydayTotalData',
+  name: 'EverydayData',
   components: { Pagination, staffList, Auditconfirm, Confirmconfirm },
   filters: {
     Fixed: function(num) {

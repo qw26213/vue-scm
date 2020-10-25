@@ -153,7 +153,7 @@ import { getDept } from '@/api/basedata'
 import { parseTime, debounce, getNowMonth } from '@/utils'
 import Pagination from '@/components/Pagination'
 export default {
-  name: 'EmployeeList',
+  name: 'employee',
   components: { Pagination },
   data() {
     return {

@@ -38,6 +38,7 @@
 <script>
 import { synbasedata } from '@/api/user'
 export default {
+  name: 'synBasedata',
   data() {
     return {
       listQuery: {

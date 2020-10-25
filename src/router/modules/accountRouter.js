@@ -72,7 +72,7 @@ const accountRouter = {
         }, {
             path: 'createvoucher',
             component: () => import ('@/views/voucher/createvoucher'),
-            name: 'createvoucher',
+            name: 'createVoucher',
             meta: {
                 title: '生成凭证',
                 roles: ['381040']
@@ -90,7 +90,7 @@ const accountRouter = {
         children: [{
             path: 'totalaccount',
             component: () => import ('@/views/accbook/totalaccount'),
-            name: 'totalaccount',
+            name: 'totalAccount',
             meta: {
                 title: '总账',
                 roles: ['382010']
@@ -98,7 +98,7 @@ const accountRouter = {
         }, {
             path: 'detailaccount',
             component: () => import ('@/views/accbook/detailaccount'),
-            name: 'detailaccount',
+            name: 'detailAccount',
             meta: {
                 title: '明细账',
                 roles: ['382020']
@@ -106,7 +106,7 @@ const accountRouter = {
         }, {
             path: 'coabalance',
             component: () => import ('@/views/accbook/balance'),
-            name: 'coabalance',
+            name: 'coaBalance',
             meta: {
                 title: '科目余额表',
                 roles: ['382030']
@@ -114,7 +114,7 @@ const accountRouter = {
         }, {
             path: 'manyaccount',
             component: () => import ('@/views/accbook/manyaccount'),
-            name: 'manyaccount',
+            name: 'manyAccount',
             meta: {
                 title: '多栏账',
                 roles: ['382040']
@@ -122,7 +122,7 @@ const accountRouter = {
         }, {
             path: 'numbertotalaccount',
             component: () => import ('@/views/accbook/numbertotalaccount'),
-            name: 'numbertotalaccount',
+            name: 'numberTotalAccount',
             meta: {
                 title: '数量总账',
                 roles: ['382050']
@@ -130,7 +130,7 @@ const accountRouter = {
         }, {
             path: 'numberdetailaccount',
             component: () => import ('@/views/accbook/numberdetailaccount'),
-            name: 'numberdetailaccount',
+            name: 'numberDetailAccount',
             meta: {
                 title: '数量明细账',
                 roles: ['382060']
@@ -138,7 +138,7 @@ const accountRouter = {
         }, {
             path: 'checkbalance',
             component: () => import ('@/views/accbook/checkbalance'),
-            name: 'checkbalance',
+            name: 'checkBalance',
             meta: {
                 title: '项目余额表',
                 roles: ['382070']
@@ -146,7 +146,7 @@ const accountRouter = {
         }, {
             path: 'checkdetail',
             component: () => import ('@/views/accbook/checkdetail'),
-            name: 'checkdetail',
+            name: 'checkDetail',
             meta: {
                 title: '项目明细表',
                 roles: ['382080']
@@ -164,7 +164,7 @@ const accountRouter = {
         children: [{
             path: 'debt',
             component: () => import ('@/views/voucher/report/debt'),
-            name: 'debt',
+            name: 'reportDebt',
             meta: {
                 roles: ['383010'],
                 title: '资产负债表'
@@ -172,7 +172,7 @@ const accountRouter = {
         }, {
             path: 'profit',
             component: () => import ('@/views/voucher/report/profit'),
-            name: 'profit',
+            name: 'reportProfit',
             meta: {
                 roles: ['383020'],
                 title: '利润表'
@@ -181,7 +181,7 @@ const accountRouter = {
     }, {
         path: 'closePeriod',
         component: () => import ('@/views/voucher/closePeriod'),
-        name: 'closePeriod',
+        name: 'ClosePeriod',
         meta: {
             title: '结账',
             roles: ['3840']

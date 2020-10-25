@@ -92,7 +92,7 @@ import { getTotalAccount, printLedger, exportLedger } from '@/api/accbook'
 import { mapGetters } from 'vuex'
 import Pagination from '@/components/Pagination'
 export default {
-  name: 'TotalAccount',
+  name: 'totalAccount',
   components: { Pagination },
   filters: {
     Fixed: function(num) {

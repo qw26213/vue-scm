@@ -83,7 +83,7 @@ import { getDept } from '@/api/basedata'
 import { debounce, getNowMonth, getNowDate } from '@/utils/index'
 import Pagination from '@/components/Pagination'
 export default {
-  name: 'EmployeeList',
+  name: 'salary',
   components: { Pagination },
   data() {
     return {

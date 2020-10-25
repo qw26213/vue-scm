@@ -80,7 +80,7 @@ import { parseTime } from '@/utils/index'
 import staffList from '@/components/selects/staffList'
 import custList from '@/components/selects/custList'
 export default {
-  name: 'PresaleData',
+  name: 'visitPhoto',
   components: { Pagination, custList, staffList },
   filters: {
     Fixed: function(num) {

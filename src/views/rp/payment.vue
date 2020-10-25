@@ -86,7 +86,7 @@ import supplierList from '@/components/selects/supplierList'
 import { getNowDate } from '@/utils/auth'
 import Auditconfirm from '@/components/Auditconfirm/index'
 export default {
-  name: 'ReceiptPayment',
+  name: 'payment',
   components: { supplierList, Pagination, Auditconfirm },
   filters: {
     fixed(val) {

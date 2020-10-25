@@ -116,7 +116,7 @@ import { getSubsidiarynum, exportSubsidiaryNum, printSubsidiaryNum } from '@/api
 import { mapGetters } from 'vuex'
 import Pagination from '@/components/Pagination'
 export default {
-  name: 'Grossprofit2',
+  name: 'numberDetailAccount',
   components: { Pagination },
   filters: {
     Fixed: function(num) {

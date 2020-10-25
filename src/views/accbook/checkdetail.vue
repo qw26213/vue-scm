@@ -91,6 +91,7 @@ import { mapGetters } from 'vuex'
 import Pagination from '@/components/Pagination'
 import { getProj, getDept, getStaff, getSupplier, getItem } from '@/api/user'
 export default {
+  name: 'checkDetail',
   components: { Pagination },
   filters: {
     Fixed: function(num) {

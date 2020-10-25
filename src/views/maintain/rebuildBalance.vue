@@ -98,6 +98,7 @@
 <script>
 import { reBalance, getPeriodList } from '@/api/user'
 export default {
+  name: 'rebuildBalance',
   filters: {
     toFix(val) {
       if (!val || isNaN(val)) { return '0.00' }

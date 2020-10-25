@@ -22,6 +22,7 @@
 <script>
 import { buildVoucherByBill, voucherLogList } from '@/api/voucher.js'
 export default {
+  name: 'createVoucher',
   data() {
     return {
       rep: {

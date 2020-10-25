@@ -3,7 +3,7 @@ const storeRouter = {
     path: '/store',
     component: Layout,
     redirect: '/store/in',
-    name: 'store',
+    name: 'Store',
     meta: {
         roles: ['2610', '2614', '2626', '2618', '2622', '2630'],
         title: '库存',
@@ -12,7 +12,7 @@ const storeRouter = {
     children: [{
         path: 'warehousing',
         component: () => import ('@/views/store/warehousing'),
-        name: 'warehousing',
+        name: 'Warehousing',
         meta: {
             roles: ['2610'],
             title: '入库单'
@@ -20,7 +20,7 @@ const storeRouter = {
     }, {
         path: 'warehousingAdd',
         component: () => import ('@/views/store/warehousingAdd'),
-        name: 'warehousingAdd',
+        name: 'WarehousingAdd',
         hidden: true,
         meta: {
             roles: ['261010'],
@@ -29,7 +29,7 @@ const storeRouter = {
     }, {
         path: 'warehousingModify',
         component: () => import ('@/views/store/warehousingAdd'),
-        name: 'warehousingModify',
+        name: 'WarehousingModify',
         hidden: true,
         meta: {
             roles: ['261020'],
@@ -38,7 +38,7 @@ const storeRouter = {
     }, {
         path: 'warehousingDetail',
         component: () => import ('@/views/store/warehousingAdd'),
-        name: 'warehousingDetail',
+        name: 'WarehousingDetail',
         hidden: true,
         meta: {
             roles: ['261020'],
@@ -47,7 +47,7 @@ const storeRouter = {
     }, {
         path: 'outboundOrderReturned',
         component: () => import ('@/views/store/outboundOrderReturned'),
-        name: 'outboundOrderReturned',
+        name: 'OutboundOrderReturned',
         meta: {
             roles: ['2614'],
             title: '销售退货入库'
@@ -55,7 +55,7 @@ const storeRouter = {
     }, {
         path: 'outboundOrderReturnedAdd',
         component: () => import ('@/views/store/outboundOrderReturnedAdd'),
-        name: 'outboundOrderReturnedAdd',
+        name: 'OutboundOrderReturnedAdd',
         hidden: true,
         meta: {
             roles: ['261410'],
@@ -64,7 +64,7 @@ const storeRouter = {
     }, {
         path: 'outboundOrderReturnedModify',
         component: () => import ('@/views/store/outboundOrderReturnedAdd'),
-        name: 'outboundOrderReturnedModify',
+        name: 'OutboundOrderReturnedModify',
         hidden: true,
         meta: {
             roles: ['261420'],
@@ -73,7 +73,7 @@ const storeRouter = {
     }, {
         path: 'outboundOrderReturnedDetail',
         component: () => import ('@/views/store/outboundOrderReturnedAdd'),
-        name: 'outboundOrderReturnedDetail',
+        name: 'OutboundOrderReturnedDetail',
         hidden: true,
         meta: {
             roles: ['261420'],
@@ -82,7 +82,7 @@ const storeRouter = {
     }, {
         path: 'outboundOrder',
         component: () => import ('@/views/store/outboundOrder'),
-        name: 'outboundOrder',
+        name: 'OutboundOrder',
         meta: {
             roles: ['2626'],
             title: '出库单'
@@ -90,7 +90,7 @@ const storeRouter = {
     }, {
         path: 'outboundOrderAdd',
         component: () => import ('@/views/store/outboundOrderAdd'),
-        name: 'outboundOrderAdd',
+        name: 'OutboundOrderAdd',
         hidden: true,
         meta: {
             roles: ['262610'],
@@ -99,7 +99,7 @@ const storeRouter = {
     }, {
         path: 'outboundOrderModify',
         component: () => import ('@/views/store/outboundOrderAdd'),
-        name: 'outboundOrderModify',
+        name: 'OutboundOrderModify',
         hidden: true,
         meta: {
             roles: ['262620'],
@@ -108,7 +108,7 @@ const storeRouter = {
     }, {
         path: 'outboundOrderSplit',
         component: () => import ('@/views/store/outboundOrderAdd'),
-        name: 'outboundOrderSplit',
+        name: 'OutboundOrderSplit',
         hidden: true,
         meta: {
             roles: ['262620'],
@@ -117,7 +117,7 @@ const storeRouter = {
     }, {
         path: 'outboundOrderDetail',
         component: () => import ('@/views/store/outboundOrderAdd'),
-        name: 'outboundOrderDetail',
+        name: 'OutboundOrderDetail',
         hidden: true,
         meta: {
             roles: ['262620'],
@@ -126,7 +126,7 @@ const storeRouter = {
     }, {
         path: 'allocation',
         component: () => import ('@/views/store/allocation'),
-        name: 'allocation',
+        name: 'Allocation',
         meta: {
             roles: ['2618'],
             title: '调拨单'
@@ -134,7 +134,7 @@ const storeRouter = {
     }, {
         path: 'allocationAdd',
         component: () => import ('@/views/store/allocationAdd'),
-        name: 'allocationAdd',
+        name: 'AllocationAdd',
         hidden: true,
         meta: {
             roles: ['261810'],
@@ -143,7 +143,7 @@ const storeRouter = {
     }, {
         path: 'allocationModify',
         component: () => import ('@/views/store/allocationAdd'),
-        name: 'allocationModify',
+        name: 'AllocationModify',
         hidden: true,
         meta: {
             roles: ['261820'],
@@ -152,7 +152,7 @@ const storeRouter = {
     }, {
         path: 'allocationDetail',
         component: () => import ('@/views/store/allocationAdd'),
-        name: 'allocationDetail',
+        name: 'AllocationDetail',
         hidden: true,
         meta: {
             roles: ['261820'],
@@ -161,7 +161,7 @@ const storeRouter = {
     }, {
         path: 'movement',
         component: () => import ('@/views/store/movement'),
-        name: 'movement',
+        name: 'Movement',
         meta: {
             roles: ['2622'],
             title: '移库单'
@@ -169,7 +169,7 @@ const storeRouter = {
     }, {
         path: 'movementAdd',
         component: () => import ('@/views/store/movementAdd'),
-        name: 'movementAdd',
+        name: 'MovementAdd',
         hidden: true,
         meta: {
             roles: ['262210'],
@@ -178,7 +178,7 @@ const storeRouter = {
     }, {
         path: 'movementModify',
         component: () => import ('@/views/store/movementAdd'),
-        name: 'movementModify',
+        name: 'MovementModify',
         hidden: true,
         meta: {
             roles: ['262220'],
@@ -187,7 +187,7 @@ const storeRouter = {
     }, {
         path: 'movementDetail',
         component: () => import ('@/views/store/movementAdd'),
-        name: 'movementDetail',
+        name: 'MovementDetail',
         hidden: true,
         meta: {
             roles: ['262220'],
@@ -196,7 +196,7 @@ const storeRouter = {
     }, {
         path: 'warehousingReturned',
         component: () => import ('@/views/store/warehousingReturned'),
-        name: 'warehousingReturned',
+        name: 'WarehousingReturned',
         meta: {
             roles: ['2630'],
             title: '采购退货出库'
@@ -205,7 +205,7 @@ const storeRouter = {
         path: 'warehousingReturnedAdd',
         component: () => import ('@/views/store/warehousingReturnedAdd'),
         hidden: true,
-        name: 'warehousingReturnedAdd',
+        name: 'WarehousingReturnedAdd',
         meta: {
             roles: ['263010'],
             title: '新增采购退货出库'
@@ -214,7 +214,7 @@ const storeRouter = {
         path: 'warehousingReturnedModify',
         component: () => import ('@/views/store/warehousingReturnedAdd'),
         hidden: true,
-        name: 'warehousingReturnedModify',
+        name: 'WarehousingReturnedModify',
         meta: {
             roles: ['263020'],
             title: '编辑采购退货出库'
@@ -223,7 +223,7 @@ const storeRouter = {
         path: 'warehousingReturnedDetail',
         component: () => import ('@/views/store/warehousingReturnedAdd'),
         hidden: true,
-        name: 'warehousingReturnedDetail',
+        name: 'WarehousingReturnedDetail',
         meta: {
             roles: ['263020'],
             title: '查看采购退货出库'
@@ -231,7 +231,7 @@ const storeRouter = {
     }, {
         path: 'inventory',
         component: () => import ('@/views/store/inventory'),
-        name: 'saleInventory',
+        name: 'SaleInventory',
         meta: {
             roles: ['1450'],
             title: '盘点单'
@@ -239,7 +239,7 @@ const storeRouter = {
     }, {
         path: 'inventoryAdd',
         component: () => import ('@/views/store/inventoryAdd'),
-        name: 'inventoryAdd',
+        name: 'InventoryAdd',
         hidden: true,
         meta: {
             roles: ['145010'],
@@ -248,7 +248,7 @@ const storeRouter = {
     }, {
         path: 'inventoryModify',
         component: () => import ('@/views/store/inventoryAdd'),
-        name: 'inventoryAdd',
+        name: 'InventoryAdd',
         hidden: true,
         meta: {
             roles: ['145020'],
@@ -257,7 +257,7 @@ const storeRouter = {
     }, {
         path: 'inventoryDetail',
         component: () => import ('@/views/store/inventoryAdd'),
-        name: 'inventoryDetail',
+        name: 'InventoryDetail',
         hidden: true,
         meta: {
             roles: ['145020'],
@@ -265,4 +265,5 @@ const storeRouter = {
         }
     }]
 }
-export default storeRouter;
+
+export default storeRouter

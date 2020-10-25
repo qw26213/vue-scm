@@ -3,7 +3,7 @@ const purchaseRouter = {
     path: '/purchase',
     component: Layout,
     redirect: '/purchase/data',
-    name: 'purchase',
+    name: 'Purchase',
     meta: {
         roles: ['1020', '1030'],
         title: '采购',
@@ -12,7 +12,7 @@ const purchaseRouter = {
     children: [{
         path: 'data',
         component: () => import ('@/views/purchase/data'),
-        name: 'purchaseData',
+        name: 'PurchaseData',
         meta: {
             roles: ['1020'],
             title: '进货单'
@@ -20,7 +20,7 @@ const purchaseRouter = {
     }, {
         path: 'add',
         component: () => import ('@/views/purchase/add'),
-        name: 'purchaseAdd',
+        name: 'PurchaseAdd',
         hidden: true,
         meta: {
             roles: ['102010'],
@@ -29,7 +29,7 @@ const purchaseRouter = {
     }, {
         path: 'modify',
         component: () => import ('@/views/purchase/add'),
-        name: 'purchaseModify',
+        name: 'PurchaseModify',
         hidden: true,
         meta: {
             roles: ['102020'],
@@ -38,7 +38,7 @@ const purchaseRouter = {
     }, {
         path: 'detail',
         component: () => import ('@/views/purchase/add'),
-        name: 'purchaseDetail',
+        name: 'PurchaseDetail',
         hidden: true,
         meta: {
             roles: ['1020'],
@@ -47,7 +47,7 @@ const purchaseRouter = {
     }, {
         path: 'returned',
         component: () => import ('@/views/purchase/returned'),
-        name: 'purchaseReturned',
+        name: 'PurchaseReturned',
         meta: {
             roles: ['1030'],
             title: '采购退货'
@@ -55,7 +55,7 @@ const purchaseRouter = {
     }, {
         path: 'returnedAdd',
         component: () => import ('@/views/purchase/returnedAdd'),
-        name: 'purchaseReturnedAdd',
+        name: 'PurchaseReturnedAdd',
         hidden: true,
         meta: {
             roles: ['103010'],
@@ -64,7 +64,7 @@ const purchaseRouter = {
     }, {
         path: 'returnedModify',
         component: () => import ('@/views/purchase/returnedAdd'),
-        name: 'purchaseReturnedModify',
+        name: 'PurchaseReturnedModify',
         hidden: true,
         meta: {
             roles: ['103020'],
@@ -73,7 +73,7 @@ const purchaseRouter = {
     }, {
         path: 'returnedDetail',
         component: () => import ('@/views/purchase/returnedAdd'),
-        name: 'purchaseReturnedDetail',
+        name: 'PurchaseReturnedDetail',
         hidden: true,
         meta: {
             roles: ['1030'],

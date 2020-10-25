@@ -77,7 +77,7 @@ import { getDetail, exportSubsidiary, printSubsidiary } from '@/api/accbook'
 import { mapGetters } from 'vuex'
 import Pagination from '@/components/Pagination'
 export default {
-  name: 'Grossprofit2',
+  name: 'detailAccount',
   components: { Pagination },
   filters: {
     Fixed: function(num) {

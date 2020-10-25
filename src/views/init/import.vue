@@ -25,6 +25,7 @@
 </template>
 <script>
 export default {
+  name: 'importData',
   data() {
     return {
       tableData: [{

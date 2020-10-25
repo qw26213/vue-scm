@@ -4,7 +4,7 @@ const presaleRouter = {
     component: Layout,
     alwaysShow: true,
     redirect: '/presale/data',
-    name: 'presale',
+    name: 'Presale',
     meta: {
         roles: ['2210', '2220'],
         title: '预收',
@@ -13,7 +13,7 @@ const presaleRouter = {
     children: [{
         path: 'data',
         component: () => import ('@/views/presale/data'),
-        name: 'presaleData',
+        name: 'PresaleData',
         meta: {
             roles: ['2210'],
             title: '预收单'
@@ -22,7 +22,7 @@ const presaleRouter = {
         path: 'add',
         component: () => import ('@/views/presale/add'),
         hidden: true,
-        name: 'presaleAdd',
+        name: 'PresaleAdd',
         meta: {
             roles: ['221010'],
             title: '新增预收单'
@@ -30,7 +30,7 @@ const presaleRouter = {
     }, {
         path: 'modify',
         component: () => import ('@/views/presale/add'),
-        name: 'presaleModify',
+        name: 'PresaleModify',
         hidden: true,
         meta: {
             roles: ['221020'],
@@ -39,7 +39,7 @@ const presaleRouter = {
     }, {
         path: 'detail',
         component: () => import ('@/views/presale/add'),
-        name: 'presaleDetail',
+        name: 'PresaleDetail',
         hidden: true,
         meta: {
             roles: ['2210'],
@@ -48,7 +48,7 @@ const presaleRouter = {
     }, {
         path: 'returned',
         component: () => import ('@/views/presale/returned'),
-        name: 'presaleReturnedData',
+        name: 'PresaleReturnedData',
         meta: {
             roles: ['2220'],
             title: '预收退款'
@@ -57,7 +57,7 @@ const presaleRouter = {
         path: 'returnedAdd',
         component: () => import ('@/views/presale/returnedAdd'),
         hidden: true,
-        name: 'presaleReturnedAdd',
+        name: 'PresaleReturnedAdd',
         meta: {
             roles: ['222010'],
             title: '新增预收退款'
@@ -65,7 +65,7 @@ const presaleRouter = {
     }, {
         path: 'returnedModify',
         component: () => import ('@/views/presale/returnedAdd'),
-        name: 'presaleReturnedModify',
+        name: 'PresaleReturnedModify',
         hidden: true,
         meta: {
             roles: ['222020'],
@@ -74,7 +74,7 @@ const presaleRouter = {
     }, {
         path: 'returnedDetail',
         component: () => import ('@/views/presale/returnedAdd'),
-        name: 'presaleReturnedDetail',
+        name: 'PresaleReturnedDetail',
         hidden: true,
         meta: {
             roles: ['2220'],

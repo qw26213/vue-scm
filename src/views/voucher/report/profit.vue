@@ -222,7 +222,7 @@
 import { getProfitData, getPeriodList } from '@/api/report'
 import { getNowMonth } from '@/utils/index'
 export default {
-  name: 'Dept',
+  name: 'reportProfit',
   data() {
     return {
       tableKey: 0,

@@ -130,7 +130,7 @@ import { getVoucherAuditList, voucherAduit, unAudit, auditList } from '@/api/vou
 import Pagination from '@/components/Pagination'
 import { getNowMonth } from '@/utils/index'
 export default {
-  name: 'PresaleData',
+  name: 'voucherAudit',
   components: { Pagination },
   filters: {
     jeStatusFor: function(status) {

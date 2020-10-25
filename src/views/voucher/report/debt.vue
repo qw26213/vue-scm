@@ -358,7 +358,7 @@
 import { getDeptData, getPeriodList } from '@/api/report'
 import { getNowMonth } from '@/utils/index'
 export default {
-  name: 'Dept',
+  name: 'reportDebt',
   data() {
     return {
       tableKey: 0,

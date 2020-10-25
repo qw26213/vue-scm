@@ -96,7 +96,7 @@ import { getVoucher, getVoucherById, delVoucher, printList, trimJeSeqByMap } fro
 import Pagination from '@/components/Pagination'
 import { getNowMonth } from '@/utils/index'
 export default {
-  name: 'PresaleData',
+  name: 'voucherData',
   components: { Pagination },
   filters: {
     jeStatusFor: function(status) {

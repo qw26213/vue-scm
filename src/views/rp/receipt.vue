@@ -86,7 +86,7 @@ import custList from '@/components/selects/custList'
 import { getNowDate } from '@/utils/auth'
 import Auditconfirm from '@/components/Auditconfirm/index'
 export default {
-  name: 'ReceiptPayment',
+  name: 'receipt',
   components: { custList, Pagination, Auditconfirm },
   filters: {
     fixed(val) {
