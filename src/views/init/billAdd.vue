@@ -121,8 +121,7 @@
           <span style="margin-left:5px">自动计提所得税</span>
           <el-input v-model="temp.isAutoJtsds" style="width:45px" size="small" />%
         </el-form-item>
-        <div style="font-size:14px">自动生成凭证:</div>
-        <el-form-item>
+        <el-form-item v-if="temp.isAutoTransfer==1" label="自动生成凭证" label-width="100px">
           <el-checkbox v-model="temp.isPurchase" :false-label="0" :true-label="1">进货单</el-checkbox>
           <el-checkbox v-model="temp.isPurchaseReturned" :false-label="0" :true-label="1">采购退货单</el-checkbox>
           <el-checkbox v-model="temp.isSales" :false-label="0" :true-label="1">销售单/销售订单</el-checkbox>
