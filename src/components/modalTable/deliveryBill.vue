@@ -1,42 +1,32 @@
 <template>
     <div>
-        <el-dialog :close-on-click-modal="false" title="选择配送单" :visible.sync="visible" width="800px">
+        <el-dialog :close-on-click-modal="false" title="选择配送单" :visible.sync="visible" width="800px" @close="$parent.modalTableVisible = false">
             <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
                 <el-table-column label="序号" type="index" width="50" align="center" />
-                <el-table-column label="单据日期" align="center" width="100">
-                    <template slot-scope="{row}">
-                        <span>{{row.billDate}}</span>
-                    </template>
+                <el-table-column label="单据日期" align="center" width="120">
+                  <template slot-scope="{row}">
+                    <span>{{ row.billDate }}</span>
+                  </template>
                 </el-table-column>
-                <el-table-column label="单据号" width="100">
-                    <template slot-scope="{row}">
-                        <span>{{row.billNo}}</span>
-                    </template>
+                <el-table-column label="销售单号" min-width="120" align="center">
+                  <template slot-scope="{row}">
+                    <span>{{ row.billNo }}</span>
+                  </template>
                 </el-table-column>
-                <el-table-column label="客户">
-                    <template slot-scope="{row}">
-                        <span>{{row.custName}}</span>
-                    </template>
+                <el-table-column label="配送单号" align="center">
+                  <template slot-scope="{row}">
+                    <span>{{ row.deliveryNo }}</span>
+                  </template>
                 </el-table-column>
-                <el-table-column label="使用预收" align="right">
-                    <template slot-scope="{row}">
-                        <span>{{row.advPayAmount | Fixed}}</span>
-                    </template>
+                <el-table-column label="联系人" align="center">
+                  <template slot-scope="{row}">
+                    <span>{{ row.contact }}</span>
+                  </template>
                 </el-table-column>
-                <el-table-column label="现结金额" align="right">
-                    <template slot-scope="{row}">
-                        <span>{{row.currPayAmount | Fixed}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column label="价税合计" align="right">
-                    <template slot-scope="{row}">
-                        <span>{{row.itemAmount | Fixed}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column label="返利金额" align="right">
-                    <template slot-scope="{row}">
-                        <span>{{row.rebateAmount | Fixed}}</span>
-                    </template>
+                <el-table-column label="电话" min-width="100" align="center">
+                  <template slot-scope="{row}">
+                    <span>{{ row.tel }}</span>
+                  </template>
                 </el-table-column>
                 <el-table-column label="操作" align="center" width="80">
                     <template slot-scope="{row}">
@@ -60,7 +50,7 @@ export default {
         }
     },
     watch: {
-        'modalTableVisible' (val) {
+        'modalTableVisible'(val) {
             this.visible = val
             if (val) {
                 this.type === 's' ? this.getList1() : this.getList2()

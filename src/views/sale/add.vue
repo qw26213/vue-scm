@@ -226,8 +226,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'settleTypeArr',
-      'userInfo'
+      'settleTypeArr'
     ])
   },
   created() {
