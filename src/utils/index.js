@@ -1,13 +1,3 @@
-/**
- * Created by PanJiaChen on 16/11/18.
- */
-
-/**
- * Parse the time to string
- * @param {(Object|string|number)} time
- * @param {string} cFormat
- * @returns {string}
- */
 export function parseTime(time, cFormat) {
     if (arguments.length === 0) {
         return null
@@ -57,11 +47,6 @@ export function getStrByData(arr) {
     return str;
 }
 
-/**
- * @param {number} time
- * @param {string} option
- * @returns {string}
- */
 export function formatTime(time, option) {
     if (('' + time).length === 10) {
         time = parseInt(time) * 1000
@@ -100,10 +85,6 @@ export function formatTime(time, option) {
     }
 }
 
-/**
- * @param {string} url
- * @returns {Object}
- */
 export function getQueryObject(url) {
     url = url == null ? window.location.href : url
     const search = url.substring(url.lastIndexOf('?') + 1)
@@ -119,10 +100,6 @@ export function getQueryObject(url) {
     return obj
 }
 
-/**
- * @param {string} input value
- * @returns {number} output value
- */
 export function byteLength(str) {
     // returns the byte length of an utf8 string
     let s = str.length
@@ -193,12 +170,6 @@ export function html2Text(val) {
     return div.textContent || div.innerText
 }
 
-/**
- * Merges two objects, giving the last one precedence
- * @param {Object} target
- * @param {(Object|Array)} source
- * @returns {Object}
- */
 export function objectMerge(target, source) {
     if (typeof target !== 'object') {
         target = {}
@@ -249,12 +220,6 @@ export function getTime(type) {
     }
 }
 
-/**
- * @param {Function} func
- * @param {number} wait
- * @param {boolean} immediate
- * @return {*}
- */
 export function debounce(func, wait, immediate) {
     let timeout, args, context, timestamp, result
 
@@ -328,13 +293,6 @@ export function addNullObj2(arr) {
     return newArr;
 }
 
-/**
- * This is just a simple version of deep copy
- * Has a lot of edge cases bug
- * If you want to use a perfect deep copy, use lodash's _.cloneDeep
- * @param {Object} source
- * @returns {Object}
- */
 export function deepClone(source) {
     if (!source && typeof source !== 'object') {
         throw new Error('error arguments', 'deepClone')
