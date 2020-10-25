@@ -54,7 +54,7 @@ export default {
             this.visible = val
             if (val) {
                 this.tableData = []
-                this.type === 's' ? this.getList1() : this.getList2()
+                this.getList()
             }
         }
     },
@@ -65,18 +65,9 @@ export default {
         }
     },
     methods: {
-        getList1() {
+        getList() {
             const obj = { salesHeaderId: this.headerId }
             getOutboundOrderBySalesHeaderId(obj).then(res => {
-                this.listLoading = false
-                this.tableData = res.data.data
-            }).catch(() => {
-                this.listLoading = false
-            })
-        },
-        getList2() {
-            const obj = { OutboundOrderHeaderId: this.headerId }
-            getDeliveryByOutboundOrderHeaderId(obj).then(res => {
                 this.listLoading = false
                 this.tableData = res.data.data
             }).catch(() => {

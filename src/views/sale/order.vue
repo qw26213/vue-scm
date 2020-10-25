@@ -114,7 +114,7 @@
             <span v-if="row.status>=1" class="ctrl" @click="handleScan(row)">查看</span>
             <span v-if="row.status==0" class="ctrl" @click="handleCheck(row.id, row.billDate)">审核</span>
             <span v-if="row.status<=0" class="ctrl del" @click="handleDel(row.id, row.billDate)">删除</span>
-            <span v-if="row.status===1 && row.deliveryType==1" class="ctrl" @click="scanDeliveryBill(item)">查看配送单</span>
+            <span v-if="row.status===1 && row.deliveryType==1" class="ctrl" @click="scanDeliveryBill(row)">查看配送单</span>
             <span v-if="row.status==1" class="ctrl" @click="handleCreateBill(row.isOutboundOrder,row.id,row.outboundOrderHeaderId,row.billDate)">{{ row.isOutboundOrder==0?'生成':'查看' }}出库单</span>
             <span v-if="row.status==1" class="ctrl" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId,row.billDate)">{{ row.isJeHeader==0?'生成':'查看' }}销售凭证</span>
             <span class="ctrl" @click="printBill(row)">打印</span>
@@ -266,7 +266,7 @@ export default {
     },
     handleCreateBill(status, id1, id2, billDate) {
       if (status !== 0) {
-        this.salesHeaderId = row.id
+        this.salesHeaderId = id1
         this.modalTableVisible1 = true
       } else {
         this.curBillId = id1
