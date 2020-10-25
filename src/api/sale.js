@@ -369,11 +369,11 @@ export function auditEverydayTotal(data) {
   })
 }
 
-export function confirmEverydayTotal(id) {
+export function confirmEverydayTotal(data) {
   return request({
     url: '/drp/so/everydayTotal/confirmByHeaderId',
     method: 'post',
-    data: { id }
+    data
   })
 }
 
