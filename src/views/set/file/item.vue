@@ -136,7 +136,7 @@
             <el-input v-model="temp.exchangeRate" size="small" placeholder="辅/主换算率" />
           </el-form-item>
           <el-form-item label="税率" prop="taxRate">
-            <el-input v-model="temp.taxRate" size="small" placeholder="税率" />
+            <el-input v-model="temp.taxRate" size="small" style="width:170px" placeholder="税率" />%
           </el-form-item>
           <el-form-item label="建议销售价" prop="price0" style="margin-right:20px">
             <el-input v-model="temp.price0" size="small" placeholder="建议销售价" />
@@ -166,8 +166,8 @@
               <el-option v-for="item in [0,1,2,3,4]" :key="item" :label="item" :value="item" />
             </el-select>
           </el-form-item>
-          <el-form-item label="显示用计量单位" prop="measSale" label-width="120px" style="margin-right:20px">
-            <el-select v-model="temp.measSale" size="small" style="width:175px" class="filter-item">
+          <el-form-item label="显示用计量单位" prop="measDisp" label-width="120px" style="margin-right:20px">
+            <el-select v-model="temp.measDisp" size="small" style="width:175px" class="filter-item">
               <el-option label="主单位" :value="0" />
               <el-option label="辅单位" :value="1" />
               <el-option label="主+辅单位" :value="2" />
@@ -223,8 +223,8 @@
               <el-option v-for="item in brandList" :key="item.id" :label="item.brandName" :value="item.id" />
             </el-select>
           </el-form-item>
-          <el-form-item label="备注" prop="remarks" label-width="45px" style="margin-right:90px">
-            <el-input v-model="temp.remarks" size="small" placeholder="备注" />
+          <el-form-item label="备注" prop="remarks" label-width="45px" style="margin-right:30px">
+            <el-input v-model="temp.remarks" size="small" style="width:250px" placeholder="备注" />
           </el-form-item>
           <el-form-item label="是否可用" label-width="75px" prop="isDisable">
             <el-radio v-model="temp.isDisable" :label="0" style="margin-right:40px">是</el-radio>
@@ -315,7 +315,7 @@ export default {
         scale: 4,
         isIndivisible: 0,
         subScale: 0,
-        measSale: 2,
+        measDisp: 2,
         isDisable: 0
       },
       resetTemp: {
@@ -350,7 +350,7 @@ export default {
         scale: 4,
         isIndivisible: 0,
         subScale: 0,
-        measSale: 2,
+        measDisp: 2,
         isDisable: 0
       },
       dialogFormVisible: false,
@@ -419,6 +419,9 @@ export default {
       this.dialogStatus = 'update'
       for (var key in this.temp) {
         this.temp[key] = obj[key]
+      }
+      if (this.temp.taxRate <= 0.2) {
+        this.temp.taxRate = this.temp.taxRate * 100
       }
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
