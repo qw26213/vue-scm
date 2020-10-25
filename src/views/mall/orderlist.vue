@@ -6,7 +6,7 @@
           <span>订单号：{{ item.billNo }}</span>
           <el-button size="small" type="text" style="float:right;color:#F56C6C;" @click="deleteOrder(item)">删除</el-button>
           <el-button size="small" type="text" style="float:right;color:#409EFF;margin-right:15px;" @click="showOrder(item)">查看订单</el-button>
-          <el-button v-if="item.status===1" size="small" type="text" style="float:right;margin-right:5px;" @click="toBuildBill(item, 2, item.isDelivery)">{{ item.isDelivery==1?'查看':'生成'}}配送单</el-button>
+          <el-button v-if="item.status===1 && item.deliveryType==1" size="small" type="text" style="float:right;margin-right:5px;" @click="scanDeliveryBill(item)">查看配送单</el-button>
           <el-button v-if="item.status===1" size="small" type="text" style="float:right;margin-right:5px;" @click="toBuildBill(item, 1, item.isOutboundOrder)">{{ item.isOutboundOrder==1?'查看':'生成' }}出库单</el-button>
           <el-button v-if="item.status===0" size="small" type="text" style="float:right;color:#409EFF;margin-right:5px;" @click="toAuditOrder(item)">审核</el-button>
         </div>
@@ -101,17 +101,20 @@
       </el-form>
       <div slot="footer" class="dialog-footer" align="center">
         <el-button type="default" @click="dialogFormVisible2 = false">取消</el-button>
-        <el-button type="primary" @click="type === 1 ? createBill() : createBill1()">确定</el-button>
+        <el-button type="primary" @click="createBill()">确定</el-button>
       </div>
     </el-dialog>
+    <modalTable :modal-table-visible="modalTableVisible" :header-id="salesHeaderId" type="s" />
   </div>
 </template>
 <script>
 import { getOrderData, getOrderInfo, auditOrder } from '@/api/mall'
 import { buildOutboundOrderByHeaderId, buildDeliveryByHeaderId } from '@/api/sale'
 import nullImg from '@/assets/null.png'
+import modalTable from '@/components/modalTable/deliveryBill'
 export default {
   name: 'orderlist',
+  components: { modalTable },
   filters: {
     Fixed(num) {
       if (!num) { return '0.00' }
@@ -123,7 +126,6 @@ export default {
       nullImg,
       tableKey: 0,
       isBillDate: 0,
-      type: 1,
       curBillId: '',
       curBillDate: '',
       tableData: [],
@@ -132,10 +134,12 @@ export default {
       orderInfo: {},
       dialogFormVisible1: false,
       dialogFormVisible2: false,
+      modalTableVisible: false,
       listQuery: {
         page: 1,
         pageSize: 100
-      }
+      },
+      salesHeaderId: ''
     }
   },
   created() {
@@ -197,34 +201,22 @@ export default {
         this.$message.error('生成失败，请稍后重试！')
       })
     },
-    createBill1() {
-      var obj = { isBillDate: this.isBillDate, id: this.curBillId, billDate: this.curBillDate }
-      buildDeliveryByHeaderId(obj).then(res => {
-        if (res.data.errorCode == 0) {
-          this.dialogFormVisible2 = false
-          this.getList()
-          this.$message.success('生成配送单成功')
-        } else {
-          this.$message.warning(res.data.msg)
-        }
-      }).catch(() => {
-        this.$message.error('生成失败，请稍后重试！')
-      })
-    },
-    toBuildBill(row, type, status) {
+    toBuildBill(row, status) {
       if (status === 1) {
-        if (type === 1) {
           this.$router.push('/store/outboundOrderDetail?id=' + row.outboundOrderHeaderId)
-        }
-        if (type === 2){
-          this.$router.push('/sale/deliveryDetail?id=' + row.deliveryHeaderId)
-        }
       } else {
         this.type = type
         this.dialogFormVisible2 = true
         this.curBillId = row.id
         this.curBillDate = row.billDate
       }
+    },
+    scanDeliveryBill(row) {
+      this.salesHeaderId = row.id
+      this.modalTableVisible = true
+    },
+    toDeliveryDetail(id) {
+      this.$router.push('/sale/deliveryDetail?id=' + id)
     },
     showOrder(row) {
       getOrderInfo({ headerId: row.id }).then(res => {

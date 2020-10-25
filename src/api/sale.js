@@ -451,3 +451,21 @@ export function getConfirmInfoByHeaderId(id) {
     data: { id }
   })
 }
+
+// 销售订单查看配送单列表
+export function getDeliveryBySalesHeaderId(data) {
+  return request({
+    url: '/drp/so/delivery/getBySalesHeaderId',
+    method: 'post',
+    data
+  })
+}
+
+// 出库单查看配送单列表
+export function getDeliveryByOutboundOrderHeaderId(data) {
+  return request({
+    url: '/drp/so/delivery/getByOutboundOrderHeaderId',
+    method: 'post',
+    data
+  })
+}

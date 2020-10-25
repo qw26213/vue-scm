@@ -78,6 +78,7 @@
       </div>
     </el-dialog>
     <Auditconfirm :dialogvisible.sync="auditModalVisible" :type="auditType" :remarklist="remarklist" @auditBill="checkItem" />
+    <modalTable :modal-table-visible="modalTableVisible" :header-id="outboundOrderHeaderId" type="o" />
   </div>
 </template>
 <script>
@@ -89,9 +90,10 @@ import warehouseList from '@/components/selects/warehouseList'
 import truckList from '@/components/selects/truckList'
 import Auditconfirm from '@/components/Auditconfirm/index'
 import Pagination from '@/components/Pagination'
+import modalTable from '@/components/modalTable/deliveryBill'
 export default {
   name: 'OutboundOrder',
-  components: { Pagination, staffList, custList, warehouseList, truckList, Auditconfirm },
+  components: { Pagination, staffList, custList, warehouseList, truckList, Auditconfirm, modalTable },
   filters: {
     Fixed: function(num) {
       if (!num) { return '0.00' }
@@ -105,6 +107,8 @@ export default {
       type: 1,
       dialogFormVisible: false,
       auditModalVisible: false,
+      modalTableVisible: false,
+      outboundOrderHeaderId: '',
       auditType: '',
       remarklist: [],
       billDate: '',
@@ -141,6 +145,10 @@ export default {
           this.$messae.warning('文件生成失败')
         }
       })
+    },
+    scanDeliveryBill(row) {
+      this.outboundOrderHeaderId = row.id
+      this.modalTableVisible = true
     },
     showAuditInfo(id) {
       this.auditType = 'record'
@@ -189,9 +197,9 @@ export default {
     handleCreateBill(status, id1, id2, type, date) {
       if (status !== 0) {
         if (type === 1) {
-          this.$router.push('/sale/modify?id=' + id2 + '&status=' + status)
+          this.$router.push('/sale/detail?id=' + id2 + '&status=' + status)
         } else {
-          this.$router.push('/sale/deliveryModify?id=' + id2 + '&status=' + status)
+          this.$router.push('/sale/deliveryDetail?id=' + id2 + '&status=' + status)
         }
       } else {
         this.type = type

@@ -1,14 +1,6 @@
 <template>
     <div>
-        <el-dialog :close-on-click-modal="false" title="选择销售单" :visible.sync="visible" width="800px">
-            <div class="filter-container">
-                <el-date-picker :editable="false" v-model="listQuery.queryParam.date1" type="date" placeholder="开始日期" style="width:130px" size="small" :clearable="false" value-format="yyyy-MM-dd" />
-                <span class="zhi">至</span>
-                <el-date-picker :editable="false" v-model="listQuery.queryParam.date2" type="date" placeholder="结束日期" style="width:130px" size="small" :clearable="false" value-format="yyyy-MM-dd" />
-                <el-input size="small" v-model="listQuery.queryParam.billNo" placeholder="单据号" style="width: 120px;" />
-                <custList @selectChange="selectChange" ctrType="list" />
-                <el-button size="small" type="primary" @click="getList">查询</el-button>
-            </div>
+        <el-dialog :close-on-click-modal="false" title="选择配送单" :visible.sync="visible" width="800px">
             <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
                 <el-table-column label="序号" type="index" width="50" align="center" />
                 <el-table-column label="单据日期" align="center" width="100">
@@ -52,43 +44,26 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <pagination v-show="total > 0" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
         </el-dialog>
     </div>
 </template>
 <script>
-import { getSales } from '@/api/sale'
-import Pagination from '@/components/Pagination'
-import custList from '@/components/selects/custList';
-import { getNowDate } from '@/utils/auth'
+import { getDeliveryBySalesHeaderId, getDeliveryByOutboundOrderHeaderId } from '@/api/sale'
 export default {
-    components: { Pagination, custList },
-    props: ['modalTableVisible'],
+    props: ['modalTableVisible', 'headerId', 'type'],
     data() {
         return {
             tableKey: 0,
             visible: false,
             tableData: [],
-            total: 0,
-            isBillDate: '0',
-            listLoading: true,
-            listQuery: {
-                pageIndex: 1,
-                pageNum: 10,
-                queryParam: {
-                    date1: '2019-01-01',
-                    date2: getNowDate(),
-                    billNo: "",
-                    custId: ''
-                }
-            }
+            listLoading: true
         }
     },
     watch: {
         'modalTableVisible' (val) {
             this.visible = val
             if (val) {
-                this.getList()
+                this.type === 's' ? this.getList1() : this.getList2()
             }
         }
     },
@@ -99,24 +74,27 @@ export default {
         }
     },
     methods: {
-        getList() {
-            this.listLoading = true
-            getSales(this.listQuery).then(res => {
+        getList1() {
+            const obj = { salesHeaderId: this.headerId }
+            getDeliveryBySalesHeaderId(obj).then(res => {
                 this.listLoading = false
                 this.tableData = res.data.data
-                this.total = res.data.totalNum
-            }).catch(err => {
+            }).catch(() => {
                 this.listLoading = false
             })
         },
-        selectChange(obj) {
-            for (var key in obj) {
-                this.listQuery.queryParam[key] = obj[key];
-            }
+        getList2() {
+            const obj = { OutboundOrderHeaderId: this.headerId }
+            getDeliveryByOutboundOrderHeaderId(obj).then(res => {
+                this.listLoading = false
+                this.tableData = res.data.data
+            }).catch(() => {
+                this.listLoading = false
+            })
         },
         handleSelect(id) {
             this.$parent.modalTableVisible = false
-            this.$parent.initTableData(id)
+            this.$router.push('/sale/deliveryDetail?id=' + id)
         }
     }
 }
