@@ -33,7 +33,7 @@ export default {
         isSalesReturned: 1,
         isPresale: 1,
         isPresaleReturned: 1,
-        isReceive: 1,
+        isReceipt: 1,
         isPayment: 1,
         isInventory: 1
       }

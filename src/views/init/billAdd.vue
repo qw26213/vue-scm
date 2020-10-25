@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="contentDiv">
       <div class="title">{{ $route.path === '/init/billAdd' ? '新建账套信息' : '编辑账套信息' }}</div>
-      <el-form ref="dataForm" :rules="rules1" inline :model="temp" label-position="left" label-width="70px" style="width: 1020px; margin-left:10px;">
+      <el-form ref="dataForm" :rules="rules1" inline :model="temp" label-position="left" label-width="70px" style="width: 1030px; margin-left:10px;">
         <el-form-item label="账套名称" prop="bookName">
           <el-input v-model="temp.bookName" size="small" placeholder="账套名称" />
         </el-form-item>
@@ -121,7 +121,8 @@
           <span style="margin-left:5px">自动计提所得税</span>
           <el-input v-model="temp.isAutoJtsds" style="width:45px" size="small" />%
         </el-form-item>
-        <el-form-item v-if="temp.isAutoTransfer==1" label="自动生成凭证" label-width="100px">
+        <div v-if="temp.isAutoTransfer==1" style="margin-bottom: 3px"><label style="font-size:14px">自动生成凭证</label></div>
+        <el-form-item v-if="temp.isAutoTransfer==1">
           <el-checkbox v-model="temp.isPurchase" :false-label="0" :true-label="1">进货单</el-checkbox>
           <el-checkbox v-model="temp.isPurchaseReturned" :false-label="0" :true-label="1">采购退货单</el-checkbox>
           <el-checkbox v-model="temp.isSales" :false-label="0" :true-label="1">销售单/销售订单</el-checkbox>
@@ -132,9 +133,11 @@
           <el-checkbox v-model="temp.isPayment" :false-label="0" :true-label="1">付款单</el-checkbox>
           <el-checkbox v-model="temp.isInventory" :false-label="0" :true-label="1">盘点单</el-checkbox>
         </el-form-item>
-        <div class="staffDiv">
+        <div v-if="temp.isAutoTransfer==1" style="margin-bottom: 8px"><label style="font-size:14px">自动凭证制单/审核/记账签名</label></div>
+        <div v-if="temp.isAutoTransfer==1" class="staffDiv">
           <el-form-item label="制单人:" label-width="60px" prop="jeRecorderId">
             <el-select ref="staff1" v-model="temp.jeRecorderId" style="width:110px" placeholder="制单人" size="small" @change="changeVal1">
+                <el-option label="无" value="" />
                 <el-option v-for="item in stafflist" :label="item.staffName" :key="item.id" :value="item.id" />
             </el-select>
           </el-form-item>
@@ -143,6 +146,7 @@
           </el-form-item>
           <el-form-item label="审核人:" label-width="60px" prop="jeAuditorId">
             <el-select ref="staff2" v-model="temp.jeAuditorId" style="width:110px" placeholder="审核人" size="small" @change="changeVal2">
+                <el-option label="无" value="" />
                 <el-option v-for="item in stafflist" :label="item.staffName" :key="item.id" :value="item.id" />
             </el-select>
           </el-form-item>
@@ -151,6 +155,7 @@
           </el-form-item>
           <el-form-item label="记账人:" label-width="60px" prop="jePosterId">
             <el-select ref="staff3" v-model="temp.jePosterId" style="width:110px" placeholder="记账人" size="small" @change="changeVal3">
+                <el-option label="无" value="" />
                 <el-option v-for="item in stafflist" :label="item.staffName" :key="item.id" :value="item.id" />
             </el-select>
           </el-form-item>
@@ -226,7 +231,7 @@ export default {
         isSalesReturned: 1,
         isPresale: 1,
         isPresaleReturned: 1,
-        isReceive: 1,
+        isReceipt: 1,
         isPayment: 1,
         isInventory: 1
       },
@@ -287,6 +292,8 @@ export default {
           this.temp.codingRule = this.codingRuleArr.join('-')
           saveBook(this.temp).then(res => {
             if (this.userInfo.glBookEntity) {
+              this.$store.dispatch('tagsView/delView', this.$route)
+              this.$router.replace('/init/bill')
               this.$message.success(res.data.msg)
               this.getData()
             } else {

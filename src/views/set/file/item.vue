@@ -165,35 +165,35 @@
           <el-form-item label="特性" prop="def1" style="margin-right:20px">
             <el-input v-model="temp.def1" placeholder="如口味" />
           </el-form-item>
-          <el-form-item label="显示用计量单位" prop="measSale" label-width="120px">
+          <el-form-item label="通用售价" prop="stdPrice">
+            <el-input v-model="temp.stdPrice" placeholder="通用售价" />
+          </el-form-item>
+          <el-form-item label="主计量数量精度" prop="scale" label-width="120px" style="margin-right:20px">
+            <el-select v-model="temp.scale" style="width:175px" class="filter-item">
+              <el-option v-for="item in [0,1,2,3,4]" :key="item" :label="item" :value="item" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="辅计量数量精度" prop="subScale" label-width="120px">
+            <el-select v-model="temp.subScale" style="width:175px" class="filter-item">
+              <el-option v-for="item in [0,1,2,3,4]" :key="item" :label="item" :value="item" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="显示用计量单位" prop="measSale" label-width="120px" style="margin-right:20px">
             <el-select v-model="temp.measSale" style="width:175px" class="filter-item">
               <el-option label="主单位" :value="0" />
               <el-option label="辅单位" :value="1" />
               <el-option label="主+辅单位" :value="2" />
             </el-select>
           </el-form-item>
-          <el-form-item label="通用售价" prop="stdPrice" style="margin-right:20px">
-            <el-input v-model="temp.stdPrice" placeholder="通用售价" />
+          <el-form-item label="打印用计量单位" prop="measPrint" label-width="120px">
+            <el-radio v-model="temp.measPrint" :label="1" style="margin-right:10px">主单位</el-radio>
+            <el-radio v-model="temp.measPrint" :label="0">辅单位</el-radio>
           </el-form-item>
-          <el-form-item label="主计量数量精度" prop="scale" label-width="120px">
-            <el-select v-model="temp.scale" style="width:175px" class="filter-item">
-              <el-option v-for="item in [0,1,2,3,4]" :key="item" :label="item" :value="item" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="辅计量数量精度" prop="subScale" label-width="120px" style="margin-right:20px">
-            <el-select v-model="temp.subScale" style="width:175px" class="filter-item">
-              <el-option v-for="item in [0,1,2,3,4]" :key="item" :label="item" :value="item" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="商品属性" prop="attr" style="margin-right:30px">
+          <el-form-item label="商品属性" prop="attr" style="margin-right:20px">
             <el-radio-group v-model="temp.attr">
               <el-radio :label="0" style="margin-right:10px">库存商品</el-radio>
               <el-radio :label="1">负单价商品</el-radio>
             </el-radio-group>
-          </el-form-item>
-          <el-form-item label="打印用计量单位" prop="measPrint" label-width="120px" style="margin-right:20px">
-            <el-radio v-model="temp.measPrint" :label="1" style="margin-right:10px">主单位</el-radio>
-            <el-radio v-model="temp.measPrint" :label="0">辅单位</el-radio>
           </el-form-item>
           <el-form-item label="销售改价" prop="salePriceType">
             <el-radio-group v-model="temp.salePriceType">
