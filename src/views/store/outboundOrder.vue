@@ -90,10 +90,9 @@ import warehouseList from '@/components/selects/warehouseList'
 import truckList from '@/components/selects/truckList'
 import Auditconfirm from '@/components/Auditconfirm/index'
 import Pagination from '@/components/Pagination'
-import modalTable from '@/components/modalTable/deliveryBill'
 export default {
   name: 'OutboundOrder',
-  components: { Pagination, staffList, custList, warehouseList, truckList, Auditconfirm, modalTable },
+  components: { Pagination, staffList, custList, warehouseList, truckList, Auditconfirm },
   filters: {
     Fixed: function(num) {
       if (!num) { return '0.00' }
@@ -107,8 +106,6 @@ export default {
       type: 1,
       dialogFormVisible: false,
       auditModalVisible: false,
-      modalTableVisible: false,
-      outboundOrderHeaderId: '',
       auditType: '',
       remarklist: [],
       billDate: '',
@@ -145,10 +142,6 @@ export default {
           this.$messae.warning('文件生成失败')
         }
       })
-    },
-    scanDeliveryBill(row) {
-      this.outboundOrderHeaderId = row.id
-      this.modalTableVisible = true
     },
     showAuditInfo(id) {
       this.auditType = 'record'

@@ -469,3 +469,12 @@ export function getDeliveryByOutboundOrderHeaderId(data) {
     data
   })
 }
+
+// 销售订单查看出库单
+export function getOutboundOrderBySalesHeaderId(data) {
+  return request({
+    url: '/drp/ic/outboundOrder/getBySalesHeaderId',
+    method: 'post',
+    data
+  })
+}

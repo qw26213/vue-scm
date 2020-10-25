@@ -105,6 +105,7 @@
       </div>
     </el-dialog>
     <modalTable :modal-table-visible="modalTableVisible" :header-id="salesHeaderId" type="s" />
+    <outboundOrderBill :modal-table-visible="modalTableVisible1" :header-id="salesHeaderId" type="s" />
   </div>
 </template>
 <script>
@@ -112,9 +113,10 @@ import { getOrderData, getOrderInfo, auditOrder } from '@/api/mall'
 import { buildOutboundOrderByHeaderId, buildDeliveryByHeaderId } from '@/api/sale'
 import nullImg from '@/assets/null.png'
 import modalTable from '@/components/modalTable/deliveryBill'
+import outboundOrderBill from '@/components/modalTable/outboundOrderBill'
 export default {
   name: 'orderlist',
-  components: { modalTable },
+  components: { modalTable, outboundOrderBill },
   filters: {
     Fixed(num) {
       if (!num) { return '0.00' }
@@ -135,6 +137,7 @@ export default {
       dialogFormVisible1: false,
       dialogFormVisible2: false,
       modalTableVisible: false,
+      modalTableVisible1: false,
       listQuery: {
         page: 1,
         pageSize: 100
@@ -203,7 +206,8 @@ export default {
     },
     toBuildBill(row, status) {
       if (status === 1) {
-          this.$router.push('/store/outboundOrderDetail?id=' + row.outboundOrderHeaderId)
+          this.salesHeaderId = row.id
+          this.modalTableVisible1 = true
       } else {
         this.type = type
         this.dialogFormVisible2 = true

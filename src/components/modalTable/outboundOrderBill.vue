@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-dialog :close-on-click-modal="false" title="配送单" :visible.sync="visible" width="800px" @close="$parent.modalTableVisible = false; visible = false">
+        <el-dialog :close-on-click-modal="false" title="出库单" :visible.sync="visible" width="800px" @close="$parent.modalTableVisible1 = false; visible = false">
             <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
                 <el-table-column label="序号" type="index" width="50" align="center" />
                 <el-table-column label="单据日期" align="center" width="120">
@@ -8,24 +8,24 @@
                     <span>{{ row.billDate }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column label="销售单号" min-width="120" align="center">
+                <el-table-column label="单据号">
                   <template slot-scope="{row}">
                     <span>{{ row.billNo }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column label="配送单号" align="center">
+                <el-table-column label="客户">
                   <template slot-scope="{row}">
-                    <span>{{ row.deliveryNo }}</span>
+                    <span>{{ row.custName }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column label="联系人" align="center">
+                <el-table-column label="仓库">
                   <template slot-scope="{row}">
-                    <span>{{ row.contact }}</span>
+                    <span>{{ row.warehouseName }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column label="电话" min-width="100" align="center">
+                <el-table-column label="车辆">
                   <template slot-scope="{row}">
-                    <span>{{ row.tel }}</span>
+                    <span>{{ row.truckName }}</span>
                   </template>
                 </el-table-column>
                 <el-table-column label="操作" align="center" width="80">
@@ -38,7 +38,7 @@
     </div>
 </template>
 <script>
-import { getDeliveryBySalesHeaderId } from '@/api/sale'
+import { getOutboundOrderBySalesHeaderId } from '@/api/sale'
 export default {
     props: ['modalTableVisible', 'headerId', 'type'],
     data() {
@@ -54,7 +54,7 @@ export default {
             this.visible = val
             if (val) {
                 this.tableData = []
-                this.getList()
+                this.type === 's' ? this.getList1() : this.getList2()
             }
         }
     },
@@ -65,9 +65,18 @@ export default {
         }
     },
     methods: {
-        getList() {
+        getList1() {
             const obj = { salesHeaderId: this.headerId }
-            getDeliveryBySalesHeaderId(obj).then(res => {
+            getOutboundOrderBySalesHeaderId(obj).then(res => {
+                this.listLoading = false
+                this.tableData = res.data.data
+            }).catch(() => {
+                this.listLoading = false
+            })
+        },
+        getList2() {
+            const obj = { OutboundOrderHeaderId: this.headerId }
+            getDeliveryByOutboundOrderHeaderId(obj).then(res => {
                 this.listLoading = false
                 this.tableData = res.data.data
             }).catch(() => {
@@ -75,9 +84,9 @@ export default {
             })
         },
         handleSelect(id) {
-            this.$parent.modalTableVisible = false
+            this.$parent.modalTableVisible1 = false
             this.visible = false
-            this.$router.push('/sale/deliveryDetail?id=' + id)
+            this.$router.push('/store/outboundOrderDetail?id=' + id)
         }
     }
 }

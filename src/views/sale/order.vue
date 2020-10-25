@@ -114,6 +114,7 @@
             <span v-if="row.status>=1" class="ctrl" @click="handleScan(row)">查看</span>
             <span v-if="row.status==0" class="ctrl" @click="handleCheck(row.id, row.billDate)">审核</span>
             <span v-if="row.status<=0" class="ctrl del" @click="handleDel(row.id, row.billDate)">删除</span>
+            <span v-if="row.status===1 && row.deliveryType==1" class="ctrl" @click="scanDeliveryBill(item)">查看配送单</span>
             <span v-if="row.status==1" class="ctrl" @click="handleCreateBill(row.isOutboundOrder,row.id,row.outboundOrderHeaderId,row.billDate)">{{ row.isOutboundOrder==0?'生成':'查看' }}出库单</span>
             <span v-if="row.status==1" class="ctrl" @click="handleCreateVouter(row.isJeHeader,row.id,row.jeHeaderId,row.billDate)">{{ row.isJeHeader==0?'生成':'查看' }}销售凭证</span>
             <span class="ctrl" @click="printBill(row)">打印</span>
@@ -147,6 +148,8 @@
       </div>
     </el-dialog>
     <Auditconfirm :dialogvisible.sync="auditModalVisible" :type="auditType" :remarklist="remarklist" @auditBill="checkItem" />
+    <modalTable :modal-table-visible="modalTableVisible" :header-id="salesHeaderId" />
+    <outboundOrderBill :modal-table-visible="modalTableVisible1" :header-id="salesHeaderId" />
   </div>
 </template>
 <script>
@@ -156,9 +159,11 @@ import Auditconfirm from '@/components/Auditconfirm/index'
 import custList from '@/components/selects/custList'
 import { getNowDate } from '@/utils/auth'
 import Pagination from '@/components/Pagination'
+import modalTable from '@/components/modalTable/deliveryBill'
+import outboundOrderBill from '@/components/modalTable/outboundOrderBill'
 export default {
   name: 'OrderData',
-  components: { staffList, custList, Pagination, Auditconfirm },
+  components: { staffList, custList, Pagination, Auditconfirm, modalTable, outboundOrderBill },
   filters: {
     Fixed: function(num) {
       if (!num) { return '0.00' }
@@ -174,6 +179,9 @@ export default {
       dialogFormVisible1: false,
       dialogFormVisible2: false,
       auditModalVisible: false,
+      modalTableVisible: false,
+      modalTableVisible1: false,
+      salesHeaderId: '',
       remarklist: [],
       auditType: '',
       curBillId: '',
@@ -199,6 +207,10 @@ export default {
     this.getList()
   },
   methods: {
+    scanDeliveryBill(row) {
+      this.salesHeaderId = row.id
+      this.modalTableVisible = true
+    },
     printBill(row) {
       printByHeaderId('/so/salesOrder', row.id, row.billDate).then(res => {
         if (res.data.errorCode == 0) {
@@ -254,7 +266,8 @@ export default {
     },
     handleCreateBill(status, id1, id2, billDate) {
       if (status !== 0) {
-        this.$router.push('/store/outboundOrderDetail?id=' + id2)
+        this.salesHeaderId = row.id
+        this.modalTableVisible1 = true
       } else {
         this.curBillId = id1
         this.curBillDate = billDate
