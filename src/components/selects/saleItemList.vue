@@ -31,6 +31,7 @@ export default {
                     subUom: obj.subUom,
                     exchangeRate: obj.exchangeRate,
                     salePriceType: obj.salePriceType,
+                    vatPrice: obj.price,
                     qualityDays: obj.qualityDays
                 }
                 this.$emit('changeVal', data)
