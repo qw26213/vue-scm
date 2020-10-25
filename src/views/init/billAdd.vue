@@ -4,7 +4,7 @@
       <div class="title">{{ $route.path === '/init/billAdd' ? '新建账套信息' : '编辑账套信息' }}</div>
       <el-form ref="dataForm" :rules="rules1" inline :model="temp" label-position="left" label-width="70px" style="width: 1030px; margin-left:10px;">
         <el-form-item label="账套名称" prop="bookName">
-          <el-input v-model="temp.bookName" size="small" placeholder="账套名称" />
+          <el-input v-model="temp.bookName" size="small" placeholder="账套名称" style="width:205px" />
         </el-form-item>
         <el-form-item label="科目体系" prop="coahierarchyId">
           <el-select v-model="temp.coahierarchyId" size="small" style="width:185px" :disabled="!!userInfo.glBookEntity">
@@ -12,7 +12,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="本位币" prop="baseCurrencyCode" label-width="56px">
-          <el-select v-model="temp.baseCurrencyCode" size="small" style="width:185px" disabled>
+          <el-select v-model="temp.baseCurrencyCode" size="small" style="width:125px" disabled>
             <el-option v-for="item in currencyList" :key="item.id" :label="item.text" :value="item.id" />
           </el-select>
         </el-form-item>
@@ -60,8 +60,7 @@
           <el-checkbox v-model="temp.isDispName" :false-label="0" :true-label="1" style="margin-right:10px">科目名称显示路径</el-checkbox>
           <el-checkbox v-model="temp.isCoaCobinationCode" :false-label="0" :true-label="1" style="margin-right:10px">凭证中显示辅助项编码组合</el-checkbox>
         </el-form-item>
-        <el-form-item>
-          <span>新增凭证时默认凭证日期</span>
+        <el-form-item label="新增凭证时默认凭证日期" label-width="180px">
           <el-radio-group v-model="temp.isVoucherMaxDate">
             <el-radio :label="0" style="margin-right:10px">当前日期</el-radio>
             <el-radio :label="1">最大凭证日期</el-radio>
@@ -80,12 +79,6 @@
           <el-checkbox v-model="temp.isAuxProj" :false-label="0" :true-label="1" :disabled="!!userInfo.glBookEntity" style="margin-right:10px">启用项目核算</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <span>自动凭证类型</span>
-          <el-select v-model="temp.autoVoucherType" style="width:160px; margin-right:10px" size="mini">
-            <el-option label="全部单据每天自动生成" :value="0" />
-            <el-option label="仅销售单据每天自动生成" :value="1" />
-            <el-option label="全部单据手动生成" :value="2" />
-          </el-select>
           <el-checkbox v-model="temp.isAutoAuditWhenAutoSave" :false-label="0" :true-label="1" style="margin-right:10px">自动凭证在保存时自动审核</el-checkbox>
           <el-checkbox v-model="temp.autoAuditFlag" :false-label="0" :true-label="1" style="margin-right:10px" :disabled="temp.isAutoTransfer==1">结账时自动审核凭证</el-checkbox>
           <el-checkbox v-model="temp.isAutoTransfer" :false-label="0" :true-label="1" style="margin-right:10px" @change="autoTransferChange">期末自动结转、结账</el-checkbox>

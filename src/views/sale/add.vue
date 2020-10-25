@@ -189,6 +189,7 @@ export default {
     return {
       id: '',
       status: this.$route.query.status,
+      userInfo: userInfo,
       settleData: [{}, {}, {}, {}, {}],
       dialogFormVisible: false,
       tableData: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
@@ -264,16 +265,11 @@ export default {
         this.$set(this.tableData[index], 'vatAmount', vatAmount)
         var taxRate = this.tableData[index].taxRate
         if (taxRate) {
-          var price = parseFloat(Number(vatPrice) / (Number(taxRate) / 100 + 1)).toFixed(2)
           var amount = parseFloat(Number(qty) * Number(price)).toFixed(2)
           var taxAmount = parseFloat(Number(vatAmount) - Number(amount)).toFixed(2)
           this.$set(this.tableData[index], 'taxAmount', taxAmount)
-          this.$set(this.tableData[index], 'price', price)
-          this.$set(this.tableData[index], 'amount', amount)
         } else {
           this.$set(this.tableData[index], 'taxRate', 0)
-          this.$set(this.tableData[index], 'price', 0)
-          this.$set(this.tableData[index], 'amount', 0)
         }
         this.calculateTotal()
       }

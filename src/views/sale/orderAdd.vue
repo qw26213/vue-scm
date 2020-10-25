@@ -261,7 +261,7 @@ export default {
     if (this.$route.query.id) {
       this.id = this.$route.query.id
       var billDate = this.$route.query.billDate
-      getSalesOrderById({ id: this.id, billDate }).then(res => {
+      getSalesOrderById({ id: this.id, billDate: billDate }).then(res => {
         if (res.data.data) {
           for (var key in this.temp) {
             this.temp[key] = res.data.data[key]
@@ -290,16 +290,11 @@ export default {
         this.$set(this.tableData[index], 'vatAmount', vatAmount)
         var taxRate = this.tableData[index].taxRate
         if (taxRate) {
-          var price = parseFloat(Number(vatPrice) / (Number(taxRate) / 100 + 1)).toFixed(2)
           var amount = parseFloat(Number(qty) * Number(price)).toFixed(2)
           var taxAmount = parseFloat(Number(vatAmount) - Number(amount)).toFixed(2)
           this.$set(this.tableData[index], 'taxAmount', taxAmount)
-          this.$set(this.tableData[index], 'price', price)
-          this.$set(this.tableData[index], 'amount', amount)
         } else {
           this.$set(this.tableData[index], 'taxRate', 0)
-          this.$set(this.tableData[index], 'price', 0)
-          this.$set(this.tableData[index], 'amount', 0)
         }
         this.calculateTotal()
       }

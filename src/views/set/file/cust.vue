@@ -546,8 +546,10 @@ export default {
 </script>
 <style lang="scss" scoped>
 /deep/.el-form-item {
-    margin-bottom: 16px
+    margin-bottom: 18px
 }
+>>> .el-form-item__label{line-height: 32px}
+>>> .el-form-item__content{line-height: 32px}
 </style>
 <style scoped>
 .app-container{min-width: 1220px}
