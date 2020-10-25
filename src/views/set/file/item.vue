@@ -9,6 +9,7 @@
         <!-- <el-input size="small" v-model="listQuery.queryParam.itemCode" placeholder="商品代码" style="width: 200px;" class="filter-item" /> -->
         <el-button size="small" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
         <el-button size="small" class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
+        <el-button size="small" style="float:right" type="primary" @click="printBook">打印</el-button>
       </div>
       <div class="contentDiv">
         <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;" size="small">
@@ -92,6 +93,7 @@
             <template slot-scope="{row}">
               <el-button type="text" size="small" @click="handleCompile(row)">编辑</el-button>
               <el-button type="text" size="small" @click="handleDel(row.id)">删除</el-button>
+              <el-button type="text" size="small" @click="printItem(row.id)">打印</el-button>
               <el-button type="text" size="small" @click="updateStatus(row)">{{ row.isDisable==0?'禁用':'解禁' }}</el-button>
             </template>
           </el-table-column>
@@ -241,7 +243,7 @@
 </template>
 <script>
 import COS from 'cos-js-sdk-v5'
-import { getMeas, getItem, saveItem, delItem, getItemTree, updateItemDisabled, getItemChildrenByParentId, getAllByInvCatgId, getBrand } from '@/api/basedata'
+import { getMeas, getItem, saveItem, delItem, getItemTree, updateItemDisabled, getItemChildrenByParentId, getAllByInvCatgId, getBrand, printAllItem, printItemById } from '@/api/basedata'
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
 export default {
@@ -371,6 +373,20 @@ export default {
     })
   },
   methods: {
+    printBook() {
+      printAllItem().then(res => {
+        window.open('http://' + window.location.host + res.data.data)
+      }).catch(() => {
+        this.listLoading = false
+      })
+    },
+    printItem(id) {
+      printItemById({ id }).then(res => {
+        window.open('http://' + window.location.host + res.data.data)
+      }).catch(() => {
+        this.listLoading = false
+      })
+    },
     getItemById() {
       this.listLoading = true
       getAllByInvCatgId(this.invCatgId).then(res => {

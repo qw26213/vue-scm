@@ -254,7 +254,7 @@ export default {
     },
     handleCreateBill(status, id1, id2, billDate) {
       if (status !== 0) {
-        this.$router.push('/store/outboundOrderModify?id=' + id2 + '&status=' + status)
+        this.$router.push('/store/outboundOrderDetail?id=' + id2)
       } else {
         this.curBillId = id1
         this.curBillDate = billDate

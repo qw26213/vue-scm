@@ -129,7 +129,7 @@ const saleRouter = {
         hidden: true,
         meta: {
             roles: ['144010'],
-            title: '新增销售配送'
+            title: '新增配送单'
         }
     }, {
         path: 'deliveryModify',
@@ -138,7 +138,7 @@ const saleRouter = {
         hidden: true,
         meta: {
             roles: ['144020'],
-            title: '编辑销售配送'
+            title: '编辑配送单'
         }
     }, {
         path: 'deliveryDetail',
@@ -147,7 +147,7 @@ const saleRouter = {
         hidden: true,
         meta: {
             roles: ['144020'],
-            title: '查看销售配送'
+            title: '查看配送单'
         }
     }, {
         path: 'invoice',

@@ -1212,3 +1212,36 @@ export function updateLabelDisabled(data) {
     data
   })
 }
+
+export function printCustById(data) {
+  return request({
+    url: '/drp/bd/cust/printById',
+    method: 'post',
+    data
+  })
+}
+
+export function printAllCust() {
+  return request({
+    url: '/drp/bd/cust/printAll',
+    method: 'post',
+    data
+  })
+}
+
+export function printItemById(data) {
+  return request({
+    url: '/drp/bd/item/printById',
+    method: 'post',
+    data
+  })
+}
+
+export function printAllItem() {
+  return request({
+    url: '/drp/bd/item/printAll',
+    method: 'post',
+    data
+  })
+}
+

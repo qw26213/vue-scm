@@ -28,6 +28,7 @@
       </el-dropdown>
       <el-button size="small" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
       <el-button size="small" type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
+      <el-button size="small" style="float:right;margin-left:20px" type="primary" @click="printBook">打印</el-button>
       <el-button size="small" style="float:right" type="primary" @click="showLine">客户地图</el-button>
     </div>
     <div class="contentDiv">
@@ -112,6 +113,7 @@
             <el-button type="text" size="small" @click="handleUpdate(row.overdraftBalance, row.id)">改已赊销金额</el-button>
             <el-button type="text" size="small" @click="handleCompile(row)">编辑</el-button>
             <el-button type="text" size="small" @click="handleDel(row.id)">删除</el-button>
+            <el-button type="text" size="small" @click="printCust(row.id)">打印</el-button>
             <el-button type="text" size="small" @click="updateStatus(row)">{{ row.isDisable==0?'禁用':'解禁' }}</el-button>
           </template>
         </el-table-column>
@@ -230,7 +232,7 @@
   </div>
 </template>
 <script>
-import { getStaff, getCust, saveCust, delCust, updateCustDisabled, updateOverdraftBalanceById1, getChannelTree, getCustTypeTree, getPriceGroup } from '@/api/basedata'
+import { getStaff, getCust, saveCust, delCust, updateCustDisabled, updateOverdraftBalanceById1, getChannelTree, getCustTypeTree, getPriceGroup, printAllCust, printCustById } from '@/api/basedata'
 import Pagination from '@/components/Pagination'
 import Areas from '@/components/areas'
 export default {
@@ -341,6 +343,20 @@ export default {
     this.getStaffList()
   },
   methods: {
+    printBook() {
+      printAllCust().then(res => {
+        window.open('http://' + window.location.host + res.data.data)
+      }).catch(() => {
+        this.listLoading = false
+      })
+    },
+    printCust(id) {
+      printCustById({ id }).then(res => {
+        window.open('http://' + window.location.host + res.data.data)
+      }).catch(() => {
+        this.listLoading = false
+      })
+    },
     mapReady({ BMap, map }) {
       var points = [
         { lng: 114.00100, lat: 22.550000 },

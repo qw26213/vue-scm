@@ -6,8 +6,8 @@
           <span>订单号：{{ item.billNo }}</span>
           <el-button size="small" type="text" style="float:right;color:#F56C6C;" @click="deleteOrder(item)">删除</el-button>
           <el-button size="small" type="text" style="float:right;color:#409EFF;margin-right:15px;" @click="showOrder(item)">查看订单</el-button>
-          <el-button v-if="item.status===1" size="small" type="text" style="float:right;color:#409EFF;margin-right:5px;" @click="toBuildBill(item.deliveryType, item, 2)">{{ item.deliveryType==0?'生成':'查看' }}配送单</el-button>
-          <el-button v-if="item.status===1" size="small" type="text" style="float:right;color:#409EFF;margin-right:5px;" @click="toBuildBill(item.isOutboundOrder, item, 1)">{{ item.isOutboundOrder==0?'生成':'查看' }}出库单</el-button>
+          <el-button v-if="item.status===1" size="small" type="text" style="float:right;margin-right:5px;" @click="toBuildBill(item, 2, item.isDelivery)">{{ item.isDelivery==1?'查看':'生成'}}配送单</el-button>
+          <el-button v-if="item.status===1" size="small" type="text" style="float:right;margin-right:5px;" @click="toBuildBill(item, 1, item.isOutboundOrder)">{{ item.isOutboundOrder==1?'查看':'生成' }}出库单</el-button>
           <el-button v-if="item.status===0" size="small" type="text" style="float:right;color:#409EFF;margin-right:5px;" @click="toAuditOrder(item)">审核</el-button>
         </div>
         <el-table :key="tableKey" :data="item.salesDetail" fit highlight-current-row :show-header="false" style="width: 100%;">
@@ -185,7 +185,7 @@ export default {
     },
     createBill() {
       var obj = { isBillDate: this.isBillDate, id: this.curBillId, billDate: this.curBillDate }
-      buildOutboundOrderByHeaderId(obj).then(res => {
+      buildSalesOrder(obj).then(res => {
         if (res.data.errorCode == 0) {
           this.dialogFormVisible2 = false
           this.getList()
@@ -211,12 +211,13 @@ export default {
         this.$message.error('生成失败，请稍后重试！')
       })
     },
-    toBuildBill(row, type) {
-      if (row.isOutboundOrder !== 0) {
+    toBuildBill(row, type, status) {
+      if (status === 1) {
         if (type === 1) {
-          this.$router.push('/store/outboundOrderModify?id=' + row.outboundOrderHeaderId + '&status=1')
-        } else {
-          this.$router.push('/sale/deliveryModify?id=' + row.deliveryHeaderId + '&status=1')
+          this.$router.push('/store/outboundOrderDetail?id=' + row.outboundOrderHeaderId)
+        }
+        if (type === 2){
+          this.$router.push('/sale/deliveryDetail?id=' + row.deliveryHeaderId)
         }
       } else {
         this.type = type
