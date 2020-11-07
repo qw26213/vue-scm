@@ -344,7 +344,7 @@ export default {
           }
           this.$axios({
               method: 'post',
-              url: '/drp/file/cosFileInfo/deleteByIds',
+              url: '/drp/file/cosFileInfo/deleteFileByIds',
               data: {
                   ids: this.selectedFile
               }
