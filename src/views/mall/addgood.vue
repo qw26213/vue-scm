@@ -225,7 +225,6 @@ export default {
                     var obj = this.goodForm
                     saveGood(obj).then(res => {
                         if (res.data.errorCode == 0) {
-                            this.delImgs()
                             this.$message.success('商品添加成功！')
                             this.$router.replace('/mall/goodlist')
                         }
@@ -338,21 +337,6 @@ export default {
                 }
             })
         },
-        delImgs() {
-          if (this.selectedFile.length == 0) {
-            return
-          }
-          this.$axios({
-              method: 'post',
-              url: '/drp/file/cosFileInfo/deleteFileByIds',
-              data: {
-                  ids: this.selectedFile.join(',')
-              }
-          }).then(res => {
-            this.selectedFile = []
-            console.log('del imgs success')
-          })
-        },
         onRemoveHandler(index, type) {
             this.$confirm('确定删除该图片?', '提示', {
                 confirmButtonText: '确定',
@@ -362,7 +346,6 @@ export default {
                 this['srcList' + type] = this['srcList' + type].filter((v, i) => {
                   return i !== index
                 })
-                this.selectedFile = this.selectedFile.concat([this['srcList' + type][index].fileId])
             }).catch(() => {})
         },
         onDragStart(e) {
