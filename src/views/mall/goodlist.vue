@@ -142,6 +142,7 @@ export default {
       this.dialogFormVisible = true
     },
     selectGood(id) {
+      this.dialogFormVisible = false
       this.$router.push('/mall/addgood?item_id=' + id)
     },
     handleDelete(id) {
