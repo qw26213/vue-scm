@@ -22,7 +22,7 @@
 
 >>>.login-form {
     position: relative;
-    width: 480px;
+    width: 420px;
     max-width: 100%;
     background: rgba(241, 241, 241, 0.80);
     box-shadow: 0 0 10px #ccc;
@@ -38,7 +38,7 @@
 >>>.title-container .title {
     font-size: 26px;
     color: #333;
-    margin: 0px auto 40px auto;
+    margin: 0px auto 30px auto;
     text-align: center;
     font-weight: bold;
 }

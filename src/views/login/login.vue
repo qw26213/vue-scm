@@ -75,10 +75,10 @@ export default {
       },
       isRemember: true,
       loginRules: {
-        orgCode: [{ required: true, trigger: 'blur', validator: validateOrcode }],
-        userAccount: [{ required: true, trigger: 'blur', message: '账号不能为空' }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }],
-        verifyCode: [{ required: true, trigger: 'blur', message: '图片验证码不能为空' }]
+        orgCode: [{ required: true, trigger: 'change', validator: validateOrcode }],
+        userAccount: [{ required: true, trigger: 'change', message: '账号不能为空' }],
+        password: [{ required: true, trigger: 'change', validator: validatePassword }],
+        verifyCode: [{ required: true, trigger: 'change', message: '图片验证码不能为空' }]
       },
       loading: false,
       redirect: '/home' // this.$route.query.redirect
@@ -141,7 +141,7 @@ export default {
 <style lang="scss" scoped>
 .login-form {
   >>>.el-input {
-    width:365px;
+    width:305px;
     input {
       background: transparent;
       border: 0px;
@@ -149,7 +149,7 @@ export default {
       border-radius: 0px;
       padding: 12px 5px 12px 15px;
       color: #333;
-      height: 47px;
+      height: 40px;
       &:-webkit-autofill {
         box-shadow: 0 0 0px 1000px #fff inset !important;
         -webkit-text-fill-color:#333 !important;
