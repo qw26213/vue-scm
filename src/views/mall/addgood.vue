@@ -359,7 +359,7 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                this['srcList' + type] = this.imgList.filter((v, i) => {
+                this['srcList' + type] = this['srcList' + type].filter((v, i) => {
                   this.selectedFile = this.selectedFile.concat([v.fileId])
                   return i !== index
                 })
