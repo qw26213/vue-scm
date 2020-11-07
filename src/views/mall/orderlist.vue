@@ -3,7 +3,7 @@
     <div class="contentDiv">
       <div v-for="(item,index) in tableData" :key="index" class="orderItem">
         <div class="clearfix toper" style="height:28px">
-          <span>订单号：{{ item.billNo }}</span>
+          <span>{{ item.createDate }} <i style="opacity:0">666</i>订单号：{{ item.billNo }}</span>
           <el-button size="small" type="text" style="float:right;color:#F56C6C;" @click="deleteOrder(item)">删除</el-button>
           <el-button size="small" type="text" style="float:right;color:#409EFF;margin-right:15px;" @click="showOrder(item)">查看订单</el-button>
           <el-button v-if="item.status===1 && item.deliveryType==1" size="small" type="text" style="float:right;margin-right:5px;" @click="scanDeliveryBill(item)">查看配送单</el-button>
