@@ -265,16 +265,18 @@ export default {
           method: 'get',
           url: '/drp/sys/user/getCosRes'
         }).then(res => {
+          const bucket = res.data.data.bucket
+          const region = res.data.data.region
           cos.putObject({
-            Bucket: res.data.data.bucket,
-            Region: res.data.data.region,
+            Bucket: bucket,
+            Region: region,
             Key: imgName,
             Body: file
           }, function(err, data) {
             console.log(err)
             if (data && data.statusCode === 200) {
               // 上传成功得到的资源地址
-              const url = 'https://' + bucket + '.cos.ap-beijing.myqcloud.com/' + imgName
+              const url = 'https://' + bucket + '.cos.' + region + '.myqcloud.com/' + imgName
               if (type === 1) {
                 const obj = {
                   fileType: 0,
