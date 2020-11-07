@@ -61,7 +61,7 @@ import warehouseList from '@/components/selects/warehouseList'
 import itemList from '@/components/selects/goodList'
 import Pagination from '@/components/Pagination'
 export default {
-  name: 'ReportFlow',
+  name: 'tableWarehouse',
   components: { Pagination, warehouseList, itemList },
   data() {
     return {

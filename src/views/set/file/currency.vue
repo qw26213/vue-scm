@@ -81,7 +81,7 @@
 <script>
 import { getCurrency, saveCurrency, delCurrency, updateCurrencyDisabled } from '@/api/basedata'
 export default {
-  name: 'BaseCurrency',
+  name: 'baseCurrency',
   data() {
     return {
       tableKey: 0,

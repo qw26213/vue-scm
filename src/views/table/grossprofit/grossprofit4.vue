@@ -59,7 +59,7 @@
 import { getData4 } from '@/api/table'
 import Pagination from '@/components/Pagination'
 export default {
-  name: 'Grossprofit4',
+  name: 'grossprofit4',
   components: { Pagination },
   data() {
     return {

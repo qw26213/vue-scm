@@ -70,7 +70,7 @@ import { getCustType, saveCustType, delCustType, getCustTypeTree, updateCustType
 import { getStrByData } from '@/utils'
 import assignCust from '@/components/assignCust'
 export default {
-  name: 'BaseCustType',
+  name: 'baseCustType',
   components: { assignCust },
   data() {
     return {

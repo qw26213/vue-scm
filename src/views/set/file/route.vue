@@ -94,7 +94,7 @@ import { getStrByData } from '@/utils'
 import Pagination from '@/components/Pagination'
 import assignCust from '@/components/assignCust'
 export default {
-  name: 'BaseRoute',
+  name: 'baseRoute',
   components: { Pagination, assignCust },
   data() {
     return {

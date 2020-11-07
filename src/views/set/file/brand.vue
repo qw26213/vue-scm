@@ -91,7 +91,7 @@
 import { getBrand, saveBrand, delBrand, updateBrandDisabled, getUserListByBrandId, updateBrandIdByUserIdList, getUserList } from '@/api/basedata'
 import { getStrByData } from '@/utils'
 export default {
-  name: 'BaseBrand',
+  name: 'baseBrand',
   data() {
     return {
       tableKey: 0,

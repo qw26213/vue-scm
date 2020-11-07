@@ -113,11 +113,10 @@
 
 <script>
 import { getSettleType, saveSettleType, delSettleType, updateSettleTypeDisabled } from '@/api/basedata'
-
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
 export default {
-  name: 'BaseSettleType',
+  name: 'baseSettleType',
   components: { Pagination },
   filters: {
     format: function(str) {

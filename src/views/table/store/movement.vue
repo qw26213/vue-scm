@@ -94,7 +94,7 @@ import saveSelect from '@/components/saveSelect'
 import warehouseList from '@/components/selects/warehouseList'
 import truckList from '@/components/selects/truckList'
 export default {
-  name: 'TotalAccount',
+  name: 'tableMovement',
   components: { Pagination, saveSelect, warehouseList, truckList },
   filters: {
     Fixed: function(str) {

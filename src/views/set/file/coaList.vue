@@ -121,6 +121,7 @@ import { getCoaDatatables, coaClassification, delCoa, updateDisabledCoa, saveCoa
 import { getCoaCodeUsedByIdNoSysTemplet, getChildrenCountByParentId, getCoaCodeUsedById, getChildCountById, getMsgBeforeDelete } from '@/api/user'
 import { deepClone } from '@/utils/index.js'
 export default {
+  name: 'coaList',
   data() {
     return {
       temp: {

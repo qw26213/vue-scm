@@ -94,7 +94,7 @@ import { getBizType, saveBizType, delBizType, updateBizTypeDisabled } from '@/ap
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
 export default {
-  name: 'BaseBizType',
+  name: 'baseBizType',
   components: { Pagination },
   data() {
     return {

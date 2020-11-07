@@ -61,7 +61,7 @@ const setRouter = {
         }, {
             path: 'referCoa',
             component: () => import ('@/views/set/data/referCoa'),
-            name: 'referCoa',
+            name: 'baseReferCoa',
             meta: {
                 roles: ['601036'],
                 title: '科目对照'
@@ -77,7 +77,7 @@ const setRouter = {
         }, {
             path: 'label',
             component: () => import ('@/views/set/data/label'),
-            name: 'label',
+            name: 'baseLabel',
             meta: {
                 roles: ['601042'],
                 title: '业务标签'
@@ -220,9 +220,9 @@ const setRouter = {
                 title: '凭证字'
             }
         }, {
-            path: 'invTempletType',
+            path: 'templetType',
             component: () => import ('@/views/set/file/templetType'),
-            name: 'baseInvTempletType',
+            name: 'templetType',
             meta: {
                 roles: ['602082'],
                 title: '凭证模板类型'

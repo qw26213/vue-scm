@@ -1,5 +1,5 @@
 import Layout from '@/layout'
-import setView from '@/layout/set'
+import tableView from '@/layout/set'
 const reportRouter = {
     path: '/table',
     component: Layout,
@@ -12,24 +12,24 @@ const reportRouter = {
     },
     children: [{
         path: 'purchase',
-        component: setView,
-        name: 'purchase12',
+        component: tableView,
+        name: 'purchaseStatic',
         meta: {
             roles: ['5010'],
             title: '采购'
         },
         children: [{
-            path: 'purchase1',
+            path: 'purchase',
             component: () => import ('@/views/table/purchase/data1'),
-            name: 'purchase1',
+            name: 'tablePurchase',
             meta: {
                 roles: ['501010'],
                 title: '采购统计'
             }
         }, {
-            path: 'purchase2',
+            path: 'purchasereturn',
             component: () => import ('@/views/table/purchase/data2'),
-            name: 'purchase2',
+            name: 'tablePurchasereturn',
             meta: {
                 roles: ['501020'],
                 title: '采购退货统计'
@@ -37,8 +37,8 @@ const reportRouter = {
         }]
     }, {
         path: 'sale',
-        component: setView,
-        name: 'sale1',
+        component: tableView,
+        name: 'saleStatic',
         meta: {
             roles: ['5020'],
             title: '销售'
@@ -46,7 +46,7 @@ const reportRouter = {
         children: [{
             path: 'graph',
             component: () => import ('@/views/table/sale/data1'),
-            name: 'graph1',
+            name: 'tableSale',
             meta: {
                 roles: ['502010'],
                 title: '销售统计'
@@ -54,7 +54,7 @@ const reportRouter = {
         }, {
             path: 'data',
             component: () => import ('@/views/table/sale/data2'),
-            name: 'graph2',
+            name: 'tableSalereturn',
             meta: {
                 roles: ['502020'],
                 title: '销售退货统计'
@@ -62,7 +62,7 @@ const reportRouter = {
         }]
     }, {
         path: 'store',
-        component: setView,
+        component: tableView,
         name: 'tableStore',
         meta: {
             roles: ['5030'],
@@ -71,7 +71,7 @@ const reportRouter = {
         children: [{
             path: 'warehousing1',
             component: () => import ('@/views/table/store/warehousing1'),
-            name: 'warehousing1',
+            name: 'tableWarehousing',
             meta: {
                 roles: ['503010'],
                 title: '入库统计'
@@ -79,15 +79,15 @@ const reportRouter = {
         }, {
             path: 'outbound1',
             component: () => import ('@/views/table/store/outboundOrder1'),
-            name: 'outbound1',
+            name: 'tableOutbound1',
             meta: {
                 roles: ['503020'],
                 title: '出库统计'
             }
         }, {
-            path: 'allocation1',
+            path: 'allocation',
             component: () => import ('@/views/table/store/allocation'),
-            name: 'allocation1',
+            name: 'tableAllocation',
             meta: {
                 roles: ['503030'],
                 title: '调拨统计'
@@ -95,7 +95,7 @@ const reportRouter = {
         }, {
             path: 'movement',
             component: () => import ('@/views/table/store/movement'),
-            name: 'movement',
+            name: 'tableMovement',
             meta: {
                 roles: ['503040'],
                 title: '移库统计'
@@ -103,7 +103,7 @@ const reportRouter = {
         }, {
             path: 'outbound2',
             component: () => import ('@/views/table/store/outboundOrder2'),
-            name: 'outbound2',
+            name: 'tableOutbound2',
             meta: {
                 roles: ['503050'],
                 title: '销售退货入库'
@@ -111,7 +111,7 @@ const reportRouter = {
         }, {
             path: 'warehousing2',
             component: () => import ('@/views/table/store/warehousing2'),
-            name: 'warehousing2',
+            name: 'tableWarehousingReturn',
             meta: {
                 roles: ['503060'],
                 title: '采购退货出库'
@@ -119,7 +119,7 @@ const reportRouter = {
         }, {
             path: 'inventory',
             component: () => import ('@/views/table/store/inventory'),
-            name: 'inventory1',
+            name: 'tableInventory',
             meta: {
                 roles: ['503070'],
                 title: '盘点统计'
@@ -127,7 +127,7 @@ const reportRouter = {
         }, {
             path: 'warehouse',
             component: () => import ('@/views/table/store/warehouse'),
-            name: 'warehouse1',
+            name: 'tableWarehouse',
             meta: {
                 roles: ['503080'],
                 title: '仓库统计'
@@ -135,7 +135,7 @@ const reportRouter = {
         }, {
             path: 'truck',
             component: () => import ('@/views/table/store/truck'),
-            name: 'truck1',
+            name: 'tableTruck',
             meta: {
                 roles: ['503090'],
                 title: '车辆统计'
@@ -144,14 +144,14 @@ const reportRouter = {
     }, {
         path: 'presale',
         component: () => import ('@/views/table/presale/data'),
-        name: 'presale1',
+        name: 'tablePresale',
         meta: {
             roles: ['5036'],
             title: '预收'
         }
     }, {
         path: 'rpt',
-        component: setView,
+        component: tableView,
         name: 'rpt1',
         meta: {
             roles: ['5030'],
@@ -160,7 +160,7 @@ const reportRouter = {
         children: [{
             path: 'rpt1',
             component: () => import ('@/views/table/rpt/data1'),
-            name: 'rpt1',
+            name: 'tableRect',
             meta: {
                 roles: ['503010'],
                 title: '收款'
@@ -168,7 +168,7 @@ const reportRouter = {
         }, {
             path: 'rpt2',
             component: () => import ('@/views/table/rpt/data2'),
-            name: 'rpt2',
+            name: 'tablePay',
             meta: {
                 roles: ['503020'],
                 title: '付款'
@@ -176,7 +176,7 @@ const reportRouter = {
         }]
     }, {
         path: '/grossprofit',
-        component: setView,
+        component: tableView,
         redirect: '/grossprofit/group',
         name: 'grossprofit',
         meta: {
@@ -219,7 +219,7 @@ const reportRouter = {
     }, {
         path: 'visit',
         component: () => import ('@/views/table/visit/data'),
-        name: 'visit1',
+        name: 'tableVisit',
         meta: {
             roles: ['5060'],
             title: '拜访'

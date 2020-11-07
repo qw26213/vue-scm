@@ -247,7 +247,7 @@ import { getMeas, getItem, saveItem, delItem, getItemTree, updateItemDisabled, g
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
 export default {
-  name: 'BaseItem',
+  name: 'baseItem',
   components: { Pagination },
   filters: {
     formatWay: function(str) {

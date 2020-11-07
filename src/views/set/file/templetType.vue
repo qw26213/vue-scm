@@ -58,7 +58,7 @@ import { getTempletType, saveTempletType, delTempletType, updateTempletTypeDisab
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
 export default {
-  name: 'BaseTempletType',
+  name: 'templetType',
   components: { Pagination },
   data() {
     return {

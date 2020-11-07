@@ -74,7 +74,7 @@
 import { getCatogery, saveCatogery, delCatogery, updateCatogeryDisabled } from '@/api/basedata'
 import Pagination from '@/components/Pagination'
 export default {
-  name: 'BaseCatogery',
+  name: 'baseCatogery',
   components: { Pagination },
   data() {
     const validateNum = (rule, value, callback) => {

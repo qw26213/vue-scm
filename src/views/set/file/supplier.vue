@@ -132,7 +132,7 @@ import { getSupplier, saveSupplier, delSupplier, updateSupplierDisabled } from '
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
 export default {
-  name: 'BaseSupplier',
+  name: 'baseSupplier',
   components: { Pagination },
   filters: {
     fixed(val) {

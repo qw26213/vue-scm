@@ -79,7 +79,7 @@
 import { getDept, saveDept, delDept, getDeptTree, updateDeptDisabled } from '@/api/basedata'
 import { parseTime } from '@/utils'
 export default {
-  name: 'BaseDept',
+  name: 'baseDept',
   data() {
     return {
       treeData: [],

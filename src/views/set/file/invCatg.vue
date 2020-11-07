@@ -74,7 +74,7 @@ import { getInvCatg, saveInvCatg, delInvCatg, updateInvCatgDisabled, getItemTree
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
 export default {
-  name: 'BaseInvCatg',
+  name: 'baseInvCatg',
   components: { Pagination },
   data() {
     return {

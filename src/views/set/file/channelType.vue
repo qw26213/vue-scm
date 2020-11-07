@@ -73,7 +73,7 @@ import { getStrByData } from '@/utils'
 import Pagination from '@/components/Pagination'
 import assignCust from '@/components/assignCust'
 export default {
-  name: 'BaseChannel',
+  name: 'baseChannel',
   components: { Pagination, assignCust },
   data() {
     return {

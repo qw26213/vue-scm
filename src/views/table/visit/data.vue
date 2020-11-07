@@ -83,7 +83,7 @@ import { getNowDate } from '@/utils/index'
 import Pagination from '@/components/Pagination'
 import saveSelect from '@/components/saveSelect'
 export default {
-  name: 'TotalAccount',
+  name: 'tableVisit',
   components: { Pagination, saveSelect },
   filters: {
     Fixed: function(str) {

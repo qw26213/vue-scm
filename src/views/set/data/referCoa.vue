@@ -58,7 +58,7 @@ import { getReferCoa, saveReferCoa } from '@/api/basedata'
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
 export default {
-  name: 'BasereferCoa',
+  name: 'baseReferCoa',
   components: { Pagination },
   data() {
     return {

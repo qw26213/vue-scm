@@ -181,7 +181,7 @@ const accountRouter = {
     }, {
         path: 'closePeriod',
         component: () => import ('@/views/voucher/closePeriod'),
-        name: 'ClosePeriod',
+        name: 'closePeriod',
         meta: {
             title: '结账',
             roles: ['3840']

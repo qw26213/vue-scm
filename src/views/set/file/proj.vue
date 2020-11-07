@@ -68,7 +68,7 @@ import { getProj, saveProj, delProj, updateProjDisabled } from '@/api/basedata'
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
 export default {
-  name: 'BaseProj',
+  name: 'baseProj',
   components: { Pagination },
   data() {
     return {

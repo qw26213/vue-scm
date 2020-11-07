@@ -139,7 +139,7 @@
 import { getTruck, saveTruck, delTruck, updateTruckDisabled, updateTruckIdByCustIdList, getUserListByTruckId, updateTruckIdByUserIdList, getUserList } from '@/api/basedata'
 import { getStrByData } from '@/utils'
 export default {
-  name: 'BaseTruck',
+  name: 'baseTruck',
   data() {
     return {
       tableKey: 0,

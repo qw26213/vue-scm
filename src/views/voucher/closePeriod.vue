@@ -57,7 +57,7 @@ import coaList from '@/components/voucher/coaList'
 import summaryList from '@/components/voucher/summaryList'
 import voucherArea from './add.vue'
 export default {
-  name: 'ClosePeriod',
+  name: 'closePeriod',
   components: { coaList, summaryList, Pagination, voucherArea },
   data() {
     return {

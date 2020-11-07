@@ -87,6 +87,9 @@ const actions = {
     dispatch('addCachedView', view)
   },
   addVisitedView({ commit }, view) {
+    if (view.matched && view.matched.length >= 3) { // 若为三级及其以上路由点击打开标签页时，将三级路由或以上的根目录路由塞入缓存路由name list中
+     commit('ADD_CACHED_VIEW', view.matched[1])
+    }
     commit('ADD_VISITED_VIEW', view)
   },
   addCachedView({ commit }, view) {
@@ -105,6 +108,9 @@ const actions = {
   },
   delVisitedView({ commit, state }, view) {
     return new Promise(resolve => {
+      if (view.matched && view.matched.length >= 3) { // 若为三级及其以上路由关闭当前标签页时，将3级路由以上的根目录name 从list中删除
+        commit('DEL_CACHED_VIEW', view.matched[1])
+      }
       commit('DEL_VISITED_VIEW', view)
       resolve([...state.visitedViews])
     })

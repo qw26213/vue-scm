@@ -85,7 +85,7 @@ import { getSalesType, saveSalesType, delSalesType, updateSalesTypeDisabled } fr
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
 export default {
-  name: 'BaseSalesType',
+  name: 'baseSalesType',
   components: { Pagination },
   data() {
     return {

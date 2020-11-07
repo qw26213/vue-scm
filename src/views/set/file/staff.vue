@@ -125,7 +125,7 @@ import { getStaff, saveStaff, delStaff, getDeptTree, updateStaffDisabled, update
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
 export default {
-  name: 'BaseStaff',
+  name: 'baseStaff',
   components: { Pagination },
   filters: {
     Fixed: function(num) {

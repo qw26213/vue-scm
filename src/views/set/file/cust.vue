@@ -236,7 +236,7 @@ import { getStaff, getCust, saveCust, delCust, updateCustDisabled, updateOverdra
 import Pagination from '@/components/Pagination'
 import Areas from '@/components/areas'
 export default {
-  name: 'BaseCust',
+  name: 'baseCust',
   components: { Pagination, Areas },
   filters: {
     Fixed: function(num) {

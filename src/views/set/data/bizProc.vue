@@ -77,7 +77,7 @@
 import { getBizProc, saveBizProc, delBizProc, updateBizProcDisabled, getBizType } from '@/api/basedata'
 import Pagination from '@/components/Pagination'
 export default {
-  name: 'BaseBizType',
+  name: 'baseBizType',
   components: { Pagination },
   data() {
     return {

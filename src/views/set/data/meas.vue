@@ -60,7 +60,7 @@
 import { getMeas, saveMeas, delMeas, updateMeasDisabled } from '@/api/basedata'
 import { parseTime } from '@/utils'
 export default {
-  name: 'BaseMeas',
+  name: 'baseMeas',
   data() {
     return {
       tableKey: 0,

@@ -40,7 +40,7 @@ import { getTempletHeader, synVoucherData, delTempletHeader } from '@/api/vouche
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
 export default {
-  name: 'UserList',
+  name: 'voucherTemplet',
   components: { Pagination },
   data() {
     return {

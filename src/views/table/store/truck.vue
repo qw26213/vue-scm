@@ -61,7 +61,7 @@ import truckList from '@/components/selects/truckList'
 import itemList from '@/components/selects/goodList'
 import Pagination from '@/components/Pagination'
 export default {
-  name: 'ReportFlow',
+  name: 'tableTruck',
   components: { Pagination, truckList, itemList },
   data() {
     return {

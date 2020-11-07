@@ -83,7 +83,7 @@ import { getNowDate } from '@/utils/index'
 import Pagination from '@/components/Pagination'
 import saveSelect from '@/components/saveSelect'
 export default {
-  name: 'Purchase2',
+  name: 'tablePurchasereturn',
   components: { Pagination, saveSelect },
   filters: {
     Fixed: function(str) {

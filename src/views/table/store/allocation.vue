@@ -88,7 +88,7 @@ import Pagination from '@/components/Pagination'
 import warehouseList from '@/components/selects/warehouseList'
 import saveSelect from '@/components/saveSelect'
 export default {
-  name: 'TotalAccount',
+  name: 'tableAllocation',
   components: { Pagination, saveSelect, warehouseList },
   filters: {
     Fixed: function(str) {

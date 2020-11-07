@@ -140,7 +140,7 @@
 import { getWarehouse, saveWarehouse, delWarehouse, updateWarehouseDisabled, getUserListByWarehouseId, updateWarehouseIdByUserIdList, getUserList } from '@/api/basedata'
 import { getStrByData } from '@/utils'
 export default {
-  name: 'BaseWarehouse',
+  name: 'baseWarehouse',
   data() {
     return {
       tableKey: 0,
