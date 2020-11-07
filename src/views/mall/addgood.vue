@@ -360,9 +360,9 @@ export default {
                 type: 'warning'
             }).then(() => {
                 this['srcList' + type] = this['srcList' + type].filter((v, i) => {
-                  this.selectedFile = this.selectedFile.concat([v.fileId])
                   return i !== index
                 })
+                this.selectedFile = this.selectedFile.concat([this['srcList' + type][index].fileId])
             }).catch(() => {})
         },
         onDragStart(e) {
