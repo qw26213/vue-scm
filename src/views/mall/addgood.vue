@@ -75,7 +75,7 @@
                 <el-input v-model="goodForm.saleArea" />
             </el-form-item>
             <el-form-item label="商品图片" prop="attachment">
-                <vuedraggable style="display: inline-block;" class="vue-draggable" @start="onDragStart" @end="onDragEnd">
+                <vuedraggable v-model="srcList1" style="display: inline-block;" class="vue-draggable" @start="onDragStart" @end="onDragEnd">
                     <div v-for="(item,index) in srcList1" :key="index" class="itemUrl" :style="{'background-image': 'url('+item.fileUrl+')'}">
                         <el-image :src="item.fileUrl" :preview-src-list="[item.fileUrl]" />
                         <div class="shadow" @click="onRemoveHandler(index, 1)">
@@ -89,7 +89,7 @@
                 </div>
             </el-form-item>
             <el-form-item label="详情图片" prop="attachment">
-                <vuedraggable style="display: inline-block;" class="vue-draggable" @start="onDragStart" @end="onDragEnd">
+                <vuedraggable v-model="srcList2" style="display: inline-block;" class="vue-draggable" @start="onDragStart" @end="onDragEnd">
                     <div v-for="(item,index) in srcList2" :key="index" class="itemUrl" :style="{'background-image': 'url('+item.fileUrl+')'}">
                         <el-image :src="item.fileUrl" :preview-src-list="[item.fileUrl]" />
                         <div class="shadow" @click="onRemoveHandler(index, 2)">
