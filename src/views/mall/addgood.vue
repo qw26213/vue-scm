@@ -346,7 +346,7 @@ export default {
               method: 'post',
               url: '/drp/file/cosFileInfo/deleteFileByIds',
               data: {
-                  ids: this.selectedFile
+                  ids: this.selectedFile.join(',')
               }
           }).then(res => {
             this.selectedFile = []
