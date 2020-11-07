@@ -255,51 +255,48 @@ export default {
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.7)'
       })
-      // /sys/user/getCosRes
       const that = this
-      this.$axios({
-        method: 'get',
-        url: '/drp/sys/user/getCosRes'
-      }).then(res => {
-        console.log(res)
-      })
       this.$axios({
         method: 'get',
         url: '/drp/file/cosFileInfo/getCOSFileName?suffix=' + filetype.split('/')[1]
       }).then(res => {
         const imgName = res.data.replace(/\s+/g, '')
-        var bucket = 'drp-1300414844'
-        cos.putObject({
-          Bucket: bucket,
-          Region: 'ap-beijing',
-          Key: imgName,
-          Body: file
-        }, function(err, data) {
-          console.log(err)
-          if (data && data.statusCode === 200) {
-            // 上传成功得到的资源地址
-            const url = 'https://' + bucket + '.cos.ap-beijing.myqcloud.com/' + imgName
-            if (type === 1) {
-              const obj = {
-                fileType: 0,
-                verticalDirection: 0,
-                fileUrl: url
+        this.$axios({
+          method: 'get',
+          url: '/drp/sys/user/getCosRes'
+        }).then(res => {
+          cos.putObject({
+            Bucket: res.data.data.bucket,
+            Region: res.data.data.region,
+            Key: imgName,
+            Body: file
+          }, function(err, data) {
+            console.log(err)
+            if (data && data.statusCode === 200) {
+              // 上传成功得到的资源地址
+              const url = 'https://' + bucket + '.cos.ap-beijing.myqcloud.com/' + imgName
+              if (type === 1) {
+                const obj = {
+                  fileType: 0,
+                  verticalDirection: 0,
+                  fileUrl: url
+                }
+                that.srcList1.push(obj)
               }
-              that.srcList1.push(obj)
-            }
-            if (type === 2) {
-              const data = {
-                fileType: 0,
-                verticalDirection: 1,
-                fileUrl: url
+              if (type === 2) {
+                const data = {
+                  fileType: 0,
+                  verticalDirection: 1,
+                  fileUrl: url
+                }
+                that.srcList2.push(data)
               }
-              that.srcList2.push(data)
+              var lastIndex = imgName.lastIndexOf('/')
+              var filename = imgName.slice(0 - lastIndex)
+              that.saveImg(filename, imgName, imgSize)
+              loading.close()
             }
-            var lastIndex = imgName.lastIndexOf('/')
-            var filename = imgName.slice(0 - lastIndex)
-            that.saveImg(filename, imgName, imgSize)
-            loading.close()
-          }
+          })
         })
       })
     },
