@@ -204,17 +204,17 @@ export default {
       },
       isRemember: false,
       rules: {
-        orgCode: [{ required: true, trigger: 'blur', validator: validateOrcode }],
-        userAccount: [{ required: true, message: '用户账号不能为空', trigger: 'blur' }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }],
-        againPassword: [{ required: true, trigger: 'blur', validator: validatePassword }],
-        orgName: [{ required: true, trigger: 'blur', message: '企业名称不能为空' }],
-        userName: [{ required: true, trigger: 'blur', message: '用户姓名不能为空' }],
-        areaId: [{ required: true, trigger: 'blur', message: '企业所在地不能为空' }],
-        mobile: [{ required: true, trigger: 'blur', message: '注册手机号不能为空' }],
-        mail: [{ required: true, trigger: 'blur', message: '注册邮箱不能为空' }],
-        contactName: [{ required: true, trigger: 'blur', message: '企业联系人不能为空' }],
-        taxFilingCategoryId: [{ required: true, trigger: 'blur', message: '纳税类型不能为空' }]
+        orgCode: [{ required: true, trigger: 'change', validator: validateOrcode }],
+        userAccount: [{ required: true, message: '用户账号不能为空', trigger: 'change' }],
+        password: [{ required: true, trigger: 'change', validator: validatePassword }],
+        againPassword: [{ required: true, trigger: 'change', validator: validatePassword }],
+        orgName: [{ required: true, trigger: 'change', message: '企业名称不能为空' }],
+        userName: [{ required: true, trigger: 'change', message: '用户姓名不能为空' }],
+        areaId: [{ required: true, trigger: 'change', message: '企业所在地不能为空' }],
+        mobile: [{ required: true, trigger: 'change', message: '注册手机号不能为空' }],
+        mail: [{ required: true, trigger: 'change', message: '注册邮箱不能为空' }],
+        contactName: [{ required: true, trigger: 'change', message: '企业联系人不能为空' }],
+        taxFilingCategoryId: [{ required: true, trigger: 'change', message: '纳税类型不能为空' }]
       },
       loading: false,
       redirect: this.$route.query.redirect

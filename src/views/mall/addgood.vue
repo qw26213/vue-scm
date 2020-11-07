@@ -255,7 +255,14 @@ export default {
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.7)'
       })
+      // /sys/user/getCosRes
       const that = this
+      this.$axios({
+        method: 'get',
+        url: '/drp/sys/user/getCosRes'
+      }).then(res => {
+        console.log(res)
+      })
       this.$axios({
         method: 'get',
         url: '/drp/file/cosFileInfo/getCOSFileName?suffix=' + filetype.split('/')[1]

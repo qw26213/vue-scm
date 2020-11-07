@@ -71,11 +71,11 @@ export default {
       },
       isRemember: true,
       loginRules: {
-        orgCode: [{ required: true, trigger: 'blur', validator: validateOrcode }],
-        userAccount: [{ required: true, message: '账号不能为空', trigger: 'blur' }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }],
-        againPassword: [{ required: true, trigger: 'blur', validator: validatePassword }],
-        verifyCode: [{ required: true, trigger: 'blur', message: '邮箱验证码不能为空' }]
+        orgCode: [{ required: true, trigger: 'change', validator: validateOrcode }],
+        userAccount: [{ required: true, message: '账号不能为空', trigger: 'change' }],
+        password: [{ required: true, trigger: 'change', validator: validatePassword }],
+        againPassword: [{ required: true, trigger: 'change', validator: validatePassword }],
+        verifyCode: [{ required: true, trigger: 'change', message: '邮箱验证码不能为空' }]
       },
       loading: false,
       redirect: this.$route.query.redirect
