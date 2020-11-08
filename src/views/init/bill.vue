@@ -127,7 +127,7 @@ export default {
       })
     },
     handleCompile() {
-      this.$router.push('/init/billEdit')
+      this.$router.push('/init/modifybook')
     },
     handleAdd() {
       var txt = '科目体系、本位币、启用期间、科目编码规则在建账后不可再更改；科目如果已被使用,则该科目的数量核算和辅助核算选择不可再更改。'
@@ -137,7 +137,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$router.push('/billAdd')
+        this.$router.push('/init/buildbook')
       }).catch(() => {
         console.log('取消')
       })

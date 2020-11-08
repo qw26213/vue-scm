@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="contentDiv">
-      <div class="title">{{ $route.path === '/init/billAdd' ? '新建账套信息' : '编辑账套信息' }}</div>
+      <div class="title">{{ $route.path === '/init/buildbook' ? '新建账套' : '编辑账套' }}</div>
       <el-form ref="dataForm" :rules="rules1" inline :model="temp" label-position="left" label-width="70px" style="width: 1030px; margin-left:10px;">
         <el-form-item label="账套名称" prop="bookName">
           <el-input v-model="temp.bookName" size="small" placeholder="账套名称" style="width:205px" />
@@ -17,17 +17,17 @@
           </el-select>
         </el-form-item>
         <el-form-item label="启用期间" prop="enablePeriodYear">
-          <el-select v-model="temp.enablePeriodYear" size="small" style="width: 72px" :disabled="!!userInfo.glBookEntity">
+          <el-select v-model="temp.enablePeriodYear" size="small" style="width: 90px" :disabled="!!userInfo.glBookEntity">
             <el-option v-for="item in [2018,2019,2020,2021,2022]" :key="item" :value="item" :label="item" />
           </el-select>
           <label>年</label>
-          <el-select v-model="temp.enablePeriodNum" size="small" style="width: 56px" :disabled="!!userInfo.glBookEntity">
+          <el-select v-model="temp.enablePeriodNum" size="small" style="width: 75px" :disabled="!!userInfo.glBookEntity">
             <el-option v-for="item in [1,2,3,4,5,6,7,8,9,10,11,12]" :key="item" :value="item" :label="item" />
           </el-select>
           <label>月</label>
         </el-form-item>
         <el-form-item label="科目级次" prop="coaLevel">
-          <el-select v-model="temp.coaLevel" size="small" style="width:56px" :disabled="!!userInfo.glBookEntity">
+          <el-select v-model="temp.coaLevel" size="small" style="width:80px" :disabled="!!userInfo.glBookEntity">
             <el-option v-for="item in [4,5,6,7,8]" :key="item" :label="item" :value="item" />
           </el-select>
         </el-form-item>

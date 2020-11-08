@@ -18,7 +18,7 @@ const initRouter = {
             title: '建账'
         }
     }, {
-        path: 'buildBill',
+        path: 'buildbook',
         component: () => import ('@/views/init/billAdd'),
         name: 'BillAdd',
         hidden: true,
@@ -27,9 +27,9 @@ const initRouter = {
             title: '新建账套'
         }
     }, {
-        path: 'BillEdit',
+        path: 'modifybook',
         component: () => import ('@/views/init/billAdd'),
-        name: 'BillEdit',
+        name: 'modifybook',
         hidden: true,
         meta: {
             roles: ['7010'],
