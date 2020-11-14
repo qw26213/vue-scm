@@ -451,7 +451,7 @@ export default {
     },
     saveAuxiliaryConfig() {
       var editIndex = this.curShowIndex
-      var curObj = this.auxiliaryData[editIndex]
+      var curObj = deepClone(this.auxiliaryData[editIndex])
       var auxiliary = curObj.auxiliary
       if (auxiliary != null && auxiliary.length > 0) {
         var auxiliaryCode = ''

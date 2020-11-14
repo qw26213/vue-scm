@@ -4,8 +4,8 @@
       <el-date-picker v-model="listQuery.queryParam.uploadDate1" :editable="false" type="date" placeholder="开始日期" size="small" :clearable="false" value-format="yyyy-MM-dd" />
       <span class="zhi">至</span>
       <el-date-picker v-model="listQuery.queryParam.uploadDate2" :editable="false" type="date" placeholder="结束日期" size="small" :clearable="false" value-format="yyyy-MM-dd" />
-      <el-select v-model="listQuery.queryParam.labelName" style="width:145px" placeholder="业务标签" size="small" @change="changeVal">
-          <el-option v-for="item in labellist" :label="item.labelName" :value="item.id" :key="item.id"></el-option>
+      <el-select v-model="listQuery.queryParam.labelName" style="width:145px" placeholder="业务标签" size="small">
+          <el-option v-for="item in labellist" :label="item.labelName" :value="item.id" :key="item.id" />
       </el-select>
       <custList ctr-type="list" @selectChange="selectChange" />
       <staffList ctr-type="list" :select-id="listQuery.queryParam.staffId" @selectChange="selectChange" />

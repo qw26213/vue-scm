@@ -78,7 +78,6 @@
       </div>
     </el-dialog>
     <Auditconfirm :dialogvisible.sync="auditModalVisible" :type="auditType" :remarklist="remarklist" @auditBill="checkItem" />
-    <modalTable :modal-table-visible="modalTableVisible" :header-id="outboundOrderHeaderId" type="o" />
   </div>
 </template>
 <script>

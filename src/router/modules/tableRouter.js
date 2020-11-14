@@ -1,10 +1,10 @@
 import Layout from '@/layout'
-import tableView from '@/layout/set'
+import tableView from '@/layout/table'
 const reportRouter = {
     path: '/table',
     component: Layout,
     redirect: '/table/data',
-    name: 'table',
+    name: 'statement',
     meta: {
         roles: ['5010', '5020', '5030', '5036', '5040', '5050', '5060'],
         title: '报表',
@@ -19,16 +19,16 @@ const reportRouter = {
             title: '采购'
         },
         children: [{
-            path: 'purchase',
-            component: () => import ('@/views/table/purchase/data1'),
+            path: 'data',
+            component: () => import ('@/views/table/purchase/data'),
             name: 'tablePurchase',
             meta: {
                 roles: ['501010'],
                 title: '采购统计'
             }
         }, {
-            path: 'purchasereturn',
-            component: () => import ('@/views/table/purchase/data2'),
+            path: 'returndata',
+            component: () => import ('@/views/table/purchase/returndata'),
             name: 'tablePurchasereturn',
             meta: {
                 roles: ['501020'],
@@ -44,16 +44,16 @@ const reportRouter = {
             title: '销售'
         },
         children: [{
-            path: 'graph',
-            component: () => import ('@/views/table/sale/data1'),
+            path: 'data',
+            component: () => import ('@/views/table/sale/data'),
             name: 'tableSale',
             meta: {
                 roles: ['502010'],
                 title: '销售统计'
             }
         }, {
-            path: 'data',
-            component: () => import ('@/views/table/sale/data2'),
+            path: 'returndata',
+            component: () => import ('@/views/table/sale/returndata'),
             name: 'tableSalereturn',
             meta: {
                 roles: ['502020'],

@@ -9,7 +9,7 @@
 </template>
 <script>
 export default {
-    name: 'table',
+    name: 'statement',
     computed: {
         cachedViews() {
             return this.$store.state.tagsView.cachedViews

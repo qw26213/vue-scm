@@ -120,6 +120,7 @@ export default {
       listLoading: true,
       dialogFormVisible1: false,
       dialogFormVisible2: false,
+      auditModalVisible: false,
       auditType: '',
       remarklist: [],
       curBillId: '',
