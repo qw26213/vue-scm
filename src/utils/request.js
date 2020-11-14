@@ -40,7 +40,8 @@ axios.interceptors.response.use(
         } else if (res.errorCode == 401) {
             redictLogin()
         } else {
-            Message.warning(res.msg)
+            // console.log(res)
+            Message.warning(res.msg || 'error')
             return response
         }
     },

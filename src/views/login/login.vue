@@ -40,7 +40,7 @@
       </div>
       <el-button :loading="loading" type="primary" style="width:100%;margin:10px auto;" @click="loginFun">登录</el-button>
     </el-form>
-    <div class="botomTxt">Copyright@2019 北京丰扬信息技术有限公司(<a href="https://beian.miit.gov.cn/">京ICP备2020041435号</a>) All Rights Reserved</div>
+    <div class="botomTxt">Copyright@2019 北京丰扬信息技术有限公司(<a href="https://beian.miit.gov.cn/"><img src="../../assets/gongan.png" class="gongan">京ICP备2020041435号</a>) All Rights Reserved</div>
   </div>
 </template>
 <script>
@@ -148,9 +148,9 @@ export default {
       border: 0px;
       -webkit-appearance: none;
       border-radius: 0px;
-      padding: 12px 5px 12px 15px;
+      padding: 5px 5px 5px 15px;
       color: #333;
-      height: 40px;
+      height: 30px;
       &:-webkit-autofill {
         box-shadow: 0 0 0px 1000px #fff inset !important;
         -webkit-text-fill-color:#333 !important;
@@ -162,21 +162,21 @@ export default {
     background: #fff;
     border-radius: 5px;
     color: #333;
-    height: 50px;
+    height: 42px;
   }
 }
 >>>.el-form-item__content {
-    line-height: 40px;
+    line-height: 36px;
     position: relative;
     font-size: 14px;
 }
 .svg-container {
-    padding: 6px 5px 6px 15px;
+    padding: 3px 5px 6px 15px;
     color: #333;
     vertical-align: middle;
     width: 30px;
     display: inline-block;
 }
 .botomTxt{font-size: 12px;color: #666;position: fixed;bottom: 5px;line-height: 24px;text-align: center; width: 100%;left: 0;}
-
+.gongan{display:inline-block;width:16px;height:16px;vertical-align:middle;}
 </style>

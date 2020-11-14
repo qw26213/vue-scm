@@ -349,8 +349,6 @@ export default {
           this.$message.success(this.id == '' ? '新增成功' : '修改成功')
           this.$store.dispatch('tagsView/delView', this.$route)
           this.$router.replace('/sale/data')
-        } else {
-          this.$message.error(res.data.msg)
         }
       }).catch(() => {
         this.$message.error('保存失败，请稍后重试！')

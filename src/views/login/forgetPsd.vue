@@ -55,6 +55,16 @@ export default {
         callback()
       }
     }
+    const validateMobile = (rule, value, callback) => {
+      const rep = new RegExp('(^1[3|4|5|8]\\d{9}$)')
+      if (value === '') {
+        callback(new Error('请输入手机号!'))
+      } else if (!rep.test(value)) {
+        callback(new Error('手机号格式不正确！'))
+      } else {
+        callback()
+      }
+    }
     return {
       isMobile: 1,
       isShowTime: false,
@@ -72,6 +82,7 @@ export default {
       isRemember: true,
       loginRules: {
         orgCode: [{ required: true, trigger: 'change', validator: validateOrcode }],
+        mobile: [{ required: true, trigger: 'change', validator: validateMobile }],
         userAccount: [{ required: true, message: '账号不能为空', trigger: 'change' }],
         password: [{ required: true, trigger: 'change', validator: validatePassword }],
         againPassword: [{ required: true, trigger: 'change', validator: validatePassword }],
@@ -79,6 +90,13 @@ export default {
       },
       loading: false,
       redirect: this.$route.query.redirect
+    }
+  },
+  watch: {
+    isMobile(val) {
+      if (!val) {
+        this.reqForm.mobile = ''
+      }
     }
   },
   methods: {
@@ -96,8 +114,6 @@ export default {
         if (res.data.errorCode === '0') {
           this.$message.success(res.data.msg)
           this.timeChange()
-        } else {
-          this.$message.error(res.data.msg)
         }
       })
     },
@@ -121,8 +137,6 @@ export default {
             if (res.data.errorCode === '0') {
               this.$message.success('密码设置成功！')
               this.$router.push('/login')
-            } else {
-              this.$message.error(res.data.msg)
             }
             this.loading = false
           }).catch(() => {

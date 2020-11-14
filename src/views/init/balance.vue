@@ -26,36 +26,36 @@
         <el-table-column :label="'期初余额('+userInfo.glBookEntity.enablePeriodCode+')'" min-width="240">
           <el-table-column label="金额(元)" min-width="80" align="right">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.beginBalance" class="tx-r" size="small" :disabled="scope.row.isAuxiliary==1&&scope.row.type==1&&scope.row.leaf==1" @change="valChange(scope.$index)" />
+              <el-input v-model="scope.row.beginBalance" class="tx-r" size="small" :disabled="scope.row.isAuxiliary==1&&scope.row.type==1&&scope.row.leaf==1" @change="valChange(scope.row)" />
             </template>
           </el-table-column>
           <el-table-column label="数量" min-width="80" align="right">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.beginBalanceQty" class="tx-r" size="small" :disabled="scope.row.isAuxiliary==1&&scope.row.type==1&&scope.row.leaf==1" @change="valChange(scope.$index)" />
+              <el-input v-model="scope.row.beginBalanceQty" class="tx-r" size="small" :disabled="scope.row.isAuxiliary==1&&scope.row.type==1&&scope.row.leaf==1" @change="valChange(scope.row)" />
             </template>
           </el-table-column>
         </el-table-column>
         <el-table-column :label="'本年借方累计'+ (userInfo.glBookEntity.enablePeriodNum > 1 ? '(1-' + (userInfo.glBookEntity.enablePeriodNum - 1) + '月)':'')" min-width="240">
           <el-table-column label="金额(元)" min-width="80" align="right">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.periodNetDr" class="tx-r" size="small" :disabled="scope.row.isAuxiliary==1&&scope.row.type==1&&scope.row.leaf==1" @change="valChange(scope.$index)" />
+              <el-input v-model="scope.row.periodNetDr" class="tx-r" size="small" :disabled="scope.row.isAuxiliary==1&&scope.row.type==1&&scope.row.leaf==1" @change="valChange(scope.row)" />
             </template>
           </el-table-column>
           <el-table-column label="数量" min-width="80" align="right">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.periodNetQtyDr" class="tx-r" size="small" :disabled="scope.row.isAuxiliary==1&&scope.row.type==1&&scope.row.leaf==1" @change="valChange(scope.$index)" />
+              <el-input v-model="scope.row.periodNetQtyDr" class="tx-r" size="small" :disabled="scope.row.isAuxiliary==1&&scope.row.type==1&&scope.row.leaf==1" @change="valChange(scope.row)" />
             </template>
           </el-table-column>
         </el-table-column>
         <el-table-column :label="'本年贷方累计'+ (userInfo.glBookEntity.enablePeriodNum > 1 ? '(1-' + (userInfo.glBookEntity.enablePeriodNum - 1) + '月)':'')" min-width="240">
           <el-table-column label="金额(元)" min-width="80" align="right">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.periodNetCr" class="tx-r" size="small" :disabled="scope.row.isAuxiliary==1&&scope.row.type==1&&scope.row.leaf==1" @change="valChange(scope.$index)" />
+              <el-input v-model="scope.row.periodNetCr" class="tx-r" size="small" :disabled="scope.row.isAuxiliary==1&&scope.row.type==1&&scope.row.leaf==1" @change="valChange(scope.row)" />
             </template>
           </el-table-column>
           <el-table-column label="数量" min-width="80" align="right">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.periodNetQtyCr" class="tx-r" size="small" :disabled="scope.row.isAuxiliary==1&&scope.row.type==1&&scope.row.leaf==1" @change="valChange(scope.$index)" />
+              <el-input v-model="scope.row.periodNetQtyCr" class="tx-r" size="small" :disabled="scope.row.isAuxiliary==1&&scope.row.type==1&&scope.row.leaf==1" @change="valChange(scope.row)" />
             </template>
           </el-table-column>
         </el-table-column>
@@ -166,7 +166,7 @@
 <script>
 import { getBalance, getPeriodList, updateListForSetBegin, getOpeningBalanceStatus } from '@/api/user'
 import { getProj, getDept, getStaff, getSupplier, getCust, getItem } from '@/api/user'
-import { getNowDate, deepClone, toNumStr } from '@/utils/index'
+import { getNowDate, deepClone, toNumStr } from '@/utils'
 var userInfo = JSON.parse(sessionStorage.userInfo)
 var hexCas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 export default {
@@ -307,32 +307,34 @@ export default {
       obj.diffPeriodNet = obj.sumPeriodNetDr - obj.sumPeriodNetCr
       this.balanceObj = obj
     },
-    valChange(index) {
-      var crDr = this.auxiliaryData[index].crDr
-      var auxiliaryTypeBalance = toNumStr(this.auxiliaryData[index].beginBalance)
-      var auxiliaryTypeBalanceQty = toNumStr(this.auxiliaryData[index].beginBalance)
-      var auxiliaryTypePeriodNetDr = toNumStr(this.auxiliaryData[index].beginBalance)
-      var auxiliaryTypePeriodNetQtyDr = toNumStr(this.auxiliaryData[index].beginBalance)
-      var auxiliaryTypePeriodNetCr = toNumStr(this.auxiliaryData[index].beginBalance)
-      var auxiliaryTypePeriodNetQtyCr = toNumStr(this.auxiliaryData[index].beginBalance)
-      this.auxiliaryData[index].beginBalance = auxiliaryTypeBalance
-      this.auxiliaryData[index].beginBalanceQty = auxiliaryTypeBalanceQty
-      this.auxiliaryData[index].periodNetDr = auxiliaryTypePeriodNetDr
-      this.auxiliaryData[index].periodNetQtyDr = auxiliaryTypePeriodNetQtyDr
-      this.auxiliaryData[index].periodNetCr = auxiliaryTypePeriodNetCr
-      this.auxiliaryData[index].periodNetQtyCr = auxiliaryTypePeriodNetQtyCr
-      if (crDr == 1) {
-        this.auxiliaryData[index].beginBalanceDr = auxiliaryTypeBalance
-        this.auxiliaryData[index].beginBalanceQtyDr = auxiliaryTypeBalanceQty
-        this.auxiliaryData[index].beginBalanceCr = 0
-        this.auxiliaryData[index].beginBalanceQtyCr = 0
-      } else {
-        this.auxiliaryData[index].beginBalanceDr = 0
-        this.auxiliaryData[index].beginBalanceQtyDr = 0
-        this.auxiliaryData[index].beginBalanceCr = auxiliaryTypeBalance
-        this.auxiliaryData[index].beginBalanceQtyCr = auxiliaryTypeBalanceQty
-      }
-      this.calculate(index)
+    valChange(item) {
+      this.$nextTick(() => {
+        const crDr = item.crDr
+        const auxiliaryTypeBalance = toNumStr(item.beginBalance)
+        console.log(auxiliaryTypeBalance)
+        const auxiliaryTypeBalanceQty = toNumStr(item.beginBalanceQty)
+        const auxiliaryTypePeriodNetDr = toNumStr(item.periodNetDr)
+        const auxiliaryTypePeriodNetQtyDr = toNumStr(item.periodNetQtyDr)
+        const auxiliaryTypePeriodNetCr = toNumStr(item.periodNetCr)
+        const auxiliaryTypePeriodNetQtyCr = toNumStr(item.periodNetQtyCr)
+        item.beginBalance = auxiliaryTypeBalance
+        item.beginBalanceQty = auxiliaryTypeBalanceQty
+        item.periodNetDr = auxiliaryTypePeriodNetDr
+        item.periodNetQtyDr = auxiliaryTypePeriodNetQtyDr
+        item.periodNetCr = auxiliaryTypePeriodNetCr
+        item.periodNetQtyCr = auxiliaryTypePeriodNetQtyCr
+        if (crDr == 1) {
+          item.beginBalanceDr = auxiliaryTypeBalance
+          item.beginBalanceQtyDr = auxiliaryTypeBalanceQty
+          item.beginBalanceCr = 0
+          item.beginBalanceQtyCr = 0
+        } else {
+          item.beginBalanceDr = 0
+          item.beginBalanceQtyDr = 0
+          item.beginBalanceCr = auxiliaryTypeBalance
+          item.beginBalanceQtyCr = auxiliaryTypeBalanceQty
+        }
+      })
     },
     calculate(index) {
       var amount1 = 0

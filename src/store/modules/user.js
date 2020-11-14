@@ -48,8 +48,6 @@ const actions = {
                     commit('SET_TOKEN', token)
                     setToken(token)
                     resolve()
-                } else {
-                    reject(res.data.msg)
                 }
             }).catch(error => {
                 reject(error)

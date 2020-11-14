@@ -16,7 +16,7 @@
     position: absolute;
     top: 2px;
     right: 0;
-    height: 42px;
+    height: 36px;
     border-radius: 4px;
 }
 
