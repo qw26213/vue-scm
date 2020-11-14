@@ -30,7 +30,7 @@
         <img :src="imgUrl" class="vertify" @click="getNewCode()">
       </el-form-item>
       <div class="bot clearfix">
-        <span class="fl" @click="toPath('/register')">企业注册</span>
+        <span v-if="isRegister" class="fl" @click="toPath('/register')">企业注册</span>
         <span class="fr" @click="toPath('/forgetPsd')">忘记密码?</span>
       </div>
       <div class="bot clearfix">
@@ -44,7 +44,7 @@
   </div>
 </template>
 <script>
-import { getVerifyPhoto } from '@/api/login'
+import { getVerifyPhoto, getRegisterStatus } from '@/api/login'
 import { removeToken, removeName } from '@/utils/auth'
 import { debounce } from '@/utils/index'
 export default {
@@ -66,6 +66,7 @@ export default {
     }
     return {
       loginUrl: '',
+      isRegister: false,
       imgUrl: '',
       loginFun: debounce(this.handleLogin, 1000, true),
       loginForm: {
@@ -86,6 +87,11 @@ export default {
     }
   },
   created() {
+    getRegisterStatus().then(res => {
+      if (res.data.errorCode == 0) {
+        this.isRegister = true
+      }
+    })
     sessionStorage.removeItem('modalShow')
     this.getNewCode()
     if (localStorage.orgCode) {

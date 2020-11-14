@@ -509,3 +509,17 @@ export function importStore(data) {
     data
   })
 }
+
+export function getCloseAccountStatus() {
+  return request({
+    url: '/drp/cm/management/getCloseAccountStatus',
+    method: 'post'
+  })
+}
+
+export function getCleanBookStatus() {
+  return request({
+    url: '/drp/gl/book/getCleanBookStatus',
+    method: 'post'
+  })
+}

@@ -1,11 +1,11 @@
 <template>
   <div class="app-container">
-    <div class="filterDiv tx-r">
-      <el-button size="small" type="primary" @click="saveData(0)">保存</el-button>
-      <el-button size="small" type="primary" @click="showTable()">试算平衡汇总</el-button>
-    </div>
     <div class="contentDiv">
-      <el-table v-loading="listLoading" :data="tableData" border fit resize empty-text="暂无相关数据" style="width: 100%;" :height="tableHeight">
+      <div class="tx-r" style="margin-bottom: 10px">
+        <el-button size="small" type="primary" @click="saveData(0)">保存</el-button>
+        <el-button size="small" type="primary" @click="showTable()">试算平衡汇总</el-button>
+      </div>
+      <el-table v-loading="listLoading" class="balance" :data="tableData" border fit resize empty-text="暂无相关数据" style="width: 100%;" :height="tableHeight">
         <el-table-column label="科目编码" min-width="90">
           <template slot-scope="scope">
             <span>{{ scope.row.coaCode }}</span>
@@ -465,7 +465,7 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
 .label {
     font-size: 14px;
     margin-right: 5px;
@@ -475,5 +475,9 @@ export default {
 
 .label:first-child {
     margin-left: 0
+}
+
+>>> .el-table.balance th {
+    padding: 5px 0;
 }
 </style>

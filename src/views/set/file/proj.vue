@@ -38,8 +38,8 @@
       </el-table>
       <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
     </div>
-    <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增项目':'修改项目'" :visible.sync="dialogFormVisible" width="500px">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="120px" style="width: 300px; margin-left:50px;">
+    <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增项目':'修改项目'" :visible.sync="dialogFormVisible" width="460px">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="90px" style="width: 400px; margin-left:10px;">
         <el-form-item label="项目代码" prop="projCode">
           <el-input v-model="temp.projCode" placeholder="项目代码" />
         </el-form-item>

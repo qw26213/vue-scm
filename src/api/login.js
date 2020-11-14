@@ -93,3 +93,11 @@ export function checkVerify9(data) {
     data
   })
 }
+
+export function getRegisterStatus() {
+  return request({
+    url: '/drp/getRegisterStatus',
+    method: 'post'
+  })
+}
+

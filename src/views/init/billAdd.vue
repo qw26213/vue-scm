@@ -131,7 +131,7 @@
           <el-form-item label="制单人:" label-width="60px" prop="jeRecorderId">
             <el-select ref="staff1" v-model="temp.jeRecorderId" style="width:110px" placeholder="制单人" size="small" @change="changeVal1">
                 <el-option label="无" value="" />
-                <el-option v-for="item in userlist" :label="item.staffName" :key="item.id" :value="item.id" />
+                <el-option v-for="item in userlist" :label="item.text" :key="item.id" :value="item.id" />
             </el-select>
           </el-form-item>
           <el-form-item label="签名:" label-width="45px" prop="sign1">
@@ -159,7 +159,7 @@
       </el-form>
       <div class="tx-c" style="margin-top:25px">
         <el-button @click="$store.dispatch('tagsView/delView', $route);$router.replace('/init/bill')">取 消</el-button>
-        <el-button type="primary" @click="saveManageInfo()">保 存</el-button>
+        <el-button type="primary" @click="saveData()">保 存</el-button>
       </div>
     </div>
   </div>
@@ -279,7 +279,7 @@ export default {
         this.temp.autoAuditFlag = 1
       }
     },
-    saveManageInfo() {
+    saveData() {
       this.$refs.dataForm.validate(valid => {
         if (valid) {
           this.temp.codingRule = this.codingRuleArr.join('-')
@@ -289,19 +289,27 @@ export default {
               this.$router.replace('/init/bill')
               this.$message.success(res.data.msg)
               this.getData()
-            } else {
-              this.$message.warning(res.data.msg)
             }
           })
         }
       })
     },
+    getNum(num) {
+      var x = String(num).indexOf(".")+1;//得到小数点的位置
+      var y = String(num).length - x;//小数点的位数
+      if(y == 0){
+        return x
+      } 
+      if(y > 0) {
+        return y
+      }
+    },
     formatNum(num) {
       if (!num) { return 0 }
-      if (String(num).indexOf('.') < 0) {
-        return num.toFixed(0)
+      if (this.getNum(num) == 2) {
+        return Number(num*100).toFixed(0)
       } else {
-        return num.toFixed(2)
+        return Number(num*100).toFixed(2)
       }
     },
     getData() {
@@ -314,12 +322,12 @@ export default {
         if (res.data.errorCode === '0') {
           this.accountInfo = res.data.data[0] || {}
           if (this.accountInfo != {}) {
-            this.accountInfo.defaultTaxRateStr = this.formatNum(this.accountInfo.defaultTaxRate * 100)
-            this.accountInfo.isAutoJtfjs7 = this.formatNum(this.accountInfo.isAutoJtfjs7 * 100)
-            this.accountInfo.isAutoJtfjs2 = this.formatNum(this.accountInfo.isAutoJtfjs2 * 100)
-            this.accountInfo.isAutoJtfjs3 = this.formatNum(this.accountInfo.isAutoJtfjs3 * 100)
-            this.accountInfo.isAutoJzcb = this.formatNum(this.accountInfo.isAutoJzcb * 100)
-            this.accountInfo.isAutoJtsds = this.formatNum(this.accountInfo.isAutoJtsds * 100)
+            this.accountInfo.defaultTaxRateStr = this.formatNum(this.accountInfo.defaultTaxRate)
+            this.accountInfo.isAutoJtfjs7 = this.formatNum(this.accountInfo.isAutoJtfjs7)
+            this.accountInfo.isAutoJtfjs2 = this.formatNum(this.accountInfo.isAutoJtfjs2)
+            this.accountInfo.isAutoJtfjs3 = this.formatNum(this.accountInfo.isAutoJtfjs3)
+            this.accountInfo.isAutoJzcb = this.formatNum(this.accountInfo.isAutoJzcb)
+            this.accountInfo.isAutoJtsds = this.formatNum(this.accountInfo.isAutoJtsds)
           }
         }
         if (this.$route.path === '/init/buildbook') {

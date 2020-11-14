@@ -6,7 +6,7 @@
           <div slot="header" class="clearfix">
             <span style="display:inline-block;line-height:28px">企业信息</span>
             <el-button v-if="userInfo.isAdmin == 1" type="primary" style="float: right;" size="mini" @click="showCompile">编辑</el-button>
-            <el-button v-if="userInfo.isAdmin == 1" type="danger" style="float: right;margin-right:10px" size="mini" @click="closeCurAccount">注销企业</el-button>
+            <el-button v-if="userInfo.isAdmin == 1 && isCloseAccount" type="danger" style="float: right;margin-right:10px" size="mini" @click="closeCurAccount">注销企业</el-button>
           </div>
           <div class="listItem">
             <label>企业代码:</label>{{ managementInfo.orgCode }}</div>
@@ -36,7 +36,7 @@
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span style="display:inline-block;line-height:28px">用户信息</span>
-            <el-button v-if="userInfo.isAdmin == 1" type="danger" style="float: right;" size="mini" @click="resetBookInfo">清除账套</el-button>
+            <el-button v-if="userInfo.isAdmin == 1 && isCleanBook" type="danger" style="float: right;" size="mini" @click="resetBookInfo">清除账套</el-button>
           </div>
           <div class="listItem">
             <label>企业代码:</label>{{ userInfo.orgCode }}</div>
@@ -212,7 +212,7 @@
 </template>
 <script>
 import CountTo from 'vue-count-to'
-import { getmanagementInfo, getMapById, getUserList, registerLoadArea, registerLoadIndustry, registerLoadTaxfilingcategory } from '@/api/user'
+import { getmanagementInfo, getMapById, getUserList, registerLoadArea, registerLoadIndustry, registerLoadTaxfilingcategory, getCloseAccountStatus, getCleanBookStatus } from '@/api/user'
 import { updateInfo, closeAccount, resetBook, saveUser, updatePSW, getRole } from '@/api/user'
 import { getStaff } from '@/api/basedata'
 export default {
@@ -293,10 +293,22 @@ export default {
       tableData: [],
       industryList: [],
       taxfillingcategoryList: [],
-      areaList: []
+      areaList: [],
+      isCloseAccount: false,
+      isCleanBook: false
     }
   },
   mounted() {
+    getCloseAccountStatus().then(res => {
+      if (res.data.errorCode == 0) {
+        this.isCloseAccount = true
+      }
+    })
+    getCleanBookStatus().then(res => {
+      if (res.data.errorCode == 0) {
+        this.isCleanBook = true
+      }
+    })
     this.getData1()
     this.getData2()
     this.getData3()
