@@ -322,7 +322,7 @@ export default {
             this.accountInfo.isAutoJtsds = this.formatNum(this.accountInfo.isAutoJtsds * 100)
           }
         }
-        if (this.$route.path === '/init/billAdd') {
+        if (this.$route.path === '/init/buildbook') {
           this.codingRuleArr = [4, 2, 2, 2, 2, 2, 2, 2]
           this.temp.bookName = this.managementInfo.orgName
         } else {
