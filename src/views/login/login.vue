@@ -40,6 +40,7 @@
       </div>
       <el-button :loading="loading" type="primary" style="width:100%;margin:10px auto;" @click="loginFun">登录</el-button>
     </el-form>
+    <div class="botomTxt">Copyright@2019 北京丰扬信息技术有限公司(<a href="https://beian.miit.gov.cn/">京ICP备2020041435号</a>) All Rights Reserved</div>
   </div>
 </template>
 <script>
@@ -176,5 +177,6 @@ export default {
     width: 30px;
     display: inline-block;
 }
+.botomTxt{font-size: 12px;color: #666;position: fixed;bottom: 5px;line-height: 24px;text-align: center; width: 100%;left: 0;}
 
 </style>

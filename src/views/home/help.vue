@@ -90,7 +90,7 @@ export default {
       var eleLink = document.createElement('a')
       eleLink.href = 'https://www.baidu.com'
       eleLink.target = '_blank'
-      eleLink.download = '金账簿使用手册'
+      eleLink.download = '使用手册'
       eleLink.style.display = 'none'
     },
     toPath(path) {
