@@ -131,7 +131,7 @@
           <el-form-item label="制单人:" label-width="60px" prop="jeRecorderId">
             <el-select ref="staff1" v-model="temp.jeRecorderId" style="width:110px" placeholder="制单人" size="small" @change="changeVal1">
                 <el-option label="无" value="" />
-                <el-option v-for="item in stafflist" :label="item.staffName" :key="item.id" :value="item.id" />
+                <el-option v-for="item in userlist" :label="item.staffName" :key="item.id" :value="item.id" />
             </el-select>
           </el-form-item>
           <el-form-item label="签名:" label-width="45px" prop="sign1">
@@ -140,7 +140,7 @@
           <el-form-item label="审核人:" label-width="60px" prop="jeAuditorId">
             <el-select ref="staff2" v-model="temp.jeAuditorId" style="width:110px" placeholder="审核人" size="small" @change="changeVal2">
                 <el-option label="无" value="" />
-                <el-option v-for="item in stafflist" :label="item.staffName" :key="item.id" :value="item.id" />
+                <el-option v-for="item in userlist" :label="item.text" :key="item.id" :value="item.id" />
             </el-select>
           </el-form-item>
           <el-form-item label="签名:" label-width="45px" prop="sign2">
@@ -149,7 +149,7 @@
           <el-form-item label="记账人:" label-width="60px" prop="jePosterId">
             <el-select ref="staff3" v-model="temp.jePosterId" style="width:110px" placeholder="记账人" size="small" @change="changeVal3">
                 <el-option label="无" value="" />
-                <el-option v-for="item in stafflist" :label="item.staffName" :key="item.id" :value="item.id" />
+                <el-option v-for="item in userlist" :label="item.text" :key="item.id" :value="item.id" />
             </el-select>
           </el-form-item>
           <el-form-item label="签名:" label-width="45px" prop="sign3">
@@ -165,7 +165,7 @@
   </div>
 </template>
 <script>
-import { getmanagementInfo, registerLoadTaxfilingcategory, saveBook, getCurrencyList, getCoaHierarchy, getAccount, getStaff } from '@/api/user'
+import { getmanagementInfo, registerLoadTaxfilingcategory, saveBook, getCurrencyList, getCoaHierarchy, getAccount, getUsers } from '@/api/user'
 export default {
   name: 'createBill',
   data() {
@@ -175,7 +175,7 @@ export default {
       accountInfo: {},
       userInfo: {},
       codingRuleArr: [4, 2, 2, 2, 2, 2, 2, 2],
-      stafflist: [],
+      userlist: [],
       temp: {
         id: '',
         bookName: '',
@@ -252,8 +252,8 @@ export default {
     getCoaHierarchy().then(res => {
       this.coaHierarchyList = res.data.data
     })
-    getStaff().then(res => {
-        this.stafflist = res.data.data
+    getUsers().then(res => {
+        this.userlist = res.data.data
     }).catch(err => {
         this.list = arr;
     })

@@ -26,6 +26,13 @@ export function getUserList() {
   })
 }
 
+export function getUsers() {
+  return request({
+    url: '/drp/sys/user/getSelectList',
+    method: 'post'
+  })
+}
+
 export function saveUser(data) {
   return request({
     url: '/drp/sys/user/save',
