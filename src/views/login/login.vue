@@ -14,7 +14,7 @@
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
-        <el-input v-model.trim="loginForm.userAccount" clearable autocomplete="off" placeholder="账号" type="text" />
+        <el-input v-model.trim="loginForm.userAccount" clearable autocomplete="off" placeholder="用户账号" type="text" />
       </el-form-item>
       <el-form-item prop="password">
         <span class="svg-container">
