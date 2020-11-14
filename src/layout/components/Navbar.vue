@@ -11,7 +11,7 @@
             </template>
             <el-dropdown class="avatar-container right-menu-item hover-effect" @command="handleCommand">
                 <div class="avatar-wrapper">
-                    <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar" />
+                    <img src="../../assets/user.png" class="user-avatar" />
                     <span class="user-name">{{ name || userName }}</span>
                     <i style="vertical-align: middle;" class="el-icon-arrow-down" />
                 </div>
@@ -53,7 +53,6 @@
 </template>
 <script>
 import { updatePSW, getMessage } from "@/api/user";
-import userImg from "@/assets/user.png";
 import { mapGetters } from "vuex";
 import Breadcrumb from "@/components/Breadcrumb";
 import Hamburger from "@/components/Hamburger";
@@ -74,7 +73,6 @@ export default {
     },
     data() {
         return {
-            avatar: userImg,
             userName: Cookies.get('userName'),
             dialogFormVisible: false,
             dialogFormVisible2: false,
