@@ -226,60 +226,66 @@ export default {
       })
       const that = this
       this.$axios({
-        method: 'get',
-        url: '/drp/file/cosFileInfo/getCOSFileName?suffix=' + filetype.split('/')[1]
+          method: 'get',
+          url: '/drp/file/cosFileInfo/getCOSFileName?suffix=' + filetype.split('/')[1]
       }).then(res => {
-        const imgName = res.data.replace(/\s+/g, '')
-        var bucket = 'drp-1300414844'
-        cos.putObject({
-          Bucket: bucket,
-          Region: 'ap-beijing',
-          Key: imgName,
-          Body: file
-        }, function(err, data) {
-          console.log(err)
-          if (data && data.statusCode === 200) {
-            // 上传成功得到的资源地址
-            const url = 'https://' + bucket + '.cos.ap-beijing.myqcloud.com/' + imgName
-            if (type === 1) {
-              const obj = {
-                fileType: 0,
-                verticalDirection: 0,
-                fileUrl: url
-              }
-              that.srcList1.push(obj)
-            }
-            if (type === 2) {
-              const data = {
-                fileType: 0,
-                verticalDirection: 1,
-                fileUrl: url
-              }
-              that.srcList2.push(data)
-            }
-            var lastIndex = imgName.lastIndexOf('/')
-            var filename = imgName.slice(0 - lastIndex)
-            that.saveImg(filename, imgName, imgSize)
-            loading.close()
-          }
-        })
+          const imgName = res.data.replace(/\s+/g, '')
+          this.$axios({
+              method: 'get',
+              url: '/drp/sys/user/getCosRes'
+          }).then(res => {
+              const bucket = res.data.data.bucket
+              const region = res.data.data.region
+              cos.putObject({
+                  Bucket: bucket,
+                  Region: region,
+                  Key: imgName,
+                  Body: file
+              }, function(err, data) {
+                  if (data && data.statusCode === 200) {
+                      // 上传成功得到的资源地址
+                      const url = 'https://' + bucket + '.cos.' + region + '.myqcloud.com/' + imgName
+                      var lastIndex = imgName.lastIndexOf('/')
+                      var filename = imgName.slice(0 - lastIndex)
+                      that.saveImg(filename, imgName, imgSize, type, url)
+                      loading.close()
+                  }
+              })
+          })
       })
     },
     // DataURL转Blob
     dataURLtoBlob(fileObj) {
       return new Blob([fileObj], { type: fileObj.type })
     },
-    saveImg(fileName, attachment, fileSizeCategory) {
+    saveImg(fileName, attachment, fileSizeCategory, type, url) {
       this.$axios({
-        method: 'post',
-        url: '/drp/file/cosFileInfo/save',
-        data: {
-          fileName: fileName,
-          fileUrl: attachment,
-          fileSizeCategory: fileSizeCategory
-        }
+          method: 'post',
+          url: '/drp/file/cosFileInfo/save',
+          data: {
+              fileName: fileName,
+              fileUrl: attachment,
+              fileSizeCategory: fileSizeCategory
+          }
       }).then(res => {
-        console.log('save img success')
+          if (type === 1) {
+              const obj = {
+                  fileType: 0,
+                  verticalDirection: 0,
+                  fileUrl: url,
+                  fileId: res.data.data.id
+              }
+              this.srcList1.push(obj)
+          }
+          if (type === 2) {
+              const data = {
+                  fileType: 0,
+                  verticalDirection: 1,
+                  fileUrl: url,
+                  fileId: res.data.data.id
+              }
+              this.srcList2.push(data)
+          }
       })
     }
   }

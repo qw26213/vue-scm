@@ -290,7 +290,6 @@ export default {
                         Key: imgName,
                         Body: file
                     }, function(err, data) {
-                        console.log(err)
                         if (data && data.statusCode === 200) {
                             // 上传成功得到的资源地址
                             const url = 'https://' + bucket + '.cos.' + region + '.myqcloud.com/' + imgName

@@ -41,7 +41,9 @@ axios.interceptors.response.use(
             redictLogin()
         } else {
             // console.log(res)
-            Message.warning(res.msg || 'error')
+            if (res.msg.indexOf('未建账') < 0) {
+                Message.warning(res.msg || 'error')
+            }
             return response
         }
     },

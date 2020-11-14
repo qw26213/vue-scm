@@ -559,28 +559,32 @@ export default {
       })
       const that = this
       this.$axios({
-        method: 'get',
-        url: '/drp/file/cosFileInfo/getCOSFileName?suffix=' + filetype.split('/')[1]
+          method: 'get',
+          url: '/drp/file/cosFileInfo/getCOSFileName?suffix=' + filetype.split('/')[1]
       }).then(res => {
-        const imgName = res.data.replace(/\s+/g, '')
-        var path = '/drp/mmjpg'
-        var bucket = 'drp-1300414844'
-        cos.putObject({
-          Bucket: bucket,
-          Region: 'ap-beijing',
-          Key: imgName,
-          Body: file
-        }, function(err, data) {
-          if (data && data.statusCode === 200) {
-            // 上传成功得到的资源地址
-            const url = 'https://' + bucket + '.cos.ap-beijing.myqcloud.com/' + imgName
-            that.fileUrl = url
-            var lastIndex = imgName.lastIndexOf('/')
-            var filename = imgName.slice(0 - lastIndex)
-            that.saveImg(filename, imgName, imgSize)
-            loading.close()
-          }
-        })
+          const imgName = res.data.replace(/\s+/g, '')
+          this.$axios({
+              method: 'get',
+              url: '/drp/sys/user/getCosRes'
+          }).then(res => {
+              const bucket = res.data.data.bucket
+              const region = res.data.data.region
+              cos.putObject({
+                  Bucket: bucket,
+                  Region: region,
+                  Key: imgName,
+                  Body: file
+              }, function(err, data) {
+                  if (data && data.statusCode === 200) {
+                      // 上传成功得到的资源地址
+                      const url = 'https://' + bucket + '.cos.' + region + '.myqcloud.com/' + imgName
+                      var lastIndex = imgName.lastIndexOf('/')
+                      var filename = imgName.slice(0 - lastIndex)
+                      that.saveImg(filename, imgName, imgSize)
+                      loading.close()
+                  }
+              })
+          })
       })
     },
     // DataURL转Blob
