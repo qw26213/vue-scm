@@ -6,7 +6,7 @@
         <div class="steps step1 cf" data-index="1">
           <span class="step-num">1</span>
           <div class="step-dtl">
-            <p class="bold pointer" @click="toPath('/init/createBill')">建账</p>
+            <p class="bold pointer" @click="toPath('/init/book')">建账</p>
             <div class="guide-line" />
             <p class="size-12">设置账套名称、会计体系、启用期间、</p>
             <p class="size-12">科目级次、科目编码规则等</p>
@@ -17,7 +17,7 @@
           <div class="step-dtl">
             <p class="bold pointer" @click="toPath('/set/balance')">设置</p>
             <div class="guide-line" />
-            <p class="size-12" @click="toPath('/set/coaList')">1.科目设置，增加下级科目，设置核算项</p>
+            <p class="size-12" @click="toPath('/set/file/coaList')">1.科目设置，增加下级科目，设置核算项</p>
             <p class="size-12" @click="toPath('/set')">2.辅助核算，增加或者修改辅助</p>
             <p class="size-12">核算项数据，自定义辅助核算项</p>
           </div>
@@ -25,7 +25,7 @@
         <div class="steps step3 cf" data-index="3">
           <span class="step-num">3</span>
           <div class="step-dtl">
-            <p class="bold pointer" @click="toPath('/set/balance')">期初余额</p>
+            <p class="bold pointer" @click="toPath('/init/balance')">期初余额</p>
             <div class="guide-line" />
             <p class="size-12">录入开账的期初余额</p>
             <p class="size-12">录入年初至截止启用期间的借贷发生额度</p>
@@ -70,9 +70,7 @@
           </div>
         </div>
         <div class="guide-tips" />
-        <div class="btn btn-default plr15 guide-download">
-          <el-button type="primary" @click="downloadFile">手册下载</el-button>
-        </div>
+        <el-button type="primary" class="guide-download" size="small" @click="downloadFile">手册下载</el-button>
       </div>
     </div>
   </div>
@@ -103,11 +101,7 @@ export default {
 .guide-download {
     right: 20px;
     top: 20px;
-    width: 150px;
-    height: 36px;
     position: absolute;
-    border-radius: 3px;
-    line-height: 30px;
 }
 .guide-wrap{height:100%;background:#fafcff}
 .guide-wrap .guide-content{height:100%;width:100%;position:relative}

@@ -167,7 +167,7 @@
 <script>
 import { getmanagementInfo, registerLoadTaxfilingcategory, saveBook, getCurrencyList, getCoaHierarchy, getAccount, getUsers } from '@/api/user'
 export default {
-  name: 'BillAdd',
+  name: 'buildbook',
   data() {
     return {
       dialogFormVisible: false,

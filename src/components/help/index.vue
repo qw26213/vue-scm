@@ -27,9 +27,6 @@ export default {
   height: 20px;
   vertical-align: middle;
   background: url(../../assets/help.png) no-repeat center center;background-size: 100% 100%;
-  border: 1px #333 solid;
-  box-sizing:border-box;
-  border-radius: 50%;
 }
 .qq_txt {
   font-size: 14px;

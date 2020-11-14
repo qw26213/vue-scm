@@ -30,7 +30,7 @@
 <script>
 import { getmanagementInfo, resetAccount, updateTaxFilingCategory, getAccount } from '@/api/user'
 export default {
-  name: 'createBill',
+  name: 'book',
   data() {
     return {
       dialogFormVisible: false,

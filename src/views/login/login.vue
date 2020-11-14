@@ -134,7 +134,6 @@ export default {
             this.loading = false
           }).catch(err => {
             this.getNewCode()
-            this.$message.warning(err)
             this.loading = false
           })
         } else {

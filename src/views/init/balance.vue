@@ -311,30 +311,36 @@ export default {
     valChange(row) {
       this.$nextTick(() => {
         const crDr = row.crDr
-        const auxiliaryTypeBalance = toNumStr(row.beginBalance)
-        const auxiliaryTypeBalanceQty = toNumStr(row.beginBalanceQty)
-        const auxiliaryTypePeriodNetDr = toNumStr(row.periodNetDr)
-        const auxiliaryTypePeriodNetQtyDr = toNumStr(row.periodNetQtyDr)
-        const auxiliaryTypePeriodNetCr = toNumStr(row.periodNetCr)
-        const auxiliaryTypePeriodNetQtyCr = toNumStr(row.periodNetQtyCr)
-        row.beginBalance = auxiliaryTypeBalance
-        row.beginBalanceQty = auxiliaryTypeBalanceQty
-        row.periodNetDr = auxiliaryTypePeriodNetDr
-        row.periodNetQtyDr = auxiliaryTypePeriodNetQtyDr
-        row.periodNetCr = auxiliaryTypePeriodNetCr
-        row.periodNetQtyCr = auxiliaryTypePeriodNetQtyCr
+        const balance = toNumStr(row.beginBalance)
+        const balanceQty = toNumStr(row.beginBalanceQty)
+        const periodNetDr = toNumStr(row.periodNetDr)
+        const periodNetQtyDr = toNumStr(row.periodNetQtyDr)
+        const periodNetCr = toNumStr(row.periodNetCr)
+        const periodNetQtyCr = toNumStr(row.periodNetQtyCr)
+        row.beginBalance = balance
+        row.beginBalanceQty = balanceQty
+        row.periodNetDr = periodNetDr
+        row.periodNetQtyDr = periodNetQtyDr
+        row.periodNetCr = periodNetCr
+        row.periodNetQtyCr = periodNetQtyCr
         if (crDr == 1) {
-          row.beginBalanceDr = auxiliaryTypeBalance
-          row.beginBalanceQtyDr = auxiliaryTypeBalanceQty
+          row.beginBalanceDr = balance
+          row.beginBalanceQtyDr = balanceQty
           row.beginBalanceCr = 0
           row.beginBalanceQtyCr = 0
         } else {
           row.beginBalanceDr = 0
           row.beginBalanceQtyDr = 0
-          row.beginBalanceCr = auxiliaryTypeBalance
-          row.beginBalanceQtyCr = auxiliaryTypeBalanceQty
+          row.beginBalanceCr = balance
+          row.beginBalanceQtyCr = balanceQty
         }
-        this.calculate(row)
+        if (row.type == 0) {
+          this.calculate(row)
+        } else {
+          if (row.coaCode.length > 4) {
+            this.calculateTop(row.coaCode)
+          }
+        }
       })
     },
     calculate(row) {
@@ -363,8 +369,8 @@ export default {
           this.$set(this.tableData[i], 'periodNetQtyDr', amount4)
           this.$set(this.tableData[i], 'periodNetCr', amount5)
           this.$set(this.tableData[i], 'periodNetQtyCr', amount6)
-          if (this.tableData[i].coaCode > 4) {
-            this.calculateTop(String(row.coaCode))
+          if (this.tableData[i].coaCode.length > 4) {
+            this.calculateTop(row.coaCode)
           }
         }
       }
@@ -396,8 +402,8 @@ export default {
           this.$set(this.tableData[i], 'periodNetQtyDr', amount4)
           this.$set(this.tableData[i], 'periodNetCr', amount5)
           this.$set(this.tableData[i], 'periodNetQtyCr', amount6)
-          if (this.tableData[i].coaCode > 4) {
-            this.calculateTop(String(this.tableData[i].coaCode))
+          if (this.tableData[i].coaCode.length > 4) {
+            this.calculateTop(this.tableData[i].coaCode)
           }
         }
       }

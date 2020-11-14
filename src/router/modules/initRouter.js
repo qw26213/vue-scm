@@ -10,17 +10,17 @@ const initRouter = {
         icon: 'init'
     },
     children: [{
-        path: 'bill',
-        component: () => import ('@/views/init/bill'),
-        name: 'buildBill',
+        path: 'book',
+        component: () => import ('@/views/init/book'),
+        name: 'book',
         meta: {
             roles: ['7010'],
             title: '建账'
         }
     }, {
         path: 'buildbook',
-        component: () => import ('@/views/init/billAdd'),
-        name: 'BillAdd',
+        component: () => import ('@/views/init/buildbook'),
+        name: 'buildbook',
         hidden: true,
         meta: {
             roles: ['7010'],
@@ -28,8 +28,8 @@ const initRouter = {
         }
     }, {
         path: 'modifybook',
-        component: () => import ('@/views/init/billAdd'),
-        name: 'BillAdd',
+        component: () => import ('@/views/init/buildbook'),
+        name: 'buildbook',
         hidden: true,
         meta: {
             roles: ['7010'],

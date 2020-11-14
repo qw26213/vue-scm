@@ -224,15 +224,15 @@ export default {
         }
 
         .avatar-container {
-            margin-right: 30px;
+            margin-right: 20px;
 
             .avatar-wrapper {
                 position: relative;
 
                 .user-avatar {
                     cursor: pointer;
-                    width: 30px;
-                    height: 30px;
+                    width: 24px;
+                    height: 24px;
                     border-radius: 15px;
                     vertical-align: middle;
                 }
