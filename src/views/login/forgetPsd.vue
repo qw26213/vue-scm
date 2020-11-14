@@ -4,7 +4,7 @@
       <div class="title-container">
         <h3 class="title">找回密码</h3>
       </div>
-      <el-form-item label="找回方式">
+      <el-form-item label="找回方式" class="getType">
         <el-radio v-model="isMobile" :label="1">手机号</el-radio>
         <el-radio v-model="isMobile" :label="0">邮箱</el-radio>
       </el-form-item>
@@ -150,3 +150,11 @@ export default {
   }
 }
 </script>
+<style scoped>
+>>>.el-form-item {
+    margin-bottom: 16px;
+}
+>>>.getType.el-form-item {
+    margin-bottom: 5px;
+}
+</style>

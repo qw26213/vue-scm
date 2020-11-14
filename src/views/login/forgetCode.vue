@@ -4,7 +4,7 @@
       <div class="title-container" style="margin-bottom:50px">
         <h3 class="title">找回企业代码</h3>
       </div>
-      <el-form-item label="找回方式">
+      <el-form-item label="找回方式" class="getType">
         <el-radio v-model="isMobile" :label="1">手机号</el-radio>
         <el-radio v-model="isMobile" :label="0">邮箱</el-radio>
       </el-form-item>
@@ -25,7 +25,7 @@
       <div class="bot clearfix">
         <span class="fr" @click="$router.push('/login')">返回登录</span>
       </div>
-      <el-button :loading="loading" type="primary" style="width:100%;margin:30px auto;" @click="handleSave">确 认</el-button>
+      <el-button :loading="loading" type="primary" style="width:100%;margin:30px auto 10px;" @click="handleSave">确 认</el-button>
     </el-form>
   </div>
 </template>
@@ -122,3 +122,11 @@ export default {
   }
 }
 </script>
+<style scoped>
+>>>.el-form-item {
+    margin-bottom: 18px;
+}
+>>>.getType.el-form-item {
+    margin-bottom: 5px;
+}
+</style>

@@ -13,7 +13,7 @@ export default {
   },
   methods: {
     click() {
-      this.$router.push('/user/help')
+      this.$router.push('/help')
     }
   }
 }

@@ -4,7 +4,7 @@
       <div class="title-container" style="margin-bottom:30px">
         <h3 class="title">企业注册</h3>
       </div>
-      <p class="tit">企业信息：</p>
+      <div class="tit">企业信息：</div>
       <el-form-item label="企业全称" prop="orgName">
         <el-input v-model="reqFrom.orgName" placeholder="企业全称" />
       </el-form-item>
@@ -27,7 +27,7 @@
       <el-form-item label="纳税人识别号" prop="taxRegistrationCertificateNo">
         <el-input v-model="reqFrom.taxRegistrationCertificateNo" placeholder="纳税人识别号" />
       </el-form-item>
-      <p class="tit">管理员信息：</p>
+      <div class="tit">管理员信息：</div>
       <el-form-item label="用户账号" prop="userAccount">
         <el-input v-model="reqFrom.userAccount" placeholder="用户账号" />
       </el-form-item>
@@ -289,10 +289,17 @@ export default {
 }
 </script>
 <style scoped>
+.tit{margin-bottom: 10px; font-size: 14px;color: #666}
 .agreement p {
     line-height: 24px;
     font-size: 13px;
     margin-top: 0;
     margin-bottom: 5px
+}
+>>>.el-form-item {
+    margin-bottom: 18px;
+}
+>>>.getType.el-form-item {
+    margin-bottom: 5px;
 }
 </style>
