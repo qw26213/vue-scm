@@ -80,7 +80,7 @@ import { getStrByData } from '@/utils'
 import assignCust from '@/components/assignCust'
 import assignItem from '@/components/assignItem'
 export default {
-  name: 'UserList',
+  name: 'UserData',
   components: { assignCust, assignItem },
   data() {
     return {

@@ -231,7 +231,7 @@ const storeRouter = {
     }, {
         path: 'inventory',
         component: () => import ('@/views/store/inventory'),
-        name: 'SaleInventory',
+        name: 'Inventory',
         meta: {
             roles: ['1450'],
             title: '盘点单'

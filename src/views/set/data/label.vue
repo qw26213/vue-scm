@@ -63,7 +63,7 @@ import { getLabel, saveLabel, delLabel, updateLabelDisabled } from '@/api/baseda
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
 export default {
-  name: 'baselabel',
+  name: 'baseLabel',
   components: { Pagination },
   data() {
     return {

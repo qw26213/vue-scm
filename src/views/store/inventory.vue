@@ -104,7 +104,7 @@ import Auditconfirm from '@/components/Auditconfirm/index'
 import { getNowDate } from '@/utils/auth'
 import Pagination from '@/components/Pagination'
 export default {
-  name: 'inventory',
+  name: 'Inventory',
   components: { staffList, custList, Pagination, Auditconfirm },
   filters: {
     Fixed: function(num) {

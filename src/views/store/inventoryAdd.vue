@@ -129,7 +129,7 @@ import warehouseList from '@/components/selects/warehouseList'
 import itemList from '@/components/selects/saleItemList'
 import { getName, getNowDate } from '@/utils/auth'
 export default {
-  name: 'inventoryAdd',
+  name: 'InventoryAdd',
   components: { staffList, warehouseList, itemList },
   data() {
     return {

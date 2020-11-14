@@ -29,7 +29,7 @@ const initRouter = {
     }, {
         path: 'modifybook',
         component: () => import ('@/views/init/billAdd'),
-        name: 'modifybook',
+        name: 'BillAdd',
         hidden: true,
         meta: {
             roles: ['7010'],

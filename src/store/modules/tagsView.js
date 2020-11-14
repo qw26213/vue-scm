@@ -6,7 +6,6 @@ const state = {
 
 const mutations = {
   SET_VIEW: (state, data) => {
-    console.log(data)
     state.selectedView = data
   },
 

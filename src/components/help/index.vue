@@ -1,11 +1,11 @@
 <template>
-  <div>
-    <svg-icon icon-class="help" title="帮助" @click="click" />
+  <div class="icon" @click="click">
+    <span class="qq_icon"></span>
+    <span class="qq_txt">帮助</span>
   </div>
 </template>
 <script>
 export default {
-  name: 'help',
   data() {
     return {
       isFullscreen: false
@@ -20,12 +20,22 @@ export default {
 </script>
 
 <style scoped>
-.qq-svg {
+.qq_icon {
   display: inline-block;
   cursor: pointer;
-  fill: #5a5e66;;
   width: 20px;
   height: 20px;
-  vertical-align: 10px;
+  vertical-align: middle;
+  background: url(../../assets/help.png) no-repeat center center;background-size: 100% 100%;
+  border: 1px #333 solid;
+  box-sizing:border-box;
+  border-radius: 50%;
+}
+.qq_txt {
+  font-size: 14px;
+  color: #666;
+}
+.icon:hover .qq_txt {
+  color: #1989fa;
 }
 </style>

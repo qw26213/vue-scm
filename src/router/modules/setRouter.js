@@ -206,15 +206,15 @@ const setRouter = {
         }, {
             path: 'invCurrency',
             component: () => import ('@/views/set/file/currency'),
-            name: 'baseInvCurrency',
+            name: 'baseCurrency',
             meta: {
                 roles: ['602070'],
                 title: '币种'
             }
         }, {
-            path: 'invCatogery',
+            path: 'catogery',
             component: () => import ('@/views/set/file/catogery'),
-            name: 'baseInvCatogery',
+            name: 'baseCatogery',
             meta: {
                 roles: ['602074'],
                 title: '凭证字'
@@ -247,7 +247,7 @@ const setRouter = {
         children: [{
             path: 'list',
             component: () => import ('@/views/set/user/list'),
-            name: 'userList',
+            name: 'UserList',
             meta: {
                 roles: ['603010'],
                 title: '用户'
@@ -255,7 +255,7 @@ const setRouter = {
         }, {
             path: 'role',
             component: () => import ('@/views/set/user/role'),
-            name: 'userRole',
+            name: 'UserRole',
             meta: {
                 roles: ['603020'],
                 title: '角色'
@@ -263,7 +263,7 @@ const setRouter = {
         }, {
             path: 'funcs',
             component: () => import ('@/views/set/user/func'),
-            name: 'userFunc',
+            name: 'UserFunc',
             meta: {
                 roles: ['603030'],
                 title: '功能'
@@ -271,7 +271,7 @@ const setRouter = {
         }, {
             path: 'data',
             component: () => import ('@/views/set/user/data'),
-            name: 'dataRole',
+            name: 'UserData',
             meta: {
                 roles: ['603040'],
                 title: '数据'

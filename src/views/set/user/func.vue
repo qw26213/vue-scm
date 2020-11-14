@@ -38,7 +38,7 @@
 <script>
 import { getFuncsTree } from '@/api/user'
 export default {
-  name: 'FuncList',
+  name: 'UserFunc',
   data() {
     return {
       tableKey: 0,

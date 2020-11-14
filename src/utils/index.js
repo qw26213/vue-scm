@@ -261,7 +261,7 @@ export function deleteEmptyProp(arr) {
         var keys = Object.keys(item)
         if (keys.length > 0) {
             newArr.push(item)
-        } 
+        }
     })
     return newArr
 }

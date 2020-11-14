@@ -180,7 +180,7 @@ import settleTypeList from '@/components/selects/settleTypeList'
 import salesTypeList from '@/components/selects/salesTypeList'
 import { getName, getNowDate } from '@/utils/auth'
 export default {
-  name: 'SaleReturned',
+  name: 'SaleReturnedAdd',
   components: { staffList, warehouseList, custList, truckList, paymentTypeList, itemList, settleTypeList, modalTable, salesTypeList },
   data() {
     return {

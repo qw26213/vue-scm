@@ -77,14 +77,6 @@
         <el-form-item v-if="dialogStatus=='create'" label="确认密码" prop="againPassword">
           <el-input v-model="temp.againPassword" type="password" placeholder="确认密码" />
         </el-form-item>
-        <!-- <el-form-item label="角色" prop="roleId">
-                    <el-select v-model="temp.roleId" style="width:185px" class="filter-item">
-                        <el-option label="审核会计" value="888888"></el-option>
-                        <el-option label="制单会计" value="888887"></el-option>
-                        <el-option label="企业出纳" value="888889"></el-option>
-                        <el-option label="企业老板" value="888890"></el-option>
-                    </el-select>
-                </el-form-item> -->
         <el-form-item label="员工" prop="staffId">
           <el-select v-model="temp.staffId" style="width:185px">
             <el-option v-for="item in staffList" :key="item.id" :value="item.id" :label="item.staffName" />

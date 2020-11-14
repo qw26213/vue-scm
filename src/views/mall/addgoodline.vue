@@ -52,15 +52,6 @@
       <el-form-item label="保质期(天数)" prop="qualityDays">
         <el-input v-model="goodForm.qualityDays" />
       </el-form-item>
-      <el-form-item label="上架日期" prop="effectiveDate">
-        <el-date-picker v-model="goodForm.effectiveDate" :editable="false" type="date" placeholder="上架日期" style="width:225px" size="small" :clearable="false" value-format="yyyy-MM-dd" />
-      </el-form-item>
-      <el-form-item label="下架日期" prop="offlineDate">
-        <el-date-picker v-model="goodForm.offlineDate" :editable="false" type="date" placeholder="下架日期" style="width:225px" size="small" :clearable="false" value-format="yyyy-MM-dd" />
-      </el-form-item>
-      <el-form-item label="销售区域" prop="saleArea">
-        <el-input v-model="goodForm.saleArea" />
-      </el-form-item>
       <el-form-item label="备注" prop="remarks">
         <el-input v-model="goodForm.remarks" />
       </el-form-item>

@@ -23,39 +23,40 @@
             <span>{{ row.crDr==1?'借':row.crDr==0?'平':'贷' }}</span>
           </template>
         </el-table-column>
+        <!-- type0为余额表节点 1为科目节点 -->
         <el-table-column :label="'期初余额('+userInfo.glBookEntity.enablePeriodCode+')'" min-width="240">
           <el-table-column label="金额(元)" min-width="80" align="right">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.beginBalance" class="tx-r" size="small" :disabled="scope.row.isAuxiliary==1&&scope.row.type==1&&scope.row.leaf==1" @change="valChange(scope.row)" />
+              <el-input v-model.trim="scope.row.beginBalance" class="tx-r" size="small" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1)" @change="valChange(scope.row)" />
             </template>
           </el-table-column>
           <el-table-column label="数量" min-width="80" align="right">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.beginBalanceQty" class="tx-r" size="small" :disabled="scope.row.isAuxiliary==1&&scope.row.type==1&&scope.row.leaf==1" @change="valChange(scope.row)" />
+              <el-input v-model.trim="scope.row.beginBalanceQty" class="tx-r" size="small" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1)" @change="valChange(scope.row)" />
             </template>
           </el-table-column>
         </el-table-column>
         <el-table-column :label="'本年借方累计'+ (userInfo.glBookEntity.enablePeriodNum > 1 ? '(1-' + (userInfo.glBookEntity.enablePeriodNum - 1) + '月)':'')" min-width="240">
           <el-table-column label="金额(元)" min-width="80" align="right">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.periodNetDr" class="tx-r" size="small" :disabled="scope.row.isAuxiliary==1&&scope.row.type==1&&scope.row.leaf==1" @change="valChange(scope.row)" />
+              <el-input v-model.trim="scope.row.periodNetDr" class="tx-r" size="small" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1)" @change="valChange(scope.row)" />
             </template>
           </el-table-column>
           <el-table-column label="数量" min-width="80" align="right">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.periodNetQtyDr" class="tx-r" size="small" :disabled="scope.row.isAuxiliary==1&&scope.row.type==1&&scope.row.leaf==1" @change="valChange(scope.row)" />
+              <el-input v-model.trim="scope.row.periodNetQtyDr" class="tx-r" size="small" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1)" @change="valChange(scope.row)" />
             </template>
           </el-table-column>
         </el-table-column>
         <el-table-column :label="'本年贷方累计'+ (userInfo.glBookEntity.enablePeriodNum > 1 ? '(1-' + (userInfo.glBookEntity.enablePeriodNum - 1) + '月)':'')" min-width="240">
           <el-table-column label="金额(元)" min-width="80" align="right">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.periodNetCr" class="tx-r" size="small" :disabled="scope.row.isAuxiliary==1&&scope.row.type==1&&scope.row.leaf==1" @change="valChange(scope.row)" />
+              <el-input v-model.trim="scope.row.periodNetCr" class="tx-r" size="small" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1)" @change="valChange(scope.row)" />
             </template>
           </el-table-column>
           <el-table-column label="数量" min-width="80" align="right">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.periodNetQtyCr" class="tx-r" size="small" :disabled="scope.row.isAuxiliary==1&&scope.row.type==1&&scope.row.leaf==1" @change="valChange(scope.row)" />
+              <el-input v-model.trim="scope.row.periodNetQtyCr" class="tx-r" size="small" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1)" @change="valChange(scope.row)" />
             </template>
           </el-table-column>
         </el-table-column>
@@ -125,32 +126,32 @@
         <el-form-item label="本年累计贷方数量" prop="periodNetQtyCr" label-width="140px">
           <el-input v-model="temp.periodNetQtyCr" placeholder="本年累计贷方数量" style="width:120px" :disabled="userInfo.glBookEntity.enablePeriodNum == 1" />
         </el-form-item>
-        <el-form-item v-if="temp.auxiliary.charAt(0)=='1'" label="供应商" prop="supplierId">
+        <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(0)=='1'" label="供应商" prop="supplierId">
           <el-select ref="supplierSelect" v-model="temp.supplierId" placeholder="供应商" style="width:120px">
             <el-option v-for="(item,index) in supplierList" :key="item.supplierCode" :label="item.supplierName" :value="item.id" />
           </el-select>
         </el-form-item>
-        <el-form-item v-if="temp.auxiliary.charAt(1)=='1'" label="客户" prop="custId">
+        <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(1)=='1'" label="客户" prop="custId">
           <el-select ref="custSelect" v-model="temp.custId" placeholder="客户" style="width:120px">
             <el-option v-for="(item,index) in custList" :key="item.custCode" :label="item.custName" :value="item.id" />
           </el-select>
         </el-form-item>
-        <el-form-item v-if="temp.auxiliary.charAt(2)=='1'" label="部门" prop="deptId">
+        <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(2)=='1'" label="部门" prop="deptId">
           <el-select ref="deptSelect" v-model="temp.deptId" placeholder="部门" style="width:120px">
             <el-option v-for="(item,index) in deptList" :key="item.deptCode" :label="item.deptName" :value="item.id" />
           </el-select>
         </el-form-item>
-        <el-form-item v-if="temp.auxiliary.charAt(3)=='1'" label="职员" prop="staffId">
+        <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(3)=='1'" label="职员" prop="staffId">
           <el-select ref="staffSelect" v-model="temp.staffId" placeholder="职员" style="width:120px">
             <el-option v-for="(item,index) in staffList" :key="item.staffCode" :label="item.staffName" :value="item.id" />
           </el-select>
         </el-form-item>
-        <el-form-item v-if="temp.auxiliary.charAt(4)=='1'" label="存货" prop="itemId">
+        <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(4)=='1'" label="存货" prop="itemId">
           <el-select ref="itemSelect" v-model="temp.itemId" placeholder="存货" style="width:120px">
             <el-option v-for="(item,index) in itemList" :key="item.itemCode" :label="item.itemName" :value="item.id" />
           </el-select>
         </el-form-item>
-        <el-form-item v-if="temp.auxiliary.charAt(5)=='1'" label="项目" prop="projId">
+        <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(5)=='1'" label="项目" prop="projId">
           <el-select ref="projSelect" v-model="temp.projId" placeholder="项目" style="width:120px">
             <el-option v-for="(item,index) in projList" :key="item.projCode" :label="item.projName" :value="item.id" />
           </el-select>
@@ -307,43 +308,43 @@ export default {
       obj.diffPeriodNet = obj.sumPeriodNetDr - obj.sumPeriodNetCr
       this.balanceObj = obj
     },
-    valChange(item) {
+    valChange(row) {
       this.$nextTick(() => {
-        const crDr = item.crDr
-        const auxiliaryTypeBalance = toNumStr(item.beginBalance)
-        console.log(auxiliaryTypeBalance)
-        const auxiliaryTypeBalanceQty = toNumStr(item.beginBalanceQty)
-        const auxiliaryTypePeriodNetDr = toNumStr(item.periodNetDr)
-        const auxiliaryTypePeriodNetQtyDr = toNumStr(item.periodNetQtyDr)
-        const auxiliaryTypePeriodNetCr = toNumStr(item.periodNetCr)
-        const auxiliaryTypePeriodNetQtyCr = toNumStr(item.periodNetQtyCr)
-        item.beginBalance = auxiliaryTypeBalance
-        item.beginBalanceQty = auxiliaryTypeBalanceQty
-        item.periodNetDr = auxiliaryTypePeriodNetDr
-        item.periodNetQtyDr = auxiliaryTypePeriodNetQtyDr
-        item.periodNetCr = auxiliaryTypePeriodNetCr
-        item.periodNetQtyCr = auxiliaryTypePeriodNetQtyCr
+        const crDr = row.crDr
+        const auxiliaryTypeBalance = toNumStr(row.beginBalance)
+        const auxiliaryTypeBalanceQty = toNumStr(row.beginBalanceQty)
+        const auxiliaryTypePeriodNetDr = toNumStr(row.periodNetDr)
+        const auxiliaryTypePeriodNetQtyDr = toNumStr(row.periodNetQtyDr)
+        const auxiliaryTypePeriodNetCr = toNumStr(row.periodNetCr)
+        const auxiliaryTypePeriodNetQtyCr = toNumStr(row.periodNetQtyCr)
+        row.beginBalance = auxiliaryTypeBalance
+        row.beginBalanceQty = auxiliaryTypeBalanceQty
+        row.periodNetDr = auxiliaryTypePeriodNetDr
+        row.periodNetQtyDr = auxiliaryTypePeriodNetQtyDr
+        row.periodNetCr = auxiliaryTypePeriodNetCr
+        row.periodNetQtyCr = auxiliaryTypePeriodNetQtyCr
         if (crDr == 1) {
-          item.beginBalanceDr = auxiliaryTypeBalance
-          item.beginBalanceQtyDr = auxiliaryTypeBalanceQty
-          item.beginBalanceCr = 0
-          item.beginBalanceQtyCr = 0
+          row.beginBalanceDr = auxiliaryTypeBalance
+          row.beginBalanceQtyDr = auxiliaryTypeBalanceQty
+          row.beginBalanceCr = 0
+          row.beginBalanceQtyCr = 0
         } else {
-          item.beginBalanceDr = 0
-          item.beginBalanceQtyDr = 0
-          item.beginBalanceCr = auxiliaryTypeBalance
-          item.beginBalanceQtyCr = auxiliaryTypeBalanceQty
+          row.beginBalanceDr = 0
+          row.beginBalanceQtyDr = 0
+          row.beginBalanceCr = auxiliaryTypeBalance
+          row.beginBalanceQtyCr = auxiliaryTypeBalanceQty
         }
+        this.calculate(row)
       })
     },
-    calculate(index) {
+    calculate(row) {
       var amount1 = 0
       var amount2 = 0
       var amount3 = 0
       var amount4 = 0
       var amount5 = 0
       var amount6 = 0
-      var coaCode = this.tableData[index].coaCode
+      var coaCode = row.coaCode
       for (let i = 0; i < this.tableData.length; i++) {
         if (this.tableData[i].coaCode == coaCode && this.tableData[i].type == 0) {
           amount1 += Number(this.tableData[i].beginBalance)
@@ -362,6 +363,42 @@ export default {
           this.$set(this.tableData[i], 'periodNetQtyDr', amount4)
           this.$set(this.tableData[i], 'periodNetCr', amount5)
           this.$set(this.tableData[i], 'periodNetQtyCr', amount6)
+          if (this.tableData[i].coaCode > 4) {
+            this.calculateTop(String(row.coaCode))
+          }
+        }
+      }
+    },
+    calculateTop(coaCode) { // 向上汇总
+      const len = coaCode.length
+      const parentCode = coaCode.substr(0, len - 2)
+      var amount1 = 0
+      var amount2 = 0
+      var amount3 = 0
+      var amount4 = 0
+      var amount5 = 0
+      var amount6 = 0
+      for (let i = 0; i < this.tableData.length; i++) {
+        if (this.tableData[i].coaCode.substr(0, this.tableData[i].coaCode.length - 2) == parentCode && this.tableData[i].type == 1) {
+          amount1 += Number(this.tableData[i].beginBalance)
+          amount2 += Number(this.tableData[i].beginBalanceQty)
+          amount3 += Number(this.tableData[i].periodNetDr)
+          amount4 += Number(this.tableData[i].periodNetQtyDr)
+          amount5 += Number(this.tableData[i].periodNetCr)
+          amount6 += Number(this.tableData[i].periodNetQtyCr)
+        }
+      }
+      for (let i = 0; i < this.tableData.length; i++) {
+        if (this.tableData[i].coaCode == parentCode && this.tableData[i].type == 1) {
+          this.$set(this.tableData[i], 'beginBalance', amount1)
+          this.$set(this.tableData[i], 'beginBalanceQty', amount2)
+          this.$set(this.tableData[i], 'periodNetDr', amount3)
+          this.$set(this.tableData[i], 'periodNetQtyDr', amount4)
+          this.$set(this.tableData[i], 'periodNetCr', amount5)
+          this.$set(this.tableData[i], 'periodNetQtyCr', amount6)
+          if (this.tableData[i].coaCode > 4) {
+            this.calculateTop(String(this.tableData[i].coaCode))
+          }
         }
       }
     },

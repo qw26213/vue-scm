@@ -130,7 +130,7 @@
         <div v-if="temp.isAutoTransfer==1" class="staffDiv">
           <el-form-item label="制单人:" label-width="60px" prop="jeRecorderId">
             <el-select ref="staff1" v-model="temp.jeRecorderId" style="width:110px" placeholder="制单人" size="small" @change="changeVal1">
-                <el-option label="无" value="" />
+                <el-option label="无" :value="null" />
                 <el-option v-for="item in userlist" :label="item.text" :key="item.id" :value="item.id" />
             </el-select>
           </el-form-item>
@@ -139,7 +139,7 @@
           </el-form-item>
           <el-form-item label="审核人:" label-width="60px" prop="jeAuditorId">
             <el-select ref="staff2" v-model="temp.jeAuditorId" style="width:110px" placeholder="审核人" size="small" @change="changeVal2">
-                <el-option label="无" value="" />
+                <el-option label="无" :value="null" />
                 <el-option v-for="item in userlist" :label="item.text" :key="item.id" :value="item.id" />
             </el-select>
           </el-form-item>
@@ -148,7 +148,7 @@
           </el-form-item>
           <el-form-item label="记账人:" label-width="60px" prop="jePosterId">
             <el-select ref="staff3" v-model="temp.jePosterId" style="width:110px" placeholder="记账人" size="small" @change="changeVal3">
-                <el-option label="无" value="" />
+                <el-option label="无" :value="null" />
                 <el-option v-for="item in userlist" :label="item.text" :key="item.id" :value="item.id" />
             </el-select>
           </el-form-item>
@@ -167,7 +167,7 @@
 <script>
 import { getmanagementInfo, registerLoadTaxfilingcategory, saveBook, getCurrencyList, getCoaHierarchy, getAccount, getUsers } from '@/api/user'
 export default {
-  name: 'createBill',
+  name: 'BillAdd',
   data() {
     return {
       dialogFormVisible: false,
@@ -253,9 +253,7 @@ export default {
       this.coaHierarchyList = res.data.data
     })
     getUsers().then(res => {
-        this.userlist = res.data.data
-    }).catch(err => {
-        this.list = arr;
+      this.userlist = res.data.data
     })
   },
   methods: {

@@ -40,7 +40,7 @@
       </div>
       <el-button :loading="loading" type="primary" style="width:100%;margin:10px auto;" @click="loginFun">登录</el-button>
     </el-form>
-    <div class="botomTxt">Copyright@2019 北京丰扬信息技术有限公司(<a href="https://beian.miit.gov.cn/"><img src="../../assets/gongan.png" class="gongan">京ICP备2020041435号</a>) All Rights Reserved</div>
+    <div class="botomTxt">Copyright@2019 北京丰扬信息技术有限公司(<a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=11010802033370" target="_blank"><img src="../../assets/gongan.png" class="gongan">京公网安备11010802033370号</a><a href="https://beian.miit.gov.cn/" target="_blank" style="margin-left:12px">京ICP备2020041435号</a>)</div>
   </div>
 </template>
 <script>

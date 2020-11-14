@@ -110,7 +110,7 @@ import warehouseList from '@/components/selects/warehouseList'
 import { getNowDate } from '@/utils/auth'
 import Pagination from '@/components/Pagination'
 export default {
-  name: 'PurseReturned',
+  name: 'PurchaseReturned',
   components: { staffList, warehouseList, Auditconfirm, supplierList, Pagination, getAuditInfoByHeaderId },
   filters: {
     Fixed: function(num) {
