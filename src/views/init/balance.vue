@@ -3,7 +3,7 @@
     <div class="contentDiv">
       <div class="tx-r" style="margin-bottom: 10px">
         <el-button size="small" type="primary" :loading="saveloading" @click="saveData(0)">保存</el-button>
-        <el-button size="small" type="primary" @click="showTable()">试算平衡汇总</el-button>
+        <el-button size="small" type="primary" @click="showSum()">试算平衡汇总</el-button>
       </div>
       <el-table v-loading="listLoading" class="balance" :data="tableData" border fit resize empty-text="暂无相关数据" style="width: 100%;" :height="tableHeight">
         <el-table-column label="科目编码" min-width="90">
@@ -288,7 +288,7 @@ export default {
         }
       })
     },
-    showTable() {
+    showSum() {
       this.getBalanceObj()
       this.dialogFormVisible1 = true
     },
@@ -327,12 +327,12 @@ export default {
         var tmpPeriodNetCr = Number(arr[i].periodNetCr) // 贷方金额
         var tmpPeriodNetQtyCr = Number(arr[i].periodNetQtyCr) // 贷方数量
         if (tmpCrDr == 1) {
-          obj.sumBalanceDr = obj.sumBalanceDr + tmpBeginBalance
+          obj.sumBalanceDr += tmpBeginBalance
         } else {
-          obj.sumBalanceCr = obj.sumBalanceCr + tmpBeginBalance
+          obj.sumBalanceCr += tmpBeginBalance
         }
-        obj.sumPeriodNetDr = obj.sumPeriodNetDr + arr[i].periodNetDr
-        obj.sumPeriodNetCr = obj.sumPeriodNetCr + arr[i].periodNetCr
+        obj.sumPeriodNetDr += tmpPeriodNetDr
+        obj.sumPeriodNetCr += tmpPeriodNetCr
       }
       obj.diffBalance = obj.sumBalanceDr - obj.sumBalanceCr
       obj.diffPeriodNet = obj.sumPeriodNetDr - obj.sumPeriodNetCr
@@ -506,6 +506,7 @@ export default {
         info = '借贷方发生额不等,'
       }
       this.saveloading = true
+      this.auxiliaryData = deepClone(this.tableData)
       updateListForSetBegin(this.auxiliaryData).then(res => {
         this.saveloading = false
         this.dialogFormVisible2 = false
