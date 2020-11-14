@@ -109,7 +109,7 @@ export default {
         pageIndex: 1,
         pageNum: 20,
         queryParam: {
-          billDate1: '2020-01-01',
+          billDate1: getNowDate(),
           billDate2: getNowDate(),
           billNo: '',
           crDr: '1',

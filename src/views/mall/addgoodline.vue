@@ -55,19 +55,6 @@
       <el-form-item label="备注" prop="remarks">
         <el-input v-model="goodForm.remarks" />
       </el-form-item>
-      <!-- <el-form-item label="商品图片" prop="attachment">
-                <div v-for="url in srcList1" :key="url.fileUrl" class="itemUrl" :style="{'background-image': 'url('+url.fileUrl+')'}"></div>
-                <div v-if="srcList1.length < 6" class="itemUrl">
-                    <i class="el-icon-plus" style="color:#999;font-size:20px"></i>
-                    <input type="file" accept="image/gif, image/jpeg, image/jpg, image/png" @change="upLoad($event, 1)">
-                </div>
-            </el-form-item>
-            <el-form-item label="内容图片" prop="attachment">
-                <div v-for="url in srcList2" :key="url.fileUrl" class="itemUrl" :style="{'background-image': 'url('+url.fileUrl+')'}"></div>
-                <div v-if="srcList2.length < 6" class="itemUrl"><i class="el-icon-plus" style="color:#999;font-size:20px"></i>
-                    <input type="file" accept="image/gif, image/jpeg, image/jpg, image/png" @change="upLoad($event, 2)">
-                </div>
-            </el-form-item> -->
     </el-form>
     <div class="tx-c w1200" style="margin-top:20px">
       <el-button class="filter-item" type="default" style="width:90px;" @click="backpage()">取消</el-button>
@@ -76,7 +63,6 @@
   </div>
 </template>
 <script>
-import COS from 'cos-js-sdk-v5'
 import { getItemById } from '@/api/basedata'
 import { saveGoodDetail, getGoodDetail } from '@/api/mall'
 export default {
@@ -157,19 +143,6 @@ export default {
         })
       })
     },
-    upLoad(event, type) {
-      var fileObj = event.currentTarget.files[0]
-      var imgSize = fileObj.size / 1024
-      var blobFile = this.$options.methods.dataURLtoBlob.bind(this)(fileObj)
-      var filetype = fileObj.type
-      this.$axios({
-        method: 'get',
-        url: '/drp/file/cosFileInfo/getCOSTempKey'
-      }).then(res => {
-        const obj = res.data
-        this.uploadFile(obj, blobFile, filetype, imgSize, type)
-      })
-    },
     saveData() {
       this.goodForm.attachment = this.srcList1.concat(this.srcList2)
       this.goodForm.attachment.forEach((item, index) => {
@@ -190,94 +163,6 @@ export default {
     },
     backpage() {
       this.$router.replace('/mall/deline')
-    },
-    // 上传腾讯云
-    uploadFile(obj, file, filetype, imgSize, type) {
-      var cos = new COS({
-        // 必选参数
-        getAuthorization: function(options, callback) {
-          callback({
-            TmpSecretId: obj.credentials.tmpSecretId,
-            TmpSecretKey: obj.credentials.tmpSecretKey,
-            XCosSecurityToken: obj.credentials.sessionToken,
-            StartTime: obj.startTime,
-            ExpiredTime: obj.expiredTime
-          })
-        },
-        // 可选参数
-        FileParallelLimit: 3, // 控制文件上传并发数
-        ChunkParallelLimit: 3, // 控制单个文件下分片上传并发数
-        ProgressInterval: 1000 // 控制上传的 onProgress 回调的间隔
-      })
-      const loading = this.$loading({
-        lock: true,
-        text: '资源正在上传,请耐心等待...',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.7)'
-      })
-      const that = this
-      this.$axios({
-          method: 'get',
-          url: '/drp/file/cosFileInfo/getCOSFileName?suffix=' + filetype.split('/')[1]
-      }).then(res => {
-          const imgName = res.data.replace(/\s+/g, '')
-          this.$axios({
-              method: 'get',
-              url: '/drp/sys/user/getCosRes'
-          }).then(res => {
-              const bucket = res.data.data.bucket
-              const region = res.data.data.region
-              cos.putObject({
-                  Bucket: bucket,
-                  Region: region,
-                  Key: imgName,
-                  Body: file
-              }, function(err, data) {
-                  if (data && data.statusCode === 200) {
-                      // 上传成功得到的资源地址
-                      const url = 'https://' + bucket + '.cos.' + region + '.myqcloud.com/' + imgName
-                      var lastIndex = imgName.lastIndexOf('/')
-                      var filename = imgName.slice(0 - lastIndex)
-                      that.saveImg(filename, imgName, imgSize, type, url)
-                      loading.close()
-                  }
-              })
-          })
-      })
-    },
-    // DataURL转Blob
-    dataURLtoBlob(fileObj) {
-      return new Blob([fileObj], { type: fileObj.type })
-    },
-    saveImg(fileName, attachment, fileSizeCategory, type, url) {
-      this.$axios({
-          method: 'post',
-          url: '/drp/file/cosFileInfo/save',
-          data: {
-              fileName: fileName,
-              fileUrl: attachment,
-              fileSizeCategory: fileSizeCategory
-          }
-      }).then(res => {
-          if (type === 1) {
-              const obj = {
-                  fileType: 0,
-                  verticalDirection: 0,
-                  fileUrl: url,
-                  fileId: res.data.data.id
-              }
-              this.srcList1.push(obj)
-          }
-          if (type === 2) {
-              const data = {
-                  fileType: 0,
-                  verticalDirection: 1,
-                  fileUrl: url,
-                  fileId: res.data.data.id
-              }
-              this.srcList2.push(data)
-          }
-      })
     }
   }
 }

@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
-    <div class="filterDiv clearfix">
-      <el-button type="primary" size="small" style="float:right;" @click="handAdd">新增商品明细</el-button>
-    </div>
     <div class="contentDiv">
+      <div class="clearfix" style="margin-bottom: 10px">
+        <el-button type="primary" size="small" style="float:right;" @click="handAdd">新增商品明细</el-button>
+      </div>
       <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;">
         <el-table-column label="序号" type="index" width="50" align="center" />
         <el-table-column label="商品明细名称" min-width="160">
