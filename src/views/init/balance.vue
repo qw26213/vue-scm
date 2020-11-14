@@ -128,32 +128,32 @@
         </el-form-item>
         <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(0)=='1'" label="供应商" prop="supplierId">
           <el-select ref="supplierSelect" v-model="temp.supplierId" size="small" placeholder="供应商" style="width:120px">
-            <el-option v-for="(item,index) in supplierList" :key="item.supplierCode" :label="item.supplierName" :value="item.id" />
+            <el-option v-for="(item,index) in supplierList" :key="item.supplierCode" :data-code="item.supplierCode" :label="item.supplierName" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(1)=='1'" label="客户" prop="custId">
           <el-select ref="custSelect" v-model="temp.custId" size="small" placeholder="客户" style="width:120px">
-            <el-option v-for="(item,index) in custList" :key="item.custCode" :label="item.custName" :value="item.id" />
+            <el-option v-for="(item,index) in custList" :key="item.custCode" :data-code="item.custCode" :label="item.custName" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(2)=='1'" label="部门" prop="deptId">
           <el-select ref="deptSelect" v-model="temp.deptId" size="small" placeholder="部门" style="width:120px">
-            <el-option v-for="(item,index) in deptList" :key="item.deptCode" :label="item.deptName" :value="item.id" />
+            <el-option v-for="(item,index) in deptList" :key="item.deptCode" :data-code="item.deptCode" :label="item.deptName" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(3)=='1'" label="职员" prop="staffId">
           <el-select ref="staffSelect" v-model="temp.staffId" size="small" placeholder="职员" style="width:120px">
-            <el-option v-for="(item,index) in staffList" :key="item.staffCode" :label="item.staffName" :value="item.id" />
+            <el-option v-for="(item,index) in staffList" :key="item.staffCode" :data-code="item.staffCode" :label="item.staffName" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(4)=='1'" label="存货" prop="itemId">
           <el-select ref="itemSelect" v-model="temp.itemId" size="small" placeholder="存货" style="width:120px">
-            <el-option v-for="(item,index) in itemList" :key="item.itemCode" :label="item.itemName" :value="item.id" />
+            <el-option v-for="(item,index) in itemList" :key="item.itemCode" :data-code="item.itemCode" :label="item.itemName" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(5)=='1'" label="项目" prop="projId">
           <el-select ref="projSelect" v-model="temp.projId" size="small" placeholder="项目" style="width:120px">
-            <el-option v-for="(item,index) in projList" :key="item.projCode" :label="item.projName" :value="item.id" />
+            <el-option v-for="(item,index) in projList" :key="item.projCode" :data-code="item.projCode" :label="item.projName" :value="item.id" />
           </el-select>
         </el-form-item>
       </el-form>
@@ -465,7 +465,7 @@ export default {
             /* 获取当前辅助核算项的值 */
             var selectId = this.$refs[auxiliaryType + 'Select'].selected.value
             var selectText = this.$refs[auxiliaryType + 'Select'].selected.label
-            var modelCode = this.$refs[auxiliaryType + 'Select'].selected.key
+            var modelCode = this.$refs[auxiliaryType + 'Select'].selected.$attrs['data-code']
             auxiliaryCode += '_' + hexCas[AuxiliaryType.indexOf(auxiliaryType)] + modelCode
             auxiliaryName += '_' + selectText
             curObj[auxiliaryType] = selectId
