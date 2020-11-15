@@ -33,7 +33,7 @@ const initRouter = {
         hidden: true,
         meta: {
             roles: ['7010'],
-            title: '修改账套'
+            title: '编辑账套'
         }
     }, {
         path: 'import',
