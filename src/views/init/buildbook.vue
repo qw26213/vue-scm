@@ -158,7 +158,7 @@
         </div>
       </el-form>
       <div class="tx-c" style="margin-top:25px">
-        <el-button @click="$store.dispatch('tagsView/delView', $route);$router.replace('/init/bill')">取 消</el-button>
+        <el-button @click="$store.dispatch('tagsView/delView', $route);$router.replace('/init/book')">取 消</el-button>
         <el-button type="primary" @click="saveData()">保 存</el-button>
       </div>
     </div>
@@ -284,7 +284,7 @@ export default {
           saveBook(this.temp).then(res => {
             if (this.userInfo.glBookEntity) {
               this.$store.dispatch('tagsView/delView', this.$route)
-              this.$router.replace('/init/bill')
+              this.$router.replace('/init/book')
               this.$message.success(res.data.msg)
               this.getData()
             }
