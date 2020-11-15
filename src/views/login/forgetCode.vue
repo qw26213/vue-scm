@@ -107,8 +107,6 @@ export default {
             if (res.data.errorCode === 0) {
               this.$message.success(res.data.msg)
               this.$router.go(-1)
-            } else {
-              this.$message.warning(res.data.msg)
             }
             this.loading = false
           }).catch(() => {
