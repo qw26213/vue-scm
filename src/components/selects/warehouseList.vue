@@ -43,7 +43,7 @@ export default {
             getWarehouse().then(res => {
                 var arr = [];
                 if (this.ctrType == "list") {
-                    arr = [{ warehouseName: '全部仓库', id: 'null' }]
+                    arr = [{ warehouseName: '全部仓库', id: '' }]
                 }
                 if (this.allowNull && this.allowNull == "1") {
                     arr = [{ warehouseName: '无', id: '' }]

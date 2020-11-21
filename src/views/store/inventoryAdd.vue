@@ -105,7 +105,7 @@
       <el-form ref="dataForm" :rules="rules" :model="form" label-position="right" label-width="88px" style="width:400px; margin:10px 25px;">
         <el-form-item label="选择仓库:" prop="warehouseId">
           <el-select v-model="form.warehouseId" style="width:240px" placeholder="选择仓库" size="small">
-            <el-option label="全部" value="null" />
+            <el-option label="全部" :value="null" />
             <el-option v-for="item in warehouseList" :key="item.id" :label="item.warehouseName" :value="item.id" />
           </el-select>
         </el-form-item>

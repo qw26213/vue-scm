@@ -31,7 +31,7 @@ export default {
             getSupplier().then(res => {
                 var arr = [];
                 if (this.ctrType == "list") {
-                    arr = [{ supplierName: '全部供应商', id: 'null' }]
+                    arr = [{ supplierName: '全部供应商', id: '' }]
                 }
                 this.list = arr.concat(res.data.data)
             })

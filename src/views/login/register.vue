@@ -274,8 +274,6 @@ export default {
               } else {
                 this.next(res.data.msg)
               }
-            } else {
-              this.$message.warning(res.data.msg)
             }
           }).catch(() => {
             this.loading = false

@@ -32,7 +32,7 @@ export default {
             var arr = []
             getStaff().then(res => {
                 if (this.ctrType == "list") {
-                    arr = [{ staffName: '全部业务员', id: 'null' }]
+                    arr = [{ staffName: '全部业务员', id: '' }]
                 }
                 this.list = arr.concat(res.data.data)
             }).catch(err => {

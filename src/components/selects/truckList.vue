@@ -39,7 +39,7 @@ export default {
             var arr = [];
             getTruck().then(res => {
                 if (this.ctrType == "list") {
-                    arr = [{ truckName: '全部车辆', id: 'null' }]
+                    arr = [{ truckName: '全部车辆', id: '' }]
                 }
                 if (this.allowNull && this.allowNull == "1") {
                     arr = [{ truckName: '无', id: '' }]
