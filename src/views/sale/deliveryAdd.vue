@@ -86,32 +86,32 @@
         </el-table-column>
         <el-table-column label="规格">
           <template slot-scope="{row}">
-            <input v-model="row.norms" type="text" class="inputCell tx-r" disabled>
+            <input v-model="row.norms" type="text" @focus="focusThis($event)" class="inputCell tx-r" disabled>
           </template>
         </el-table-column>
         <el-table-column label="单位" width="60">
           <template slot-scope="{row}">
-            <input v-model="row.uom" type="text" class="inputCell tx-c" disabled>
+            <input v-model="row.uom" type="text" @focus="focusThis($event)" class="inputCell tx-c" disabled>
           </template>
         </el-table-column>
         <el-table-column label="批号">
           <template slot-scope="{row}">
-            <input v-model="row.batchNo" type="text" class="inputCell tx-r">
+            <input v-model="row.batchNo" type="text" @focus="focusThis($event)" class="inputCell tx-r">
           </template>
         </el-table-column>
         <el-table-column label="含税价(元)">
           <template slot-scope="scope">
-            <input v-model="scope.row.vatPrice" type="text" class="inputCell tx-r" :disables="userInfo.userSalePriceType + scope.row.salePriceType <= 1" @change="calculate(scope.$index)">
+            <input v-model="scope.row.vatPrice" type="text" @focus="focusThis($event)" class="inputCell tx-r" :disables="userInfo.userSalePriceType + scope.row.salePriceType <= 1" @change="calculate(scope.$index)">
           </template>
         </el-table-column>
         <el-table-column label="数量">
           <template slot-scope="scope">
-            <input v-model="scope.row.qty" type="text" class="inputCell tx-r" @change="calculate(scope.$index)">
+            <input v-model="scope.row.qty" type="text" @focus="focusThis($event)" class="inputCell tx-r" @change="calculate(scope.$index)">
           </template>
         </el-table-column>
         <el-table-column label="价税合计">
           <template slot-scope="{row}">
-            <input v-model="row.vatAmount" type="text" class="inputCell tx-r" disabled>
+            <input v-model="row.vatAmount" type="text" @focus="focusThis($event)" class="inputCell tx-r" disabled>
           </template>
         </el-table-column>
         <el-table-column label="销售方式">
@@ -121,12 +121,12 @@
         </el-table-column>
         <el-table-column label="税率(%)">
           <template slot-scope="scope">
-            <input v-model="scope.row.taxRate" type="text" class="inputCell tx-r" @change="calculate(scope.$index)">
+            <input v-model="scope.row.taxRate" type="text" @focus="focusThis($event)" class="inputCell tx-r" @change="calculate(scope.$index)">
           </template>
         </el-table-column>
         <el-table-column label="税额">
           <template slot-scope="{row}">
-            <input v-model="row.taxAmount" type="text" class="inputCell tx-r" disabled>
+            <input v-model="row.taxAmount" type="text" @focus="focusThis($event)" class="inputCell tx-r" disabled>
           </template>
         </el-table-column>
       </el-table>
@@ -160,12 +160,12 @@
         </el-table-column>
         <el-table-column label="预付应付标志" width="120">
           <template slot-scope="{row}">
-            <input v-model="row.arAp" type="text" class="inputCell tx-l" disabled>
+            <input v-model="row.arAp" type="text" @focus="focusThis($event)" class="inputCell tx-l" disabled>
           </template>
         </el-table-column>
         <el-table-column label="金额">
           <template slot-scope="scope">
-            <input v-model="scope.row.amount" type="text" class="inputCell tx-l" @change="calculate1(scope.$index)">
+            <input v-model="scope.row.amount" type="text" @focus="focusThis($event)" class="inputCell tx-l" @change="calculate1(scope.$index)">
           </template>
         </el-table-column>
       </el-table>
@@ -265,6 +265,9 @@ export default {
     }
   },
   methods: {
+    focusThis(e) {
+      e.currentTarget.select()
+    },
     calculate(index) {
       var vatPrice = this.tableData[index].vatPrice // 含税价
       var qty = this.tableData[index].qty // 数量

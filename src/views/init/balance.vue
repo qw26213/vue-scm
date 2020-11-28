@@ -27,36 +27,36 @@
         <el-table-column :label="'期初余额('+userInfo.glBookEntity.enablePeriodCode+')'" min-width="240">
           <el-table-column label="金额(元)" min-width="80" align="right">
             <template slot-scope="scope">
-              <el-input v-model.trim="scope.row.beginBalance" class="tx-r" size="small" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1)" @change="valChange(scope.row)" />
+              <input v-model.trim="scope.row.beginBalance" class="tx-r" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1)" @focus="focusThis($event)" @input="inputChange($event, 'beginBalance', scope.$index)" @change="valChange(scope.row)" />
             </template>
           </el-table-column>
           <el-table-column label="数量" min-width="80" align="right">
             <template slot-scope="scope">
-              <el-input v-model.trim="scope.row.beginBalanceQty" class="tx-r" size="small" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1)" @change="valChange(scope.row)" />
+              <input v-model.trim="scope.row.beginBalanceQty" class="tx-r" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1)" @focus="focusThis($event)" @input="inputChange($event, 'beginBalanceQty', scope.$index)" @change="valChange(scope.row)" />
             </template>
           </el-table-column>
         </el-table-column>
         <el-table-column :label="'本年借方累计'+ (userInfo.glBookEntity.enablePeriodNum > 1 ? '(1-' + (userInfo.glBookEntity.enablePeriodNum - 1) + '月)':'')" min-width="240">
           <el-table-column label="金额(元)" min-width="80" align="right">
             <template slot-scope="scope">
-              <el-input v-model.trim="scope.row.periodNetDr" class="tx-r" size="small" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1)" @change="valChange(scope.row)" />
+              <input v-model.trim="scope.row.periodNetDr" class="tx-r" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1)" @focus="focusThis($event)" @input="inputChange($event, 'periodNetDr', scope.$index)" @change="valChange(scope.row)" />
             </template>
           </el-table-column>
           <el-table-column label="数量" min-width="80" align="right">
             <template slot-scope="scope">
-              <el-input v-model.trim="scope.row.periodNetQtyDr" class="tx-r" size="small" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1)" @change="valChange(scope.row)" />
+              <input v-model.trim="scope.row.periodNetQtyDr" class="tx-r" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1)" @focus="focusThis($event)" @input="inputChange($event, 'periodNetQtyDr', scope.$index)" @change="valChange(scope.row)" />
             </template>
           </el-table-column>
         </el-table-column>
         <el-table-column :label="'本年贷方累计'+ (userInfo.glBookEntity.enablePeriodNum > 1 ? '(1-' + (userInfo.glBookEntity.enablePeriodNum - 1) + '月)':'')" min-width="240">
           <el-table-column label="金额(元)" min-width="80" align="right">
             <template slot-scope="scope">
-              <el-input v-model.trim="scope.row.periodNetCr" class="tx-r" size="small" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1)" @change="valChange(scope.row)" />
+              <input v-model.trim="scope.row.periodNetCr" class="tx-r" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1)" @focus="focusThis($event)" @input="inputChange($event, 'periodNetCr', scope.$index)" @change="valChange(scope.row)" />
             </template>
           </el-table-column>
           <el-table-column label="数量" min-width="80" align="right">
             <template slot-scope="scope">
-              <el-input v-model.trim="scope.row.periodNetQtyCr" class="tx-r" size="small" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1)" @change="valChange(scope.row)" />
+              <input v-model.trim="scope.row.periodNetQtyCr" class="tx-r" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1)" @focus="focusThis($event)" @input="inputChange($event, 'periodNetQtyCr', scope.$index)" @change="valChange(scope.row)" />
             </template>
           </el-table-column>
         </el-table-column>
@@ -167,7 +167,7 @@
 <script>
 import { getBalance, getPeriodList, updateListForSetBegin, getOpeningBalanceStatus } from '@/api/user'
 import { getProj, getDept, getStaff, getSupplier, getCust, getItem } from '@/api/user'
-import { getNowDate, deepClone, toNumStr } from '@/utils'
+import { getNowDate, deepClone, toNumStr, validateVal } from '@/utils'
 var userInfo = JSON.parse(sessionStorage.userInfo)
 var hexCas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 export default {
@@ -271,6 +271,13 @@ export default {
     })
   },
   methods: {
+    inputChange(e, param, index) {
+      var num = validateVal(e.currentTarget.value)
+      this.$set(this.tableData[index], param, num)
+    },
+    focusThis(e) {
+      e.currentTarget.select()
+    },
     getPeriod() {
       getPeriodList().then(res => {
         this.periodList = res.data.data
@@ -555,6 +562,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+input{display:inline-block;width:100%;height:28px;;border:1px #c0c0c0 solid;border-radius:4px;font-size: 12px;padding-right:8px;}
+input[disabled]{background: #f9f9f9;}
+>>> .tx-r input{text-align:right}
 .label {
     font-size: 14px;
     margin-right: 5px;

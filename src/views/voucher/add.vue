@@ -62,10 +62,10 @@
           <td>
             <div v-if="row.isQuantity==1" class="number f12 ptb05">
               <p style="margin-bottom: 3px;">数量:
-                <input v-model="row.qty" type="text" @change="getAmount(index)"><i class="uom">{{ row.uom }}</i>
+                <input v-model="row.qty" type="text" @change="getAmount(index)" @focus="focusThis($event)"><i class="uom">{{ row.uom }}</i>
               </p>
               <p>单价:
-                <input v-model="row.unitprice" type="text" @change="getAmount(index)"><i class="uom">元</i>
+                <input v-model="row.unitprice" type="text" @change="getAmount(index)" @focus="focusThis($event)"><i class="uom">元</i>
               </p>
             </div>
           </td>
@@ -135,8 +135,8 @@
     </el-dialog>
     <el-dialog :close-on-click-modal="false" title="常用摘要" :visible.sync="dialogFormVisible2" width="500px">
       <div class="filter-container" style="padding-bottom:0;margin-top:-10px">
-        <el-input v-model="summaryQuery.mnemonicCode" size="small" placeholder="助记码" style="width: 180px;" class="filter-item" />
-        <el-input v-model="summaryQuery.summary" size="small" placeholder="名称" style="width: 180px;" class="filter-item" />
+        <el-input v-model="summaryQuery.mnemonicCode" size="small" placeholder="助记码" style="width: 180px;" class="filter-item" @focus="focusThis($event)" />
+        <el-input v-model="summaryQuery.summary" size="small" placeholder="名称" style="width: 180px;" class="filter-item" @focus="focusThis($event)" />
         <el-button size="small" class="filter-item" type="primary" @click="saveSummary">新增摘要</el-button>
       </div>
       <el-table :data="summaryPageData" border fit highlight-current-row style="width: 100%;" size="small" cell-class-name="trCell">
@@ -395,6 +395,9 @@ export default {
     }
   },
   methods: {
+    focusThis(e) {
+      e.currentTarget.select()
+    },
     initVoucher() {
       this.tableData = [{}, {}, {}, {}]
       this.getJeSeqByDate()
@@ -817,9 +820,11 @@ export default {
       this.getTotalMoney()
     },
     inputFocus(event, param, index) {
-      event.currentTarget.select()
       var num = showNumber2(event.currentTarget.value)
       this.$set(this.tableData[index], param, num)
+      this.$nextTick(() => {
+        event.currentTarget.select()
+      })
     },
     inputChange(event, param, index) {
       var num = validateVal(event.currentTarget.value)

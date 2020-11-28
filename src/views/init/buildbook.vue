@@ -4,19 +4,31 @@
       <div class="title">{{ $route.path === '/init/buildbook' ? '新建账套' : '编辑账套' }}</div>
       <el-form ref="dataForm" :rules="rules1" inline :model="temp" label-position="left" label-width="70px" style="width: 1030px; margin-left:10px;">
         <el-form-item label="账套名称" prop="bookName">
-          <el-input v-model="temp.bookName" size="small" placeholder="账套名称" style="width:205px" />
+          <el-tooltip class="item" effect="dark" content="提示提示提示提示提示提示" placement="bottom">
+            <i class="el-icon-question" />
+          </el-tooltip>
+          <el-input v-model="temp.bookName" size="small" placeholder="账套名称" style="width:205px" @focus="focusThis($event)" />
         </el-form-item>
         <el-form-item label="科目体系" prop="coahierarchyId">
+          <el-tooltip class="item" effect="dark" content="提示提示提示提示提示提示" placement="bottom">
+            <i class="el-icon-question" />
+          </el-tooltip>
           <el-select v-model="temp.coahierarchyId" size="small" style="width:185px" :disabled="!!userInfo.glBookEntity">
             <el-option v-for="item in coaHierarchyList" :key="item.id" :label="item.coaHierarchyName" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item label="本位币" prop="baseCurrencyCode" label-width="56px">
+          <el-tooltip class="item" effect="dark" content="提示提示提示提示提示提示" placement="bottom">
+            <i class="el-icon-question" />
+          </el-tooltip>
           <el-select v-model="temp.baseCurrencyCode" size="small" style="width:125px" disabled>
             <el-option v-for="item in currencyList" :key="item.id" :label="item.text" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item label="启用期间" prop="enablePeriodYear">
+          <el-tooltip class="item" effect="dark" content="提示提示提示提示提示提示" placement="bottom">
+            <i class="el-icon-question" />
+          </el-tooltip>
           <el-select v-model="temp.enablePeriodYear" size="small" style="width: 90px" :disabled="!!userInfo.glBookEntity">
             <el-option v-for="item in [2018,2019,2020,2021,2022]" :key="item" :value="item" :label="item" />
           </el-select>
@@ -27,11 +39,17 @@
           <label>月</label>
         </el-form-item>
         <el-form-item label="科目级次" prop="coaLevel">
+          <el-tooltip class="item" effect="dark" content="提示提示提示提示提示提示" placement="bottom">
+            <i class="el-icon-question" />
+          </el-tooltip>
           <el-select v-model="temp.coaLevel" size="small" style="width:80px" :disabled="!!userInfo.glBookEntity">
             <el-option v-for="item in [4,5,6,7,8]" :key="item" :label="item" :value="item" />
           </el-select>
         </el-form-item>
         <el-form-item label="科目编码规则" label-width="100px" prop="codingRule">
+          <el-tooltip class="item" effect="dark" content="提示提示提示提示提示提示" placement="bottom">
+            <i class="el-icon-question" />
+          </el-tooltip>
           <span class="">4 - 2 - 2 -</span>
           <select v-model="codingRuleArr[3]" class="inputItem" :disabled="!!userInfo.glBookEntity">
             <option v-for="item in [2,3,4]" :key="item" :value="item">{{ item }}</option>
@@ -55,6 +73,9 @@
         </el-form-item>
         <el-form-item>
           <span>自定义增值税率</span>
+          <el-tooltip class="item" effect="dark" content="提示提示提示提示提示提示" placement="bottom">
+            <i class="el-icon-question" />
+          </el-tooltip>
           <el-input v-model="temp.defaultTaxRateStr" placeholder="" size="mini" style="width:50px;margin-right:5px" />%
           <span style="font-size:12px;margin-right:10px">(小规模纳税人为3%，一般纳税人为13%)</span>
           <el-checkbox v-model="temp.isDispName" :false-label="0" :true-label="1" style="margin-right:10px">科目名称显示路径</el-checkbox>
@@ -257,6 +278,9 @@ export default {
     })
   },
   methods: {
+    focusThis(e) {
+      e.currentTarget.select()
+    },
     changeVal1() {
       this.$nextTick(() => {
         this.temp.sign1 = this.$refs.staff1.selected.label
@@ -343,6 +367,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+>>> .el-form-item__label{padding-right: 5px;}
 .panel-group {
     .card-panel-col {
         margin-bottom: 32px;

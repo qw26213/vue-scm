@@ -62,7 +62,7 @@ everyday<template>
           <el-input v-model="temp.beginBalance" size="small" class="input-item" placeholder="开始余额" disabled />
         </el-form-item>
         <el-form-item label="交款金额:" prop="settleCurrAmount">
-          <el-input v-model="temp.settleCurrAmount" size="small" class="input-item" placeholder="交款金额" />
+          <el-input v-model="temp.settleCurrAmount" size="small" class="input-item" placeholder="交款金额" @focus="focusThis($event)" />
         </el-form-item>
         <el-form-item label="余额:" prop="balance">
           <el-input v-model="temp.balance" size="small" class="input-item" placeholder="余额" disabled />
@@ -168,6 +168,9 @@ export default {
     this.dialogFormVisible = false
   },
   methods: {
+    focusThis(e) {
+      e.currentTarget.select()
+    },
     showModal() {
       this.dialogFormVisible = true
     },

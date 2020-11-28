@@ -31,7 +31,7 @@
             <span>{{ row.checkInTime }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="偏差(米)" width="100" right="center">
+        <el-table-column label="偏差(米)" width="100" align="right">
           <template slot-scope="{row}">
             <span>{{ row.distanceM }}</span>
           </template>
@@ -41,7 +41,7 @@
             <span>{{ row.checkOutTime }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="偏差(米)" width="100" right="center">
+        <el-table-column label="偏差(米)" width="100" align="right">
           <template slot-scope="{row}">
             <span>{{ row.distanceOutM }}</span>
           </template>

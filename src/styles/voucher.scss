@@ -13,7 +13,7 @@ table { background-color: transparent; }
 .urel { position: relative; }
 i { font-style: normal; }
 .money_bg { width: 100%; height: 60px; background: url('../../assets/money_bg.png'); text-align: right; position: absolute; top: 0; left: 1px; }
-.input_bg { width: 100%; height: 60px; background: url('../../assets/money_bg.png'); letter-spacing: 5px; padding-right: 5px; text-align: right;position: absolute;z-index: 9;opacity: 0}
+.input_bg { width: 100%; height: 60px; letter-spacing: 5px; padding-right: 5px; text-align: right;position: absolute;z-index: 9;opacity: 0}
 .input_bg:focus{background: #ffffff;color: #000; font-size: 20px;opacity: 1}
 .money_bg i { width: 20px; text-align: center; display: inline-block; line-height: 60px; font-size: 20px; font-family: Verdana, Geneva, sans-serif; }
 .sub-nav > li { position: relative; }

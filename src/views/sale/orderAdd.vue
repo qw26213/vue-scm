@@ -18,13 +18,13 @@
           <custList key-type="settleCustId" :contact="1" :select-id="temp.settleCustId" @selectChange="selectChange" />
         </el-form-item>
         <el-form-item label="联系人:" prop="contact">
-          <el-input v-model="temp.contact" size="small" placeholder="联系人" />
+          <el-input v-model="temp.contact" size="small" placeholder="联系人" @focus="focusThis($event)" />
         </el-form-item>
         <el-form-item label="联系电话:" prop="tel">
-          <el-input v-model="temp.tel" size="small" placeholder="联系电话" />
+          <el-input v-model="temp.tel" size="small" placeholder="联系电话" @focus="focusThis($event)" />
         </el-form-item>
         <el-form-item label="收货地址:" prop="addr">
-          <el-input v-model="temp.addr" size="small" placeholder="收货地址" />
+          <el-input v-model="temp.addr" size="small" placeholder="收货地址" @focus="focusThis($event)" />
         </el-form-item>
         <el-form-item label="仓库:" prop="warehouseId">
           <warehouseList key-type="warehouseId" allow-null="1" :select-id="temp.warehouseId" @selectChange="selectChange" />
@@ -282,6 +282,9 @@ export default {
     }
   },
   methods: {
+    focusThis(e) {
+      e.currentTarget.select()
+    },
     calculate(index) {
       var vatPrice = this.tableData[index].vatPrice // 含税价
       var qty = this.tableData[index].qty // 数量

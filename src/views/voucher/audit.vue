@@ -47,7 +47,12 @@
         </el-table-column>
         <el-table-column label="科目名称" min-width="200">
           <template slot-scope="{row}">
-            <p v-for="(item,index) in row.lineList" :key="index" clss="pCell" style="width:max-content;min-width:100%">{{ item.longName }}</p>
+            <div v-for="(item,index) in row.lineList" :key="index" clss="pCell" style="width:max-content;min-width:100%">
+              <el-tooltip placement="bottom">
+                <div slot="content">{{ item.longName }}</div>
+                <span>{{ item.longName | preaddix }}</span>
+              </el-tooltip>
+            </div>
           </template>
         </el-table-column>
         <el-table-column label="借方金额" align="right">
@@ -133,6 +138,9 @@ export default {
   name: 'voucherAudit',
   components: { Pagination },
   filters: {
+    preaddix: function(str) {
+      return str && str.length > 30 ? str.substr(0, 30) + '...' : str
+    },
     jeStatusFor: function(status) {
       return status == 0 ? '制单完成' : status == -1 ? '退回' : status == 5 ? '审核通过' : status == 1 ? '一审通过' : status == 2 ? '二审通过' : status == 3 ? '三审通过' : '无'
     },

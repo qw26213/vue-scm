@@ -144,6 +144,11 @@ input:disabled{background-color:#ffffff;}
   padding: 20px;
   background-color: #ffffff;
 }
+
 .ml10{margin-left: 10px}
 
-.submitBtn{padding-left: 30px; padding-right: 30px; }
+.submitBtn{padding-left: 30px; padding-right: 30px;}
+
+.el-icon-question{font-size: 16px; color: #409EFF;margin-top: 12px;}
+.el-form-item .el-icon-question {margin-left: -10px;margin-right:10px;}
+.el-form-item span+.el-icon-question {margin-left: 0px;margin-right:10px;}

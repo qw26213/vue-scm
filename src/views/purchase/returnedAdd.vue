@@ -21,14 +21,14 @@
           <el-input v-model="temp.itemAmount" size="small" placeholder="合计金额" disabled />
         </el-form-item>
         <el-form-item label="退预付:" prop="advPayAmount">
-          <el-input v-model="temp.advPayAmount" size="small" placeholder="退预付" />
+          <el-input v-model="temp.advPayAmount" size="small" placeholder="退预付" @focus="focusThis($event)" />
         </el-form-item>
         <el-form-item label="现结金额:" prop="currPayAmount">
           <el-input v-model="temp.currPayAmount" size="small" placeholder="现结金额" style="width:75px" disabled />
           <el-button size="small" style="width:45px;padding:8px" @click="showSettleType">选择</el-button>
         </el-form-item>
         <el-form-item label="返利金额:" prop="rebateAmount">
-          <el-input v-model="temp.rebateAmount" size="small" placeholder="返利金额" />
+          <el-input v-model="temp.rebateAmount" size="small" placeholder="返利金额" @focus="focusThis($event)" />
         </el-form-item>
       </el-form>
     </div>
@@ -52,7 +52,7 @@
         </el-table-column>
         <el-table-column label="批号">
           <template slot-scope="{row}">
-            <input v-model="row.batchNo" type="text" class="inputCell tx-l">
+            <input v-model="row.batchNo" type="text" class="inputCell tx-l" @focus="focusThis($event)">
           </template>
         </el-table-column>
         <el-table-column label="生产日期" width="120">
@@ -62,7 +62,7 @@
         </el-table-column>
         <el-table-column label="保质期(天)">
           <template slot-scope="{row}">
-            <input v-model="row.qualityDays" type="text" class="inputCell tx-r">
+            <input v-model="row.qualityDays" type="text" class="inputCell tx-r" @focus="focusThis($event)">
           </template>
         </el-table-column>
         <el-table-column label="含税价(元)">
@@ -95,7 +95,7 @@
       <div class="dataTable" style="margin-top: 10px">
         <el-form label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
           <el-form-item label="备 注:" prop="remarks">
-            <el-input v-model="temp.remarks" size="small" placeholder="备注" style="width:790px" />
+            <el-input v-model="temp.remarks" size="small" placeholder="备注" style="width:790px" @focus="focusThis($event)" />
           </el-form-item>
         </el-form>
         <el-form :inline="true" label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
@@ -103,13 +103,13 @@
             <el-date-picker v-model="temp.recordDate" :editable="false" type="date" placeholder="制单日期" size="small" style="width:145px" :clearable="false" value-format="yyyy-MM-dd" />
           </el-form-item>
           <el-form-item label="制单人:" prop="recorder">
-            <el-input v-model="temp.recorder" size="small" placeholder="制单人" />
+            <el-input v-model="temp.recorder" size="small" placeholder="制单人" @focus="focusThis($event)" />
           </el-form-item>
           <el-form-item label="审核日期:" prop="auditDate">
             <el-date-picker v-model="temp.auditDate" :editable="false" type="date" placeholder="审核日期" size="small" style="width:145px" :clearable="false" value-format="yyyy-MM-dd" />
           </el-form-item>
           <el-form-item label="审核人:" prop="auditor">
-            <el-input v-model="temp.auditor" size="small" placeholder="审核人" />
+            <el-input v-model="temp.auditor" size="small" placeholder="审核人" @focus="focusThis($event)" />
           </el-form-item>
         </el-form>
       </div>
@@ -132,7 +132,7 @@
         </el-table-column>
         <el-table-column label="金额">
           <template slot-scope="scope">
-            <input v-model="scope.row.amount" type="text" class="inputCell tx-l" @change="calculate1(scope.$index)">
+            <input v-model="scope.row.amount" type="text" class="inputCell tx-l" @change="calculate1(scope.$index)" @focus="focusThis($event)">
           </template>
         </el-table-column>
       </el-table>
@@ -218,6 +218,9 @@ export default {
     }
   },
   methods: {
+    focusThis(e) {
+      e.currentTarget.select()
+    },
     calculate(index) {
       var vatPrice = this.tableData[index].vatPrice // 含税价
       var qty = this.tableData[index].qty // 数量

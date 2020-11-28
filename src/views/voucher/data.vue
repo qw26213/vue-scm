@@ -53,9 +53,14 @@
             <p v-for="(item,index) in row.lineList" :key="index" clss="pCell">{{ item.summary }}</p>
           </template>
         </el-table-column>
-        <el-table-column label="科目名称" min-width="240" show-overflow-tooltip>
+        <el-table-column label="科目名称" min-width="240">
           <template slot-scope="{row}">
-            <p v-for="(item,index) in row.lineList" :key="index" clss="pCell" style="width:max-content;min-width:100%">{{ item.longName }}</p>
+            <p v-for="(item,index) in row.lineList" :key="index" clss="pCell" style="width:max-content;min-width:100%">
+              <el-tooltip placement="bottom">
+                <p slot="content" style="margin:0;line-height:30px;height:30px">{{ item.longName }}</p>
+                <span>{{ item.longName | preaddix }}</span>
+              </el-tooltip>
+            </p>
           </template>
         </el-table-column>
         <el-table-column label="借方金额" align="right">
@@ -99,6 +104,9 @@ export default {
   name: 'voucherData',
   components: { Pagination },
   filters: {
+    preaddix: function(str) {
+      return str && str.length > 30 ? str.substr(0, 30) + '...' : str
+    },
     jeStatusFor: function(status) {
       return status === 0 ? '制单完成' : status === -1 ? '退回' : status === 5 ? '审核通过' : status === 1 ? '一审通过' : status === 2 ? '二审通过' : status === 3 ? '三审通过' : '无'
     },

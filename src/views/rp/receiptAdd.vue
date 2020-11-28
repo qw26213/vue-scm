@@ -109,7 +109,7 @@
         </el-table-column>
         <el-table-column label="金额">
           <template slot-scope="scope">
-            <input v-model="scope.row.amount" type="text" class="inputCell tx-l" @change="calculate1(scope.$index)">
+            <input v-model="scope.row.amount" type="text" class="inputCell tx-l" @change="calculate1(scope.$index)" @focus="focusThis($event)">
           </template>
         </el-table-column>
       </el-table>
@@ -182,6 +182,9 @@ export default {
     }
   },
   methods: {
+    focusThis(e) {
+      e.currentTarget.select()
+    },
     handleSelectionChange(selection, row) {
       this.selectedData = addNullObj(selection)
     },

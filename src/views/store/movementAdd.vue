@@ -45,12 +45,12 @@
         </el-table-column>
         <el-table-column label="数量">
           <template slot-scope="{row}">
-            <input v-model="row.qty" type="text" class="inputCell tx-r">
+            <input v-model="row.qty" type="text" class="inputCell tx-r" @change="focusThis($event)">
           </template>
         </el-table-column>
         <el-table-column label="批号">
           <template slot-scope="{row}">
-            <input v-model="row.batchNo" type="text" class="inputCell">
+            <input v-model="row.batchNo" type="text" class="inputCell" @change="focusThis($event)">
           </template>
         </el-table-column>
         <el-table-column label="生产日期" width="120">
@@ -60,12 +60,12 @@
         </el-table-column>
         <el-table-column label="保质期(天)">
           <template slot-scope="{row}">
-            <input v-model="row.qualityDays" type="text" class="inputCell tx-r">
+            <input v-model="row.qualityDays" type="text" class="inputCell tx-r" @change="focusThis($event)">
           </template>
         </el-table-column>
         <el-table-column label="备注">
           <template slot-scope="{row}">
-            <input v-model="row.remarks" type="text" class="inputCell">
+            <input v-model="row.remarks" type="text" class="inputCell" @change="focusThis($event)">
           </template>
         </el-table-column>
       </el-table>
@@ -80,13 +80,13 @@
             <el-date-picker v-model="temp.recordDate" :editable="false" type="date" placeholder="制单日期" size="small" style="width:145px" :clearable="false" value-format="yyyy-MM-dd" />
           </el-form-item>
           <el-form-item label="制单人:" prop="recorderId">
-            <el-input v-model="temp.recorder" size="small" placeholder="制单人" />
+            <el-input v-model="temp.recorder" size="small" placeholder="制单人" @change="focusThis($event)" />
           </el-form-item>
           <el-form-item label="审核日期:" prop="auditDate">
             <el-date-picker v-model="temp.auditDate" :editable="false" type="date" placeholder="审核日期" size="small" style="width:145px" :clearable="false" value-format="yyyy-MM-dd" />
           </el-form-item>
           <el-form-item label="审核人:" prop="auditorId">
-            <el-input v-model="temp.auditor" size="small" placeholder="审核人" />
+            <el-input v-model="temp.auditor" size="small" placeholder="审核人" @change="focusThis($event)" />
           </el-form-item>
         </el-form>
       </div>
@@ -153,6 +153,9 @@ export default {
     }
   },
   methods: {
+    focusThis(e) {
+      e.currentTarget.select()
+    },
     selectChange(obj) {
       for (var key in obj) {
         this.temp[key] = obj[key]

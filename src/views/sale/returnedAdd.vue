@@ -74,7 +74,7 @@
         </el-table-column>
         <el-table-column label="批号">
           <template slot-scope="{row}">
-            <input v-model="row.batchNo" type="text" class="inputCell tx-r">
+            <input v-model="row.batchNo" type="text" class="inputCell tx-r" @focus="focusThis($event)">
           </template>
         </el-table-column>
         <el-table-column label="生产日期" width="120">
@@ -84,17 +84,17 @@
         </el-table-column>
         <el-table-column label="保质期(天)">
           <template slot-scope="{row}">
-            <input v-model="row.qualityDays" type="text" class="inputCell tx-r">
+            <input v-model="row.qualityDays" type="text" class="inputCell tx-r" @focus="focusThis($event)">
           </template>
         </el-table-column>
         <el-table-column label="含税价(元)">
           <template slot-scope="scope">
-            <input v-model="scope.row.vatPrice" type="text" class="inputCell tx-r" :disables="userInfo.userSalePriceType + scope.row.salePriceType <= 1" @change="calculate(scope.$index)">
+            <input v-model="scope.row.vatPrice" type="text" class="inputCell tx-r" :disables="userInfo.userSalePriceType + scope.row.salePriceType <= 1" @change="calculate(scope.$index)" @focus="focusThis($event)">
           </template>
         </el-table-column>
         <el-table-column label="数量">
           <template slot-scope="scope">
-            <input v-model="scope.row.qty" type="text" class="inputCell tx-r" @change="calculate(scope.$index)">
+            <input v-model="scope.row.qty" type="text" class="inputCell tx-r" @change="calculate(scope.$index)" @focus="focusThis($event)">
           </template>
         </el-table-column>
         <el-table-column label="价税合计">
@@ -109,7 +109,7 @@
         </el-table-column>
         <el-table-column label="税率(%)">
           <template slot-scope="scope">
-            <input v-model="scope.row.taxRate" type="text" class="inputCell tx-r" @change="calculate(scope.$index)">
+            <input v-model="scope.row.taxRate" type="text" class="inputCell tx-r" @change="calculate(scope.$index)" @focus="focusThis($event)">
           </template>
         </el-table-column>
         <el-table-column label="税额">
@@ -124,13 +124,13 @@
             <el-date-picker v-model="temp.recordDate" :editable="false" type="date" placeholder="制单日期" size="small" :clearable="false" value-format="yyyy-MM-dd" />
           </el-form-item>
           <el-form-item label="制单人:" prop="recorderId">
-            <el-input v-model="temp.recorder" size="small" placeholder="制单人" />
+            <el-input v-model="temp.recorder" size="small" placeholder="制单人" @focus="focusThis($event)" />
           </el-form-item>
           <el-form-item label="审核日期:" prop="auditDate">
             <el-date-picker v-model="temp.auditDate" :editable="false" type="date" placeholder="审核日期" size="small" :clearable="false" value-format="yyyy-MM-dd" />
           </el-form-item>
           <el-form-item label="审核人:" prop="auditorId">
-            <el-input v-model="temp.auditor" size="small" placeholder="审核人" />
+            <el-input v-model="temp.auditor" size="small" placeholder="审核人" @focus="focusThis($event)" />
           </el-form-item>
         </el-form>
       </div>
@@ -259,6 +259,9 @@ export default {
     }
   },
   methods: {
+    focusThis(e) {
+      e.currentTarget.select()
+    },
     initTableData(id) {
       getSalesReturnedBySalesHeaderId(id).then(res => {
         for (var key in this.temp) {

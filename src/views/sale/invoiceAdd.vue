@@ -6,49 +6,49 @@
           <el-date-picker v-model="temp.invoiceDate" :editable="false" type="date" placeholder="发票日期" size="small" :clearable="false" value-format="yyyy-MM-dd" />
         </el-form-item>
         <el-form-item label="发票号:" prop="invoiceNo">
-          <el-input v-model="temp.invoiceNo" size="small" placeholder="发票号" />
+          <el-input v-model="temp.invoiceNo" size="small" placeholder="发票号" @focus="focusThis($event)" />
         </el-form-item>
         <el-form-item label="客户:" prop="custId">
           <custList key-type="custId" :contact="1" :select-id="temp.custId" @selectChange="selectChange" />
         </el-form-item>
         <el-form-item label="地址:" prop="addr">
-          <el-input v-model="temp.addr" size="small" placeholder="地址" />
+          <el-input v-model="temp.addr" size="small" placeholder="地址" @focus="focusThis($event)" />
         </el-form-item>
         <el-form-item label="电话:" prop="tel">
-          <el-input v-model="temp.tel" size="small" placeholder="电话" />
+          <el-input v-model="temp.tel" size="small" placeholder="电话" @focus="focusThis($event)" />
         </el-form-item>
         <el-form-item label="开户行:" prop="bankName">
-          <el-input v-model="temp.bankName" size="small" placeholder="开户行" />
+          <el-input v-model="temp.bankName" size="small" placeholder="开户行" @focus="focusThis($event)" />
         </el-form-item>
         <el-form-item label="账户:" prop="bankAccount">
-          <el-input v-model="temp.bankAccount" size="small" placeholder="账户" />
+          <el-input v-model="temp.bankAccount" size="small" placeholder="账户" @focus="focusThis($event)" />
         </el-form-item>
         <el-form-item label="纳税人识别号:" prop="taxRegistrationCertificateNo" label-width="84">
-          <el-input v-model="temp.taxRegistrationCertificateNo" size="small" placeholder="纳税人识别号" />
+          <el-input v-model="temp.taxRegistrationCertificateNo" size="small" placeholder="纳税人识别号" @focus="focusThis($event)" />
         </el-form-item>
         <el-form-item label="销售方名称:" prop="sellerName">
           <el-input v-model="temp.sellerName" size="small" placeholder="销售方名称" />
         </el-form-item>
         <el-form-item label="销售方税号:" prop="sellerTaxRegistrationCertificateNo">
-          <el-input v-model="temp.sellerTaxRegistrationCertificateNo" size="small" placeholder="销售方税号" />
+          <el-input v-model="temp.sellerTaxRegistrationCertificateNo" size="small" placeholder="销售方税号" @focus="focusThis($event)" />
         </el-form-item>
         <el-form-item label="销售方地址:" prop="sellerAddr">
-          <el-input v-model="temp.sellerAddr" size="small" placeholder="销售方地址" />
+          <el-input v-model="temp.sellerAddr" size="small" placeholder="销售方地址" @focus="focusThis($event)" />
         </el-form-item>
         <el-form-item label="销售方电话:" prop="sellerTel">
-          <el-input v-model="temp.sellerTel" size="small" placeholder="销售方电话" />
+          <el-input v-model="temp.sellerTel" size="small" placeholder="销售方电话" @focus="focusThis($event)" />
         </el-form-item>
         <el-form-item label="销售方开户行:" prop="sellerBankName" label-width="84">
-          <el-input v-model="temp.sellerBankName" size="small" placeholder="销售方开户行" />
+          <el-input v-model="temp.sellerBankName" size="small" placeholder="销售方开户行" @focus="focusThis($event)" />
         </el-form-item>
         <el-form-item label="销售方账号:" prop="sellerBankAccount">
-          <el-input v-model="temp.sellerBankAccount" size="small" placeholder="销售方账号" />
+          <el-input v-model="temp.sellerBankAccount" size="small" placeholder="销售方账号" @focus="focusThis($event)" />
         </el-form-item>
         <el-form-item label="价税合计:" prop="vatAmount">
           <el-input v-model="temp.vatAmount" size="small" placeholder="价税合计" disabled />
         </el-form-item>
         <el-form-item label="未开票余额:" prop="salesVatBalance">
-          <el-input v-model="temp.salesVatBalance" size="small" placeholder="未开票余额" />
+          <el-input v-model="temp.salesVatBalance" size="small" placeholder="未开票余额" @focus="focusThis($event)" />
         </el-form-item>
       </el-form>
     </div>
@@ -72,12 +72,12 @@
         </el-table-column>
         <el-table-column label="数量">
           <template slot-scope="scope">
-            <input v-model="scope.row.qty" type="text" class="inputCell tx-r" @change="calculate(scope.$index)">
+            <input v-model="scope.row.qty" type="text" class="inputCell tx-r" @change="calculate(scope.$index)" @focus="focusThis($event)">
           </template>
         </el-table-column>
         <el-table-column label="含税价(元)">
           <template slot-scope="scope">
-            <input v-model="scope.row.vatPrice" type="text" class="inputCell tx-r" @change="calculate(scope.$index)">
+            <input v-model="scope.row.vatPrice" type="text" class="inputCell tx-r" @change="calculate(scope.$index)" @focus="focusThis($event)">
           </template>
         </el-table-column>
         <el-table-column label="价税合计">
@@ -87,7 +87,7 @@
         </el-table-column>
         <el-table-column label="税率">
           <template slot-scope="scope">
-            <input v-model="scope.row.taxRate" type="text" class="inputCell tx-r" @change="calculate(scope.$index)">
+            <input v-model="scope.row.taxRate" type="text" class="inputCell tx-r" @change="calculate(scope.$index)" @focus="focusThis($event)">
           </template>
         </el-table-column>
         <el-table-column label="税额">
@@ -202,6 +202,9 @@ export default {
     }
   },
   methods: {
+    focusThis(e) {
+      e.currentTarget.select()
+    },
     calculate(index) {
       var vatPrice = this.tableData[index].vatPrice // 含税价
       var qty = this.tableData[index].qty // 数量

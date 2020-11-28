@@ -37,12 +37,12 @@
             <span>{{ row.warehouseName }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="成本金额" align="center">
+        <el-table-column label="成本金额" align="right">
           <template slot-scope="{row}">
             <span>{{ row.wmapAmount }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="商品金额" width="100" align="center">
+        <el-table-column label="商品金额" width="100" align="right">
           <template slot-scope="{row}">
             <span>{{ row.itemAmount }}</span>
           </template>

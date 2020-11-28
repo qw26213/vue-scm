@@ -21,16 +21,16 @@
           <staffList :select-id="temp.staffId" @selectChange="selectChange" />
         </el-form-item>
         <el-form-item label="成本金额:" prop="wmapAmount">
-          <el-input v-model="temp.wmapAmount" size="small" placeholder="成本金额" />
+          <el-input v-model="temp.wmapAmount" size="small" placeholder="成本金额" @focus="focusThis($event)" />
         </el-form-item>
         <el-form-item label="商品金额:" prop="itemAmount">
-          <el-input v-model="temp.itemAmount" size="small" placeholder="商品金额" />
+          <el-input v-model="temp.itemAmount" size="small" placeholder="商品金额" @focus="focusThis($event)" />
         </el-form-item>
         <el-form-item label="运费:" prop="freightAmount">
-          <el-input v-model="temp.freightAmount" size="small" placeholder="运费" />
+          <el-input v-model="temp.freightAmount" size="small" placeholder="运费" @focus="focusThis($event)" />
         </el-form-item>
         <el-form-item label="金额合计:" prop="sumAmount">
-          <el-input v-model="temp.sumAmount" size="small" placeholder="金额合计" />
+          <el-input v-model="temp.sumAmount" size="small" placeholder="金额合计" @focus="focusThis($event)" />
         </el-form-item>
       </el-form>
     </div>
@@ -71,12 +71,12 @@
         </el-table-column>
         <el-table-column label="实际数量">
           <template slot-scope="scope">
-            <input v-model="scope.row.actualQty" type="text" class="inputCell tx-r" disabled @change="calculate(scope.$index)">
+            <input v-model="scope.row.actualQty" type="text" class="inputCell tx-r" disabled @change="calculate(scope.$index)" @focus="focusThis($event)">
           </template>
         </el-table-column>
         <el-table-column label="盘盈盘亏数量">
           <template slot-scope="scope">
-            <input v-model="scope.row.qty" type="text" class="inputCell tx-r" @change="calculate(scope.$index)">
+            <input v-model="scope.row.qty" type="text" class="inputCell tx-r" @change="calculate(scope.$index)" @focus="focusThis($event)">
           </template>
         </el-table-column>
       </el-table>
@@ -86,13 +86,13 @@
             <el-date-picker v-model="temp.recordDate" :editable="false" type="date" placeholder="制单日期" size="small" :clearable="false" value-format="yyyy-MM-dd" />
           </el-form-item>
           <el-form-item label="制单人:" prop="recorderId">
-            <el-input v-model="temp.recorder" size="small" placeholder="制单人" />
+            <el-input v-model="temp.recorder" size="small" placeholder="制单人" @change="focusThis($event)" />
           </el-form-item>
           <el-form-item label="审核日期:" prop="auditDate">
             <el-date-picker v-model="temp.auditDate" :editable="false" type="date" placeholder="审核日期" size="small" :clearable="false" value-format="yyyy-MM-dd" />
           </el-form-item>
           <el-form-item label="审核人:" prop="auditorId">
-            <el-input v-model="temp.auditor" size="small" placeholder="审核人" />
+            <el-input v-model="temp.auditor" size="small" placeholder="审核人" @change="focusThis($event)" />
           </el-form-item>
         </el-form>
       </div>
@@ -200,6 +200,9 @@ export default {
     this.getData()
   },
   methods: {
+    focusThis(e) {
+      e.currentTarget.select()
+    },
     getData() {
       getWarehouse().then(res => {
         this.warehouseList = res.data.data || []
