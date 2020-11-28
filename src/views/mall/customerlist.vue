@@ -36,19 +36,25 @@
         </el-table-column>
       </el-table>
     </div>
-    <el-dialog :close-on-click-modal="false" title="客户详情" :visible.sync="dialogFormVisible" width="600px">
-      <div ref="dataForm" style="width:100%;">
+    <el-dialog :close-on-click-modal="false" title="客户详情" :visible.sync="dialogFormVisible" width="700px">
+      <div ref="dataForm" style="width:100%;padding-bottom:10px">
         <div>客户信息</div>
         <div class="info" style="width:100%">
-          <label style="margin-right:10px">客户名称:</label>{{ customerInfo.nickName }}</div>
-        <div class="info" style="width:100%">
-          <label style="margin-right:10px">联系电话:</label>{{ customerInfo.tel }}</div>
+          <label style="margin-right:10px">客户名称:</label>{{ customerInfo.nickName }}
+          <label style="margin-left:20px">手机:</label>{{ customerInfo.tel }}
+        </div>
         <div style="margin-top:20px">地址信息</div>
         <div v-for="(item,index) in customerInfo.addrLine" :key="index">
           <div class="info">
-            <label>收货人：</label><span>{{ item.contact }}</span><span>({{ item.tel }})</span><span v-if="item.isDefault == 1" style="margin-left:15px">(默认)</span></div>
-          <div class="info">
-            <label>地址：</label>{{ item.province }}{{ item.city }}{{ item.district }}{{ item.addr }}</div>
+            <span>{{ item.contact }}</span><span>({{ item.tel }})</span>
+            <span style="margin-left:15px">{{ item.province }}{{ item.city }}{{ item.district }}{{ item.addr }}</span>
+            <span v-if="item.isDefault == 1">(默认)</span>
+          </div>
+          <div v-if="item.custName" class="info">
+            <label style="margin-right:10px">自提点:</label>
+            <span>{{ item.custName }}</span><span>({{ item.custTel }})</span>
+            <span style="margin-left:15px">{{ item.custAddr }}</span>
+          </div>
         </div>
       </div>
     </el-dialog>
