@@ -108,6 +108,11 @@
             <span>{{ row.isDisable==0?'是':'否' }}</span>
           </template>
         </el-table-column>
+        <el-table-column label="零售自提网点" width="80" align="center">
+          <template slot-scope="{row}">
+            <span>{{ row.isDelivery==0?'是':'否' }}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="操作" align="center" width="240">
           <template slot-scope="{row}">
             <el-button type="text" size="small" @click="handleUpdate(row.overdraftBalance, row.id)">改已赊销金额</el-button>
@@ -220,6 +225,10 @@
           <el-radio v-model="temp.isDisable" :label="0">是</el-radio>
           <el-radio v-model="temp.isDisable" :label="1">否</el-radio>
         </el-form-item>
+        <el-form-item label="零售自提网点" prop="isDelivery" align="center" width="80">
+          <el-radio v-model="temp.isDelivery" :label="0">是</el-radio>
+          <el-radio v-model="temp.isDelivery" :label="1">否</el-radio>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer" align="center">
         <el-button @click="dialogFormVisible = false">取消</el-button>
@@ -299,7 +308,8 @@ export default {
         isInvoice: 0,
         taxRegistrationCertificateNo: '',
         remarks: '',
-        isDisable: 0
+        isDisable: 0,
+        isDelivery: 1
       },
       resetTemp: {
         id: '',
@@ -323,7 +333,8 @@ export default {
         isInvoice: 0,
         taxRegistrationCertificateNo: '',
         remarks: '',
-        isDisable: 0
+        isDisable: 0,
+        isDelivery: 1
       },
       dialogFormVisible: false,
       dialogVisible: false,
