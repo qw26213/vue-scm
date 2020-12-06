@@ -182,7 +182,12 @@
             <el-option v-for="item in itemList" :key="item.id" :label="item.itemName" :data-code="item.itemCode" :data-uom="item.uom" :value="item.id" />
           </el-select>
         </el-form-item>
-        <el-form-item v-if="auxiliary.charAt(5)=='1'" label="项目" prop="projId">
+        <el-form-item v-if="auxiliary.charAt(5)=='1'" label="品类" prop="invCatgId">
+          <el-select ref="projSelect" v-model="temp.invCatgId" placeholder="品类" style="width:100%">
+            <el-option v-for="item in invCatgList" :key="item.id" :label="item.invCatgName" :data-code="item.invCatgCode" :value="item.id" />
+          </el-select>
+        </el-form-item>
+        <el-form-item v-if="auxiliary.charAt(6)=='1'" label="项目" prop="projId">
           <el-select ref="projSelect" v-model="temp.projId" placeholder="项目" style="width:100%">
             <el-option v-for="item in projList" :key="item.id" :label="item.projName" :data-code="item.projCode" :value="item.id" />
           </el-select>
@@ -213,14 +218,17 @@
               <el-select v-if="item.auxiliaryTypeCode==='dept'" v-model="row.deptId" size="small" placeholder="部门" style="width:140px">
                 <el-option v-for="item in deptList" :key="item.id" :label="item.deptName" :value="item.id" />
               </el-select>
-              <el-select v-if="item.auxiliaryTypeCode==='proj'" v-model="row.projId" size="small" placeholder="部门" style="width:140px">
-                <el-option v-for="item in projList" :key="item.id" :label="item.projName" :value="item.id" />
-              </el-select>
               <el-select v-if="item.auxiliaryTypeCode==='staff'" v-model="row.staffId" size="small" placeholder="职员" style="width:140px">
                 <el-option v-for="item in staffList" :key="item.id" :label="item.staffName" :value="item.id" />
               </el-select>
               <el-select v-if="item.auxiliaryTypeCode==='item'" v-model="row.itemId" size="small" placeholder="存货" style="width:140px">
                 <el-option v-for="item in itemList" :key="item.id" :label="item.itemName" :value="item.id" />
+              </el-select>
+              <el-select v-if="item.auxiliaryTypeCode==='invCatg'" v-model="row.invCatgId" size="small" placeholder="品类" style="width:140px">
+                <el-option v-for="item in invCatgList" :key="item.id" :label="item.invCatgName" :value="item.id" />
+              </el-select>
+              <el-select v-if="item.auxiliaryTypeCode==='proj'" v-model="row.projId" size="small" placeholder="项目" style="width:140px">
+                <el-option v-for="item in projList" :key="item.id" :label="item.projName" :value="item.id" />
               </el-select>
             </div>
             <div v-if="row.isAuxiliary==0" style="text-align:center">无</div>
@@ -241,7 +249,7 @@ import { getVoucherById, voucherSave, getCatogery, printVoucherById } from '@/ap
 import { getTempletHeader, getTempletTypeList, getTempletById, templetSave, getJZVoucherByCode, getJzTempletById } from '@/api/voucher'
 import { addSummary, delSummary } from '@/api/voucher'
 import { getNowDate, deleteEmptyObj, addNullObj, addNullObj2, convertCurrency, validateVal, deepClone, showNumber1, showNumber2, getIsAuxiliary } from '@/utils'
-import { getProj, getDept, getStaff, getSupplier, getCust, getItem } from '@/api/user'
+import { getProj, getDept, getStaff, getSupplier, getCust, getItem, getinvCatg } from '@/api/user'
 import Pagination from '@/components/Pagination'
 import coaList from '@/components/voucher/coaList'
 import summaryList from '@/components/voucher/summaryList'
@@ -281,7 +289,7 @@ export default {
         summary: '',
         mnemonicCode: ''
       },
-      auxiliary: '000000',
+      auxiliary: '0000000',
       curShowIndex: 0,
       temp: {
         supplierId: '',
@@ -294,10 +302,11 @@ export default {
       rules: {
         supplierId: [{ required: true, message: '供应商不能为空', trigger: 'change' }],
         custId: [{ required: true, message: '客户不能为空', trigger: 'change' }],
+        deptId: [{ required: true, message: '部门不能为空', trigger: 'change' }],
         staffId: [{ required: true, message: '职员不能为空', trigger: 'change' }],
-        projId: [{ required: true, message: '项目不能为空', trigger: 'change' }],
         itemId: [{ required: true, message: '存货不能为空', trigger: 'change' }],
-        deptId: [{ required: true, message: '部门不能为空', trigger: 'change' }]
+        invCatgId: [{ required: true, message: '品类不能为空', trigger: 'change' }],
+        projId: [{ required: true, message: '项目不能为空', trigger: 'change' }]
       },
       tableData: [{}, {}, {}, {}],
       voucherTable: [],
@@ -326,6 +335,7 @@ export default {
       supplierList: [],
       staffList: [],
       projList: [],
+      invCatgList: [],
       jzCode: '',
       jzType: 0,
       curVoucherId: this.$route.query.id
@@ -374,6 +384,9 @@ export default {
     })
     getProj().then(res => {
       this.projList = res.data.data || []
+    })
+    getinvCatg().then(res => {
+      this.invCatgList = res.data.data || []
     })
     if (this.$route.query.id) {
       this.getVoucher(this.$route.query.id)
@@ -494,7 +507,7 @@ export default {
         var curObj = this.lineData[i]
         // var len1 = this.lineData[i].auxTypes.length
         if (curObj.isAuxiliary === 1) {
-          var AuxiliaryType = ['supplier', 'cust', 'dept', 'staff', 'item', 'proj']
+          var AuxiliaryType = ['supplier', 'cust', 'dept', 'staff', 'item', 'invCatg', 'proj']
           var coaCobinationCode = ''
           var coaCobinationName = ''
           AuxiliaryType.forEach(item => {
@@ -610,7 +623,7 @@ export default {
             var coaCobinationCode = ''
             var coaCobinationName = ''
             var auxiliaries = auxiliary.split('')
-            var AuxiliaryType = ['supplier', 'cust', 'dept', 'staff', 'item', 'proj']
+            var AuxiliaryType = ['supplier', 'cust', 'dept', 'staff', 'item', 'invCatg', 'proj']
             for (var i = 0; i < auxiliaries.length; i++) {
               if (auxiliaries[i] != null && auxiliaries[i] == 1) {
                 // 显示对应的辅助核算项 1-26

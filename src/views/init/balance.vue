@@ -151,7 +151,12 @@
             <el-option v-for="(item,index) in itemList" :key="item.itemCode" :data-code="item.itemCode" :label="item.itemName" :value="item.id" />
           </el-select>
         </el-form-item>
-        <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(5)=='1'" label="项目" prop="projId">
+        <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(5)=='1'" label="品类" prop="invCatgsId">
+          <el-select ref="projSelect" v-model="temp.invCatgsId" size="small" placeholder="品类" style="width:120px">
+            <el-option v-for="(item,index) in invCatgsList" :key="item.invCatgsCode" :data-code="item.invCatgsCode" :label="item.invCatgsName" :value="item.id" />
+          </el-select>
+        </el-form-item>
+        <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(6)=='1'" label="项目" prop="projId">
           <el-select ref="projSelect" v-model="temp.projId" size="small" placeholder="项目" style="width:120px">
             <el-option v-for="(item,index) in projList" :key="item.projCode" :data-code="item.projCode" :label="item.projName" :value="item.id" />
           </el-select>
@@ -166,10 +171,10 @@
 </template>
 <script>
 import { getBalance, getPeriodList, updateListForSetBegin, getOpeningBalanceStatus } from '@/api/user'
-import { getProj, getDept, getStaff, getSupplier, getCust, getItem } from '@/api/user'
+import { getProj, getDept, getStaff, getSupplier, getCust, getItem, getinvCatgs } from '@/api/user'
 import { getNowDate, deepClone, toNumStr, validateVal } from '@/utils'
 var userInfo = JSON.parse(sessionStorage.userInfo)
-var hexCas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+var hexCas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N']
 export default {
   name: 'initialBalance',
   filters: {
@@ -204,7 +209,8 @@ export default {
         staffId: '',
         projId: '',
         itemId: '',
-        deptId: ''
+        deptId: '',
+        invCatgsId: ''
       },
       resetTemp: {
         beginBalance: 0,
@@ -218,7 +224,8 @@ export default {
         staffId: '',
         projId: '',
         itemId: '',
-        deptId: ''
+        deptId: '',
+        invCatgsId: ''
       },
       rules: {
         beginBalance: [{ required: true, message: '不能为空', trigger: 'change' }],
@@ -232,7 +239,8 @@ export default {
         staffId: [{ required: true, message: '不能为空', trigger: 'change' }],
         projId: [{ required: true, message: '不能为空', trigger: 'change' }],
         itemId: [{ required: true, message: '不能为空', trigger: 'change' }],
-        deptId: [{ required: true, message: '不能为空', trigger: 'change' }]
+        deptId: [{ required: true, message: '不能为空', trigger: 'change' }],
+        invCatgsId: [{ required: true, message: '不能为空', trigger: 'change' }]
       },
       custList: [],
       deptList: [],
@@ -240,6 +248,7 @@ export default {
       supplierList: [],
       staffList: [],
       projList: [],
+      invCatgsList: [],
       userInfo: userInfo,
       periodList: [],
       tableData: [],
@@ -268,6 +277,9 @@ export default {
     })
     getProj().then(res => {
       this.projList = res.data.data
+    })
+    getinvCatgs().then(res => {
+      this.invCatgsList = res.data.data
     })
   },
   methods: {
@@ -464,7 +476,7 @@ export default {
         var auxiliaryCode = ''
         var auxiliaryName = ''
         var auxiliaries = auxiliary.split('')
-        var AuxiliaryType = ['supplier', 'cust', 'dept', 'staff', 'item', 'proj']
+        var AuxiliaryType = ['supplier', 'cust', 'dept', 'staff', 'item', 'invCatgs', 'proj']
         for (var i = 0; i < auxiliaries.length; i++) {
           if (auxiliaries[i] != null && auxiliaries[i] == 1) {
             // 显示对应的辅助核算项 1-26

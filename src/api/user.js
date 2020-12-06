@@ -393,13 +393,6 @@ export function getProj() {
   })
 }
 
-export function getItem() {
-  return request({
-    url: '/drp/bd/item/list',
-    method: 'post'
-  })
-}
-
 export function getDept() {
   return request({
     url: '/drp/bd/dept/list',
@@ -407,9 +400,9 @@ export function getDept() {
   })
 }
 
-export function getCust() {
+export function getStaff() {
   return request({
-    url: '/drp/bd/cust/list',
+    url: '/drp/bd/staff/list',
     method: 'post'
   })
 }
@@ -421,9 +414,23 @@ export function getSupplier() {
   })
 }
 
-export function getStaff() {
+export function getCust() {
   return request({
-    url: '/drp/bd/staff/list',
+    url: '/drp/bd/cust/list',
+    method: 'post'
+  })
+}
+
+export function getItem() {
+  return request({
+    url: '/drp/bd/item/list',
+    method: 'post'
+  })
+}
+
+export function getinvCatg() {
+  return request({
+    url: '/drp/bd/invCatg/list',
     method: 'post'
   })
 }

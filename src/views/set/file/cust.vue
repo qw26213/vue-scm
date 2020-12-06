@@ -215,7 +215,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="建档日期" prop="remarks">
-          <el-date-picker v-model="temp.createDate" :editable="false" type="date" placeholder="建档日期" size="small" :clearable="false" value-format="yyyy-MM-dd" style="width:185px" />
+          <el-date-picker v-model="temp.createDate" type="date" placeholder="建档日期" size="small" :clearable="false" value-format="yyyy-MM-dd" style="width:185px" />
         </el-form-item>
         <el-form-item label="是否开票" prop="isInvoice">
           <el-radio v-model="temp.isInvoice" :label="1">是</el-radio>

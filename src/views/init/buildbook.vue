@@ -306,12 +306,9 @@ export default {
         if (valid) {
           this.temp.codingRule = this.codingRuleArr.join('-')
           saveBook(this.temp).then(res => {
-            if (this.userInfo.glBookEntity) {
-              this.$store.dispatch('tagsView/delView', this.$route)
-              this.$router.replace('/init/book')
-              this.$message.success(res.data.msg)
-              this.getData()
-            }
+            this.$message.success(res.data.msg)
+            this.$store.dispatch('tagsView/delView', this.$route)
+            this.$router.replace('/init/book')
           })
         }
       })
