@@ -87,7 +87,7 @@
           <el-checkbox v-model="temp.isCurrency" disabled :false-label="0" :true-label="1">币种核算</el-checkbox>
           <el-checkbox v-model="temp.isAuxiliary" :disabled="isForceAddChild==1" :false-label="0" :true-label="1">辅助核算(至多选6项)</el-checkbox>
           <el-checkbox v-model="temp.isQuantity" :disabled="isForceAddChild==1" :false-label="0" :true-label="1">数量核算</el-checkbox>
-          <el-input v-if="temp.isQuantity==1" v-model="temp.uom" :disabled="isForceAddChild==1" placeholder="计量单位" style="width:120px" />
+          <el-input v-if="temp.isQuantity==1" v-model="temp.uom" size="small" :disabled="isForceAddChild==1" placeholder="计量单位" style="width:120px" />
         </el-form-item>
         <el-form-item v-if="dialogStatus == 'update'" label="" style="width:600px">
           <el-checkbox v-model="temp.isCurrency" disabled :false-label="0" :true-label="1">币种核算</el-checkbox>
@@ -95,7 +95,7 @@
           <el-checkbox v-model="temp.isQuantity" :disabled="temp.noAuxiliary==1 || temp.leaf==0 || temp.usedFlag==1" :false-label="0" :true-label="1">数量核算</el-checkbox>
           <el-input v-if="temp.isQuantity==1" v-model="temp.uom" :disabled="temp.noAuxiliary==1 || temp.leaf==0 || temp.usedFlag==1" placeholder="计量单位" style="width:100px" />
         </el-form-item>
-        <el-form-item v-if="temp.isAuxiliary==1 && temp.noAuxiliary == 0" style="width:600px">
+        <el-form-item v-if="temp.isAuxiliary==1" style="width:600px">
           <el-checkbox v-model="temp.auxiliary[0]" :checked="temp.auxiliary&&temp.auxiliary[0]==1" false-label="0" true-label="1">供应商</el-checkbox>
           <el-checkbox v-model="temp.auxiliary[1]" :checked="temp.auxiliary&&temp.auxiliary[1]==1" false-label="0" true-label="1">客户</el-checkbox>
           <el-checkbox v-model="temp.auxiliary[2]" :checked="temp.auxiliary&&temp.auxiliary[2]==1" false-label="0" true-label="1">部门</el-checkbox>

@@ -23,4 +23,3 @@ npm run lint
 # code format check and auto fix
 npm run lint -- --fix
 ```
-Copyright (c) 2017-present PanJiaChen
