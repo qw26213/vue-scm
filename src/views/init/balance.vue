@@ -108,7 +108,7 @@
     </el-dialog>
     <el-dialog :close-on-click-modal="false" title="设置辅助核算" :visible.sync="dialogFormVisible2" width="820px">
       <el-form ref="dataForm" :rules="rules" :model="temp" :inline="true" label-position="right" label-width="80px" style="width: 760px; margin-left:15px;">
-        <el-form-item label="期初余额" prop="beginBalance" label-width="80px">
+        <el-form-item label="期初余额" prop="beginBalance">
           <el-input v-model="temp.beginBalance" size="small" placeholder="期初余额" style="width:120px" />
         </el-form-item>
         <el-form-item label="本年累计借方金额" prop="periodNetDr" label-width="140px">
@@ -131,27 +131,27 @@
             <el-option v-for="(item,index) in supplierList" :key="item.supplierCode" :data-code="item.supplierCode" :label="item.supplierName" :value="item.id" />
           </el-select>
         </el-form-item>
-        <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(1)=='1'" label="客户" prop="custId">
+        <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(1)=='1'" label="客户" prop="custId" label-width="140px">
           <el-select ref="custSelect" v-model="temp.custId" size="small" placeholder="客户" style="width:120px">
             <el-option v-for="(item,index) in custList" :key="item.custCode" :data-code="item.custCode" :label="item.custName" :value="item.id" />
           </el-select>
         </el-form-item>
-        <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(2)=='1'" label="部门" prop="deptId">
+        <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(2)=='1'" label="部门" prop="deptId" label-width="140px">
           <el-select ref="deptSelect" v-model="temp.deptId" size="small" placeholder="部门" style="width:120px">
             <el-option v-for="(item,index) in deptList" :key="item.deptCode" :data-code="item.deptCode" :label="item.deptName" :value="item.id" />
           </el-select>
         </el-form-item>
-        <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(3)=='1'" label="职员" prop="staffId">
+        <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(3)=='1'" label="职员" prop="staffId" label-width="80px">
           <el-select ref="staffSelect" v-model="temp.staffId" size="small" placeholder="职员" style="width:120px">
             <el-option v-for="(item,index) in staffList" :key="item.staffCode" :data-code="item.staffCode" :label="item.staffName" :value="item.id" />
           </el-select>
         </el-form-item>
-        <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(4)=='1'" label="品类" prop="invCatgId">
+        <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(4)=='1'" label="品类" prop="invCatgId" label-width="140px">
           <el-select ref="invCatgSelect" v-model="temp.invCatgId" size="small" placeholder="品类" style="width:120px">
             <el-option v-for="(item,index) in invCatgList" :key="item.invCatgCode" :data-code="item.invCatgCode" :label="item.invCatgName" :value="item.id" />
           </el-select>
         </el-form-item>
-        <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(5)=='1'" label="存货" prop="itemId">
+        <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(5)=='1'" label="存货" prop="itemId" label-width="140px">
           <el-select ref="itemSelect" v-model="temp.itemId" size="small" placeholder="存货" style="width:120px">
             <el-option v-for="(item,index) in itemList" :key="item.itemCode" :data-code="item.itemCode" :label="item.itemName" :value="item.id" />
           </el-select>
@@ -469,48 +469,52 @@ export default {
       })
     },
     saveAuxiliaryConfig() {
-      var editIndex = this.curShowIndex
-      var curObj = deepClone(this.auxiliaryData[editIndex])
-      var auxiliary = curObj.auxiliary
-      if (auxiliary != null && auxiliary.length > 0) {
-        var auxiliaryCode = ''
-        var auxiliaryName = ''
-        var auxiliaries = auxiliary.split('')
-        var AuxiliaryType = ['supplier', 'cust', 'dept', 'staff', 'invCatg', 'item', 'proj']
-        for (var i = 0; i < auxiliaries.length; i++) {
-          if (auxiliaries[i] != null && auxiliaries[i] == 1) {
-            // 显示对应的辅助核算项 1-26
-            var auxiliaryType = AuxiliaryType[i]
-            /* 获取当前辅助核算项的值 */
-            var selectId = this.$refs[auxiliaryType + 'Select'].selected.value
-            var selectText = this.$refs[auxiliaryType + 'Select'].selected.label
-            var modelCode = this.$refs[auxiliaryType + 'Select'].selected.$attrs['data-code']
-            auxiliaryCode += '_' + hexCas[AuxiliaryType.indexOf(auxiliaryType)] + modelCode
-            auxiliaryName += '_' + selectText
-            curObj[auxiliaryType] = selectId
-            curObj[auxiliaryType + 'Id'] = selectId
-          }
-        }
-        curObj.coaCobinationCode = auxiliaryCode.substring(1)
-        curObj.coaCobinationName = auxiliaryName.substring(1)
-        curObj.showCoaCode = curObj.coaCode + '_' + curObj.coaCobinationCode
-        curObj.showCoaName = curObj.coaName + '_' + curObj.coaCobinationName
-      }
-      curObj.leaf = 1
-      curObj.type = 0
-      curObj.isAuxiliary = 1
-      curObj.beginBalance = this.temp.beginBalance
-      curObj.beginBalanceQty = this.temp.beginBalanceQty
-      curObj.periodNetDr = this.temp.periodNetDr
-      curObj.periodNetQtyDr = this.temp.periodNetQtyDr
-      curObj.periodNetCr = this.temp.periodNetCr
-      curObj.periodNetQtyCr = this.temp.periodNetQtyCr
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          this.tableData.splice(this.curShowIndex + 1, 0, curObj)
-          this.dialogFormVisible2 = false
-          this.$nextTick(() => {
-            this.calculate(curObj)
+          var editIndex = this.curShowIndex
+          var curObj = deepClone(this.auxiliaryData[editIndex])
+          var auxiliary = curObj.auxiliary
+          if (auxiliary != null && auxiliary.length > 0) {
+            var auxiliaryCode = ''
+            var auxiliaryName = ''
+            var auxiliaries = auxiliary.split('')
+            var AuxiliaryType = ['supplier', 'cust', 'dept', 'staff', 'invCatg', 'item', 'proj']
+            for (var i = 0; i < auxiliaries.length; i++) {
+              if (auxiliaries[i] != null && auxiliaries[i] == 1) {
+                // 显示对应的辅助核算项 1-26
+                var auxiliaryType = AuxiliaryType[i]
+                /* 获取当前辅助核算项的值 */
+                var selectId = this.$refs[auxiliaryType + 'Select'].selected.value
+                var selectText = this.$refs[auxiliaryType + 'Select'].selected.label
+                var modelCode = this.$refs[auxiliaryType + 'Select'].selected.$attrs['data-code']
+                auxiliaryCode += '_' + hexCas[AuxiliaryType.indexOf(auxiliaryType)] + modelCode
+                auxiliaryName += '_' + selectText
+                curObj[auxiliaryType] = selectId
+                curObj[auxiliaryType + 'Id'] = selectId
+              }
+            }
+            curObj.coaCobinationCode = auxiliaryCode.substring(1)
+            curObj.coaCobinationName = auxiliaryName.substring(1)
+            curObj.showCoaCode = curObj.coaCode + '_' + curObj.coaCobinationCode
+            curObj.showCoaName = curObj.coaName + '_' + curObj.coaCobinationName
+          }
+          curObj.leaf = 1
+          curObj.type = 0
+          curObj.isAuxiliary = 1
+          curObj.beginBalance = this.temp.beginBalance
+          curObj.beginBalanceQty = this.temp.beginBalanceQty
+          curObj.periodNetDr = this.temp.periodNetDr
+          curObj.periodNetQtyDr = this.temp.periodNetQtyDr
+          curObj.periodNetCr = this.temp.periodNetCr
+          curObj.periodNetQtyCr = this.temp.periodNetQtyCr
+          this.$refs['dataForm'].validate((valid) => {
+            if (valid) {
+              this.tableData.splice(this.curShowIndex + 1, 0, curObj)
+              this.dialogFormVisible2 = false
+              this.$nextTick(() => {
+                this.calculate(curObj)
+              })
+            }
           })
         }
       })
@@ -587,6 +591,7 @@ input[disabled]{background: #f9f9f9;}
 .label:first-child {
     margin-left: 0
 }
+>>> .el-form-item{margin-bottom: 20px;}
 
 >>> .el-table.balance th {
     padding: 5px 0;
