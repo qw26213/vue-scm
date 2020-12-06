@@ -108,12 +108,12 @@
             <span>{{ row.isDisable==0?'是':'否' }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="零售自提网点" width="80" align="center">
+        <el-table-column label="零售自提" width="80" align="center">
           <template slot-scope="{row}">
             <span>{{ row.isDelivery==0?'是':'否' }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" width="240">
+        <el-table-column label="操作" align="center" width="280">
           <template slot-scope="{row}">
             <el-button type="text" size="small" @click="handleUpdate(row.overdraftBalance, row.id)">改已赊销金额</el-button>
             <el-button type="text" size="small" @click="handleCompile(row)">编辑</el-button>
