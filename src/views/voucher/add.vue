@@ -506,7 +506,6 @@ export default {
       var len = this.lineData.length
       for (var i = 0; i < len; i++) {
         var curObj = this.lineData[i]
-        // var len1 = this.lineData[i].auxTypes.length
         if (curObj.isAuxiliary === 1) {
           var AuxiliaryType = ['supplier', 'cust', 'dept', 'staff', 'invCatg', 'item', 'proj']
           var coaCobinationCode = ''
@@ -879,6 +878,7 @@ export default {
           this.lineData.forEach(item => {
             item.supplierId = ''
             item.staffId = ''
+            item.invCatgId = ''
             item.deptId = ''
             item.custId = ''
             item.itemId = ''

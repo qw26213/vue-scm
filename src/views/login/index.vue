@@ -14,7 +14,7 @@
 >>>.vertify {
     width: 112px;
     position: absolute;
-    top: 2px;
+    top: 1px;
     right: 0;
     height: 36px;
     border-radius: 4px;
@@ -38,7 +38,7 @@
 >>>.title-container .title {
     font-size: 26px;
     color: #333;
-    margin: 0px auto 30px auto;
+    margin: 0px auto 20px auto;
     text-align: center;
     font-weight: bold;
 }

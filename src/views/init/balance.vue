@@ -8,19 +8,19 @@
       <el-table v-loading="listLoading" class="balance" :data="tableData" border fit resize empty-text="暂无相关数据" style="width: 100%;" :height="tableHeight">
         <el-table-column label="科目编码" min-width="90">
           <template slot-scope="scope">
-            <span>{{ scope.row.coaCode }}</span>
+            <span class="tabletxt">{{ scope.row.coaCode }}</span>
             <el-button v-if="scope.row.leaf == 1 && scope.row.type ==1 && scope.row.isAuxiliary == 1 && balanceStatus == 1" type="primary" icon="el-icon-plus" circle size="mini" style="margin-left:10px" @click="showSuplyConfig(scope.$index)" />
             <el-button v-if="scope.row.leaf == 1 && scope.row.type !=1 && scope.row.isAuxiliary == 1 && balanceStatus == 1" type="danger" icon="el-icon-delete" circle size="mini" style="margin-left:10px" @click="removeRow(scope.$index)" />
           </template>
         </el-table-column>
         <el-table-column label="科目名称" min-width="110" style="padding-right:100px;" show-overflow-tooltip>
           <template slot-scope="scope">
-            <span>{{ scope.row.showCoaName }}</span>
+            <span class="plr10 tabletxt">{{ scope.row.showCoaName }}</span>
           </template>
         </el-table-column>
         <el-table-column label="方向" width="100" align="center">
           <template slot-scope="{row}">
-            <span>{{ row.crDr==1?'借':row.crDr==0?'平':'贷' }}</span>
+            <span class="tabletxt">{{ row.crDr==1?'借':row.crDr==0?'平':'贷' }}</span>
           </template>
         </el-table-column>
         <!-- type0为余额表节点 1为科目节点 -->
@@ -578,7 +578,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-input{display:inline-block;width:100%;height:28px;;border:1px #c0c0c0 solid;border-radius:4px;font-size: 12px;padding-right:8px;}
+input{display:block;width:100%;height:100%;;font-size: 12px;padding-right:8px;border:none}
 input[disabled]{background: #f9f9f9;}
 >>> .tx-r input{text-align:right}
 .label {
@@ -587,6 +587,8 @@ input[disabled]{background: #f9f9f9;}
     color: #333;
     margin-left: 10px
 }
+>>> .el-table .cell{padding:0;height:32px;}
+>>> .el-table td {padding:0px;}
 
 .label:first-child {
     margin-left: 0
@@ -596,4 +598,6 @@ input[disabled]{background: #f9f9f9;}
 >>> .el-table.balance th {
     padding: 5px 0;
 }
+.tabletxt{display:inline-block;line-height:32px}
+>>> .el-button--mini.is-circle{padding: 4px;}
 </style>
