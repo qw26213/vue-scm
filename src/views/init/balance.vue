@@ -476,7 +476,7 @@ export default {
         var auxiliaryCode = ''
         var auxiliaryName = ''
         var auxiliaries = auxiliary.split('')
-        var AuxiliaryType = ['supplier', 'cust', 'dept', 'staff', 'item', 'invCatgs', 'proj']
+        var AuxiliaryType = ['supplier', 'cust', 'dept', 'staff', 'invCatg', 'item', 'proj']
         for (var i = 0; i < auxiliaries.length; i++) {
           if (auxiliaries[i] != null && auxiliaries[i] == 1) {
             // 显示对应的辅助核算项 1-26

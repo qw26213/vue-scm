@@ -177,14 +177,14 @@
             <el-option v-for="item in staffList" :key="item.id" :label="item.staffName" :data-code="item.staffCode" :value="item.id" />
           </el-select>
         </el-form-item>
-        <el-form-item v-if="auxiliary.charAt(4)=='1'" label="存货" prop="itemId">
-          <el-select ref="itemSelect" v-model="temp.itemId" placeholder="存货" style="width:100%">
-            <el-option v-for="item in itemList" :key="item.id" :label="item.itemName" :data-code="item.itemCode" :data-uom="item.uom" :value="item.id" />
-          </el-select>
-        </el-form-item>
-        <el-form-item v-if="auxiliary.charAt(5)=='1'" label="品类" prop="invCatgId">
+        <el-form-item v-if="auxiliary.charAt(4)=='1'" label="品类" prop="invCatgId">
           <el-select ref="projSelect" v-model="temp.invCatgId" placeholder="品类" style="width:100%">
             <el-option v-for="item in invCatgList" :key="item.id" :label="item.invCatgName" :data-code="item.invCatgCode" :value="item.id" />
+          </el-select>
+        </el-form-item>
+        <el-form-item v-if="auxiliary.charAt(5)=='1'" label="存货" prop="itemId">
+          <el-select ref="itemSelect" v-model="temp.itemId" placeholder="存货" style="width:100%">
+            <el-option v-for="item in itemList" :key="item.id" :label="item.itemName" :data-code="item.itemCode" :data-uom="item.uom" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item v-if="auxiliary.charAt(6)=='1'" label="项目" prop="projId">
@@ -221,11 +221,11 @@
               <el-select v-if="item.auxiliaryTypeCode==='staff'" v-model="row.staffId" size="small" placeholder="职员" style="width:140px">
                 <el-option v-for="item in staffList" :key="item.id" :label="item.staffName" :value="item.id" />
               </el-select>
-              <el-select v-if="item.auxiliaryTypeCode==='item'" v-model="row.itemId" size="small" placeholder="存货" style="width:140px">
-                <el-option v-for="item in itemList" :key="item.id" :label="item.itemName" :value="item.id" />
-              </el-select>
               <el-select v-if="item.auxiliaryTypeCode==='invCatg'" v-model="row.invCatgId" size="small" placeholder="品类" style="width:140px">
                 <el-option v-for="item in invCatgList" :key="item.id" :label="item.invCatgName" :value="item.id" />
+              </el-select>
+              <el-select v-if="item.auxiliaryTypeCode==='item'" v-model="row.itemId" size="small" placeholder="存货" style="width:140px">
+                <el-option v-for="item in itemList" :key="item.id" :label="item.itemName" :value="item.id" />
               </el-select>
               <el-select v-if="item.auxiliaryTypeCode==='proj'" v-model="row.projId" size="small" placeholder="项目" style="width:140px">
                 <el-option v-for="item in projList" :key="item.id" :label="item.projName" :value="item.id" />
@@ -304,8 +304,8 @@ export default {
         custId: [{ required: true, message: '客户不能为空', trigger: 'change' }],
         deptId: [{ required: true, message: '部门不能为空', trigger: 'change' }],
         staffId: [{ required: true, message: '职员不能为空', trigger: 'change' }],
-        itemId: [{ required: true, message: '存货不能为空', trigger: 'change' }],
         invCatgId: [{ required: true, message: '品类不能为空', trigger: 'change' }],
+        itemId: [{ required: true, message: '存货不能为空', trigger: 'change' }],
         projId: [{ required: true, message: '项目不能为空', trigger: 'change' }]
       },
       tableData: [{}, {}, {}, {}],
@@ -367,6 +367,9 @@ export default {
       this.$set(this.billHeader, 'jeCatogeryTitle', this.catogeryList[0].catogeryTitle)
     })
     this.getTempletList()
+    getSupplier().then(res => {
+      this.supplierList = res.data.data || []
+    })
     getCust().then(res => {
       this.custList = res.data.data || []
     })
@@ -376,17 +379,14 @@ export default {
     getStaff().then(res => {
       this.staffList = res.data.data || []
     })
-    getSupplier().then(res => {
-      this.supplierList = res.data.data || []
+    getinvCatg().then(res => {
+      this.invCatgList = res.data.data || []
     })
     getItem().then(res => {
       this.itemList = res.data.data || []
     })
     getProj().then(res => {
       this.projList = res.data.data || []
-    })
-    getinvCatg().then(res => {
-      this.invCatgList = res.data.data || []
     })
     if (this.$route.query.id) {
       this.getVoucher(this.$route.query.id)
@@ -507,7 +507,7 @@ export default {
         var curObj = this.lineData[i]
         // var len1 = this.lineData[i].auxTypes.length
         if (curObj.isAuxiliary === 1) {
-          var AuxiliaryType = ['supplier', 'cust', 'dept', 'staff', 'item', 'invCatg', 'proj']
+          var AuxiliaryType = ['supplier', 'cust', 'dept', 'staff', 'invCatg', 'item', 'proj']
           var coaCobinationCode = ''
           var coaCobinationName = ''
           AuxiliaryType.forEach(item => {
@@ -623,7 +623,7 @@ export default {
             var coaCobinationCode = ''
             var coaCobinationName = ''
             var auxiliaries = auxiliary.split('')
-            var AuxiliaryType = ['supplier', 'cust', 'dept', 'staff', 'item', 'invCatg', 'proj']
+            var AuxiliaryType = ['supplier', 'cust', 'dept', 'staff', 'invCatg', 'item', 'proj']
             for (var i = 0; i < auxiliaries.length; i++) {
               if (auxiliaries[i] != null && auxiliaries[i] == 1) {
                 // 显示对应的辅助核算项 1-26
