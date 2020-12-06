@@ -148,8 +148,8 @@
           <el-checkbox v-model="temp.isPayment" :false-label="0" :true-label="1">付款单</el-checkbox>
           <el-checkbox v-model="temp.isInventory" :false-label="0" :true-label="1">盘点单</el-checkbox>
         </el-form-item>
-        <div v-if="temp.isAutoTransfer==1" style="margin-bottom: 8px"><label style="font-size:14px">自动凭证制单/审核/记账签名</label></div>
-        <div v-if="temp.isAutoTransfer==1" class="staffDiv">
+        <div v-if="temp.isAutoTransfer==1 || temp.autoAuditFlag == 1" style="margin-bottom: 8px"><label style="font-size:14px">自动凭证制单/审核/记账签名</label></div>
+        <div v-if="temp.isAutoTransfer==1 || temp.autoAuditFlag == 1" class="staffDiv">
           <el-form-item label="制单人:" label-width="60px" prop="jeRecorderId">
             <el-select ref="staff1" v-model="temp.jeRecorderId" style="width:110px" placeholder="制单人" size="small" @change="changeVal1">
                 <el-option label="无" :value="null" />

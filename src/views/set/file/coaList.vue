@@ -100,9 +100,9 @@
           <el-checkbox v-model="temp.auxiliary[1]" :checked="temp.auxiliary&&temp.auxiliary[1]==1" false-label="0" true-label="1">客户</el-checkbox>
           <el-checkbox v-model="temp.auxiliary[2]" :checked="temp.auxiliary&&temp.auxiliary[2]==1" false-label="0" true-label="1">部门</el-checkbox>
           <el-checkbox v-model="temp.auxiliary[3]" :checked="temp.auxiliary&&temp.auxiliary[3]==1" false-label="0" true-label="1">职员</el-checkbox>
-          <el-checkbox v-model="temp.auxiliary[4]" :checked="temp.auxiliary&&temp.auxiliary[6]==1" false-label="0" true-label="1">品类</el-checkbox>
-          <el-checkbox v-model="temp.auxiliary[5]" :checked="temp.auxiliary&&temp.auxiliary[4]==1" false-label="0" true-label="1">存货</el-checkbox>
-          <el-checkbox v-model="temp.auxiliary[6]" :checked="temp.auxiliary&&temp.auxiliary[5]==1" false-label="0" true-label="1">项目</el-checkbox>
+          <el-checkbox v-model="temp.auxiliary[4]" :checked="temp.auxiliary&&temp.auxiliary[4]==1" false-label="0" true-label="1">品类</el-checkbox>
+          <el-checkbox v-model="temp.auxiliary[5]" :checked="temp.auxiliary&&temp.auxiliary[5]==1" false-label="0" true-label="1">存货</el-checkbox>
+          <el-checkbox v-model="temp.auxiliary[6]" :checked="temp.auxiliary&&temp.auxiliary[6]==1" false-label="0" true-label="1">项目</el-checkbox>
         </el-form-item>
         <el-form-item label="" style="width:610px">
           <el-checkbox v-model="temp.isDisable" :disabled="!(dialogStatus=='update'&&temp.leaf==1 && temp.unchageableFlag==0)" :false-label="0" :true-label="1">是否禁用</el-checkbox>
