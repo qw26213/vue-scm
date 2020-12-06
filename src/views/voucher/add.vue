@@ -24,7 +24,7 @@
           <el-button type="default" size="small" title="下一张" @click="nextVoucher()">下</el-button>
         </div>
         <el-form-item label="附单据" prop="expirationDate" style="float:right;margin-bottom:10px">
-          <input v-model="billHeader.voucherAttachmentNum" type="text" class="jeSeq" style="width:40px;margin-right:6px">
+          <input v-model="billHeader.voucherAttachmentNum" type="text" class="jeSeq" style="width:40px;margin-right:6px;border-radius:2px">
           <span>张</span>
         </el-form-item>
       </el-form>
@@ -296,6 +296,7 @@ export default {
         custId: '',
         staffId: '',
         projId: '',
+        invCatgId: '',
         itemId: '',
         deptId: ''
       },
@@ -586,7 +587,7 @@ export default {
       this.auxiliary = getIsAuxiliary(this.coaArr, row.coaId)
       this.showCoaCode = row.coaCode + ' ' + row.coaName
       this.curShowIndex = index
-      for (var key in this.temp) {
+      for (const key in this.temp) {
         this.temp[key] = row[key]
       }
     },
