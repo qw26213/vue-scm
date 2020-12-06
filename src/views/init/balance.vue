@@ -171,7 +171,7 @@
 </template>
 <script>
 import { getBalance, getPeriodList, updateListForSetBegin, getOpeningBalanceStatus } from '@/api/user'
-import { getProj, getDept, getStaff, getSupplier, getCust, getItem, getinvCatgs } from '@/api/user'
+import { getProj, getDept, getStaff, getSupplier, getCust, getItem, getinvCatg } from '@/api/user'
 import { getNowDate, deepClone, toNumStr, validateVal } from '@/utils'
 var userInfo = JSON.parse(sessionStorage.userInfo)
 var hexCas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N']
@@ -278,7 +278,7 @@ export default {
     getProj().then(res => {
       this.projList = res.data.data
     })
-    getinvCatgs().then(res => {
+    getinvCatg().then(res => {
       this.invCatgsList = res.data.data
     })
   },

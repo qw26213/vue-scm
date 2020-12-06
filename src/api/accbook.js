@@ -115,7 +115,7 @@ export function getBalance(data) {
   })
 }
 
-export function printbalance(data) {
+export function printBalance(data) {
   return request({
     url: '/drp/accbook/printbalance',
     method: 'post',
@@ -123,7 +123,7 @@ export function printbalance(data) {
   })
 }
 
-export function exportbalance(data) {
+export function exportBalance(data) {
   var exportUrl = '/drp/accbook/exportbalance'
   var temp = document.createElement('form')
   temp.action = exportUrl

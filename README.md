@@ -1,25 +1,26 @@
-## Build
+## 使用
+
+1. 安装依赖.
 
 ```bash
-# build for test environment
-npm run build:stage
-
-# build for production environment
-npm run build:prod
+npm install
 ```
 
-## Advanced
+2. 代码编译并运行.
 
 ```bash
-# preview the release environment effect
-npm run preview
-
-# preview the release environment effect + static resource analysis
-npm run preview -- --report
-
-# code format check
-npm run lint
-
-# code format check and auto fix
-npm run lint -- --fix
+npm run dev
 ```
+
+3. 发布打包.
+
+```bash
+npm run build
+```
+
+## 推荐浏览器
+
+现代浏览器.
+
+| Edge | Firefox | Chrome | Safari | Opera |
+| --------- | --------- | --------- | --------- | --------- | 

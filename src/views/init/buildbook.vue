@@ -97,6 +97,7 @@
           <el-checkbox v-model="temp.isAuxDept" :false-label="0" :true-label="1" :disabled="!!userInfo.glBookEntity" style="margin-right:10px">启用部门核算</el-checkbox>
           <el-checkbox v-model="temp.isAuxStaff" :false-label="0" :true-label="1" :disabled="!!userInfo.glBookEntity" style="margin-right:10px">启用职员核算</el-checkbox>
           <el-checkbox v-model="temp.isAuxItem" :false-label="0" :true-label="1" :disabled="!!userInfo.glBookEntity" style="margin-right:10px">启用存货核算</el-checkbox>
+          <el-checkbox v-model="temp.isAuxInv" :false-label="0" :true-label="1" :disabled="!!userInfo.glBookEntity" style="margin-right:10px">启用品类核算</el-checkbox>
           <el-checkbox v-model="temp.isAuxProj" :false-label="0" :true-label="1" :disabled="!!userInfo.glBookEntity" style="margin-right:10px">启用项目核算</el-checkbox>
         </el-form-item>
         <el-form-item>
@@ -229,6 +230,7 @@ export default {
         isAuxCust: 0,
         isAuxDept: 0,
         isAuxItem: 0,
+        isAuxInv: 0,
         isAuxProj: 0,
         isAuxStaff: 0,
         isAuxSupplier: 0,
