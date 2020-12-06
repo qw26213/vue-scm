@@ -147,7 +147,7 @@
           </el-select>
         </el-form-item>
         <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(4)=='1'" label="品类" prop="invCatgId">
-          <el-select ref="projSelect" v-model="temp.invCatgId" size="small" placeholder="品类" style="width:120px">
+          <el-select ref="invCatgSelect" v-model="temp.invCatgId" size="small" placeholder="品类" style="width:120px">
             <el-option v-for="(item,index) in invCatgList" :key="item.invCatgCode" :data-code="item.invCatgCode" :label="item.invCatgName" :value="item.id" />
           </el-select>
         </el-form-item>

@@ -267,7 +267,6 @@ export function deleteEmptyProp(arr) {
 }
 
 export function deleteEmptyObj(arr) {
-    console.log(arr)
     var newArr = []
     arr.forEach(item => {
         if (item.summary || item.coaId) {
@@ -278,7 +277,7 @@ export function deleteEmptyObj(arr) {
 }
 
 export function addNullObj(arr) {
-    var newArr = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
+    var newArr = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}]
     for (var i = 0; i < arr.length; i++) {
         newArr.splice(i, 1, arr[i])
     }
