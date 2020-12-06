@@ -9,7 +9,7 @@ npm install
 2. 代码编译并运行.
 
 ```bash
-npm run dev
+npm run dev test
 ```
 
 3. 发布打包.
