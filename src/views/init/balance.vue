@@ -146,14 +146,14 @@
             <el-option v-for="(item,index) in staffList" :key="item.staffCode" :data-code="item.staffCode" :label="item.staffName" :value="item.id" />
           </el-select>
         </el-form-item>
-        <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(4)=='1'" label="存货" prop="itemId">
-          <el-select ref="itemSelect" v-model="temp.itemId" size="small" placeholder="存货" style="width:120px">
-            <el-option v-for="(item,index) in itemList" :key="item.itemCode" :data-code="item.itemCode" :label="item.itemName" :value="item.id" />
+        <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(4)=='1'" label="品类" prop="invCatgId">
+          <el-select ref="projSelect" v-model="temp.invCatgId" size="small" placeholder="品类" style="width:120px">
+            <el-option v-for="(item,index) in invCatgList" :key="item.invCatgCode" :data-code="item.invCatgCode" :label="item.invCatgName" :value="item.id" />
           </el-select>
         </el-form-item>
-        <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(5)=='1'" label="品类" prop="invCatgsId">
-          <el-select ref="projSelect" v-model="temp.invCatgsId" size="small" placeholder="品类" style="width:120px">
-            <el-option v-for="(item,index) in invCatgsList" :key="item.invCatgsCode" :data-code="item.invCatgsCode" :label="item.invCatgsName" :value="item.id" />
+        <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(5)=='1'" label="存货" prop="itemId">
+          <el-select ref="itemSelect" v-model="temp.itemId" size="small" placeholder="存货" style="width:120px">
+            <el-option v-for="(item,index) in itemList" :key="item.itemCode" :data-code="item.itemCode" :label="item.itemName" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(6)=='1'" label="项目" prop="projId">
@@ -210,7 +210,7 @@ export default {
         projId: '',
         itemId: '',
         deptId: '',
-        invCatgsId: ''
+        invCatgId: ''
       },
       resetTemp: {
         beginBalance: 0,
@@ -225,7 +225,7 @@ export default {
         projId: '',
         itemId: '',
         deptId: '',
-        invCatgsId: ''
+        invCatgId: ''
       },
       rules: {
         beginBalance: [{ required: true, message: '不能为空', trigger: 'change' }],
@@ -240,7 +240,7 @@ export default {
         projId: [{ required: true, message: '不能为空', trigger: 'change' }],
         itemId: [{ required: true, message: '不能为空', trigger: 'change' }],
         deptId: [{ required: true, message: '不能为空', trigger: 'change' }],
-        invCatgsId: [{ required: true, message: '不能为空', trigger: 'change' }]
+        invCatgId: [{ required: true, message: '不能为空', trigger: 'change' }]
       },
       custList: [],
       deptList: [],
@@ -248,7 +248,7 @@ export default {
       supplierList: [],
       staffList: [],
       projList: [],
-      invCatgsList: [],
+      invCatgList: [],
       userInfo: userInfo,
       periodList: [],
       tableData: [],
@@ -279,7 +279,7 @@ export default {
       this.projList = res.data.data
     })
     getinvCatg().then(res => {
-      this.invCatgsList = res.data.data
+      this.invCatgList = res.data.data
     })
   },
   methods: {

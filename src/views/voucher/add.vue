@@ -198,7 +198,7 @@
         <el-button type="primary" @click="saveAuxiliary">确定</el-button>
       </div>
     </el-dialog>
-    <el-dialog :close-on-click-modal="false" title="分录辅助核算设置" :visible.sync="dialogFormVisible4" :show-close="false" width="900px">
+    <el-dialog :close-on-click-modal="false" title="设置辅助核算" :visible.sync="dialogFormVisible4" :show-close="false" width="900px">
       <el-table :key="tableKey" :data="lineData" border fit style="width: 100%;">
         <el-table-column label="科目" min-width="120">
           <template slot-scope="{row}">
