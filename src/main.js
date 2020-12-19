@@ -22,7 +22,6 @@ import router from './router'
 
 import './icons'
 import './permission'
-
 import * as filters from './filters'
 
 Vue.use(ELEMENT)

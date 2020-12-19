@@ -1,13 +1,9 @@
 <template>
   <div class="app-container" style="min-width:1216px">
     <div class="filterDiv">
-      <el-select v-model="listQuery.queryParam.date1" placeholder="开始期间" size="small">
-        <el-option v-for="item in periodList" :key="item.id" :label="item.text" :value="item.id" />
-      </el-select>
+      <el-date-picker v-model="listQuery.queryParam.date1" size="small" :picker-options="startDateOptions" :clearable="false" type="month" value-format="yyyy-MM" placeholder="开始月份" @change="pickerChange" />
       <span class="zhi">至</span>
-      <el-select v-model="listQuery.queryParam.date2" placeholder="结束期间" size="small">
-        <el-option v-for="item in periodList" :key="item.id" :label="item.text" :value="item.id" />
-      </el-select>
+      <el-date-picker v-model="listQuery.queryParam.date2" size="small" :picker-options="endDateOptions" :clearable="false" type="month" value-format="yyyy-MM" placeholder="结束月份" />
       <el-select v-model="listQuery.queryParam.startCoa" placeholder="开始科目" size="small">
         <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode" />
       </el-select>
@@ -130,8 +126,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import { getPeriodList } from '@/api/user'
-import { getVoucherAuditList, voucherAduit, unAudit, auditList } from '@/api/voucher'
+import { getVoucherAuditList, voucherAduit, unAudit, auditList, getYearsById } from '@/api/voucher'
 import Pagination from '@/components/Pagination'
 import { getNowMonth } from '@/utils/index'
 export default {
@@ -150,11 +145,15 @@ export default {
     },
     catogeryNumberFor: function(num) {
       return num < 10 ? '00' + num : num < 100 ? '0' + num : num
+    },
+    jeSeqFormat: function(num) {
+      return num < 10 ? '00' + num : num < 100 ? '0' + num : num
     }
   },
   data() {
     return {
-      periodList: [],
+      startDateOptions: null,
+      endDateOptions: null,
       jeHeaderId: '',
       tableKey: 0,
       tableData: [],
@@ -193,12 +192,21 @@ export default {
   },
   created() {
     this.$store.dispatch('voucher/getCoaList')
-    getPeriodList().then(res => {
-      this.periodList = res.data.data
-    })
     this.getList()
+    getYearsById().then(res => {
+      const list = res.data.data
+      const s = new Date(list[0]+'-01-01 00:00:00').getTime()
+      const e = new Date(list[list.length - 1] + '-12-31 00:00:00').getTime()
+      this.startDateOptions = { disabledDate: (time) => time.getTime() < s || time.getTime() > e }
+      this.endDateOptions = { disabledDate: (time) => time.getTime() < s || time.getTime() > e }
+    })
   },
   methods: {
+    pickerChange() {
+      const startDate = this.listQuery.queryParam.date1 + '-01 00:00:00'
+      const endDate = startDate.substr(0, 4) + '-12-31 00:00:00'
+      this.endDateOptions = { disabledDate: (time) => time.getTime() < new Date(startDate) || time.getTime() > new Date(endDate) }
+    },
     handleCompile(id) {
       this.$store.dispatch('tagsView/delView', this.$route)
       const arr = this.tableData.map(it => {

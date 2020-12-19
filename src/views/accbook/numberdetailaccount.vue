@@ -2,13 +2,7 @@
   <div class="app-container">
     <div class="filterDiv">
       <label class="label">期间：</label>
-      <el-select v-model="listQuery.periodCode1" size="small" style="width:120px" placeholder="开始期间">
-        <el-option v-for="item in periodArr" :key="item.id" :label="item.text" :value="item.id" />
-      </el-select>
-      <span class="zhi">至</span>
-      <el-select v-model="listQuery.periodCode2" size="small" style="width:120px" placeholder="结束期间">
-        <el-option v-for="item in periodArr" :key="item.id" :label="item.text" :value="item.id" />
-      </el-select>
+      <PeriodList :start="listQuery.periodCode1" :end="listQuery.periodCode2" />
       <label class="label">科目：</label>
       <el-select v-model="listQuery.coaCode1" size="small" placeholder="科目" filterable>
         <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode" />
@@ -115,9 +109,10 @@
 import { getSubsidiarynum, exportSubsidiaryNum, printSubsidiaryNum } from '@/api/accbook'
 import { mapGetters } from 'vuex'
 import Pagination from '@/components/Pagination'
+import PeriodList from '@/components/voucher/periodList'
 export default {
   name: 'numberDetailAccount',
-  components: { Pagination },
+  components: { Pagination, PeriodList },
   filters: {
     Fixed: function(num) {
       if (!num) { return '' }
@@ -163,6 +158,11 @@ export default {
     this.$store.dispatch('voucher/getCoaList')
   },
   methods: {
+    changeVal(obj) {
+      for (const key in obj) {
+        this.listQuery[key] = obj[key]
+      }
+    },
     getDataByPage() {
       var pageIndex = this.listQuery.pageIndex
       var arr = []

@@ -1,14 +1,9 @@
 <template>
   <div class="app-container">
     <div class="filterDiv">
-      <label class="label">会计期间</label>
-      <el-select v-model="listQuery.periodCode1" placeholder="开始期间" size="small">
-        <el-option v-for="item in periodList" :key="item.id" :label="item.text" :value="item.id" />
-      </el-select>
+      <el-date-picker v-model="listQuery.periodCode1" size="small" :picker-options="startDateOptions" :clearable="false" type="month" value-format="yyyy-MM" placeholder="开始月份" @change="pickerChange" />
       <span class="zhi">至</span>
-      <el-select v-model="listQuery.periodCode2" placeholder="结束期间" size="small">
-        <el-option v-for="item in periodList" :key="item.id" :label="item.text" :value="item.id" />
-      </el-select>
+      <el-date-picker v-model="listQuery.periodCode2" size="small" :picker-options="endDateOptions" :clearable="false" type="month" value-format="yyyy-MM" placeholder="结束月份" />
       <label class="label ml10">凭证字</label>
       <el-select v-model="listQuery.jeCatogeryId" placeholder="凭证字" size="small">
         <el-option v-for="item in catogeryList" :key="item.id" :label="item.catogeryName" :value="item.id" />
@@ -66,7 +61,7 @@
 </template>
 <script>
 import { getVoucherTable, getCatogery } from '@/api/accbook'
-import { getPeriodList } from '@/api/user'
+import { getYearsById } from '@/api/voucher'
 import { getNowMonth } from '@/utils/index'
 export default {
   name: 'voucherTable',
@@ -77,13 +72,14 @@ export default {
   },
   data() {
     return {
-      periodList: [],
+      startDateOptions: null,
+      endDateOptions: null,
       tableKey: 0,
       tableData: [],
       catogeryList: [],
       listLoading: true,
       listQuery: {
-        periodCode1: '',
+        periodCode1: getNowMonth(),
         periodCode2: getNowMonth(),
         jeCatogeryId: '',
         coaLevel1: 1,
@@ -92,17 +88,25 @@ export default {
     }
   },
   created() {
-    getPeriodList().then(res => {
-      this.periodList = res.data.data
-      this.listQuery.periodCode1 = res.data.data[0].id
-    })
     getCatogery().then(res => {
       this.catogeryList = res.data.data
       this.listQuery.jeCatogeryId = res.data.data[0].id
       this.getList()
     })
+    getYearsById().then(res => {
+      const list = res.data.data
+      const s = new Date(list[0]+'-01-01 00:00:00').getTime()
+      const e = new Date(list[list.length - 1] + '-12-31 00:00:00').getTime()
+      this.startDateOptions = { disabledDate: (time) => time.getTime() < s || time.getTime() > e }
+      this.endDateOptions = { disabledDate: (time) => time.getTime() < s || time.getTime() > e }
+    })
   },
   methods: {
+    pickerChange() {
+      const startDate = this.listQuery.queryParam.date1 + '-01 00:00:00'
+      const endDate = startDate.substr(0, 4) + '-12-31 00:00:00'
+      this.endDateOptions = { disabledDate: (time) => time.getTime() < new Date(startDate) || time.getTime() > new Date(endDate) }
+    },
     getList() {
       this.listLoading = true
       getVoucherTable(this.listQuery).then(res => {

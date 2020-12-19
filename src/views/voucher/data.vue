@@ -1,13 +1,9 @@
 <template>
   <div class="app-container" style="min-width:1100px">
     <div class="filterDiv">
-      <el-select v-model="listQuery.queryParam.date1" placeholder="开始期间" size="small">
-        <el-option v-for="item in periodList" :key="item.id" :label="item.text" :value="item.id" />
-      </el-select>
+      <el-date-picker v-model="listQuery.queryParam.date1" size="small" :picker-options="startDateOptions" :clearable="false" type="month" value-format="yyyy-MM" placeholder="开始月份" @change="pickerChange" />
       <span class="zhi">至</span>
-      <el-select v-model="listQuery.queryParam.date2" placeholder="结束期间" size="small">
-        <el-option v-for="item in periodList" :key="item.id" :label="item.text" :value="item.id" />
-      </el-select>
+      <el-date-picker v-model="listQuery.queryParam.date2" size="small" :picker-options="endDateOptions" :clearable="false" type="month" value-format="yyyy-MM" placeholder="结束月份" />
       <el-select v-model="listQuery.queryParam.startCoa" placeholder="开始科目" size="small">
         <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode" />
       </el-select>
@@ -28,15 +24,7 @@
       <el-button size="small" type="primary" @click="printVoucher">打印</el-button>
     </div>
     <div class="contentDiv">
-      <el-table
-        :key="tableKey"
-        v-loading="listLoading"
-        :data="tableData"
-        border
-        fit
-        style="width: 100%;"
-        size="small"
-        cell-class-name="tpCell"
+      <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit style="width: 100%;" size="small" cell-class-name="tpCell"
         :default-sort="{prop: 'jeSeq', order: this.listQuery.queryParam.desc==1 ?'descending': 'ascending'}"
         @selection-change="selectionChange"
         @sort-change="sortChange"
@@ -96,8 +84,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import { getPeriodList } from '@/api/user'
-import { getVoucher, getVoucherById, delVoucher, printList, trimJeSeqByMap } from '@/api/voucher'
+import { getVoucher, getVoucherById, delVoucher, printList, trimJeSeqByMap, getYearsById } from '@/api/voucher'
 import Pagination from '@/components/Pagination'
 import { getNowMonth } from '@/utils/index'
 export default {
@@ -120,6 +107,8 @@ export default {
   },
   data() {
     return {
+      startDateOptions: null,
+      endDateOptions: null,
       periodList: [],
       tableKey: 0,
       tableData: [],
@@ -152,12 +141,21 @@ export default {
   },
   created() {
     this.$store.dispatch('voucher/getCoaList')
-    getPeriodList().then(res => {
-      this.periodList = res.data.data
+    getYearsById().then(res => {
+      const list = res.data.data
+      const s = new Date(list[0]+'-01-01 00:00:00').getTime()
+      const e = new Date(list[list.length - 1] + '-12-31 00:00:00').getTime()
+      this.startDateOptions = { disabledDate: (time) => time.getTime() < s || time.getTime() > e }
+      this.endDateOptions = { disabledDate: (time) => time.getTime() < s || time.getTime() > e }
     })
     this.getList()
   },
   methods: {
+    pickerChange() {
+      const startDate = this.listQuery.queryParam.date1 + '-01 00:00:00'
+      const endDate = startDate.substr(0, 4) + '-12-31 00:00:00'
+      this.endDateOptions = { disabledDate: (time) => time.getTime() < new Date(startDate) || time.getTime() > new Date(endDate) }
+    },
     selectionChange(val) {
       const arr = []
       for (let i = 0; i < val.length; i++) {
