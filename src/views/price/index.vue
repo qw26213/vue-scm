@@ -1,8 +1,8 @@
 <template>
   <div class="main">
-    <div class="leftTree filterDiv">
+    <div class="leftTree contentDiv">
       <div style="margin-bottom:10px">
-        <el-input v-model="search" size="small" placeholder="商品名称搜索" style="width:180px;margin-right: 5px">
+        <el-input v-model="search" size="small" placeholder="商品名称" style="width:180px;margin-right: 5px">
           <el-button slot="append" type="primary" icon="el-icon-search" @click="getData" />
         </el-input>
       </div>
@@ -12,11 +12,11 @@
       </el-table>
     </div>
     <div class="app-container">
-      <div class="filterDiv clearfix">
-        <el-button size="small" style="float:right" type="primary" @click="handleAnyModify">批量修改</el-button>
-      </div>
       <div class="contentDiv">
-        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit style="width: 100%;" size="small">
+        <div class="clearfix">
+          <el-button size="small" style="float:right" type="primary" :disabled="tableData.length == 0" @click="handleAnyModify">批量修改</el-button>
+        </div>
+        <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit style="width: 100%;margin-top:10px" size="small">
           <el-table-column label="序号" type="index" width="50" align="center" />
           <el-table-column label="价格组编码">
             <template slot-scope="{row}">
