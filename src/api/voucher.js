@@ -325,6 +325,7 @@ export function transLogList(data) {
 export function getYearsById() {
   return request({
     url: '/drp/gl/book/getYearsById',
-    method: 'post'
+    method: 'post',
+    data: { desc: 0 }
   })
 }

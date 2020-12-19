@@ -51,6 +51,10 @@ export default {
             const endDate = startDate.substr(0, 4) + '-12-31 00:00:00'
             this.endDateOptions = { disabledDate: (time) => time.getTime() < new Date(startDate) || time.getTime() > new Date(endDate) }
             this.$parent.changeVal({ periodCode1: this.date1 })
+            const dateTime2 = new Date(this.date2+'-01 00:00:00').getTime()
+            if (dateTime2 <= new Date(startDate).getTime() || dateTime2 >= new Date(endDate).getTime()) {
+                this.$parent.changeVal({ periodCode2: startDate.substr(0, 4) + '-12' })
+            } 
         },
         pickerChange2(val) {
             this.$parent.changeVal({ periodCode2: this.date2 })

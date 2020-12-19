@@ -106,6 +106,10 @@ export default {
       const startDate = this.listQuery.queryParam.date1 + '-01 00:00:00'
       const endDate = startDate.substr(0, 4) + '-12-31 00:00:00'
       this.endDateOptions = { disabledDate: (time) => time.getTime() < new Date(startDate) || time.getTime() > new Date(endDate) }
+      const dateTime2 = new Date(this.listQuery.queryParam.date2+'-01 00:00:00').getTime()
+      if (dateTime2 <= new Date(startDate).getTime() || dateTime2 >= new Date(endDate).getTime()) {
+          this.$set(this.listQuery.queryParam, 'date2', startDate.substr(0, 4) + '-12')
+      } 
     },
     getList() {
       this.listLoading = true

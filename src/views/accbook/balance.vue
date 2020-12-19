@@ -137,15 +137,6 @@ export default {
       'coaArr'
     ])
   },
-  watch: {
-    periodArr(val) {
-      if (val.length > 0) {
-        this.listQuery.periodCode1 = val[0].id
-        this.listQuery.periodCode2 = val[0].id
-        this.getList()
-      }
-    }
-  },
   created() {
     this.$store.dispatch('voucher/getCoaList')
   },
