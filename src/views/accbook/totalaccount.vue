@@ -86,6 +86,7 @@ import { getTotalAccount, printLedger, exportLedger } from '@/api/accbook'
 import { mapGetters } from 'vuex'
 import Pagination from '@/components/Pagination'
 import PeriodList from '@/components/voucher/periodList'
+import { getNowMonth } from '@/utils/index'
 export default {
   name: 'totalAccount',
   components: { Pagination, PeriodList },
@@ -104,8 +105,8 @@ export default {
       total: 0,
       listLoading: true,
       listQuery: {
-        periodCode1: '',
-        periodCode2: '',
+        periodCode1: getNowMonth(),
+        periodCode2: getNowMonth(),
         coaCode1: '',
         coaCode2: '',
         coaLevel1: '',

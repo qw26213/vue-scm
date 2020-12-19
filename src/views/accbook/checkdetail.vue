@@ -85,6 +85,7 @@ import { mapGetters } from 'vuex'
 import Pagination from '@/components/Pagination'
 import { getProj, getDept, getStaff, getSupplier, getItem } from '@/api/user'
 import PeriodList from '@/components/voucher/periodList'
+import { getNowMonth } from '@/utils/index'
 export default {
   name: 'checkDetail',
   components: { Pagination, PeriodList },
@@ -103,8 +104,8 @@ export default {
       listLoading: true,
       modalList: [],
       listQuery: {
-        periodCode1: '',
-        periodCode2: '',
+        periodCode1: getNowMonth(),
+        periodCode2: getNowMonth(),
         coaCode1: '',
         coaCode2: '',
         auxiliaryType: '',

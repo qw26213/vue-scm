@@ -72,6 +72,7 @@ import { getMultisubsidiary, exportMultisubsidiary, printMultisubsidiary } from 
 import { mapGetters } from 'vuex'
 import Pagination from '@/components/Pagination'
 import PeriodList from '@/components/voucher/periodList'
+import { getNowMonth } from '@/utils/index'
 export default {
   name: 'manyAccount',
   components: { Pagination, PeriodList },
@@ -89,9 +90,9 @@ export default {
       total: 0,
       listLoading: true,
       listQuery: {
-        periodCode1: '',
+        periodCode1: getNowMonth(),
+        periodCode2: getNowMonth(),
         coaCode1: '',
-        periodCode2: '',
         isShowChildren: 1,
         isShowNetAndBalanceNotEqualToZero: 1,
         isOnlyShowLeaf: 1,

@@ -110,6 +110,7 @@ import { getSubsidiarynum, exportSubsidiaryNum, printSubsidiaryNum } from '@/api
 import { mapGetters } from 'vuex'
 import Pagination from '@/components/Pagination'
 import PeriodList from '@/components/voucher/periodList'
+import { getNowMonth } from '@/utils/index'
 export default {
   name: 'numberDetailAccount',
   components: { Pagination, PeriodList },
@@ -127,8 +128,8 @@ export default {
       total: 0,
       listLoading: true,
       listQuery: {
-        periodCode1: '',
-        periodCode2: '',
+        periodCode1: getNowMonth(),
+        periodCode2: getNowMonth(),
         coaCode1: '',
         coaCode2: '',
         isQuantity: 1,

@@ -254,8 +254,6 @@ export default {
         this.dialogFormVisible = false
         if (res.data.success) {
           this.$message.success(res.data.msg)
-        } else {
-          this.$message.error(res.data.msg)
         }
       })
     },
@@ -272,8 +270,6 @@ export default {
       unAudit({ ids: arr }).then(res => {
         if (res.data.success) {
           this.$message.success('反审核成功')
-        } else {
-          this.$message.error(res.data.msg)
         }
       })
     },

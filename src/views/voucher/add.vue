@@ -685,8 +685,6 @@ export default {
           this.summaryQuery.mnemonicCode = ''
           this.summaryQuery.summary = ''
           this.$store.dispatch('voucher/getSummaryTable')
-        } else {
-          this.$message.warning(res.data.msg)
         }
       }).catch(() => {
         this.$message.error('系统错误')
@@ -780,8 +778,6 @@ export default {
       templetSave({ container: obj }).then(res => {
         if (res.data.success) {
           this.$message.success('凭证模板保存成功!')
-        } else {
-          this.$message.error(res.data.msg)
         }
       })
     },
@@ -806,8 +802,6 @@ export default {
             this.$store.dispatch('tagsView/delView', this.$route)
             this.$router.replace('/voucher/data')
           }
-        } else {
-          this.$message.error(res.data.msg)
         }
       })
     },
@@ -911,7 +905,7 @@ export default {
         this.auxiliary = obj.auxiliary
         this.showSetAuxiliary(obj)
       } else {
-        this.auxiliary = '000000'
+        this.auxiliary = '0000000'
       }
     }
   }
