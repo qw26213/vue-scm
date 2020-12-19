@@ -20,8 +20,8 @@
         <el-option label="退回" :value="-1" />
       </el-select>
       <el-button size="small" type="primary" @click="getList">查询</el-button>
-      <el-button size="small" type="primary" @click="muchVoucherCheck">批量审核</el-button>
-      <el-button size="small" type="primary" @click="voucherBackCheck">批量反审核</el-button>
+      <el-button size="small" type="primary" @click="muchVoucherCheck">审核</el-button>
+      <el-button size="small" type="primary" @click="voucherBackCheck">反审核</el-button>
     </div>
     <div class="contentDiv">
       <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit style="width: 100%;" size="small" cell-class-name="tpCell" @selection-change="handleSelectionChange">

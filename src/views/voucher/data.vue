@@ -21,7 +21,7 @@
       </el-select>
       <el-button size="small" type="primary" @click="getList">查询</el-button>
       <el-button size="small" type="primary" @click="resetVoucherSeq">整理凭证号</el-button>
-      <el-button size="small" type="primary" @click="printVoucher">打印</el-button>
+      <el-button size="small" type="primary" icon="el-icon-printer" title="打印" @click="printVoucher" />
     </div>
     <div class="contentDiv">
       <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit style="width: 100%;" size="small" cell-class-name="tpCell"

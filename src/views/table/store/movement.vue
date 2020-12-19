@@ -74,8 +74,10 @@
       </el-select>
       <el-button size="small" @click="handleSave">保存选择</el-button>
       <el-button size="small" type="primary" @click="getList">查询</el-button>
-      <el-button size="small" type="default" @click="printBook">打印</el-button>
-      <el-button size="small" type="warning" @click="exportBook">导出</el-button>
+      <el-button-group>
+        <el-button type="primary" size="small" icon="el-icon-printer" title="打印" @click="printBook" />
+        <el-button type="primary" size="small" icon="el-icon-document" title="导出" @click="exportBook" />
+      </el-button-group>
     </div>
     <div class="contentDiv">
       <el-table :key="tableKey" v-loading="listLoading" :data="pageData" border fit highlight-current-row style="width: 100%;" size="small">

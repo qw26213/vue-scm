@@ -2,9 +2,9 @@
   <div class="app-container">
     <div class="filter-container">
       <div class="filterDiv">
-        <label class="label">期间：</label>
+        <label class="label">期间</label>
         <PeriodList :start="listQuery.periodCode1" :end="listQuery.periodCode2" />
-        <label class="label">科目：</label>
+        <label class="label">科目</label>
         <el-select v-model="listQuery.coaCode1" size="small" placeholder="科目" filterable>
           <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode" />
         </el-select>
@@ -17,6 +17,10 @@
           <el-button slot="reference" size="small">更多<i class="el-icon-arrow-right el-icon--right" /></el-button>
         </el-popover>
         <el-button size="small" type="primary" @click="getList">查询</el-button>
+        <el-button-group>
+          <el-button type="primary" size="small" icon="el-icon-printer" title="打印" @click="printBook" />
+          <el-button type="primary" size="small" icon="el-icon-document" title="导出" @click="exportBook" />
+        </el-button-group>
       </div>
     </div>
     <div class="contentDiv">
@@ -104,6 +108,7 @@ export default {
   },
   created() {
     this.$store.dispatch('voucher/getCoaList')
+    this.getList()
   },
   methods: {
     changeVal(obj) {

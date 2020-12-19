@@ -29,7 +29,7 @@ aside { background: #eef1f6; padding: 8px 24px; margin-bottom: 20px; border-radi
   }
 }
 
-.app-container { padding: 20px; min-height: calc(100vh - 84px); width:100%}
+.app-container { padding: 20px; min-height: calc(100vh - 84px); width:100%; overflow:auto}
 .components-container { margin: 30px 50px; position: relative; }
 .pagination-container { margin-top: 30px; }
 .text-center { text-align: center }
@@ -127,9 +127,10 @@ input:disabled{background-color:#ffffff;}
   border-radius: 8px;
   padding: 10px 20px;
   background-color: #ffffff;
-  width:100%;
   position:relative;
   margin-bottom: 10px;
+  width: max-content;
+  min-width:100%;
 }
 .filterDiv .label{font-size:14px;color: #606266; line-height: 40px; padding-right: 5px;}
 .filterDiv .el-date-editor.el-input--small{width: 120px;}
