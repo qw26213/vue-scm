@@ -107,7 +107,7 @@ input:disabled{background-color:#ffffff;}
 .tx-r{text-align:right!important}
 .tpCell{padding-top: 0!important;padding-bottom: 0!important;}
 .tpCell .cell{padding-left: 0!important;padding-right: 0!important;}
-.tpCell .cell p{margin-top: 0!important;margin-bottom: 0!important;line-height: 32px;border-bottom:1px solid #EBEEF5;padding-left: 10px;padding-right: 10px}
+.tpCell .cell p{margin-top: 0!important;margin-bottom: 0!important;line-height: 32px;height:32px;border-bottom:1px solid #EBEEF5;padding-left: 10px;padding-right: 10px}
 .tpCell .cell p:last-child{border-bottom:none}
 
 .detail .dataTable span{width: 120px!important;display: block;}
@@ -137,9 +137,9 @@ input:disabled{background-color:#ffffff;}
 .filterDiv .el-select--small{width: 120px!important;}
 .filterDiv .el-input--small{width: 120px;}
 .filterDiv .el-input .el-input__inner {width: 100%;padding-left: 8px }
-.filterDiv .el-date-editor.el-input .el-input__inner{padding-left: 30px;padding-right:20px}
+.filterDiv .el-date-editor.el-input .el-input__inner{padding-left: 25px;padding-right:20px}
+.filterDiv .el-date-editor .el-input__prefix { left: 3px;}
 .filterDiv .el-button--small{margin-left: 10px;margin-right: 0}
-
 .contentDiv{
   border-radius: 8px;
   padding: 20px;
