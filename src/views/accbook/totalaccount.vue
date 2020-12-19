@@ -169,6 +169,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-.pCell{height: 32px;line-height: 32px}
-</style>
