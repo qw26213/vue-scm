@@ -51,7 +51,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { getNowDate } from '@/utils'
-import { backPeriodClose, getPeriodState, periodClose, getIdByPeriodJzCode, transLogList } from '@/api/voucher'
+import { backPeriodClose, periodClose, getPeriodState, periodClose, getIdByPeriodJzCode, transLogList } from '@/api/voucher'
 import Pagination from '@/components/Pagination'
 import coaList from '@/components/voucher/coaList'
 import summaryList from '@/components/voucher/summaryList'
@@ -189,6 +189,7 @@ export default {
         })
       })
     },
+    // 反结账
     executeBackPeriodClose() {
       var data = {
         periodId: this.searchPeriodId,
@@ -211,6 +212,7 @@ export default {
         }
       })
     },
+    // 结账
     executePeriodClose() {
       var data = {
         periodId: this.searchPeriodId,
@@ -219,7 +221,7 @@ export default {
         periodName: this.searchPeriodName,
         periodCode: this.searchPeriodCode
       }
-      backPeriodClose(data).then(res => {
+      periodClose(data).then(res => {
         if (res.data.errorCode == '0') {
           this.$message.success(data.periodYear + '年第' + data.periodNum + '期结账完成!')
           this.initBillStatus(data.periodCode)
