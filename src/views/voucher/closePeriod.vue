@@ -51,7 +51,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { getNowDate } from '@/utils'
-import { backPeriodClose, periodClose, getPeriodState, periodClose, getIdByPeriodJzCode, transLogList } from '@/api/voucher'
+import { backPeriodClose, periodClose, getPeriodState, getIdByPeriodJzCode, transLogList } from '@/api/voucher'
 import Pagination from '@/components/Pagination'
 import coaList from '@/components/voucher/coaList'
 import summaryList from '@/components/voucher/summaryList'
