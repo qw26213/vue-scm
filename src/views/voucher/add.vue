@@ -241,9 +241,9 @@
       </div>
     </el-dialog>
     <el-dialog :close-on-click-modal="false" title="保存为凭证模板" :visible.sync="dialogVisible5" width="420px">
-        <el-form ref="templateForm" :rules="templateRules" :model="templateForm" label-position="right" label-width="120px" style="width: 360px; margin-left:10px;">
+        <el-form ref="templateForm" :rules="templateRules" :model="templateForm" label-position="right" label-width="110px" style="width: 365px;margin-left:5px">
           <el-form-item label="凭证模板类型" prop="templetType">
-            <el-select ref="catogeryRef" v-model="templateForm.templetType" placeholder="凭证模板类型">
+            <el-select ref="catogeryRef" v-model="templateForm.templetType" style="width:255px" placeholder="凭证模板类型">
               <el-option v-for="item in templetTypeList" :key="item.id" :label="item.templetTypeName" :value="item.id" />
             </el-select>
           </el-form-item>
@@ -251,8 +251,8 @@
             <el-input v-model="templateForm.templetName" placeholder="凭证模板名称" />
           </el-form-item>
           <el-form-item label="保存金额" prop="isShowNumber">
-            <el-radio v-model="templateForm.isShowNumber" :label="0">是</el-radio>
-            <el-radio v-model="templateForm.isShowNumber" :label="1">否</el-radio>
+            <el-radio v-model="templateForm.isShowNumber" :label="1">是</el-radio>
+            <el-radio v-model="templateForm.isShowNumber" :label="0">否</el-radio>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer" align="center">
@@ -811,9 +811,11 @@ export default {
       this.$refs['templateForm'].validate((valid) => {
         if (valid) {
           const obj = { container: this.tempTemplate }
-          obj.container.template = this.templateForm
-          templetSave({ container: obj }).then(res => {
+          obj.container.templet = this.templateForm
+          obj.container.saveType = 2
+          templetSave(obj).then(res => {
             if (res.data.success) {
+              this.dialogVisible5 = false
               this.$message.success('凭证模板保存成功!')
             }
           })
