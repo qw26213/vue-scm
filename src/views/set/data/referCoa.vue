@@ -125,8 +125,6 @@ export default {
               this.getList()
               this.dialogFormVisible = false
               this.$message.success('修改成功')
-            } else {
-              this.$message.error(res.data.msg)
             }
           })
         }

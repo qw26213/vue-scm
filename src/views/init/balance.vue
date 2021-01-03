@@ -544,13 +544,6 @@ export default {
             this.$message.success('关闭辅助核算设置完成!')
           }
           this.getData()
-        } else {
-          if (type === 0) {
-            this.$message.warning(info + '期初余额保存失败!')
-          }
-          if (type === 1 || type === 2) {
-            this.$message.warning(res.data.msg)
-          }
         }
       }).catch(() => {
         this.saveloading = false

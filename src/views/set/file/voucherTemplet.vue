@@ -75,8 +75,6 @@ export default {
           if (res.data.errorCode == 0) {
             this.getData()
             this.$message.success('删除模板成功')
-          } else {
-            this.$message.warning(res.data.msg)
           }
         })
       })
@@ -92,8 +90,6 @@ export default {
         synVoucherData(data).then(res => {
           if (res.data.errorCode == 0) {
             this.$message.success('同步凭证模板数据完成')
-          } else {
-            this.$message.warning(res.data.msg)
           }
         })
       })

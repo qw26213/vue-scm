@@ -205,8 +205,6 @@ export default {
           if (res.data.success) {
             this.$message.success('整理凭证号成功')
             this.getList()
-          } else {
-            this.$message.error(res.data.msg)
           }
         }).catch(() => {
           this.$message.success('请重新登录')
