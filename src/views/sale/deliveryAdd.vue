@@ -48,7 +48,10 @@
         <el-form-item label="应收金额:" prop="receivableAmount">
           <el-input v-model="temp.receivableAmount" size="small" placeholder="应收金额" disabled />
         </el-form-item>
-        <el-form-item label="发票:" prop="statusInvoice">
+        <el-form-item label="发票" prop="statusInvoice" class="invoice">
+          <el-tooltip class="item invoice" effect="dark" content="不开发票，默认不计税；否则按默认税率计税" placement="bottom">
+            <i class="el-icon-question" />
+          </el-tooltip>
           <el-select v-model="temp.statusInvoice" size="small">
             <el-option label="不开发票" :value="0" />
             <el-option label="待开发票" :value="1" />
@@ -71,7 +74,10 @@
             <el-option label="订单作废" :value="-9" />
           </el-select>
         </el-form-item>
-        <el-form-item label="自动匹配预收款:" prop="autoAdvr" label-width="102px">
+        <el-form-item label="自动匹配预收款" prop="autoAdvr" label-width="120px">
+          <el-tooltip class="item auto" effect="dark" content="如果客户有预收款,选择后自动匹配使用预收款" placement="bottom">
+            <i class="el-icon-question" />
+          </el-tooltip>
           <el-checkbox v-model="temp.autoAdvr" :false-label="0" :true-label="1" />
         </el-form-item>
       </el-form>

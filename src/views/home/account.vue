@@ -22,25 +22,25 @@
             <label>纳税类型:</label>{{ managementInfo.taxFilingCategoryName }}(纳税识别号:{{ managementInfo.taxRegistrationCertificateNo }})</div>
           <div class="listItem">
             <label>资源容量:</label>
+            {{ managementInfo.cosResSize | Fixed }}GB (已使用{{ managementInfo.cosResUsedSize | Fixed }}GB)
             <el-tooltip class="item" effect="dark" content="图片存储额度及使用量（每日更新一次使用量）" placement="bottom">
               <i class="el-icon-question" />
             </el-tooltip>
-            {{ managementInfo.cosResSize | Fixed }}GB (已使用{{ managementInfo.cosResUsedSize | Fixed }}GB)
           </div>
           <!-- <div class="listItem"><label>业务有效期:</label>{{managementInfo.bizExpirationDate}}</div> -->
           <!-- <div class="listItem"><label>账套名称:</label>{{managementInfo.bookName}}</div> -->
           <div class="listItem" style="color:#F56C6C">
-            <label>试用期:</label>
+            <label>试用期:</label>{{ managementInfo.bizExpirationDate }}
             <el-tooltip class="item" effect="dark" content="注册后面试用期限" placement="bottom">
               <i class="el-icon-question" />
             </el-tooltip>
-            {{ managementInfo.bizExpirationDate }}</div>
+            </div>
           <div class="listItem" style="color:#F56C6C">
             <label>账号月数:</label>
+            {{ managementInfo.lisenseNum+managementInfo.lisenseNum1 }}(购买{{ managementInfo.lisenseNum }}，赠送{{ managementInfo.lisenseNum1 }})
             <el-tooltip class="item" effect="dark" content="您还能使用的月数" placement="bottom">
               <i class="el-icon-question" />
             </el-tooltip>
-            {{ managementInfo.lisenseNum+managementInfo.lisenseNum1 }}(购买{{ managementInfo.lisenseNum }}，赠送{{ managementInfo.lisenseNum1 }})
           </div>
         </el-card>
       </el-col>
@@ -58,7 +58,7 @@
             <label>用户姓名:</label>{{ userInfo.userName }}</div>
           <div class="listItem">
             <label>审核人签名:</label>{{ userInfo.sign2 }}
-            <el-tooltip class="item" effect="dark" content="您还能使用的月数" placement="bottom">
+            <el-tooltip class="item" effect="dark" content="审核凭证时审核人签名，默认与用户姓名相同" placement="bottom">
               <i class="el-icon-question" />
             </el-tooltip>
             </div>
@@ -168,36 +168,45 @@
           <el-input v-model="temp2.mail" placeholder="邮箱" />
         </el-form-item>
         <el-form-item label="审核人签名" prop="sign2" style="margin-right:20px">
-          <el-input v-model="temp2.sign2" placeholder="用户姓名" />
+          <el-tooltip class="item" effect="dark" content="审核凭证时审核人签名，默认与用户姓名相同" placement="bottom">
+            <i class="el-icon-question" />
+          </el-tooltip>
+          <el-input v-model="temp2.sign2" style="width:164px" placeholder="审核人签名" />
         </el-form-item>
         <el-form-item label="角色" prop="roleId">
           <el-select v-model="temp2.roleId" style="width:185px" :disabled="userInfo.isAdmin == 0">
             <el-option v-for="v in rolelist" :key="v.id" :label="v.roleName" :value="v.id" />
           </el-select>
         </el-form-item>
-        <el-form-item label="状态" prop="status">
+        <el-form-item label="状态" prop="status" style="margin-right:20px">
           <el-select v-model="temp2.status" style="width:185px" :disabled="userInfo.isAdmin == 0">
             <el-option :value="0" label="正常" />
             <el-option :value="5" label="受限" />
             <el-option :value="9" label="禁用" />
           </el-select>
         </el-form-item>
-        <el-form-item v-if="dialogStatus=='create'" label="密码" prop="password" style="margin-right:20px">
+        <el-form-item v-if="dialogStatus=='create'" label="密码" prop="password">
           <el-input v-model="temp2.password" type="password" placeholder="密码" />
         </el-form-item>
-        <el-form-item v-if="dialogStatus=='create'" label="确认密码" prop="againPassword">
+        <el-form-item v-if="dialogStatus=='create'" label="确认密码" prop="againPassword" style="margin-right:20px">
           <el-input v-model="temp2.againPassword" type="password" placeholder="确认密码" />
         </el-form-item>
-        <el-form-item label="员工" prop="staffId" style="margin-right:20px">
+        <el-form-item label="员工" prop="staffId">
           <el-select v-model="temp2.staffId" style="width:185px" :disabled="userInfo.isAdmin == 0">
             <el-option v-for="item in staffList" :key="item.id" :value="item.id" :label="item.staffName" />
           </el-select>
         </el-form-item>
-        <el-form-item label="单据查询权限" prop="queryType" label-width="100px" style="margin-right:60px">
+        <el-form-item label="单据查询权限" prop="queryType" label-width="100px" style="margin-right:40px">
+          <el-tooltip class="item" effect="dark" content="查询自己的单据还是查询本部门的单据" placement="bottom">
+            <i class="el-icon-question" />
+          </el-tooltip>
           <el-radio v-model="temp2.queryType" :label="0" :disabled="userInfo.isAdmin == 0">自己</el-radio>
           <el-radio v-model="temp2.queryType" :label="1" :disabled="userInfo.isAdmin == 0">部门</el-radio>
         </el-form-item>
-        <el-form-item label="是否管理员" prop="isAdmin">
+        <el-form-item label="管理员" prop="isAdmin">
+          <el-tooltip class="item" effect="dark" content="管理员没有权限限制，谨慎设置" placement="bottom">
+            <i class="el-icon-question" />
+          </el-tooltip>
           <el-radio v-model="temp2.isAdmin" :label="1" :disabled="userInfo.isAdmin == 0">是</el-radio>
           <el-radio v-model="temp2.isAdmin" :label="0" :disabled="userInfo.isAdmin == 0">否</el-radio>
         </el-form-item>

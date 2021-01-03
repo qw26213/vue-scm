@@ -57,16 +57,22 @@
           </el-table-column>
         </el-table>
       </div>
-      <el-dialog :close-on-click-modal="false" title="修改售价" :visible.sync="dialogFormVisible" width="390px">
-        <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="80px" style="width: 320px; margin-left:10px;">
+      <el-dialog :close-on-click-modal="false" title="修改售价" :visible.sync="dialogFormVisible" width="380px">
+        <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="100px" style="width: 320px; margin-left:10px;">
           <el-form-item label="售价(元)" prop="price">
             <el-input v-model="temp.price" placeholder="售价" />
           </el-form-item>
-          <el-form-item label="生效时间" prop="effectiveDate">
-            <el-date-picker v-model="temp.effectiveDate" type="datetime" style="width:240px" placeholder="生效时间" value-format="yyyy-MM-dd HH:mm:ss" />
+          <el-form-item label="生效时间" prop="effectiveDate" class="question">
+            <el-tooltip class="item" effect="dark" content="价格生效时间" placement="bottom">
+              <i class="el-icon-question" />
+            </el-tooltip>
+            <el-date-picker v-model="temp.effectiveDate" type="datetime" style="width:220px" placeholder="生效时间" value-format="yyyy-MM-dd HH:mm:ss" />
           </el-form-item>
-          <el-form-item label="改价类型" prop="modifiedType">
-            <el-select v-model="temp.modifiedType" placeholder="改价类型" style="width:240px">
+          <el-form-item label="改价类型" prop="modifiedType" class="question">
+            <el-tooltip class="item" effect="dark" content="业务员修改商品价格类型" placement="bottom">
+              <i class="el-icon-question" />
+            </el-tooltip>
+            <el-select v-model="temp.modifiedType" placeholder="改价类型" style="width:220px">
               <el-option label="完全禁止" :value="0" />
               <el-option label="按商品" :value="1" />
               <el-option label="完全允许" :value="2" />

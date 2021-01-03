@@ -152,8 +152,8 @@
         <div v-if="temp.isAutoTransfer==1 || temp.autoAuditFlag == 1" class="staffDiv">
           <el-form-item label="制单人:" label-width="60px" prop="jeRecorderId">
             <el-select ref="staff1" v-model="temp.jeRecorderId" style="width:110px" placeholder="制单人" size="small" @change="changeVal1">
-                <el-option label="无" :value="null" />
-                <el-option v-for="item in userlist" :label="item.text" :key="item.id" :value="item.id" />
+              <el-option label="无" :value="null" />
+              <el-option v-for="item in userlist" :key="item.id" :label="item.text" :value="item.id" />
             </el-select>
           </el-form-item>
           <el-form-item label="签名:" label-width="45px" prop="sign1">
@@ -161,8 +161,8 @@
           </el-form-item>
           <el-form-item label="审核人:" label-width="60px" prop="jeAuditorId">
             <el-select ref="staff2" v-model="temp.jeAuditorId" style="width:110px" placeholder="审核人" size="small" @change="changeVal2">
-                <el-option label="无" :value="null" />
-                <el-option v-for="item in userlist" :label="item.text" :key="item.id" :value="item.id" />
+              <el-option label="无" :value="null" />
+              <el-option v-for="item in userlist" :key="item.id" :label="item.text" :value="item.id" />
             </el-select>
           </el-form-item>
           <el-form-item label="签名:" label-width="45px" prop="sign2">
@@ -170,8 +170,8 @@
           </el-form-item>
           <el-form-item label="记账人:" label-width="60px" prop="jePosterId">
             <el-select ref="staff3" v-model="temp.jePosterId" style="width:110px" placeholder="记账人" size="small" @change="changeVal3">
-                <el-option label="无" :value="null" />
-                <el-option v-for="item in userlist" :label="item.text" :key="item.id" :value="item.id" />
+              <el-option label="无" :value="null" />
+              <el-option v-for="item in userlist" :key="item.id" :label="item.text" :value="item.id" />
             </el-select>
           </el-form-item>
           <el-form-item label="签名:" label-width="45px" prop="sign3">
@@ -189,7 +189,7 @@
 <script>
 import { getmanagementInfo, registerLoadTaxfilingcategory, saveBook, getCurrencyList, getCoaHierarchy, getAccount, getUsers } from '@/api/user'
 export default {
-  name: 'buildbook',
+  name: 'Buildbook',
   data() {
     return {
       dialogFormVisible: false,
@@ -316,21 +316,21 @@ export default {
       })
     },
     getNum(num) {
-      var x = String(num).indexOf(".")+1;//得到小数点的位置
-      var y = String(num).length - x;//小数点的位数
-      if(y == 0){
+      var x = String(num).indexOf('.') + 1// 得到小数点的位置
+      var y = String(num).length - x// 小数点的位数
+      if (y == 0) {
         return x
-      } 
-      if(y > 0) {
+      }
+      if (y > 0) {
         return y
       }
     },
     formatNum(num) {
       if (!num) { return 0 }
       if (this.getNum(num) == 2) {
-        return Number(num*100).toFixed(0)
+        return Number(num * 100).toFixed(0)
       } else {
-        return Number(num*100).toFixed(2)
+        return Number(num * 100).toFixed(2)
       }
     },
     getData() {

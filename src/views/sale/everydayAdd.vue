@@ -1,70 +1,76 @@
 everyday<template>
   <div class="app-container">
     <div class="dataTable">
-      <el-form :inline="true" label-position="left" label-width="120px" style="width:750px; margin:10px auto;">
-        <el-form-item label="单据日期:" prop="billDate">
+      <el-form :inline="true" label-position="right" label-width="120px" style="width:750px; margin:10px auto;">
+        <el-form-item label="单据日期" prop="billDate">
           <el-date-picker v-model="temp.billDate" :editable="false" class="input-item" type="date" placeholder="单据日期" size="small" :clearable="false" value-format="yyyy-MM-dd" disabled />
         </el-form-item>
-        <el-form-item label="单据号:" prop="billNo">
+        <el-form-item label="单据号" prop="billNo">
           <el-input v-model="temp.billNo" size="small" class="input-item" placeholder="单据号" disabled />
         </el-form-item>
-        <el-form-item label="开始日期:" prop="billDate">
+        <el-form-item label="开始日期" prop="billDate">
           <el-date-picker v-model="temp.beginDate" :editable="false" class="input-item" type="date" placeholder="单据日期" size="small" :picker-options="pickerOptions" :clearable="false" value-format="yyyy-MM-dd" />
         </el-form-item>
-        <el-form-item label="结束日期:" prop="billDate">
+        <el-form-item label="结束日期" prop="billDate">
           <el-date-picker v-model="temp.endDate" :editable="false" class="input-item" type="date" placeholder="单据日期" size="small" :picker-options="pickerOptions" :clearable="false" value-format="yyyy-MM-dd" />
         </el-form-item>
-        <el-form-item label="业务员:" prop="staffId">
-          <el-select v-model="temp.staffId" style="width:240px" disabled placeholder="选择业务员" size="small">
+        <el-form-item label="业务员" prop="staffId">
+          <el-select v-model="temp.staffId" class="input-item" disabled placeholder="选择业务员" size="small">
             <el-option v-for="item in stafflist" :key="item.id" :label="item.staffName" :value="item.id" />
           </el-select>
         </el-form-item>
-        <el-form-item label="销售单数:" prop="soBillNum">
+        <el-form-item label="销售单数" prop="soBillNum">
           <el-input v-model="temp.soBillNum" size="small" class="input-item" placeholder="销售单数" disabled />
         </el-form-item>
-        <el-form-item label="销售退款单数:" prop="soReturnedBillNum">
+        <el-form-item label="销售退款单数" prop="soReturnedBillNum">
           <el-input v-model="temp.soReturnedBillNum" size="small" class="input-item" placeholder="销售单数" disabled />
         </el-form-item>
-        <el-form-item label="预收单数:" prop="psBillNum">
+        <el-form-item label="预收单数" prop="psBillNum">
           <el-input v-model="temp.psBillNum" size="small" class="input-item" placeholder="预收单数" disabled />
         </el-form-item>
-        <el-form-item label="预收退款单数:" prop="psReturnedBillNum">
+        <el-form-item label="预收退款单数" prop="psReturnedBillNum">
           <el-input v-model="temp.psReturnedBillNum" size="small" class="input-item" placeholder="预收退款单数" disabled />
         </el-form-item>
-        <el-form-item label="收款单数:" prop="receiptBillNum">
+        <el-form-item label="收款单数" prop="receiptBillNum">
           <el-input v-model="temp.receiptBillNum" size="small" class="input-item" placeholder="收款单数" disabled />
         </el-form-item>
-        <el-form-item label="付款单数:" prop="paymentNum">
+        <el-form-item label="付款单数" prop="paymentNum">
           <el-input v-model="temp.paymentNum" size="small" class="input-item" placeholder="付款单数" disabled />
         </el-form-item>
-        <el-form-item label="销售现金金额:" prop="soCurrAmount">
+        <el-form-item label="销售现金金额" prop="soCurrAmount">
           <el-input v-model="temp.soCurrAmount" size="small" class="input-item" placeholder="销售现金金额" disabled />
         </el-form-item>
-        <el-form-item label="销售退款现金金额:" prop="soReturnedCurrAmount">
+        <el-form-item label="销售退款现金金额" prop="soReturnedCurrAmount">
           <el-input v-model="temp.soReturnedCurrAmount" size="small" class="input-item" placeholder="销售退款现金金额" disabled />
         </el-form-item>
-        <el-form-item label="预收款现金金额:" prop="psCurrAmount">
+        <el-form-item label="预收款现金金额" prop="psCurrAmount">
           <el-input v-model="temp.psCurrAmount" size="small" class="input-item" placeholder="预收款现金金额" disabled />
         </el-form-item>
-        <el-form-item label="预收款退款现金金额:" prop="psReturnedCurrAmount">
+        <el-form-item label="预收款退款现金金额" prop="psReturnedCurrAmount">
           <el-input v-model="temp.psReturnedCurrAmount" size="small" class="input-item" placeholder="预收款退款现金金额" disabled />
         </el-form-item>
-        <el-form-item label="收款现金金额:" prop="receiptCurrAmount">
+        <el-form-item label="收款现金金额" prop="receiptCurrAmount">
           <el-input v-model="temp.receiptCurrAmount" size="small" class="input-item" placeholder="收款现金金额" disabled />
         </el-form-item>
-        <el-form-item label="付款现金金额:" prop="paymentCurrAmount">
+        <el-form-item label="付款现金金额" prop="paymentCurrAmount">
           <el-input v-model="temp.paymentCurrAmount" size="small" class="input-item" placeholder="付款现金金额" disabled />
         </el-form-item>
-        <el-form-item label="现金合计:" prop="sumCurrAmount">
+        <el-form-item label="现金合计" prop="sumCurrAmount">
           <el-input v-model="temp.sumCurrAmount" size="small" class="input-item" placeholder="现金合计" disabled />
         </el-form-item>
-        <el-form-item label="开始余额:" prop="beginBalance">
+        <el-form-item label="开始余额" prop="beginBalance" class="pr20">
+          <el-tooltip class="item day" effect="dark" content="上次交款后剩余应交金额" placement="bottom">
+            <i class="el-icon-question" />
+          </el-tooltip>
           <el-input v-model="temp.beginBalance" size="small" class="input-item" placeholder="开始余额" disabled />
         </el-form-item>
-        <el-form-item label="交款金额:" prop="settleCurrAmount">
+        <el-form-item label="交款金额" prop="settleCurrAmount">
           <el-input v-model="temp.settleCurrAmount" size="small" class="input-item" placeholder="交款金额" @focus="focusThis($event)" />
         </el-form-item>
-        <el-form-item label="余额:" prop="balance">
+        <el-form-item label="余额" prop="balance" class="pr20">
+          <el-tooltip class="item day" effect="dark" content="余额=开始余额+现金合计-交款金额" placement="bottom">
+            <i class="el-icon-question" />
+          </el-tooltip>
           <el-input v-model="temp.balance" size="small" class="input-item" placeholder="余额" disabled />
         </el-form-item>
       </el-form>
@@ -75,12 +81,12 @@ everyday<template>
     </div>
     <el-dialog :close-on-click-modal="false" title="选择截止日期" :visible.sync="dialogFormVisible" :show-close="false" width="420px">
       <el-form ref="dataForm" :rules="rules" :model="form" label-position="left" label-width="88px" style="width:400px; margin:10px 25px;">
-        <el-form-item label="业务员:" prop="staffId">
+        <el-form-item label="业务员" prop="staffId">
           <el-select v-model="form.staffId" style="width:240px" placeholder="选择业务员" size="small">
             <el-option v-for="item in stafflist" :key="item.id" :label="item.staffName" :value="item.id" />
           </el-select>
         </el-form-item>
-        <el-form-item label="截止日期:" prop="endDate">
+        <el-form-item label="截止日期" prop="endDate">
           <el-date-picker v-model="form.endDate" :editable="false" class="input-item" type="date" placeholder="截止日期" size="small" :clearable="false" :picker-options="pickerOptions" value-format="yyyy-MM-dd" />
         </el-form-item>
       </el-form>
@@ -201,6 +207,15 @@ export default {
 }
 </script>
 <style scoped>
-.input-item{width: 240px;}
+.input-item{width: 240px!important;}
+.input-item .el-input--small{width: 240px!important}
+.input-item .el-input__inner{width: 240px!important}
+</style>
+<style lang="scss" scoped>
+>>>.pr20 label{padding-right: 30px;}
+.el-form-item .el-icon-question.day {
+    margin-right: 5px;
+    margin-left: -25px;
+}
 </style>
 

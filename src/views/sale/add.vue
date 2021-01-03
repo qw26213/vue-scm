@@ -2,58 +2,63 @@
   <div class="app-container">
     <div class="dataTable">
       <el-form :inline="true" label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
-        <el-form-item label="单据日期:" prop="billDate">
+        <el-form-item label="单据日期" prop="billDate">
           <el-date-picker v-model="temp.billDate" :editable="false" type="date" placeholder="单据日期" size="small" :clearable="false" value-format="yyyy-MM-dd" />
         </el-form-item>
-        <el-form-item label="单据号:" prop="billNo">
+        <el-form-item label="单据号" prop="billNo">
           <el-input v-model="temp.billNo" size="small" placeholder="单据号" disabled />
         </el-form-item>
-        <el-form-item label="业务员:" prop="staffId">
+        <el-form-item label="业务员" prop="staffId">
           <staffList :disabled="!userInfo.isAdmin" :select-id="temp.staffId" @selectChange="selectChange" />
         </el-form-item>
-        <el-form-item label="客户:" prop="custId">
+        <el-form-item label="客户" prop="custId">
           <custList key-type="custId" :select-id="temp.custId" :select-name="temp.custName" @selectChange="selectChange" />
         </el-form-item>
-        <el-form-item label="售达客户:" prop="settleCustId">
+        <el-form-item label="售达客户" prop="settleCustId">
           <custList key-type="settleCustId" :select-id="temp.settleCustId" @selectChange="selectChange" />
         </el-form-item>
-        <el-form-item label="仓库:" prop="warehouseId">
+        <el-form-item label="仓库" prop="warehouseId">
           <warehouseList key-type="warehouseId" allow-null="1" :select-id="temp.warehouseId" @selectChange="selectChange" />
         </el-form-item>
-        <el-form-item label="车辆:" prop="truckId">
+        <el-form-item label="车辆" prop="truckId">
           <truckList key-type="truckId" allow-null="1" :select-id="temp.truckId" @selectChange="selectChange" />
         </el-form-item>
-        <el-form-item label="收款方式:" prop="paymentTypeId">
+        <el-form-item label="收款方式" prop="paymentTypeId">
           <paymentTypeList :select-id="temp.paymentTypeId" @selectChange="selectChange" />
         </el-form-item>
-        <el-form-item label="收款到期日:" prop="paymentDueDate">
+        <el-form-item label="收款到期日" prop="paymentDueDate">
           <el-date-picker v-model="temp.paymentDueDate" :editable="false" type="date" placeholder="收款到期日" size="small" :clearable="false" value-format="yyyy-MM-dd" />
         </el-form-item>
-        <el-form-item label="合计金额:" prop="itemAmount">
+        <el-form-item label="合计金额" prop="itemAmount">
           <el-input v-model="temp.itemAmount" size="small" placeholder="合计金额" disabled />
         </el-form-item>
-        <el-form-item label="现结金额:" prop="currPayAmount">
+        <el-form-item label="现结金额" prop="currPayAmount">
           <el-input v-model="temp.currPayAmount" size="small" placeholder="现结金额" style="width:75px" disabled />
           <el-button size="small" style="width:45px;padding:8px" @click="showSettleType">选择</el-button>
         </el-form-item>
-        <el-form-item label="销售费用:" prop="expensesAmount">
+        <el-form-item label="销售费用" prop="expensesAmount">
           <el-input v-model="temp.expensesAmount" size="small" placeholder="销售费用" disabled />
         </el-form-item>
-        <el-form-item label="使用预收:" prop="advPayAmount">
+        <el-form-item label="使用预收" prop="advPayAmount">
           <el-input v-model="temp.advPayAmount" size="small" placeholder="使用预收" disabled />
         </el-form-item>
-        <el-form-item label="应收金额:" prop="receivableAmount">
+        <el-form-item label="应收金额" prop="receivableAmount">
           <el-input v-model="temp.receivableAmount" size="small" placeholder="应收金额" disabled />
         </el-form-item>
-        <el-form-item label="发票:" prop="statusInvoice">
-          <!-- 与当前客户的isInvoice有关系 -->
+        <el-form-item label="发票" prop="statusInvoice" class="invoice">
+          <el-tooltip class="item invoice" effect="dark" content="不开发票，默认不计税；否则按默认税率计税" placement="bottom">
+            <i class="el-icon-question" />
+          </el-tooltip>
           <el-select v-model="temp.statusInvoice" size="small">
             <el-option label="不开发票" :value="0" />
             <el-option label="待开发票" :value="1" />
             <el-option label="已开发票" :value="9" />
           </el-select>
         </el-form-item>
-        <el-form-item label="自动匹配预收款:" prop="autoAdvr" label-width="120px">
+        <el-form-item label="自动匹配预收款" prop="autoAdvr" label-width="120px">
+          <el-tooltip class="item auto" effect="dark" content="如果客户有预收款,选择后自动匹配使用预收款" placement="bottom">
+            <i class="el-icon-question" />
+          </el-tooltip>
           <el-checkbox v-model="temp.autoAdvr" :false-label="0" :true-label="1" />
         </el-form-item>
       </el-form>
@@ -124,16 +129,16 @@
       </el-table>
       <div class="dataTable" style="margin-top: 10px">
         <el-form :inline="true" label-position="right" label-width="72px" style="width: 100%; margin-top:0px;">
-          <el-form-item label="制单日期:" prop="recordDate">
+          <el-form-item label="制单日期" prop="recordDate">
             <el-date-picker v-model="temp.recordDate" :editable="false" type="date" placeholder="制单日期" size="small" :clearable="false" value-format="yyyy-MM-dd" />
           </el-form-item>
-          <el-form-item label="制单人:" prop="recorderId">
+          <el-form-item label="制单人" prop="recorderId">
             <el-input v-model="temp.recorder" size="small" placeholder="制单人" />
           </el-form-item>
-          <el-form-item label="审核日期:" prop="auditDate">
+          <el-form-item label="审核日期" prop="auditDate">
             <el-date-picker v-model="temp.auditDate" :editable="false" type="date" placeholder="审核日期" size="small" :clearable="false" value-format="yyyy-MM-dd" />
           </el-form-item>
-          <el-form-item label="审核人:" prop="auditorId">
+          <el-form-item label="审核人" prop="auditorId">
             <el-input v-model="temp.auditor" size="small" placeholder="审核人" />
           </el-form-item>
         </el-form>

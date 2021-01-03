@@ -33,10 +33,13 @@
         <el-form-item label="返利金额:" prop="rebateAmount">
           <el-input v-model="temp.rebateAmount" size="small" placeholder="返利金额" />
         </el-form-item>
-        <el-form-item label="发票:" prop="statusInvoice">
+        <el-form-item label="发票" prop="statusInvoice" class="invoice">
+          <el-tooltip class="item invoice" effect="dark" content="不开发票，默认不计税；否则按默认税率计税" placement="bottom">
+            <i class="el-icon-question" />
+          </el-tooltip>
           <el-select v-model="temp.statusInvoice" size="small">
-            <el-option label="不开票" :value="0" />
-            <el-option label="待开票" :value="1" />
+            <el-option label="不开发票" :value="0" />
+            <el-option label="待开发票" :value="1" />
             <el-option label="已开发票" :value="9" />
           </el-select>
         </el-form-item>

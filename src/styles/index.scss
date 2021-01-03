@@ -71,7 +71,8 @@ th .cell{text-align: center;}
 .dataTable .el-date-editor.el-input--small{width: 125px;}
 .dataTable .el-select--small{width: 125px!important;}
 .dataTable .el-input--small{width: 125px;}
-
+.dataTable .invoice .el-select--small{width: 100px!important;}
+.dataTable .invoice .el-input--small{width: 100px;}
 .dataTable .el-input__inner { padding: 0 8px; border-radius: 2px;width: 100%; }
 .el-date-editor--date .el-input__inner { padding: 0 0 0 30px; border-radius: 2px; }
 .dataTable .el-form-item__label { font-size: 12px; padding-right: 5px; }
@@ -152,4 +153,9 @@ input:disabled{background-color:#ffffff;}
 
 .el-icon-question{font-size: 16px; color: #409EFF;margin-top: 12px;}
 .el-form-item .el-icon-question {margin-left: -10px;margin-right:10px;}
-.el-form-item span+.el-icon-question {margin-left: 0px;margin-right:10px;}
+.el-form-item .el-icon-question.invoice {margin-right:5px;margin-left: 0px;}
+.el-form-item .el-icon-question.auto { margin-left: 0px;}
+.el-form-item span+.el-icon-question { margin-left: 0px;margin-right:10px;}
+
+.el-form-item.question label{padding-right: 30px}
+.el-form-item.question .el-icon-question{margin-left: -25px;margin-right: 5px;}

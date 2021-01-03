@@ -168,7 +168,10 @@
         <el-form-item label="区域" prop="area">
           <el-input v-model="temp.area" size="small" max-length="8" placeholder="区域" />
         </el-form-item>
-        <el-form-item label="赊销金额" prop="creditLimit">
+        <el-form-item label="赊销金额" prop="creditLimit" class="question">
+          <el-tooltip class="item" effect="dark" content="客户允许赊销的额度" placement="bottom">
+            <i class="el-icon-question" />
+          </el-tooltip>
           <el-input v-model="temp.creditLimit" size="small" placeholder="赊销金额" />
         </el-form-item>
         <el-form-item label="拜访周期(天)" prop="visitCycle">
