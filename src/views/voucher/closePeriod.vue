@@ -13,10 +13,10 @@
     <div class="contentDiv">
       <el-row :gutter="30">
         <el-col v-for="(item, index) in nameArr" :key="index" :span="6" style="margin-bottom: 20px">
-          <el-card class="box-card" style="text-align:center;height:150px">
+          <el-card class="box-card" style="text-align:center;height:110px">
             <div class="itemTit">{{ item }}</div>
             <el-button v-if="jzCodeStrs.indexOf(codeArr[index])>=0" type="default" :disabled="isSeasonEnd&&index==4" plain @click="showJzVoucher(index)">查看凭证</el-button>
-            <el-button v-else type="primary" :disabled="isSeasonEnd&&index==4" plain @click="createVoucher(index)">生成凭证</el-button>
+            <el-button v-else type="primary" size="small" :disabled="isSeasonEnd&&index==4" plain @click="createVoucher(index)">生成凭证</el-button>
           </el-card>
         </el-col>
       </el-row>
@@ -63,13 +63,12 @@ export default {
     return {
       nameArr: ['结转成本', '结转待摊费用', '结转未缴增值税', '计提附加税', '计提折旧', '计提工资', '计提所得税', '结转收入', '结转费用', '结转损益(合并)', '结转未分配利润'],
       codeArr: ['jzcb', 'jzdtfy', 'jzwjzzs', 'jtfjs', 'jtzj', 'jtgz', 'jtsds', 'jzsr', 'jzfy', 'jzsy', 'jzwfplr'],
-      periodCode: '',
       curMonth: new Date().getMonth() + 1,
       searchPeriodId: '',
       searchPeriodYear: '',
       searchPeriodNum: 0,
       searchPeriodName: '',
-      searchPeriodCode: '',
+      periodCode: '',
       voucherNumber: 0,
       curIndex: 0,
       isSeasonEnd: false,
@@ -159,7 +158,7 @@ export default {
         this.searchPeriodYear = res.data.data.glPeriod.periodYear
         this.searchPeriodNum = res.data.data.glPeriod.periodNum
         this.searchPeriodName = res.data.data.glPeriod.periodName
-        this.searchPeriodCode = res.data.data.glPeriod.periodCode
+        this.periodCode = res.data.data.glPeriod.periodCode
         this.voucherNumber = res.data.data.jeHeaderCount
         this.adjustmentPeriodFlag = res.data.data.glPeriod.adjustmentPeriodFlag
         this.createdVouterCount = res.data.data.count
@@ -191,52 +190,45 @@ export default {
     },
     // 反结账
     executeBackPeriodClose() {
-      var data = {
-        periodId: this.searchPeriodId,
-        periodYear: this.searchPeriodYear,
-        periodNum: this.searchPeriodNum,
-        periodName: this.searchPeriodName,
-        periodCode: this.searchPeriodCode
+      if (this.periodCode === '') {
+        this.$message.warning('请选择会计期间!')
+        return
       }
-      backPeriodClose(data).then(res => {
+      const obj = {
+        periodYear: this.periodCode.split('-')[0],
+        periodNum: this.periodCode.split('-')[1],
+        periodCode: this.periodCode
+      }
+      backPeriodClose(obj).then(res => {
         if (res.data.success) {
           this.$message.success(data.periodCode + '及其之后期间反结转完成!')
           this.initBillStatus(data.periodCode)
-        } else {
-          if (res.data.errorCode == '101') {
-            this.$message.warning('期间' + data.periodCode + '没有找到!')
-          }
-          if (res.data.errorCode == '102') {
-            this.$message.warning('无法反结转，期间' + data.periodCode + '没有结转!')
-          }
         }
+        // } else {
+        //   if (res.data.errorCode == '101') {
+        //     this.$message.warning('期间' + data.periodCode + '没有找到!')
+        //   }
+        //   if (res.data.errorCode == '102') {
+        //     this.$message.warning('无法反结转，期间' + data.periodCode + '没有结转!')
+        //   }
+        // }
       })
     },
     // 结账
     executePeriodClose() {
-      var data = {
-        periodId: this.searchPeriodId,
-        periodYear: this.searchPeriodYear,
-        periodNum: this.searchPeriodNum,
-        periodName: this.searchPeriodName,
-        periodCode: this.searchPeriodCode
+      if (this.periodCode === '') {
+        this.$message.warning('请选择会计期间!')
+        return
       }
-      periodClose(data).then(res => {
+      const obj = {
+        periodYear: this.periodCode.split('-')[0],
+        periodNum: this.periodCode.split('-')[1],
+        periodCode: this.periodCode
+      }
+      periodClose(obj).then(res => {
         if (res.data.errorCode == '0') {
           this.$message.success(data.periodYear + '年第' + data.periodNum + '期结账完成!')
           this.initBillStatus(data.periodCode)
-        } else {
-          if (res.data.errorCode == '-100') {
-            this.$message.warning(res.data.msg)
-          } else if (res.data.errorCode == '-102') {
-            this.$message.warning(res.data.msg)
-          } else if (res.data.errorCode == '-101') {
-            this.$message.warning(res.data.msg)
-          } else if (res.data.errorCode == '-103') {
-            this.$message.warning(res.data.msg)
-          } else if (res.data.errorCode == '-8') {
-            this.$message.warning(res.data.msg)
-          }
         }
       })
     }
@@ -252,6 +244,6 @@ export default {
 .itemTit {
     color: #333;
     font-size: 16px;
-    margin-bottom: 25px;
+    margin-bottom: 15px;
 }
 </style>

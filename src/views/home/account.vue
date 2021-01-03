@@ -21,14 +21,26 @@
           <div class="listItem">
             <label>纳税类型:</label>{{ managementInfo.taxFilingCategoryName }}(纳税识别号:{{ managementInfo.taxRegistrationCertificateNo }})</div>
           <div class="listItem">
-            <label>资源容量:</label>{{ managementInfo.cosResSize | Fixed }}GB (已使用{{ managementInfo.cosResUsedSize | Fixed }}GB)
+            <label>资源容量:</label>
+            <el-tooltip class="item" effect="dark" content="图片存储额度及使用量（每日更新一次使用量）" placement="bottom">
+              <i class="el-icon-question" />
+            </el-tooltip>
+            {{ managementInfo.cosResSize | Fixed }}GB (已使用{{ managementInfo.cosResUsedSize | Fixed }}GB)
           </div>
           <!-- <div class="listItem"><label>业务有效期:</label>{{managementInfo.bizExpirationDate}}</div> -->
           <!-- <div class="listItem"><label>账套名称:</label>{{managementInfo.bookName}}</div> -->
           <div class="listItem" style="color:#F56C6C">
-            <label>试用期:</label>{{ managementInfo.bizExpirationDate }}</div>
+            <label>试用期:</label>
+            <el-tooltip class="item" effect="dark" content="注册后面试用期限" placement="bottom">
+              <i class="el-icon-question" />
+            </el-tooltip>
+            {{ managementInfo.bizExpirationDate }}</div>
           <div class="listItem" style="color:#F56C6C">
-            <label>账号月数:</label>{{ managementInfo.lisenseNum+managementInfo.lisenseNum1 }}(购买{{ managementInfo.lisenseNum }}，赠送{{ managementInfo.lisenseNum1 }})
+            <label>账号月数:</label>
+            <el-tooltip class="item" effect="dark" content="您还能使用的月数" placement="bottom">
+              <i class="el-icon-question" />
+            </el-tooltip>
+            {{ managementInfo.lisenseNum+managementInfo.lisenseNum1 }}(购买{{ managementInfo.lisenseNum }}，赠送{{ managementInfo.lisenseNum1 }})
           </div>
         </el-card>
       </el-col>
@@ -45,7 +57,11 @@
           <div class="listItem">
             <label>用户姓名:</label>{{ userInfo.userName }}</div>
           <div class="listItem">
-            <label>审核人签名:</label>{{ userInfo.sign2 }}</div>
+            <label>审核人签名:</label>{{ userInfo.sign2 }}
+            <el-tooltip class="item" effect="dark" content="您还能使用的月数" placement="bottom">
+              <i class="el-icon-question" />
+            </el-tooltip>
+            </div>
           <div class="listItem">
             <label>手机号:</label>{{ userInfo.mobile }}</div>
           <div class="listItem">
