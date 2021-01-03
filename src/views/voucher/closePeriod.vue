@@ -2,7 +2,7 @@
   <div class="main">
     <div class="filterDiv">
       <label class="label">会计期间：</label>
-      <el-select v-model="periodCode" size="small" placeholder="会计期间">
+      <el-select v-model="periodCode" size="small" placeholder="会计期间" @change="initBillStatus">
         <el-option v-for="item in periodArr" :key="item.id" :label="item.text" :value="item.id" />
       </el-select>
       <span style="font-size:14px;margin:0 20px">本期凭证数：{{ voucherNumber }}条</span>
