@@ -201,15 +201,15 @@ export default {
       }
       backPeriodClose(obj).then(res => {
         if (res.data.success) {
-          this.$message.success(data.periodCode + '及其之后期间反结转完成!')
-          this.initBillStatus(data.periodCode)
+          this.$message.success(obj.periodCode + '及其之后期间反结转完成!')
+          this.initBillStatus(obj.periodCode)
         }
         // } else {
         //   if (res.data.errorCode == '101') {
-        //     this.$message.warning('期间' + data.periodCode + '没有找到!')
+        //     this.$message.warning('期间' + obj.periodCode + '没有找到!')
         //   }
         //   if (res.data.errorCode == '102') {
-        //     this.$message.warning('无法反结转，期间' + data.periodCode + '没有结转!')
+        //     this.$message.warning('无法反结转，期间' + obj.periodCode + '没有结转!')
         //   }
         // }
       })
@@ -227,8 +227,8 @@ export default {
       }
       periodClose(obj).then(res => {
         if (res.data.errorCode == '0') {
-          this.$message.success(data.periodYear + '年第' + data.periodNum + '期结账完成!')
-          this.initBillStatus(data.periodCode)
+          this.$message.success(obj.periodYear + '年第' + obj.periodNum + '期结账完成!')
+          this.initBillStatus(obj.periodCode)
         }
       })
     }
