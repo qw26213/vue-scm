@@ -224,13 +224,17 @@
           <el-radio v-model="temp.isInvoice" :label="1">是</el-radio>
           <el-radio v-model="temp.isInvoice" :label="0">否</el-radio>
         </el-form-item>
-        <el-form-item label="是否可用" prop="isDisable" align="center" label-width="100px" style="margin-right:90px">
-          <el-radio v-model="temp.isDisable" :label="0">是</el-radio>
-          <el-radio v-model="temp.isDisable" :label="1">否</el-radio>
+        <el-form-item label="是否可跳过" prop="isSkip" align="center" label-width="100px" style="margin-right:90px">
+          <el-radio v-model="temp.isSkip" :label="0">是</el-radio>
+          <el-radio v-model="temp.isSkip" :label="1">否</el-radio>
         </el-form-item>
-        <el-form-item label="零售自提网点" prop="isDelivery" align="center" label-width="100px">
+        <el-form-item label="零售自提网点" prop="isDelivery" align="center" label-width="100px" style="margin-right:90px">
           <el-radio v-model="temp.isDelivery" :label="0">是</el-radio>
           <el-radio v-model="temp.isDelivery" :label="1">否</el-radio>
+        </el-form-item>
+        <el-form-item label="是否可用" prop="isDisable" align="center" label-width="100px">
+          <el-radio v-model="temp.isDisable" :label="0">是</el-radio>
+          <el-radio v-model="temp.isDisable" :label="1">否</el-radio>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer" align="center">
@@ -309,6 +313,7 @@ export default {
         priceGroupId: '',
         custTypeName: '',
         isInvoice: 0,
+        isSkip: 1,
         taxRegistrationCertificateNo: '',
         remarks: '',
         isDisable: 0,
@@ -334,6 +339,7 @@ export default {
         priceGroupId: '',
         custTypeName: '',
         isInvoice: 0,
+        isSkip: 1,
         taxRegistrationCertificateNo: '',
         remarks: '',
         isDisable: 0,
