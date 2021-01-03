@@ -1,8 +1,8 @@
 <template>
   <div class="app-container" style="background:#ffffff">
     <div class="w1200 voucherHeader">
-      <el-button v-if="jzType === 0" type="primary" size="small" @click="dialogFormVisible1 = true">从模板生成凭证</el-button>
-      <el-button v-if="jzType === 0" type="primary" size="small" @click="dialogFormVisible2 = true">常用摘要</el-button>
+      <el-button v-if="jzType === 0" type="primary" size="small" @click="dialogVisible1 = true">从模板生成凭证</el-button>
+      <el-button v-if="jzType === 0" type="primary" size="small" @click="dialogVisible2 = true">常用摘要</el-button>
       <div class="voucherTit">{{ billHeader.jeCatogeryTitle }}<span class="Period">{{ billHeader.periodName }}</span></div>
       <el-form :inline="true" label-position="right" label-width="80px" style="width: 100%; margin-top:0px;">
         <el-form-item label="凭证字号" prop="billNo" style="margin-bottom:10px">
@@ -103,12 +103,12 @@
       </tfoot>
     </table>
     <div class="tx-c w1200" style="margin-top:20px">
-      <el-button v-if="!$route.query.id && !$route.query.tid && jzType === 0" class="filter-item" type="primary" @click="saveData(1)">保存为凭证模板</el-button>
-      <el-button v-if="!$route.query.id && !$route.query.tid && jzType === 0" class="filter-item" type="default" @click="saveData(2)">保存并新增凭证</el-button>
+      <el-button v-if="!$route.query.id && !$route.query.tid && jzType === 0" class="filter-item" type="default" @click="saveData(1)">保存为凭证模板</el-button>
+      <el-button v-if="!$route.query.id && !$route.query.tid && jzType === 0" class="filter-item" type="primary" @click="saveData(2)">保存凭证</el-button>
       <el-button v-if="!$route.query.id && !$route.query.tid && jzType === 1" class="filter-item" type="primary" style="width:160px" @click="saveData(2)">保存凭证</el-button>
       <el-button v-if="$route.query.id" class="filter-item" type="primary" style="width:160px" @click="saveData(2)">保存凭证</el-button>
     </div>
-    <el-dialog :close-on-click-modal="false" title="选择凭证模板" :visible.sync="dialogFormVisible1" width="540px">
+    <el-dialog :close-on-click-modal="false" title="选择凭证模板" :visible.sync="dialogVisible1" width="540px">
       <el-table :data="templetData" border fit highlight-current-row style="width: 100%;" size="small" cell-class-name="trCell">
         <el-table-column label="模板类型" width="140" align="center">
           <template slot-scope="{row}">
@@ -127,13 +127,13 @@
         </el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="{row}">
-            <el-button class="filter-item" type="primary" size="small" @click="selectTemplet(row.id)">选择</el-button>
+            <el-button class="filter-item" type="primary" size="mini" @click="selectTemplet(row.id)">选择</el-button>
           </template>
         </el-table-column>
       </el-table>
       <pagination v-show="total1>10" :total="total1" :page.sync="listQuery1.pageIndex" layout="prev, pager, next" :limit.sync="listQuery1.pageNum" @pagination="getTempletList" />
     </el-dialog>
-    <el-dialog :close-on-click-modal="false" title="常用摘要" :visible.sync="dialogFormVisible2" width="500px">
+    <el-dialog :close-on-click-modal="false" title="常用摘要" :visible.sync="dialogVisible2" width="500px">
       <div class="filter-container" style="padding-bottom:0;margin-top:-10px">
         <el-input v-model="summaryQuery.mnemonicCode" size="small" placeholder="助记码" style="width: 180px;" class="filter-item" @focus="focusThis($event)" />
         <el-input v-model="summaryQuery.summary" size="small" placeholder="名称" style="width: 180px;" class="filter-item" @focus="focusThis($event)" />
@@ -149,13 +149,13 @@
         <el-table-column label="名称" prop="summary" align="center" />
         <el-table-column label="操作" prop="summary" align="center" width="100">
           <template slot-scope="{row}">
-            <el-button class="filter-item" type="danger" size="small" @click="handDelSummary(row.id)">删除</el-button>
+            <el-button class="filter-item" type="danger" size="mini" @click="handDelSummary(row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
       <pagination v-show="total2>10" :total="total2" :page.sync="listQuery2.pageIndex" :limit.sync="listQuery2.pageNum" @pagination="getSummaryByPage" />
     </el-dialog>
-    <el-dialog :close-on-click-modal="false" :title="'科目辅助核算设置——'+showCoaCode" :visible.sync="dialogFormVisible3" :show-close="false" width="480px">
+    <el-dialog :close-on-click-modal="false" :title="'科目辅助核算设置——'+showCoaCode" :visible.sync="dialogVisible3" :show-close="false" width="480px">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="65px" style="width: 420px; margin-left:10px;">
         <el-form-item v-if="auxiliary.charAt(0)=='1'" label="供应商" prop="supplierId">
           <el-select ref="supplierSelect" v-model="temp.supplierId" placeholder="供应商" style="width:100%">
@@ -198,7 +198,7 @@
         <el-button type="primary" @click="saveAuxiliary">确定</el-button>
       </div>
     </el-dialog>
-    <el-dialog :close-on-click-modal="false" title="设置辅助核算" :visible.sync="dialogFormVisible4" :show-close="false" width="900px">
+    <el-dialog :close-on-click-modal="false" title="设置辅助核算" :visible.sync="dialogVisible4" :show-close="false" width="900px">
       <el-table :key="tableKey" :data="lineData" border fit style="width: 100%;">
         <el-table-column label="科目" min-width="120">
           <template slot-scope="{row}">
@@ -239,6 +239,26 @@
         <el-button @click="cancelTempletAuxiliary">取消</el-button>
         <el-button type="primary" @click="saveTempletAuxiliary">确定</el-button>
       </div>
+    </el-dialog>
+    <el-dialog :close-on-click-modal="false" title="保存为凭证模板" :visible.sync="dialogVisible5" width="420px">
+        <el-form ref="templateForm" :rules="templateRules" :model="templateForm" label-position="right" label-width="120px" style="width: 360px; margin-left:10px;">
+          <el-form-item label="凭证模板类型" prop="templetType">
+            <el-select ref="catogeryRef" v-model="templateForm.templetType" placeholder="凭证模板类型">
+              <el-option v-for="item in templetTypeList" :key="item.id" :label="item.templetTypeName" :value="item.id" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="凭证模板名称" prop="templetName">
+            <el-input v-model="templateForm.templetName" placeholder="凭证模板名称" />
+          </el-form-item>
+          <el-form-item label="保存金额" prop="isShowNumber">
+            <el-radio v-model="templateForm.isShowNumber" :label="0">是</el-radio>
+            <el-radio v-model="templateForm.isShowNumber" :label="1">否</el-radio>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer" align="center">
+          <el-button @click="dialogVisible5 = false">取消</el-button>
+          <el-button type="primary" @click="saveTemplet()">确定</el-button>
+        </div>
     </el-dialog>
   </div>
 </template>
@@ -311,16 +331,18 @@ export default {
       },
       tableData: [{}, {}, {}, {}],
       voucherTable: [],
-      dialogFormVisible1: false,
-      dialogFormVisible2: false,
-      dialogFormVisible3: false,
-      dialogFormVisible4: false,
+      dialogVisible1: false,
+      dialogVisible2: false,
+      dialogVisible3: false,
+      dialogVisible4: false,
+      dialogVisible5: false,
       dialogStatus: 'static', // static原始状态，create设置辅助核算，update编辑辅助核算
       templetData: [],
       summaryData: [],
       summaryPageData: [],
       totalMoney1: 0,
       totalMoney2: 0,
+      tempTemplate: {},
       listQuery1: {
         pageIndex: 1,
         pageNum: 10,
@@ -339,7 +361,17 @@ export default {
       invCatgList: [],
       jzCode: '',
       jzType: 0,
-      curVoucherId: this.$route.query.id
+      curVoucherId: this.$route.query.id,
+      templateForm: {
+        templetName: '',
+        templetType: '',
+        isShowNumber: 0
+      },
+      templateRules: {
+        templetName: [{ required: true, message: '不能为空', trigger: 'change' }],
+        templetType: [{ required: true, message: '不能为空', trigger: 'change' }]
+      },
+      tempTemplate: {}
     }
   },
   computed: {
@@ -500,7 +532,7 @@ export default {
     },
     cancelTempletAuxiliary() {
       this.lineData = []
-      this.dialogFormVisible4 = false
+      this.dialogVisible4 = false
     },
     saveTempletAuxiliary() {
       var len = this.lineData.length
@@ -531,7 +563,7 @@ export default {
         }
       }
       this.tableData = deepClone(this.lineData)
-      this.dialogFormVisible4 = false
+      this.dialogVisible4 = false
     },
     getParamValueById(arr, param, id) {
       var val = ''
@@ -578,7 +610,7 @@ export default {
       }
     },
     longNameClick(row, index) {
-      this.dialogFormVisible3 = true
+      this.dialogVisible3 = true
       this.showModifyAuxiliary(row, index)
     },
     showModifyAuxiliary(row, index) {
@@ -597,13 +629,13 @@ export default {
       }
       this.showCoaCode = obj.coaCode + ' ' + obj.coaName
       this.curShowIndex = obj.index
-      this.dialogFormVisible3 = true
+      this.dialogVisible3 = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
     },
     cancelAuxiliary() {
-      this.dialogFormVisible3 = false
+      this.dialogVisible3 = false
       if (this.dialogStatus === 'create') {
         // 设置辅助核算取消时清空
         this.$set(this.tableData[this.curShowIndex], 'coaId', '')
@@ -642,7 +674,7 @@ export default {
             curObj.coaCobinationCode = coaCobinationCode.substring(1)
             curObj.coaCobinationName = coaCobinationName.substring(1)
           }
-          this.dialogFormVisible3 = false
+          this.dialogVisible3 = false
           this.dialogStatus = 'static'
         }
       })
@@ -764,7 +796,8 @@ export default {
         jzCode: this.jzCode
       }
       if (type === 1) {
-        this.saveTemplet(obj)
+        this.tempTemplate = obj
+        this.dialogVisible5 = true
       } else {
         if (this.totalMoney1 !== this.totalMoney2) {
           this.$message.warning('借贷金额必须相等！')
@@ -774,10 +807,16 @@ export default {
         this.saveVoucher(obj, type)
       }
     },
-    saveTemplet(obj) {
-      templetSave({ container: obj }).then(res => {
-        if (res.data.success) {
-          this.$message.success('凭证模板保存成功!')
+    saveTemplet() {
+      this.$refs['templateForm'].validate((valid) => {
+        if (valid) {
+          const obj = { container: this.tempTemplate }
+          obj.container.template = this.templateForm
+          templetSave({ container: obj }).then(res => {
+            if (res.data.success) {
+              this.$message.success('凭证模板保存成功!')
+            }
+          })
         }
       })
     },
@@ -865,7 +904,7 @@ export default {
       return String(amount)
     },
     selectTemplet(id) {
-      this.dialogFormVisible1 = false
+      this.dialogVisible1 = false
       getTempletById(id).then(res => {
         if (res.data.data.popup === 1) {
           this.lineData = res.data.data.lineList
@@ -878,7 +917,7 @@ export default {
             item.itemId = ''
             item.projId = ''
           })
-          this.dialogFormVisible4 = true
+          this.dialogVisible4 = true
         } else {
           this.tableData = res.data.data.lineList
         }
