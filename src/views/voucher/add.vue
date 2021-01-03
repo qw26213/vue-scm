@@ -251,8 +251,8 @@
             <el-input v-model="templateForm.templetName" placeholder="凭证模板名称" />
           </el-form-item>
           <el-form-item label="保存金额" prop="isShowNumber">
-            <el-radio v-model="templateForm.isShowNumber" :label="1">是</el-radio>
-            <el-radio v-model="templateForm.isShowNumber" :label="0">否</el-radio>
+            <el-radio v-model="templateForm.isShowNumber" label="1">是</el-radio>
+            <el-radio v-model="templateForm.isShowNumber" label="0">否</el-radio>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer" align="center">
@@ -365,7 +365,7 @@ export default {
       templateForm: {
         templetName: '',
         templetType: '',
-        isShowNumber: 0
+        isShowNumber: '0'
       },
       templateRules: {
         templetName: [{ required: true, message: '不能为空', trigger: 'change' }],
