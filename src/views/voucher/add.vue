@@ -103,9 +103,9 @@
       </tfoot>
     </table>
     <div class="tx-c w1200" style="margin-top:20px">
-      <el-button v-if="!$route.query.id && !$route.query.tid && jzType === 0" class="filter-item" type="default" @click="saveData(1)">保存为凭证模板</el-button>
-      <el-button v-if="!$route.query.id && !$route.query.tid && jzType === 0" class="filter-item" type="primary" @click="saveData(2)">保存凭证</el-button>
-      <el-button v-if="!$route.query.id && !$route.query.tid && jzType === 1" class="filter-item" type="primary" style="width:160px" @click="saveData(2)">保存凭证</el-button>
+      <el-button v-if="!$route.query.id && jzType == 0" class="filter-item" type="default" @click="saveData(1)">保存为凭证模板</el-button>
+      <el-button v-if="!$route.query.id && !$route.query.tid && jzType == 0" class="filter-item" type="primary" @click="saveData(2)">保存凭证</el-button>
+      <el-button v-if="!$route.query.id && !$route.query.tid && jzType == 1" class="filter-item" type="primary" style="width:160px" @click="saveData(2)">保存凭证</el-button>
       <el-button v-if="$route.query.id" class="filter-item" type="primary" style="width:160px" @click="saveData(2)">保存凭证</el-button>
     </div>
     <el-dialog :close-on-click-modal="false" title="选择凭证模板" :visible.sync="dialogVisible1" width="540px">
@@ -360,7 +360,7 @@ export default {
       projList: [],
       invCatgList: [],
       jzCode: '',
-      jzType: 0,
+      jzType: this.$route.query.jtype || 0,
       curVoucherId: this.$route.query.id,
       templateForm: {
         templetName: '',

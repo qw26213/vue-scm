@@ -24,7 +24,7 @@
         </el-table-column>
         <el-table-column label="操作" align="center" width="150">
           <template slot-scope="{row}">
-            <el-button v-if="row.isSystem!=1" type="text" size="small" @click="toModify(row)">编辑</el-button>
+            <el-button v-if="row.isSystem!=1" type="text" size="small" @click="toModify(row.id)">编辑</el-button>
             <el-button type="text" size="small" @click="toDetail(row.id)">查看</el-button>
             <el-button type="text" size="small" @click="delTemplet(row.id)">删除</el-button>
           </template>
@@ -103,6 +103,12 @@ export default {
         this.tableData = res.data.data
         this.total = res.data.totalNum
       })
+    },
+    addVoucher(){
+      this.$router.push('/voucher/add?jtype=0')
+    },
+    toModify(id) {
+      this.$router.push('/voucher/add?tid=' + id + '&jtype=0')
     },
     toDetail(id) {
       this.$router.push('/voucher/add?tid=' + id)

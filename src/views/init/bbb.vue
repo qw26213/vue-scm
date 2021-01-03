@@ -39,24 +39,24 @@
         <el-table-column :label="'本年借方累计'+ (userInfo.glBookEntity.enablePeriodNum > 1 ? '(1-' + (userInfo.glBookEntity.enablePeriodNum - 1) + '月)':'')" min-width="240">
           <el-table-column label="金额(元)" min-width="80" align="right">
             <template slot-scope="scope">
-              <input v-model.trim="scope.row.yearNetDr" class="tx-r" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1)" @focus="focusThis($event)" @input="inputChange($event, 'yearNetDr', scope.$index)" @change="valChange(scope.row)" />
+              <input v-model.trim="scope.row.periodNetDr" class="tx-r" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1)" @focus="focusThis($event)" @input="inputChange($event, 'periodNetDr', scope.$index)" @change="valChange(scope.row)" />
             </template>
           </el-table-column>
           <el-table-column label="数量" min-width="80" align="right">
             <template slot-scope="scope">
-              <input v-model.trim="scope.row.yearNetQtyDr" class="tx-r" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1)" @focus="focusThis($event)" @input="inputChange($event, 'yearNetQtyDr', scope.$index)" @change="valChange(scope.row)" />
+              <input v-model.trim="scope.row.periodNetQtyDr" class="tx-r" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1)" @focus="focusThis($event)" @input="inputChange($event, 'periodNetQtyDr', scope.$index)" @change="valChange(scope.row)" />
             </template>
           </el-table-column>
         </el-table-column>
         <el-table-column :label="'本年贷方累计'+ (userInfo.glBookEntity.enablePeriodNum > 1 ? '(1-' + (userInfo.glBookEntity.enablePeriodNum - 1) + '月)':'')" min-width="240">
           <el-table-column label="金额(元)" min-width="80" align="right">
             <template slot-scope="scope">
-              <input v-model.trim="scope.row.yearNetCr" class="tx-r" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1)" @focus="focusThis($event)" @input="inputChange($event, 'yearNetCr', scope.$index)" @change="valChange(scope.row)" />
+              <input v-model.trim="scope.row.periodNetCr" class="tx-r" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1)" @focus="focusThis($event)" @input="inputChange($event, 'periodNetCr', scope.$index)" @change="valChange(scope.row)" />
             </template>
           </el-table-column>
           <el-table-column label="数量" min-width="80" align="right">
             <template slot-scope="scope">
-              <input v-model.trim="scope.row.yearNetQtyCr" class="tx-r" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1)" @focus="focusThis($event)" @input="inputChange($event, 'yearNetQtyCr', scope.$index)" @change="valChange(scope.row)" />
+              <input v-model.trim="scope.row.periodNetQtyCr" class="tx-r" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1)" @focus="focusThis($event)" @input="inputChange($event, 'periodNetQtyCr', scope.$index)" @change="valChange(scope.row)" />
             </template>
           </el-table-column>
         </el-table-column>
@@ -86,22 +86,22 @@
         </el-table-column>
         <el-table-column align="center" label="借方发生额">
           <template slot-scope="{row}">
-            <span>{{ row.sumYearNetDr }}</span>
+            <span>{{ row.sumPeriodNetDr }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" label="贷方发生额">
           <template slot-scope="{row}">
-            <span>{{ row.sumYearNetCr }}</span>
+            <span>{{ row.sumPeriodNetCr }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" label="差额">
           <template slot-scope="{row}">
-            <span>{{ row.diffYearNet }}</span>
+            <span>{{ row.diffPeriodNet }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" label="是否平衡">
           <template slot-scope="{row}">
-            <span>{{ row.diffBalance == 0 && row.diffYearNet == 0?'平衡':'不平衡' }}</span>
+            <span>{{ row.diffBalance == 0 && row.diffPeriodNet == 0?'平衡':'不平衡' }}</span>
           </template>
         </el-table-column>
       </el-table>
@@ -111,20 +111,20 @@
         <el-form-item label="期初余额" prop="beginBalance">
           <el-input v-model="temp.beginBalance" size="small" placeholder="期初余额" style="width:120px" />
         </el-form-item>
-        <el-form-item label="本年累计借方金额" prop="yearNetDr" label-width="140px">
-          <el-input v-model="temp.yearNetDr" size="small" placeholder="本年累计借方金额" style="width:120px" :disabled="userInfo.glBookEntity.enablePeriodNum == 1" />
+        <el-form-item label="本年累计借方金额" prop="periodNetDr" label-width="140px">
+          <el-input v-model="temp.periodNetDr" size="small" placeholder="本年累计借方金额" style="width:120px" :disabled="userInfo.glBookEntity.enablePeriodNum == 1" />
         </el-form-item>
-        <el-form-item label="本年累计贷方金额" prop="yearNetCr" label-width="140px">
-          <el-input v-model="temp.yearNetCr" size="small" placeholder="本年累计贷方金额" style="width:120px" :disabled="userInfo.glBookEntity.enablePeriodNum == 1" />
+        <el-form-item label="本年累计贷方金额" prop="periodNetCr" label-width="140px">
+          <el-input v-model="temp.periodNetCr" size="small" placeholder="本年累计贷方金额" style="width:120px" :disabled="userInfo.glBookEntity.enablePeriodNum == 1" />
         </el-form-item>
         <el-form-item label="期初数量" prop="beginBalanceQty" label-width="80px">
           <el-input v-model="temp.beginBalanceQty" size="small" placeholder="期初数量" style="width:120px" />
         </el-form-item>
-        <el-form-item label="本年累计借方数量" prop="yearNetQtyDr" label-width="140px">
-          <el-input v-model="temp.yearNetQtyDr" size="small" placeholder="本年累计借方数量" style="width:120px" :disabled="userInfo.glBookEntity.enablePeriodNum == 1" />
+        <el-form-item label="本年累计借方数量" prop="periodNetQtyDr" label-width="140px">
+          <el-input v-model="temp.periodNetQtyDr" size="small" placeholder="本年累计借方数量" style="width:120px" :disabled="userInfo.glBookEntity.enablePeriodNum == 1" />
         </el-form-item>
-        <el-form-item label="本年累计贷方数量" prop="yearNetQtyCr" label-width="140px">
-          <el-input v-model="temp.yearNetQtyCr" size="small" placeholder="本年累计贷方数量" style="width:120px" :disabled="userInfo.glBookEntity.enablePeriodNum == 1" />
+        <el-form-item label="本年累计贷方数量" prop="periodNetQtyCr" label-width="140px">
+          <el-input v-model="temp.periodNetQtyCr" size="small" placeholder="本年累计贷方数量" style="width:120px" :disabled="userInfo.glBookEntity.enablePeriodNum == 1" />
         </el-form-item>
         <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(0)=='1'" label="供应商" prop="supplierId">
           <el-select ref="supplierSelect" v-model="temp.supplierId" size="small" placeholder="供应商" style="width:120px">
@@ -199,11 +199,11 @@ export default {
       temp: {
         auxiliary: '000000000000000',
         beginBalance: 0,
-        yearNetDr: 0,
-        yearNetCr: 0,
+        periodNetDr: 0,
+        periodNetCr: 0,
         beginBalanceQty: 0,
-        yearNetQtyDr: 0,
-        yearNetQtyCr: 0,
+        periodNetQtyDr: 0,
+        periodNetQtyCr: 0,
         supplierId: '',
         custId: '',
         staffId: '',
@@ -214,11 +214,11 @@ export default {
       },
       resetTemp: {
         beginBalance: 0,
-        yearNetDr: 0,
-        yearNetCr: 0,
+        periodNetDr: 0,
+        periodNetCr: 0,
         beginBalanceQty: 0,
-        yearNetQtyDr: 0,
-        yearNetQtyCr: 0,
+        periodNetQtyDr: 0,
+        periodNetQtyCr: 0,
         supplierId: '',
         custId: '',
         staffId: '',
@@ -229,11 +229,11 @@ export default {
       },
       rules: {
         beginBalance: [{ required: true, message: '不能为空', trigger: 'change' }],
-        yearNetDr: [{ required: true, message: '不能为空', trigger: 'change' }],
-        yearNetCr: [{ required: true, message: '不能为空', trigger: 'change' }],
+        periodNetDr: [{ required: true, message: '不能为空', trigger: 'change' }],
+        periodNetCr: [{ required: true, message: '不能为空', trigger: 'change' }],
         beginBalanceQty: [{ required: true, message: '不能为空', trigger: 'change' }],
-        yearNetQtyDr: [{ required: true, message: '不能为空', trigger: 'change' }],
-        yearNetQtyCr: [{ required: true, message: '不能为空', trigger: 'change' }],
+        periodNetQtyDr: [{ required: true, message: '不能为空', trigger: 'change' }],
+        periodNetQtyCr: [{ required: true, message: '不能为空', trigger: 'change' }],
         supplierId: [{ required: true, message: '不能为空', trigger: 'change' }],
         custId: [{ required: true, message: '不能为空', trigger: 'change' }],
         staffId: [{ required: true, message: '不能为空', trigger: 'change' }],
@@ -315,10 +315,10 @@ export default {
       var row = this.tableData[index]
       this.$set(row, 'beginBalance', 0)
       this.$set(row, 'beginBalanceQty', 0)
-      this.$set(row, 'yearNetDr', 0)
-      this.$set(row, 'yearNetQtyDr', 0)
-      this.$set(row, 'yearNetCr', 0)
-      this.$set(row, 'yearNetQtyCr', 0)
+      this.$set(row, 'periodNetDr', 0)
+      this.$set(row, 'periodNetQtyDr', 0)
+      this.$set(row, 'periodNetCr', 0)
+      this.$set(row, 'periodNetQtyCr', 0)
       this.calculate(row)
       this.$nextTick(() => {
         this.tableData.splice(index, 1)
@@ -328,10 +328,10 @@ export default {
       var obj = {
         sumBalanceDr: 0,
         sumBalanceCr: 0,
-        sumYearNetDr: 0,
-        sumYearNetCr: 0,
+        sumPeriodNetDr: 0,
+        sumPeriodNetCr: 0,
         diffBalance: 0,
-        diffYearNet: 0
+        diffPeriodNet: 0
       }
       const arr = this.tableData
       for (var i = 0; i < arr.length; i++) {
@@ -341,20 +341,20 @@ export default {
         var tmpCrDr = arr[i].crDr // 方向
         var tmpBeginBalance = Number(arr[i].beginBalance) // 期初金额
         var tmpBeginBalanceQty = Number(arr[i].beginBalanceQty) // 期初数量
-        var tmpYearNetDr = Number(arr[i].yearNetDr) // 借方金额
-        var tmpYearNetQtyDr = Number(arr[i].yearNetQtyDr) // 借方数量
-        var tmpYearNetCr = Number(arr[i].yearNetCr) // 贷方金额
-        var tmpYearNetQtyCr = Number(arr[i].yearNetQtyCr) // 贷方数量
+        var tmpPeriodNetDr = Number(arr[i].periodNetDr) // 借方金额
+        var tmpPeriodNetQtyDr = Number(arr[i].periodNetQtyDr) // 借方数量
+        var tmpPeriodNetCr = Number(arr[i].periodNetCr) // 贷方金额
+        var tmpPeriodNetQtyCr = Number(arr[i].periodNetQtyCr) // 贷方数量
         if (tmpCrDr == 1) {
           obj.sumBalanceDr += tmpBeginBalance
         } else {
           obj.sumBalanceCr += tmpBeginBalance
         }
-        obj.sumYearNetDr += tmpYearNetDr
-        obj.sumYearNetCr += tmpYearNetCr
+        obj.sumPeriodNetDr += tmpPeriodNetDr
+        obj.sumPeriodNetCr += tmpPeriodNetCr
       }
       obj.diffBalance = obj.sumBalanceDr - obj.sumBalanceCr
-      obj.diffYearNet = obj.sumYearNetDr - obj.sumYearNetCr
+      obj.diffPeriodNet = obj.sumPeriodNetDr - obj.sumPeriodNetCr
       this.balanceObj = obj
     },
     valChange(row) {
@@ -362,16 +362,16 @@ export default {
         const crDr = row.crDr
         const balance = toNumStr(row.beginBalance)
         const balanceQty = toNumStr(row.beginBalanceQty)
-        const yearNetDr = toNumStr(row.yearNetDr)
-        const yearNetQtyDr = toNumStr(row.yearNetQtyDr)
-        const yearNetCr = toNumStr(row.yearNetCr)
-        const yearNetQtyCr = toNumStr(row.yearNetQtyCr)
+        const periodNetDr = toNumStr(row.periodNetDr)
+        const periodNetQtyDr = toNumStr(row.periodNetQtyDr)
+        const periodNetCr = toNumStr(row.periodNetCr)
+        const periodNetQtyCr = toNumStr(row.periodNetQtyCr)
         row.beginBalance = balance
         row.beginBalanceQty = balanceQty
-        row.yearNetDr = yearNetDr
-        row.yearNetQtyDr = yearNetQtyDr
-        row.yearNetCr = yearNetCr
-        row.yearNetQtyCr = yearNetQtyCr
+        row.periodNetDr = periodNetDr
+        row.periodNetQtyDr = periodNetQtyDr
+        row.periodNetCr = periodNetCr
+        row.periodNetQtyCr = periodNetQtyCr
         if (crDr == 1) {
           row.beginBalanceDr = balance
           row.beginBalanceQtyDr = balanceQty
@@ -404,20 +404,20 @@ export default {
         if (this.tableData[i].coaCode == coaCode && this.tableData[i].type == 0) {
           amount1 += Number(this.tableData[i].beginBalance)
           amount2 += Number(this.tableData[i].beginBalanceQty)
-          amount3 += Number(this.tableData[i].yearNetDr)
-          amount4 += Number(this.tableData[i].yearNetQtyDr)
-          amount5 += Number(this.tableData[i].yearNetCr)
-          amount6 += Number(this.tableData[i].yearNetQtyCr)
+          amount3 += Number(this.tableData[i].periodNetDr)
+          amount4 += Number(this.tableData[i].periodNetQtyDr)
+          amount5 += Number(this.tableData[i].periodNetCr)
+          amount6 += Number(this.tableData[i].periodNetQtyCr)
         }
       }
       for (let i = 0; i < this.tableData.length; i++) {
         if (this.tableData[i].coaCode == coaCode && this.tableData[i].type == 1) {
           this.$set(this.tableData[i], 'beginBalance', amount1)
           this.$set(this.tableData[i], 'beginBalanceQty', amount2)
-          this.$set(this.tableData[i], 'yearNetDr', amount3)
-          this.$set(this.tableData[i], 'yearNetQtyDr', amount4)
-          this.$set(this.tableData[i], 'yearNetCr', amount5)
-          this.$set(this.tableData[i], 'yearNetQtyCr', amount6)
+          this.$set(this.tableData[i], 'periodNetDr', amount3)
+          this.$set(this.tableData[i], 'periodNetQtyDr', amount4)
+          this.$set(this.tableData[i], 'periodNetCr', amount5)
+          this.$set(this.tableData[i], 'periodNetQtyCr', amount6)
           if (this.tableData[i].coaCode.length > 4) {
             this.calculateTop(row.coaCode)
           }
@@ -437,20 +437,20 @@ export default {
         if (this.tableData[i].coaCode.substr(0, this.tableData[i].coaCode.length - 2) == parentCode && this.tableData[i].type == 1) {
           amount1 += Number(this.tableData[i].beginBalance)
           amount2 += Number(this.tableData[i].beginBalanceQty)
-          amount3 += Number(this.tableData[i].yearNetDr)
-          amount4 += Number(this.tableData[i].yearNetQtyDr)
-          amount5 += Number(this.tableData[i].yearNetCr)
-          amount6 += Number(this.tableData[i].yearNetQtyCr)
+          amount3 += Number(this.tableData[i].periodNetDr)
+          amount4 += Number(this.tableData[i].periodNetQtyDr)
+          amount5 += Number(this.tableData[i].periodNetCr)
+          amount6 += Number(this.tableData[i].periodNetQtyCr)
         }
       }
       for (let i = 0; i < this.tableData.length; i++) {
         if (this.tableData[i].coaCode == parentCode && this.tableData[i].type == 1) {
           this.$set(this.tableData[i], 'beginBalance', amount1)
           this.$set(this.tableData[i], 'beginBalanceQty', amount2)
-          this.$set(this.tableData[i], 'yearNetDr', amount3)
-          this.$set(this.tableData[i], 'yearNetQtyDr', amount4)
-          this.$set(this.tableData[i], 'yearNetCr', amount5)
-          this.$set(this.tableData[i], 'yearNetQtyCr', amount6)
+          this.$set(this.tableData[i], 'periodNetDr', amount3)
+          this.$set(this.tableData[i], 'periodNetQtyDr', amount4)
+          this.$set(this.tableData[i], 'periodNetCr', amount5)
+          this.$set(this.tableData[i], 'periodNetQtyCr', amount6)
           if (this.tableData[i].coaCode.length > 4) {
             this.calculateTop(this.tableData[i].coaCode)
           }
@@ -503,10 +503,10 @@ export default {
           curObj.isAuxiliary = 1
           curObj.beginBalance = this.temp.beginBalance
           curObj.beginBalanceQty = this.temp.beginBalanceQty
-          curObj.yearNetDr = this.temp.yearNetDr
-          curObj.yearNetQtyDr = this.temp.yearNetQtyDr
-          curObj.yearNetCr = this.temp.yearNetCr
-          curObj.yearNetQtyCr = this.temp.yearNetQtyCr
+          curObj.periodNetDr = this.temp.periodNetDr
+          curObj.periodNetQtyDr = this.temp.periodNetQtyDr
+          curObj.periodNetCr = this.temp.periodNetCr
+          curObj.periodNetQtyCr = this.temp.periodNetQtyCr
           this.$refs['dataForm'].validate((valid) => {
             if (valid) {
               this.tableData.splice(this.curShowIndex + 1, 0, curObj)
@@ -525,7 +525,7 @@ export default {
       if (this.balanceObj.diffBalance !== 0) {
         info = '借贷方期初余额不等,'
       }
-      if (this.balanceObj.diffYearNet !== 0) {
+      if (this.balanceObj.diffPeriodNet !== 0) {
         info = '借贷方发生额不等,'
       }
       this.saveloading = true
