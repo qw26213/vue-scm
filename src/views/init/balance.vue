@@ -106,58 +106,58 @@
         </el-table-column>
       </el-table>
     </el-dialog>
-    <el-dialog :close-on-click-modal="false" title="设置辅助核算" :visible.sync="dialogFormVisible2" width="820px">
-      <el-form ref="dataForm" :rules="rules" :model="temp" :inline="true" label-position="right" label-width="80px" style="width: 760px; margin-left:15px;">
+    <el-dialog :close-on-click-modal="false" title="设置辅助核算" :visible.sync="dialogFormVisible2" width="660px">
+      <el-form ref="dataForm" class="auditform" :rules="rules" :model="temp" :inline="true" label-position="top" style="width: 600px; margin-left:15px;">
         <el-form-item label="期初余额" prop="beginBalance">
-          <el-input v-model="temp.beginBalance" size="small" placeholder="期初余额" style="width:120px" />
+          <el-input v-model="temp.beginBalance" size="small" placeholder="期初余额" style="width:185px" />
         </el-form-item>
         <el-form-item label="本年累计借方金额" prop="yearNetDr" label-width="140px">
-          <el-input v-model="temp.yearNetDr" size="small" placeholder="本年累计借方金额" style="width:120px" :disabled="userInfo.glBookEntity.enablePeriodNum == 1" />
+          <el-input v-model="temp.yearNetDr" size="small" placeholder="本年累计借方金额" style="width:185px" :disabled="userInfo.glBookEntity.enablePeriodNum == 1" />
         </el-form-item>
         <el-form-item label="本年累计贷方金额" prop="yearNetCr" label-width="140px">
-          <el-input v-model="temp.yearNetCr" size="small" placeholder="本年累计贷方金额" style="width:120px" :disabled="userInfo.glBookEntity.enablePeriodNum == 1" />
+          <el-input v-model="temp.yearNetCr" size="small" placeholder="本年累计贷方金额" style="width:185px" :disabled="userInfo.glBookEntity.enablePeriodNum == 1" />
         </el-form-item>
         <el-form-item label="期初数量" prop="beginBalanceQty" label-width="80px">
-          <el-input v-model="temp.beginBalanceQty" size="small" placeholder="期初数量" style="width:120px" />
+          <el-input v-model="temp.beginBalanceQty" size="small" placeholder="期初数量" style="width:185px" />
         </el-form-item>
         <el-form-item label="本年累计借方数量" prop="yearNetQtyDr" label-width="140px">
-          <el-input v-model="temp.yearNetQtyDr" size="small" placeholder="本年累计借方数量" style="width:120px" :disabled="userInfo.glBookEntity.enablePeriodNum == 1" />
+          <el-input v-model="temp.yearNetQtyDr" size="small" placeholder="本年累计借方数量" style="width:185px" :disabled="userInfo.glBookEntity.enablePeriodNum == 1" />
         </el-form-item>
         <el-form-item label="本年累计贷方数量" prop="yearNetQtyCr" label-width="140px">
-          <el-input v-model="temp.yearNetQtyCr" size="small" placeholder="本年累计贷方数量" style="width:120px" :disabled="userInfo.glBookEntity.enablePeriodNum == 1" />
+          <el-input v-model="temp.yearNetQtyCr" size="small" placeholder="本年累计贷方数量" style="width:185px" :disabled="userInfo.glBookEntity.enablePeriodNum == 1" />
         </el-form-item>
         <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(0)=='1'" label="供应商" prop="supplierId">
-          <el-select ref="supplierSelect" v-model="temp.supplierId" size="small" placeholder="供应商" style="width:120px">
+          <el-select ref="supplierSelect" v-model="temp.supplierId" size="small" placeholder="供应商" style="width:185px">
             <el-option v-for="(item,index) in supplierList" :key="item.supplierCode" :data-code="item.supplierCode" :label="item.supplierName" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(1)=='1'" label="客户" prop="custId" label-width="140px">
-          <el-select ref="custSelect" v-model="temp.custId" size="small" placeholder="客户" style="width:120px">
+          <el-select ref="custSelect" v-model="temp.custId" size="small" placeholder="客户" style="width:185px">
             <el-option v-for="(item,index) in custList" :key="item.custCode" :data-code="item.custCode" :label="item.custName" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(2)=='1'" label="部门" prop="deptId" label-width="140px">
-          <el-select ref="deptSelect" v-model="temp.deptId" size="small" placeholder="部门" style="width:120px">
+          <el-select ref="deptSelect" v-model="temp.deptId" size="small" placeholder="部门" style="width:185px">
             <el-option v-for="(item,index) in deptList" :key="item.deptCode" :data-code="item.deptCode" :label="item.deptName" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(3)=='1'" label="职员" prop="staffId" label-width="80px">
-          <el-select ref="staffSelect" v-model="temp.staffId" size="small" placeholder="职员" style="width:120px">
+          <el-select ref="staffSelect" v-model="temp.staffId" size="small" placeholder="职员" style="width:185px">
             <el-option v-for="(item,index) in staffList" :key="item.staffCode" :data-code="item.staffCode" :label="item.staffName" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(4)=='1'" label="品类" prop="invCatgId" label-width="140px">
-          <el-select ref="invCatgSelect" v-model="temp.invCatgId" size="small" placeholder="品类" style="width:120px">
+          <el-select ref="invCatgSelect" v-model="temp.invCatgId" size="small" placeholder="品类" style="width:185px">
             <el-option v-for="(item,index) in invCatgList" :key="item.invCatgCode" :data-code="item.invCatgCode" :label="item.invCatgName" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(5)=='1'" label="存货" prop="itemId" label-width="140px">
-          <el-select ref="itemSelect" v-model="temp.itemId" size="small" placeholder="存货" style="width:120px">
+          <el-select ref="itemSelect" v-model="temp.itemId" size="small" placeholder="存货" style="width:185px">
             <el-option v-for="(item,index) in itemList" :key="item.itemCode" :data-code="item.itemCode" :label="item.itemName" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item v-if="temp.auxiliary && temp.auxiliary.charAt(6)=='1'" label="项目" prop="projId">
-          <el-select ref="projSelect" v-model="temp.projId" size="small" placeholder="项目" style="width:120px">
+          <el-select ref="projSelect" v-model="temp.projId" size="small" placeholder="项目" style="width:185px">
             <el-option v-for="(item,index) in projList" :key="item.projCode" :data-code="item.projCode" :label="item.projName" :value="item.id" />
           </el-select>
         </el-form-item>
@@ -593,4 +593,5 @@ input[disabled]{background: #f9f9f9;}
 }
 .tabletxt{display:inline-block;line-height:32px}
 >>> .el-button--mini.is-circle{padding: 4px;}
+>>> .auditform .el-form-item__label{line-height:24px;padding-bottom:0px}
 </style>
