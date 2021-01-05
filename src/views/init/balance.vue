@@ -562,7 +562,7 @@ export default {
       getBalance(obj).then(res => {
         this.listLoading = false
         this.tableData = res.data.data || []
-        this.auxiliaryData = deepClone(this.tableData)
+        this.auxiliaryData = this.tableData
       }).catch(() => {
         this.listLoading = false
       })
