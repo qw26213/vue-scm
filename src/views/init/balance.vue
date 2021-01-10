@@ -479,11 +479,12 @@ export default {
             var auxiliaryName = ''
             var auxiliaries = auxiliary.split('')
             var AuxiliaryType = ['supplier', 'cust', 'dept', 'staff', 'invCatg', 'item', 'proj']
-            for (var i = 0; i < auxiliaries.length; i++) {
+            for (var i = 0; i < AuxiliaryType.length; i++) {
               if (auxiliaries[i] != null && auxiliaries[i] == 1) {
                 // 显示对应的辅助核算项 1-26
                 var auxiliaryType = AuxiliaryType[i]
                 /* 获取当前辅助核算项的值 */
+                console.log(auxiliaryType)
                 var selectId = this.$refs[auxiliaryType + 'Select'].selected.value
                 var selectText = this.$refs[auxiliaryType + 'Select'].selected.label
                 var modelCode = this.$refs[auxiliaryType + 'Select'].selected.$attrs['data-code']
