@@ -39,24 +39,24 @@
         <el-table-column :label="'本年借方累计'+ (userInfo.glBookEntity.enablePeriodNum > 1 ? '(1-' + (userInfo.glBookEntity.enablePeriodNum - 1) + '月)':'')" min-width="240">
           <el-table-column label="金额(元)" min-width="80" align="right">
             <template slot-scope="scope">
-              <input v-model.trim="scope.row.yearNetDr" class="tx-r" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1)" @focus="focusThis($event)" @input="inputChange($event, 'yearNetDr', scope.$index)" @change="valChange(scope.row)" />
+              <input v-model.trim="scope.row.yearNetDr" class="tx-r" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1) || userInfo.glBookEntity.enablePeriodNum == 1" @focus="focusThis($event)" @input="inputChange($event, 'yearNetDr', scope.$index)" @change="valChange(scope.row)" />
             </template>
           </el-table-column>
           <el-table-column label="数量" min-width="80" align="right">
             <template slot-scope="scope">
-              <input v-model.trim="scope.row.yearNetQtyDr" class="tx-r" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1)" @focus="focusThis($event)" @input="inputChange($event, 'yearNetQtyDr', scope.$index)" @change="valChange(scope.row)" />
+              <input v-model.trim="scope.row.yearNetQtyDr" class="tx-r" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1) || userInfo.glBookEntity.enablePeriodNum == 1" @focus="focusThis($event)" @input="inputChange($event, 'yearNetQtyDr', scope.$index)" @change="valChange(scope.row)" />
             </template>
           </el-table-column>
         </el-table-column>
         <el-table-column :label="'本年贷方累计'+ (userInfo.glBookEntity.enablePeriodNum > 1 ? '(1-' + (userInfo.glBookEntity.enablePeriodNum - 1) + '月)':'')" min-width="240">
           <el-table-column label="金额(元)" min-width="80" align="right">
             <template slot-scope="scope">
-              <input v-model.trim="scope.row.yearNetCr" class="tx-r" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1)" @focus="focusThis($event)" @input="inputChange($event, 'yearNetCr', scope.$index)" @change="valChange(scope.row)" />
+              <input v-model.trim="scope.row.yearNetCr" class="tx-r" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1) || userInfo.glBookEntity.enablePeriodNum == 1" @focus="focusThis($event)" @input="inputChange($event, 'yearNetCr', scope.$index)" @change="valChange(scope.row)" />
             </template>
           </el-table-column>
           <el-table-column label="数量" min-width="80" align="right">
             <template slot-scope="scope">
-              <input v-model.trim="scope.row.yearNetQtyCr" class="tx-r" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1)" @focus="focusThis($event)" @input="inputChange($event, 'yearNetQtyCr', scope.$index)" @change="valChange(scope.row)" />
+              <input v-model.trim="scope.row.yearNetQtyCr" class="tx-r" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1) || userInfo.glBookEntity.enablePeriodNum == 1" @focus="focusThis($event)" @input="inputChange($event, 'yearNetQtyCr', scope.$index)" @change="valChange(scope.row)" />
             </template>
           </el-table-column>
         </el-table-column>

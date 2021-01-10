@@ -159,7 +159,9 @@ export default {
         },
         logout() {
             this.$store.dispatch("user/logout").then(() => {
-                this.$router.push({ path: "/login" })
+                this.$store.dispatch('tagsView/delAllCachedViews').then(() => {
+                    this.$router.push({ path: "/login" })
+                })
             })
         }
     }
