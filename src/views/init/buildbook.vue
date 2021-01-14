@@ -292,21 +292,23 @@ export default {
         if (valid) {
           this.temp.codingRule = this.codingRuleArr.join('-')
           saveBook(this.temp).then(res => {
-            if (this.temp.id !== '') {
-              this.$message.success(res.data.msg)
-              this.$store.dispatch('tagsView/delView', this.$route)
-              this.$router.replace('/init/book')
-            } else {
-              this.$alert(res.data.msg, '提示', {
-                confirmButtonText: '确定',
-                showClose: false,
-                type: 'warning',
-                center: true
-              }).then(() => {
-                this.$store.dispatch('user/logout').then(() => {
-                  this.$router.replace('/login')
+            if (res.data.errorCode === '0') {
+              if (this.temp.id) {
+                this.$message.success(res.data.msg)
+                this.$store.dispatch('tagsView/delView', this.$route)
+                this.$router.replace('/init/book')
+              } else {
+                this.$alert(res.data.msg, '提示', {
+                  confirmButtonText: '确定',
+                  showClose: false,
+                  type: 'warning',
+                  center: true
+                }).then(() => {
+                  this.$store.dispatch('user/logout').then(() => {
+                    this.$router.replace('/login')
+                  })
                 })
-              })
+              }
             }
           })
         }

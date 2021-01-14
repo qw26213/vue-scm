@@ -168,7 +168,7 @@ export default {
         content: ''
       },
       rules: {
-        content: [{ required: true, message: '审核意见不能为空', trigger: 'change' }]
+        content: [{ required: false, message: '审核意见不能为空', trigger: 'change' }]
       },
       listQuery: {
         pageIndex: 1,
@@ -240,14 +240,14 @@ export default {
       this.initAudit()
     },
     checkAccessItem(status) {
-      this.$refs.dataForm.validate((valid) => {
-        if (valid) {
+      // this.$refs.dataForm.validate((valid) => {
+      //   if (valid) {
           var obj = { jeAuditRemark: this.auditForm.content, jeAuditStatus: status, jeHeaderId: this.jeHeaderId }
           this.checkItem(obj)
-        } else {
-          return false
-        }
-      })
+      //   } else {
+      //     return false
+      //   }
+      // })
     },
     checkItem(obj) {
       voucherAduit(obj).then(res => {

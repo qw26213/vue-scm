@@ -55,7 +55,7 @@
         </el-table-column>
         <el-table-column label="摘要">
           <template slot-scope="{row}">
-            <p v-for="(item,index) in row.listSummary" :key="index" clss="pCell" style="width:max-content;min-width:100%">{{ item }}</p>
+            <p v-for="(item,index) in row.listSummary" :key="index" clss="pCell tx-c" style="width:max-content;min-width:100%">{{ item }}</p>
           </template>
         </el-table-column>
         <el-table-column label="借方金额">

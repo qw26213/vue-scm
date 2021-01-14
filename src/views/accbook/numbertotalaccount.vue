@@ -105,12 +105,12 @@
         <el-table-column label="本年借方">
           <el-table-column label="数量" align="right">
             <template slot-scope="{row}">
-              <span>{{ row.yearNetDr }}</span>
+              <span>{{ row.yearNetNumDr }}</span>
             </template>
           </el-table-column>
           <el-table-column label="金额" align="right">
             <template slot-scope="{row}">
-              <span>{{ row.yearNetNumDr | Fixed }}</span>
+              <span>{{ row.yearNetDr | Fixed }}</span>
             </template>
           </el-table-column>
         </el-table-column>
@@ -134,7 +134,7 @@
           </el-table-column>
           <el-table-column label="数量" align="right">
             <template slot-scope="{row}">
-              <span>{{ row.balanceQty }}</span>
+              <span>{{ row.balanceQty | zeroNull }}</span>
             </template>
           </el-table-column>
           <el-table-column label="单价" align="right">
@@ -163,6 +163,10 @@ export default {
   name: 'numberTotalAccount',
   components: { Pagination, PeriodList },
   filters: {
+    zeroNull: function(num) {
+      if (!num) { return '' }
+      return num
+    },
     Fixed: function(num) {
       if (!num) { return '' }
       return parseFloat(num).toFixed(2)
