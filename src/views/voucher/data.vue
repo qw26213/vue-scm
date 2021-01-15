@@ -140,7 +140,7 @@ export default {
     ])
   },
   created() {
-    this.$store.dispatch('voucher/getCoaList')
+    this.$store.dispatch('voucher/getCoaList', 0)
     getYearsById().then(res => {
       const list = res.data.data
       const s = new Date(list[0]+'-01-01 00:00:00').getTime()

@@ -424,7 +424,7 @@ export default {
     if (this.$route.query.id) {
       this.getVoucher(this.$route.query.id)
     } else if (this.$route.query.tid) {
-      this.$store.dispatch('voucher/getCoaList')
+      this.$store.dispatch('voucher/getCoaList', 0)
       getTempletById(this.$route.query.tid).then(res => {
         this.tableData = res.data.data.lineList
       }).catch(() => {
@@ -433,7 +433,7 @@ export default {
     } else {
       this.$store.dispatch('voucher/getSummaryList')
       this.$store.dispatch('voucher/getSummaryTable')
-      this.$store.dispatch('voucher/getCoaList')
+      this.$store.dispatch('voucher/getCoaList', 0)
       this.getJeSeqByDate()
       getVoucherMaxDate().then(res => {
         this.billHeader.jeDate = res.data.data // 取服务器日期
@@ -507,7 +507,7 @@ export default {
     initMyVoucher(res) {
       this.$store.dispatch('voucher/getSummaryList')
       this.$store.dispatch('voucher/getSummaryTable')
-      this.$store.dispatch('voucher/getCoaList')
+      this.$store.dispatch('voucher/getCoaList', 0)
       if (this.jzType !== 1) {
         this.billHeader = res.data.data.header
       }

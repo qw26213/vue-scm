@@ -200,7 +200,7 @@ export default {
     ])
   },
   created() {
-    this.$store.dispatch('voucher/getCoaList')
+    this.$store.dispatch('voucher/getCoaList', 0)
     this.getList()
   },
   methods: {

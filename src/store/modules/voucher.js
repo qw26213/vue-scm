@@ -32,7 +32,7 @@ const mutations = {
 
 const actions = {
     getCoaList({ commit }, data) {
-        getCoas().then(res => {
+        getCoas({ 'includeRoot': 0 }).then(res => {
             commit('SET_COA', res.data.data || [])
         })
     },

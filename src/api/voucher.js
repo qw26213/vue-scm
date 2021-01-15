@@ -1,9 +1,10 @@
 import request from '@/utils/request'
 
-export function getCoas() {
+export function getCoas(data) {
   return request({
     url: '/drp/gl/coa/treeData',
-    method: 'post'
+    method: 'post',
+    data
   })
 }
 
