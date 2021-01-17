@@ -383,7 +383,7 @@ export default {
           row.beginBalanceCr = balance
           row.beginBalanceQtyCr = balanceQty
         }
-        if (row.type == 0) { // 是辅助核算科目，或是末级科目
+        if (row.type == 0 && row.leaf == 1) { // 是辅助核算科目，或是末级科目
           this.calculate(row)
         } else {
           if (row.coaCode.length > 4) {
@@ -405,7 +405,7 @@ export default {
       console.log('type=' + row.type)
       if (row.isAuxiliary === 1) {
         this.tableData.forEach(item => {
-          if (item.coaCode == coaCode && item.type == 0) {
+          if (item.coaCode == coaCode && item.type == 0 && item.leaf == 1) {
             console.log('开始计算1')
             amount1 += Number(item.beginBalance)
             amount2 += Number(item.beginBalanceQty)
@@ -415,9 +415,22 @@ export default {
             amount6 += Number(item.yearNetQtyCr)
           }
         })
+        this.tableData.forEach(item => {
+          if (item.coaCode == coaCode && item.type == 1 && item.leaf == 1) {
+            this.$set(item, 'beginBalance', amount1)
+            this.$set(item, 'beginBalanceQty', amount2)
+            this.$set(item, 'yearNetDr', amount3)
+            this.$set(item, 'yearNetQtyDr', amount4)
+            this.$set(item, 'yearNetCr', amount5)
+            this.$set(item, 'yearNetQtyCr', amount6)
+            if (item.coaCode.length > 4) {
+              this.calculateTop(row.coaCode)
+            }
+          }
+        })
       } else {
         this.tableData.forEach(item => {
-          if (item.coaCode.substr(0, item.coaCode.length - 2) == parentCode && item.type == 0) {
+          if (item.coaCode.substr(0, item.coaCode.length - 2) == parentCode && item.type == 0 && item.leaf == 1) {
             console.log('开始计算2')
             amount1 += Number(item.beginBalance)
             amount2 += Number(item.beginBalanceQty)
@@ -427,20 +440,20 @@ export default {
             amount6 += Number(item.yearNetQtyCr)
           }
         })
-      }
-      this.tableData.forEach(item => {
-        if ((item.coaCode == coaCode && item.type == 1) || (item.coaCode == parentCode && item.type == 1)) {
-          this.$set(item, 'beginBalance', amount1)
-          this.$set(item, 'beginBalanceQty', amount2)
-          this.$set(item, 'yearNetDr', amount3)
-          this.$set(item, 'yearNetQtyDr', amount4)
-          this.$set(item, 'yearNetCr', amount5)
-          this.$set(item, 'yearNetQtyCr', amount6)
-          if (item.coaCode.length > 4) {
-            this.calculateTop(row.coaCode)
+        this.tableData.forEach(item => {
+          if (item.coaCode == parentCode && item.leaf == 0) {
+            this.$set(item, 'beginBalance', amount1)
+            this.$set(item, 'beginBalanceQty', amount2)
+            this.$set(item, 'yearNetDr', amount3)
+            this.$set(item, 'yearNetQtyDr', amount4)
+            this.$set(item, 'yearNetCr', amount5)
+            this.$set(item, 'yearNetQtyCr', amount6)
+            if (item.coaCode.length > 4) {
+              this.calculateTop(row.coaCode)
+            }
           }
-        }
-      })
+        })
+      }
     },
     calculateTop(coaCode) { // 向上汇总
       const len = coaCode.length
@@ -452,7 +465,8 @@ export default {
       var amount5 = 0
       var amount6 = 0
       this.tableData.forEach(item => {
-        if (item.coaCode.substr(0, item.coaCode.length - 2) == parentCode && item.type == 1) {
+        if (item.coaCode.substr(0, item.coaCode.length - 2) == parentCode && ((item.type == 1 && item.isAuxiliary == 1) || (item.type == 0 && item.isAuxiliary == 0))) {
+          console.log('1212213')
           amount1 += Number(item.beginBalance)
           amount2 += Number(item.beginBalanceQty)
           amount3 += Number(item.yearNetDr)
@@ -462,7 +476,7 @@ export default {
         }
       })
       this.tableData.forEach(item => {
-        if (item.coaCode == parentCode && item.type == 1) {
+        if (item.coaCode == parentCode) {
           this.$set(item, 'beginBalance', amount1)
           this.$set(item, 'beginBalanceQty', amount2)
           this.$set(item, 'yearNetDr', amount3)

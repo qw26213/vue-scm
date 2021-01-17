@@ -248,17 +248,14 @@ export default {
       this.$refs.auditform.validate((valid) => {
         if (valid) {
           var obj = { jeAuditRemark: this.auditForm.content, jeAuditStatus: this.auditForm.status, jeHeaderId: this.jeHeaderId }
-          this.checkItem(obj)
+          voucherAduit(obj).then(res => {
+            this.dialogFormVisible = false
+            if (res.data.success) {
+              this.$message.success(res.data.msg)
+            }
+          })
         } else {
           return false
-        }
-      })
-    },
-    checkItem(obj) {
-      voucherAduit(obj).then(res => {
-        this.dialogFormVisible = false
-        if (res.data.success) {
-          this.$message.success(res.data.msg)
         }
       })
     },
