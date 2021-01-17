@@ -108,7 +108,7 @@ import { getProj, getDept, getStaff, getSupplier, getItem, getinvCatg, getCust }
 import PeriodList from '@/components/voucher/periodList'
 import { getNowMonth } from '@/utils/index'
 export default {
-  name: 'checkBalance',
+  name: 'projbalance',
   components: { Pagination, PeriodList },
   filters: {
     Fixed: function(num) {

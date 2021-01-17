@@ -205,6 +205,8 @@ export default {
         if (this.treeData.length > 0) {
           this.listQuery.itemId = this.treeData[0].id
           this.getList()
+        } else {
+          this.listLoading = false
         }
       })
     },

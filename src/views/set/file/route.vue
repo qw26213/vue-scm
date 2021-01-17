@@ -40,8 +40,8 @@
       </el-table>
       <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
     </div>
-    <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增线路':'修改线路'" :visible.sync="dialogFormVisible" width="500px">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="80px" style="width: 440px; margin-left:10px;">
+    <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增线路':'修改线路'" :visible.sync="dialogFormVisible" width="460px">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="80px" style="width: 400px; margin-left:10px;">
         <el-form-item label="线路代码" prop="routeCode">
           <el-input v-model="temp.routeCode" placeholder="线路代码" />
         </el-form-item>

@@ -163,6 +163,7 @@ export default {
       this.pageData = arr
     },
     getList() {
+      console.log('balance')
       this.listLoading = true
       this.listQuery.pageIndex = 1
       getBalance(this.listQuery).then(res => {

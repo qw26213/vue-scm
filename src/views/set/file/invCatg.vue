@@ -45,8 +45,8 @@
         </el-table>
         <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
       </div>
-      <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增商品分类':'修改商品分类'" :visible.sync="dialogFormVisible" width="500px">
-        <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="110px" style="width: 300px; margin-left:50px;">
+      <el-dialog :close-on-click-modal="false" :title="dialogStatus=='create'?'新增商品分类':'修改商品分类'" :visible.sync="dialogFormVisible" width="475px">
+        <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="110px" style="width: 420px; margin-left:5px;">
           <el-form-item label="商品分类代码" prop="invCatgCode">
             <el-input v-model="temp.invCatgCode" placeholder="商品分类代码" />
           </el-form-item>

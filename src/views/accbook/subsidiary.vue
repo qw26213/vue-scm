@@ -77,7 +77,7 @@ import Pagination from '@/components/Pagination'
 import PeriodList from '@/components/voucher/periodList'
 import { getNowMonth } from '@/utils/index'
 export default {
-  name: 'detailAccount',
+  name: 'subsidiary',
   components: { Pagination, PeriodList },
   filters: {
     Fixed: function(num) {
@@ -112,6 +112,7 @@ export default {
         if (this.coaArr.length > 0) {
           this.listQuery.coaCode1 = this.coaArr[0].coaCode
         }
+        console.log(12334)
         this.getList()
       })
     })

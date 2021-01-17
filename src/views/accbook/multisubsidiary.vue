@@ -87,7 +87,7 @@ import Pagination from '@/components/Pagination'
 import PeriodList from '@/components/voucher/periodList'
 import { getNowMonth } from '@/utils/index'
 export default {
-  name: 'manyAccount',
+  name: 'multisubsidiary',
   components: { Pagination, PeriodList },
   filters: {
     Fixed: function(num) {

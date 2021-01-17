@@ -86,7 +86,7 @@ import { getProj, getDept, getStaff, getSupplier, getItem, getinvCatg, getCust }
 import PeriodList from '@/components/voucher/periodList'
 import { getNowMonth } from '@/utils/index'
 export default {
-  name: 'checkDetail',
+  name: 'projsubsidiary',
   components: { Pagination, PeriodList },
   filters: {
     Fixed: function(num) {
@@ -123,7 +123,7 @@ export default {
     ])
   },
   created() {
-    this.$store.dispatch('voucher/getCoaList', 0)
+    this.$store.dispatch('voucher/getCoaList', 'projsub')
     this.$store.dispatch('voucher/getAuxiliaryTypeList')
     this.getList()
   },

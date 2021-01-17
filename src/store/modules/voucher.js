@@ -32,7 +32,12 @@ const mutations = {
 
 const actions = {
     getCoaList({ commit }, data) {
-        getCoas({ 'includeRoot': 0 }).then(res => {
+        if (data === 'projsub') {
+            var obj = { includeRoot: 0, isAuxiliary: 1 }
+        } else {
+            var obj = { includeRoot: data }
+        }
+        getCoas(obj).then(res => {
             commit('SET_COA', res.data.data || [])
         })
     },

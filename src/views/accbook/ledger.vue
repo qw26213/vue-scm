@@ -90,7 +90,7 @@ import Pagination from '@/components/Pagination'
 import PeriodList from '@/components/voucher/periodList'
 import { getNowMonth } from '@/utils/index'
 export default {
-  name: 'totalAccount',
+  name: 'ledger',
   components: { Pagination, PeriodList },
   filters: {
     Fixed: function(num) {
@@ -145,6 +145,7 @@ export default {
       this.pageData = arr
     },
     getList() {
+      console.log('ledger')
       this.listLoading = true
       this.listQuery.pageIndex = 1
       getTotalAccount(this.listQuery).then(res => {
