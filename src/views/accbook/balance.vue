@@ -12,11 +12,11 @@
         <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode" />
       </el-select>
       <label class="label">科目级次</label>
-      <el-select v-model="listQuery.coaLevel1" size="small" style="width:100px" placeholder="科目级次" filterable>
+      <el-select v-model="listQuery.coaLevel1" size="small" class="sw60" placeholder="级次" filterable>
         <el-option v-for="item in [1,2,3,4,5,6,7,8]" :key="item" :label="item" :value="item" />
       </el-select>
       <span class="zhi">至</span>
-      <el-select v-model="listQuery.coaLevel2" size="small" style="width:100px" placeholder="科目级次" filterable>
+      <el-select v-model="listQuery.coaLevel2" size="small" class="sw60" placeholder="级次" filterable>
         <el-option v-for="item in [1,2,3,4,5,6,7,8]" :key="item" :label="item" :value="item" />
       </el-select>
       <el-popover placement="bottom" title="更多" width="240" trigger="click">
@@ -128,8 +128,8 @@ export default {
         periodCode2: getNowMonth(),
         coaCode1: '',
         coaCode2: '',
-        coaLevel1: '',
-        coaLevel2: '',
+        coaLevel1: 1,
+        coaLevel2: 8,
         isShowAuxiliary: 1,
         isShowNetAndBalanceNotEqualToZero: 1,
         pageIndex: 1,

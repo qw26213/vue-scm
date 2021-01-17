@@ -69,7 +69,6 @@ th .cell{text-align: center;}
   position:relative;
   margin-bottom: 10px;
 }
-
 .dataTable .el-form-item { margin-bottom: 5px; }
 .dataTable .el-date-editor.el-input--small{width: 125px;}
 .dataTable .el-select--small{width: 125px!important;}
@@ -162,3 +161,8 @@ input:disabled{background-color:#ffffff;}
 
 .el-form-item.question label{padding-right: 30px}
 .el-form-item.question .el-icon-question{margin-left: -25px;margin-right: 5px;}
+
+.filterDiv .sw60{width: 60px!important}
+.filterDiv .sw60 .el-input--small{
+  width:60px
+}
