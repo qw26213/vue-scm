@@ -64,7 +64,7 @@
           </el-table-column>
           <el-table-column label="数量" align="right">
             <template slot-scope="{row}">
-              <span>{{ row.beginNum }}</span>
+              <span>{{ row.beginQty | zeroNull }}</span>
             </template>
           </el-table-column>
           <el-table-column label="单价" align="right">
@@ -81,7 +81,7 @@
         <el-table-column label="本期借方">
           <el-table-column label="数量" align="right">
             <template slot-scope="{row}">
-              <span>{{ row.periodNetNumDr }}</span>
+              <span>{{ row.periodNetQtyDr | zeroNull }}</span>
             </template>
           </el-table-column>
           <el-table-column label="金额" align="right">
@@ -93,7 +93,7 @@
         <el-table-column label="本期贷方">
           <el-table-column label="数量" align="right">
             <template slot-scope="{row}">
-              <span>{{ row.periodNetNumCr }}</span>
+              <span>{{ row.periodNetQtyCr | zeroNull }}</span>
             </template>
           </el-table-column>
           <el-table-column label="金额" align="right">
@@ -105,7 +105,7 @@
         <el-table-column label="本年借方">
           <el-table-column label="数量" align="right">
             <template slot-scope="{row}">
-              <span>{{ row.yearNetNumDr }}</span>
+              <span>{{ row.yearNetQtyDr | zeroNull }}</span>
             </template>
           </el-table-column>
           <el-table-column label="金额" align="right">
@@ -117,7 +117,7 @@
         <el-table-column label="本年贷方">
           <el-table-column label="数量" align="right">
             <template slot-scope="{row}">
-              <span>{{ row.yearNetNumCr }}</span>
+              <span>{{ row.yearNetQtyCr | zeroNull }}</span>
             </template>
           </el-table-column>
           <el-table-column label="金额" align="right">
@@ -164,8 +164,7 @@ export default {
   components: { Pagination, PeriodList },
   filters: {
     zeroNull: function(num) {
-      if (!num) { return '' }
-      return num
+      return num ? num : ''
     },
     Fixed: function(num) {
       if (!num) { return '' }

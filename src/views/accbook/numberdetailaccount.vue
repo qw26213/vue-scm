@@ -49,7 +49,7 @@
         <el-table-column label="借方发生额">
           <el-table-column label="数量" align="right">
             <template slot-scope="{row}">
-              <span>{{ row.qtyDr }}</span>
+              <span>{{ row.qtyDr | zeroNull }}</span>
             </template>
           </el-table-column>
           <el-table-column label="单价" align="right">
@@ -66,7 +66,7 @@
         <el-table-column label="贷方发生额">
           <el-table-column label="数量" align="right">
             <template slot-scope="{row}">
-              <span>{{ row.qtyCr }}</span>
+              <span>{{ row.qtyCr | zeroNull }}</span>
             </template>
           </el-table-column>
           <el-table-column label="单价" align="right">
@@ -88,7 +88,7 @@
           </el-table-column>
           <el-table-column label="数量" align="right">
             <template slot-scope="{row}">
-              <span>{{ row.balanceQty }}</span>
+              <span>{{ row.balanceQty | zeroNull }}</span>
             </template>
           </el-table-column>
           <el-table-column label="单价" align="right">
@@ -117,6 +117,9 @@ export default {
   name: 'numberDetailAccount',
   components: { Pagination, PeriodList },
   filters: {
+    zeroNull: function(num) {
+      return num ? num : ''
+    },
     Fixed: function(num) {
       if (!num) { return '' }
       return parseFloat(num).toFixed(2)
