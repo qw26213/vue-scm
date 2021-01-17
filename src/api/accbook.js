@@ -175,7 +175,7 @@ export function exportMultisubsidiary(data) {
 
 export function getSubsidiarynum(data) {
   return request({
-    url: '/drp/accbook/subsidiarynum/datatables',
+    url: '/drp/accbook/subsidiaryQty/datatables',
     method: 'post',
     data
   })
@@ -183,14 +183,14 @@ export function getSubsidiarynum(data) {
 
 export function printSubsidiaryNum(data) {
   return request({
-    url: '/drp/accbook/printSubsidiaryNum',
+    url: '/drp/accbook/printSubsidiaryQty',
     method: 'post',
     data
   })
 }
 
 export function exportSubsidiaryNum(data) {
-  var exportUrl = '/drp/accbook/exportSubsidiaryNum'
+  var exportUrl = '/drp/accbook/exportSubsidiaryQty'
   var temp = document.createElement('form')
   temp.action = exportUrl
   temp.method = 'POST'
