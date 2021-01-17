@@ -31,47 +31,43 @@
     </div>
     <div class="contentDiv">
       <el-table :key="tableKey" v-loading="listLoading" :data="pageData" border fit highlight-current-row style="width: 100%;" size="small">
-        <el-table-column label="日期" align="center">
-          <template slot-scope="{row}">
-            <span>{{ row.jeDate || '' }}</span>
-          </template>
-        </el-table-column>
+        <el-table-column label="日期" align="center" prop="jeDate" />
         <el-table-column label="凭证字号" align="center">
           <template slot-scope="{row}">
-            <a href="javascript:" @click="$router.push('/voucher/add?id='+row.jeHeaderId)">{{ row.catogeryNameSeq }}</a>
+            <a href="javascript:" @click="$router.push('/voucher/add?id='+row.jeHeaderId)">{{ row && row.catogeryNameSeq }}</a>
           </template>
         </el-table-column>
         <el-table-column label="摘要">
           <template slot-scope="{row}">
-            <span>{{ row.summary }}</span>
+            <span>{{ row && row.summary }}</span>
           </template>
         </el-table-column>
         <el-table-column label="借方金额" align="right">
           <template slot-scope="{row}">
-            <span>{{ row.accountedDr | Fixed }}</span>
+            <span>{{ row && row.accountedDr | Fixed }}</span>
           </template>
         </el-table-column>
         <el-table-column label="贷方金额" align="right">
           <template slot-scope="{row}">
-            <span>{{ row.accountedCr | Fixed }}</span>
+            <span>{{ row && row.accountedCr | Fixed }}</span>
           </template>
         </el-table-column>
         <el-table-column label="余额" align="center">
           <el-table-column label="方向" align="center">
             <template slot-scope="{row}">
-              <span>{{ row.crDrStr }}</span>
+              <span>{{ row && row.crDrStr }}</span>
             </template>
           </el-table-column>
           <el-table-column label="余额" align="right">
             <template slot-scope="{row}">
-              <span>{{ row.balance | Fixed }}</span>
+              <span>{{ row && row.balance | Fixed }}</span>
             </template>
           </el-table-column>
         </el-table-column>
         <el-table-column :label="crDr==1?'借方':'贷方'" align="center">
           <el-table-column v-for="(it, i) in columns" :key="i" :label="it" align="right">
             <template slot-scope="{row}">
-              <span>{{ row.listCoaNet[i] | Fixed }}</span>
+              <span>{{ row && row.listCoaNet[i] | Fixed }}</span>
             </template>
           </el-table-column>
         </el-table-column>

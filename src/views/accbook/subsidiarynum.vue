@@ -153,6 +153,8 @@ export default {
     this.$store.dispatch('voucher/getCoaList', 0).then(res => {
       this.$nextTick(() => {
         if (this.coaArr.length > 0) {
+          console.log(this.coaArr.length)
+          console.log('121212')
           this.listQuery.coaCode1 = this.coaArr[0].coaCode
         }
         this.getList()
