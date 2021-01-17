@@ -400,29 +400,47 @@ export default {
       var amount5 = 0
       var amount6 = 0
       var coaCode = row.coaCode
-      for (let i = 0; i < this.tableData.length; i++) {
-        if (this.tableData[i].coaCode == coaCode && this.tableData[i].type == 0) {
-          amount1 += Number(this.tableData[i].beginBalance)
-          amount2 += Number(this.tableData[i].beginBalanceQty)
-          amount3 += Number(this.tableData[i].yearNetDr)
-          amount4 += Number(this.tableData[i].yearNetQtyDr)
-          amount5 += Number(this.tableData[i].yearNetCr)
-          amount6 += Number(this.tableData[i].yearNetQtyCr)
-        }
+      const len = coaCode.length
+      const parentCode = coaCode.substr(0, len - 2)
+      console.log('type=' + row.type)
+      if (row.isAuxiliary === 1) {
+        this.tableData.forEach(item => {
+          if (item.coaCode == coaCode && item.type == 0) { // 1中间科目，0末级科目
+            console.log('开始计算1')
+            amount1 += Number(item.beginBalance)
+            amount2 += Number(item.beginBalanceQty)
+            amount3 += Number(item.yearNetDr)
+            amount4 += Number(item.yearNetQtyDr)
+            amount5 += Number(item.yearNetCr)
+            amount6 += Number(item.yearNetQtyCr)
+          }
+        })
+      } else {
+        this.tableData.forEach(item => {
+          if (item.coaCode.substr(0, item.coaCode.length - 2) == parentCode && item.type == 0) {
+            console.log('开始计算2')
+            amount1 += Number(item.beginBalance)
+            amount2 += Number(item.beginBalanceQty)
+            amount3 += Number(item.yearNetDr)
+            amount4 += Number(item.yearNetQtyDr)
+            amount5 += Number(item.yearNetCr)
+            amount6 += Number(item.yearNetQtyCr)
+          }
+        })
       }
-      for (let i = 0; i < this.tableData.length; i++) {
-        if (this.tableData[i].coaCode == coaCode && this.tableData[i].type == 1) {
-          this.$set(this.tableData[i], 'beginBalance', amount1)
-          this.$set(this.tableData[i], 'beginBalanceQty', amount2)
-          this.$set(this.tableData[i], 'yearNetDr', amount3)
-          this.$set(this.tableData[i], 'yearNetQtyDr', amount4)
-          this.$set(this.tableData[i], 'yearNetCr', amount5)
-          this.$set(this.tableData[i], 'yearNetQtyCr', amount6)
-          if (this.tableData[i].coaCode.length > 4) {
+      this.tableData.forEach(item => {
+        if ((item.coaCode == coaCode && item.type == 1) || (item.coaCode == parentCode && item.type == 1)) { // 1中间科目，0末级科目
+          this.$set(item, 'beginBalance', amount1)
+          this.$set(item, 'beginBalanceQty', amount2)
+          this.$set(item, 'yearNetDr', amount3)
+          this.$set(item, 'yearNetQtyDr', amount4)
+          this.$set(item, 'yearNetCr', amount5)
+          this.$set(item, 'yearNetQtyCr', amount6)
+          if (item.coaCode.length > 4) {
             this.calculateTop(row.coaCode)
           }
         }
-      }
+      })
     },
     calculateTop(coaCode) { // 向上汇总
       const len = coaCode.length
@@ -433,29 +451,29 @@ export default {
       var amount4 = 0
       var amount5 = 0
       var amount6 = 0
-      for (let i = 0; i < this.tableData.length; i++) {
-        if (this.tableData[i].coaCode.substr(0, this.tableData[i].coaCode.length - 2) == parentCode && this.tableData[i].type == 1) {
-          amount1 += Number(this.tableData[i].beginBalance)
-          amount2 += Number(this.tableData[i].beginBalanceQty)
-          amount3 += Number(this.tableData[i].yearNetDr)
-          amount4 += Number(this.tableData[i].yearNetQtyDr)
-          amount5 += Number(this.tableData[i].yearNetCr)
-          amount6 += Number(this.tableData[i].yearNetQtyCr)
+      this.tableData.forEach(item => {
+        if (item.coaCode.substr(0, item.coaCode.length - 2) == parentCode && item.type == 1) {
+          amount1 += Number(item.beginBalance)
+          amount2 += Number(item.beginBalanceQty)
+          amount3 += Number(item.yearNetDr)
+          amount4 += Number(item.yearNetQtyDr)
+          amount5 += Number(item.yearNetCr)
+          amount6 += Number(item.yearNetQtyCr)
         }
-      }
-      for (let i = 0; i < this.tableData.length; i++) {
-        if (this.tableData[i].coaCode == parentCode && this.tableData[i].type == 1) {
-          this.$set(this.tableData[i], 'beginBalance', amount1)
-          this.$set(this.tableData[i], 'beginBalanceQty', amount2)
-          this.$set(this.tableData[i], 'yearNetDr', amount3)
-          this.$set(this.tableData[i], 'yearNetQtyDr', amount4)
-          this.$set(this.tableData[i], 'yearNetCr', amount5)
-          this.$set(this.tableData[i], 'yearNetQtyCr', amount6)
-          if (this.tableData[i].coaCode.length > 4) {
-            this.calculateTop(this.tableData[i].coaCode)
+      })
+      this.tableData.forEach(item => {
+        if (item.coaCode == parentCode && item.type == 1) {
+          this.$set(item, 'beginBalance', amount1)
+          this.$set(item, 'beginBalanceQty', amount2)
+          this.$set(item, 'yearNetDr', amount3)
+          this.$set(item, 'yearNetQtyDr', amount4)
+          this.$set(item, 'yearNetCr', amount5)
+          this.$set(item, 'yearNetQtyCr', amount6)
+          if (item.coaCode.length > 4) {
+            this.calculateTop(item.coaCode)
           }
         }
-      }
+      })
     },
     showSuplyConfig(index) {
       this.dialogFormVisible2 = true

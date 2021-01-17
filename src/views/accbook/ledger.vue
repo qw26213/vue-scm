@@ -50,32 +50,32 @@
         </el-table-column>
         <el-table-column label="期间">
           <template slot-scope="{row}">
-            <p v-for="(item,index) in row.listPeriodCode" :key="index" clss="pCell" style="text-align:center">{{ item }}</p>
+            <p v-for="(item,index) in row.listPeriodCode" :key="index" class="pCell" style="text-align:center">{{ item }}</p>
           </template>
         </el-table-column>
         <el-table-column label="摘要">
           <template slot-scope="{row}">
-            <p v-for="(item,index) in row.listSummary" :key="index" clss="pCell tx-c" style="width:max-content;min-width:100%">{{ item }}</p>
+            <p v-for="(item,index) in row.listSummary" :key="index" class="pCell tx-c" style="width:max-content;min-width:100%">{{ item }}</p>
           </template>
         </el-table-column>
         <el-table-column label="借方金额">
           <template slot-scope="{row}">
-            <p v-for="(item,index) in row.listNetDr" :key="index" clss="pCell" style="text-align:right">{{ item | Fixed }}</p>
+            <p v-for="(item,index) in row.listNetDr" :key="index" class="pCell" style="text-align:right">{{ item | Fixed }}</p>
           </template>
         </el-table-column>
         <el-table-column label="贷方金额">
           <template slot-scope="{row}">
-            <p v-for="(item,index) in row.listNetCr" :key="index" clss="pCell" style="text-align:right">{{ item | Fixed }}</p>
+            <p v-for="(item,index) in row.listNetCr" :key="index" class="pCell" style="text-align:right">{{ item | Fixed }}</p>
           </template>
         </el-table-column>
         <el-table-column label="方向">
           <template slot-scope="{row}">
-            <p v-for="(item,index) in row.listCrDrStr" :key="index" clss="pCell" style="text-align:center">{{ item }}</p>
+            <p v-for="(item,index) in row.listCrDrStr" :key="index" class="pCell" style="text-align:center">{{ item }}</p>
           </template>
         </el-table-column>
         <el-table-column label="余额">
           <template slot-scope="{row}">
-            <p v-for="(item,index) in row.listBalance" :key="index" clss="pCell" style="text-align:right">{{ item | Fixed }}</p>
+            <p v-for="(item,index) in row.listBalance" :key="index" class="pCell" style="text-align:right">{{ item | Fixed }}</p>
           </template>
         </el-table-column>
       </el-table>

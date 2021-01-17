@@ -93,6 +93,7 @@ export default {
       }
     })
     sessionStorage.removeItem('modalShow')
+    sessionStorage.clear()
     this.getNewCode()
     if (localStorage.orgCode) {
       this.loginForm.orgCode = localStorage.orgCode

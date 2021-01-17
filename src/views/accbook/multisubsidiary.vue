@@ -33,7 +33,7 @@
       <el-table :key="tableKey" v-loading="listLoading" :data="pageData" border fit highlight-current-row style="width: 100%;" size="small">
         <el-table-column label="日期" align="center">
           <template slot-scope="{row}">
-            <span>{{ row.jeDate }}</span>
+            <span>{{ row.jeDate || '' }}</span>
           </template>
         </el-table-column>
         <el-table-column label="凭证字号" align="center">
