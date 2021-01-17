@@ -62,12 +62,12 @@
         <el-table-column label="本期发生额">
           <el-table-column label="借方" align="right">
             <template slot-scope="{row}">
-              <span>{{ row.beginBalanceDr | Fixed }}</span>
+              <span>{{ row.periodNetDr | Fixed }}</span>
             </template>
           </el-table-column>
           <el-table-column label="贷方" align="right">
             <template slot-scope="{row}">
-              <span>{{ row.beginBalanceCr | Fixed }}</span>
+              <span>{{ row.periodNetCr | Fixed }}</span>
             </template>
           </el-table-column>
         </el-table-column>
