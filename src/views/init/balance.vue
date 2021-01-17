@@ -383,7 +383,7 @@ export default {
           row.beginBalanceCr = balance
           row.beginBalanceQtyCr = balanceQty
         }
-        if (row.type == 0) {
+        if (row.type == 0) { // 是辅助核算科目，或是末级科目
           this.calculate(row)
         } else {
           if (row.coaCode.length > 4) {
@@ -405,7 +405,7 @@ export default {
       console.log('type=' + row.type)
       if (row.isAuxiliary === 1) {
         this.tableData.forEach(item => {
-          if (item.coaCode == coaCode && item.type == 0) { // 1中间科目，0末级科目
+          if (item.coaCode == coaCode && item.type == 0) {
             console.log('开始计算1')
             amount1 += Number(item.beginBalance)
             amount2 += Number(item.beginBalanceQty)
@@ -429,7 +429,7 @@ export default {
         })
       }
       this.tableData.forEach(item => {
-        if ((item.coaCode == coaCode && item.type == 1) || (item.coaCode == parentCode && item.type == 1)) { // 1中间科目，0末级科目
+        if ((item.coaCode == coaCode && item.type == 1) || (item.coaCode == parentCode && item.type == 1)) {
           this.$set(item, 'beginBalance', amount1)
           this.$set(item, 'beginBalanceQty', amount2)
           this.$set(item, 'yearNetDr', amount3)

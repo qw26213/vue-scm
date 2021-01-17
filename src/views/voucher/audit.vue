@@ -78,7 +78,7 @@
         </el-table-column>
         <el-table-column label="操作" align="center" width="100">
           <template slot-scope="{row}">
-            <span v-if="row.jeStatus == 0" class="ctrl" @click="handleCheck(row.id)">审核</span>
+            <span v-if="row.jeStatus == 0" class="ctrl" @click="handleAudit(row.id)">审核</span>
             <span v-if="row.jeStatus == -1">已退回</span>
             <span v-if="row.jeStatus == 5" class="ctrl" @click="handleUnCheck(row.id)">反审核</span>
           </template>
@@ -91,16 +91,19 @@
       </el-table>
       <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageNum" @pagination="getList" />
     </div>
-    <el-dialog :close-on-click-modal="false" title="请输入审核意见" :visible.sync="dialogFormVisible" width="420px">
-      <el-form ref="dataForm" :rules="rules" :model="auditForm" label-position="top" label-width="100px" style="width: 380px; margin-left:10px;">
-        <el-form-item label="审核意见" prop="content">
-          <el-input v-model="auditForm.content" type="textarea" row="2" size="small" />
+    <el-dialog :close-on-click-modal="false" title="审核凭证" :visible.sync="dialogFormVisible" width="460px">
+      <el-form ref="auditform" class="auditform" :rules="rules" :model="auditForm" label-position="right" label-width="80px" style="width: 400px; margin-left:10px;">
+        <el-form-item label="审核结果" prop="status">
+          <el-radio v-model="auditForm.status" :label="1">通过</el-radio>
+          <el-radio v-model="auditForm.status" :label="-1">退回</el-radio>
+        </el-form-item>
+        <el-form-item label="审核意见" prop="content" :rules="auditForm.status == -1 ? [{ required: true, message: '不能为空', trigger: 'change' }] : [{ required: false }]">
+          <el-input v-model="auditForm.content" type="textarea" row="3" size="small" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer" align="center">
-        <el-button type="default" @click="dialogFormVisible = false">取消审核</el-button>
-        <el-button type="primary" @click="checkAccessItem(1)">审核通过</el-button>
-        <el-button type="danger" @click="checkAccessItem(-1)">审核退回</el-button>
+        <el-button type="default" @click="dialogFormVisible = false">取消</el-button>
+        <el-button type="primary" @click="auditItem()">确定</el-button>
       </div>
     </el-dialog>
     <el-dialog :close-on-click-modal="false" title="审核记录" empty-text="暂无审核记录" :visible.sync="dialogFormVisible1" width="600px" style="overflow:auto">
@@ -165,6 +168,7 @@ export default {
       tableData1: [],
       listLoading: true,
       auditForm: {
+        status: 1,
         content: ''
       },
       rules: {
@@ -234,20 +238,21 @@ export default {
         this.listLoading = false
       })
     },
-    handleCheck(id) {
+    handleAudit(id) {
       this.dialogFormVisible = true
+      this.auditForm.status = 1
       this.jeHeaderId = id
       this.initAudit()
     },
-    checkAccessItem(status) {
-      // this.$refs.dataForm.validate((valid) => {
-      //   if (valid) {
-          var obj = { jeAuditRemark: this.auditForm.content, jeAuditStatus: status, jeHeaderId: this.jeHeaderId }
+    auditItem() {
+      this.$refs.auditform.validate((valid) => {
+        if (valid) {
+          var obj = { jeAuditRemark: this.auditForm.content, jeAuditStatus: this.auditForm.status, jeHeaderId: this.jeHeaderId }
           this.checkItem(obj)
-      //   } else {
-      //     return false
-      //   }
-      // })
+        } else {
+          return false
+        }
+      })
     },
     checkItem(obj) {
       voucherAduit(obj).then(res => {
@@ -292,7 +297,7 @@ export default {
     initAudit() {
       this.auditForm.content = ''
       this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
+        this.$refs['auditform'].clearValidate()
       })
     },
     showAudit(id) {
@@ -304,7 +309,7 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
 p.pCell {
     margin: 0;
     line-height: 32px;
