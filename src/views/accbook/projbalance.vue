@@ -109,7 +109,7 @@
 import { getProjbalance, exportProjbalance, printProjbalance } from '@/api/accbook'
 import { mapGetters } from 'vuex'
 import Pagination from '@/components/Pagination'
-import { getProj, getDept, getStaff, getSupplier, getItem } from '@/api/user'
+import { getProj, getDept, getStaff, getSupplier, getItem, getinvCatg, getCust } from '@/api/user'
 import PeriodList from '@/components/voucher/periodList'
 import { getNowMonth } from '@/utils/index'
 export default {
@@ -167,7 +167,7 @@ export default {
         })
       }
       if (code === 'cust') {
-        getSupplier().then(res => {
+        getCust().then(res => {
           this.custList = res.data.data || []
         })
       }
@@ -178,6 +178,11 @@ export default {
       }
       if (code === 'staff') {
         getStaff().then(res => {
+          this.modalList = res.data.data || []
+        })
+      }
+      if (code === 'inv') {
+        getinvCatg().then(res => {
           this.modalList = res.data.data || []
         })
       }

@@ -81,24 +81,24 @@ const accountRouter = {
     }, {
         path: '/accbook',
         component: account,
-        redirect: '/accbook/totalaccount',
+        redirect: '/accbook/ledger',
         name: 'accbook',
         meta: {
             title: '账簿',
             roles: ['3820']
         },
         children: [{
-            path: 'totalaccount',
-            component: () => import ('@/views/accbook/totalaccount'),
-            name: 'totalAccount',
+            path: 'ledger',
+            component: () => import ('@/views/accbook/ledger'),
+            name: 'ledger',
             meta: {
                 title: '总账',
                 roles: ['382010']
             }
         }, {
-            path: 'detailaccount',
-            component: () => import ('@/views/accbook/detailaccount'),
-            name: 'detailAccount',
+            path: 'subsidiary',
+            component: () => import ('@/views/accbook/subsidiary'),
+            name: 'subsidiary',
             meta: {
                 title: '明细账',
                 roles: ['382020']
@@ -112,41 +112,41 @@ const accountRouter = {
                 roles: ['382030']
             }
         }, {
-            path: 'manyaccount',
-            component: () => import ('@/views/accbook/manyaccount'),
-            name: 'manyAccount',
+            path: 'multisubsidiary',
+            component: () => import ('@/views/accbook/multisubsidiary'),
+            name: 'multisubsidiary',
             meta: {
                 title: '多栏账',
                 roles: ['382040']
             }
         }, {
-            path: 'numbertotalaccount',
-            component: () => import ('@/views/accbook/numbertotalaccount'),
-            name: 'numberTotalAccount',
+            path: 'ledgernum',
+            component: () => import ('@/views/accbook/ledgernum'),
+            name: 'ledgernum',
             meta: {
                 title: '数量总账',
                 roles: ['382050']
             }
         }, {
-            path: 'numberdetailaccount',
-            component: () => import ('@/views/accbook/numberdetailaccount'),
-            name: 'numberDetailAccount',
+            path: 'subsidiarynum',
+            component: () => import ('@/views/accbook/subsidiarynum'),
+            name: 'subsidiarynum',
             meta: {
                 title: '数量明细账',
                 roles: ['382060']
             }
         }, {
-            path: 'checkbalance',
-            component: () => import ('@/views/accbook/checkbalance'),
-            name: 'checkBalance',
+            path: 'projbalance',
+            component: () => import ('@/views/accbook/projbalance'),
+            name: 'projbalance',
             meta: {
                 title: '项目余额表',
                 roles: ['382070']
             }
         }, {
-            path: 'checkdetail',
-            component: () => import ('@/views/accbook/checkdetail'),
-            name: 'checkDetail',
+            path: 'projsubsidiary',
+            component: () => import ('@/views/accbook/projsubsidiary'),
+            name: 'projsubsidiary',
             meta: {
                 title: '项目明细表',
                 roles: ['382080']
