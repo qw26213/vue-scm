@@ -30,6 +30,15 @@
           <p>
             <el-checkbox v-model="listQuery.isShowNetAndBalanceNotEqualToZero" :false-label="0" :true-label="1">发生额为0且余额为0不显示</el-checkbox>
           </p>
+          <p>
+            <el-checkbox v-model="listQuery.isTotal" :false-label="0" :true-label="1">不分期间</el-checkbox>
+          </p>
+          <p>
+            <el-checkbox v-model="listQuery.isOneLine" :disabled="listQuery.isTotal==1" :false-label="0" :true-label="1">一行显示</el-checkbox>
+          </p>
+          <p>
+            <el-checkbox v-model="listQuery.isBeginYearNet" :disabled="listQuery.isOneLine==1" :false-label="0" :true-label="1">显示期初本年累计</el-checkbox>
+          </p>
         </div>
         <el-button slot="reference" size="small">更多<i class="el-icon-arrow-right el-icon--right" /></el-button>
       </el-popover>
@@ -186,6 +195,9 @@ export default {
         coaLevel1: 1,
         coaLevel2: 8,
         isShowAuxiliary: 1,
+        isTotal: 0,
+        isBeginYearNet: 0,
+        isOneLine: 0,
         isQuantity: 1,
         isShowNetAndBalanceNotEqualToZero: 1,
         pageIndex: 1,

@@ -168,7 +168,7 @@ export default {
       }
       if (code === 'cust') {
         getCust().then(res => {
-          this.custList = res.data.data || []
+          this.modalList = res.data.data || []
         })
       }
       if (code === 'proj') {
@@ -196,6 +196,7 @@ export default {
           this.modalList = res.data.data || []
         })
       }
+      this.listQuery.auxiliaryCode = ''
     },
     getDataByPage() {
       var pageIndex = this.listQuery.pageIndex
