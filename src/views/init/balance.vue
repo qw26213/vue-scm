@@ -2,8 +2,8 @@
   <div class="app-container">
     <div class="contentDiv">
       <div class="tx-r" style="margin-bottom: 10px">
-        <el-button size="small" type="primary" :loading="saveloading" @click="saveData(0)">保存</el-button>
-        <el-button size="small" type="primary" @click="showSum()">试算平衡汇总</el-button>
+        <el-button size="small" type="primary" :loading="saveloading" :disabled="balanceStatus == 0" @click="saveData(0)">保存</el-button>
+        <el-button size="small" type="primary" @click="showSum()" :disabled="balanceStatus == 0">试算平衡汇总</el-button>
       </div>
       <el-table v-loading="listLoading" class="balance" :data="tableData" border fit resize empty-text="暂无相关数据" style="width: 100%;" :height="tableHeight">
         <el-table-column label="科目编码" min-width="90">
@@ -27,36 +27,36 @@
         <el-table-column :label="'期初余额('+userInfo.glBookEntity.enablePeriodCode+')'" min-width="240">
           <el-table-column label="金额(元)" min-width="80" align="right">
             <template slot-scope="scope">
-              <input v-model.trim="scope.row.beginBalance" class="tx-r" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1)" @focus="focusThis($event)" @input="inputChange($event, 'beginBalance', scope.$index)" @change="valChange(scope.row)" />
+              <input v-model.trim="scope.row.beginBalance" class="tx-r" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1) || balanceStatus == 0" @focus="focusThis($event)" @input="inputChange($event, 'beginBalance', scope.$index)" @change="valChange(scope.row)" />
             </template>
           </el-table-column>
           <el-table-column label="数量" min-width="80" align="right">
             <template slot-scope="scope">
-              <input v-model.trim="scope.row.beginBalanceQty" class="tx-r" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1)" @focus="focusThis($event)" @input="inputChange($event, 'beginBalanceQty', scope.$index)" @change="valChange(scope.row)" />
+              <input v-model.trim="scope.row.beginBalanceQty" class="tx-r" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1) || balanceStatus == 0" @focus="focusThis($event)" @input="inputChange($event, 'beginBalanceQty', scope.$index)" @change="valChange(scope.row)" />
             </template>
           </el-table-column>
         </el-table-column>
         <el-table-column :label="'本年借方累计'+ (userInfo.glBookEntity.enablePeriodNum > 1 ? '(1-' + (userInfo.glBookEntity.enablePeriodNum - 1) + '月)':'')" min-width="240">
           <el-table-column label="金额(元)" min-width="80" align="right">
             <template slot-scope="scope">
-              <input v-model.trim="scope.row.yearNetDr" class="tx-r" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1) || userInfo.glBookEntity.enablePeriodNum == 1" @focus="focusThis($event)" @input="inputChange($event, 'yearNetDr', scope.$index)" @change="valChange(scope.row)" />
+              <input v-model.trim="scope.row.yearNetDr" class="tx-r" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1) || userInfo.glBookEntity.enablePeriodNum == 1 || balanceStatus == 0" @focus="focusThis($event)" @input="inputChange($event, 'yearNetDr', scope.$index)" @change="valChange(scope.row)" />
             </template>
           </el-table-column>
           <el-table-column label="数量" min-width="80" align="right">
             <template slot-scope="scope">
-              <input v-model.trim="scope.row.yearNetQtyDr" class="tx-r" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1) || userInfo.glBookEntity.enablePeriodNum == 1" @focus="focusThis($event)" @input="inputChange($event, 'yearNetQtyDr', scope.$index)" @change="valChange(scope.row)" />
+              <input v-model.trim="scope.row.yearNetQtyDr" class="tx-r" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1) || userInfo.glBookEntity.enablePeriodNum == 1 || balanceStatus == 0" @focus="focusThis($event)" @input="inputChange($event, 'yearNetQtyDr', scope.$index)" @change="valChange(scope.row)" />
             </template>
           </el-table-column>
         </el-table-column>
         <el-table-column :label="'本年贷方累计'+ (userInfo.glBookEntity.enablePeriodNum > 1 ? '(1-' + (userInfo.glBookEntity.enablePeriodNum - 1) + '月)':'')" min-width="240">
           <el-table-column label="金额(元)" min-width="80" align="right">
             <template slot-scope="scope">
-              <input v-model.trim="scope.row.yearNetCr" class="tx-r" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1) || userInfo.glBookEntity.enablePeriodNum == 1" @focus="focusThis($event)" @input="inputChange($event, 'yearNetCr', scope.$index)" @change="valChange(scope.row)" />
+              <input v-model.trim="scope.row.yearNetCr" class="tx-r" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1) || userInfo.glBookEntity.enablePeriodNum == 1 || balanceStatus == 0" @focus="focusThis($event)" @input="inputChange($event, 'yearNetCr', scope.$index)" @change="valChange(scope.row)" />
             </template>
           </el-table-column>
           <el-table-column label="数量" min-width="80" align="right">
             <template slot-scope="scope">
-              <input v-model.trim="scope.row.yearNetQtyCr" class="tx-r" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1) || userInfo.glBookEntity.enablePeriodNum == 1" @focus="focusThis($event)" @input="inputChange($event, 'yearNetQtyCr', scope.$index)" @change="valChange(scope.row)" />
+              <input v-model.trim="scope.row.yearNetQtyCr" class="tx-r" :disabled="scope.row.leaf==0||(scope.row.isAuxiliary==1&&scope.row.type==1) || userInfo.glBookEntity.enablePeriodNum == 1 || balanceStatus == 0" @focus="focusThis($event)" @input="inputChange($event, 'yearNetQtyCr', scope.$index)" @change="valChange(scope.row)" />
             </template>
           </el-table-column>
         </el-table-column>
@@ -401,7 +401,8 @@ export default {
       var amount6 = 0
       var coaCode = row.coaCode
       const len = coaCode.length
-      const parentCode = coaCode.substr(0, len - 2)
+      const parLen = this.getParentCodeLength(len)
+      const parentCode = coaCode.substr(0, parLen)
       console.log('type=' + row.type)
       if (row.isAuxiliary === 1) {
         this.tableData.forEach(item => {
@@ -430,7 +431,7 @@ export default {
         })
       } else {
         this.tableData.forEach(item => {
-          if (item.coaCode.substr(0, item.coaCode.length - 2) == parentCode && item.type == 0 && item.leaf == 1) {
+          if (item.coaCode.substr(0, parLen) == parentCode && item.type == 0 && item.leaf == 1) {
             console.log('开始计算2')
             amount1 += Number(item.beginBalance)
             amount2 += Number(item.beginBalanceQty)
@@ -457,7 +458,9 @@ export default {
     },
     calculateTop(coaCode) { // 向上汇总
       const len = coaCode.length
-      const parentCode = coaCode.substr(0, len - 2)
+      const parLen = this.getParentCodeLength(len)
+      console.log(parLen)
+      const parentCode = coaCode.substr(0, parLen)
       var amount1 = 0
       var amount2 = 0
       var amount3 = 0
@@ -465,8 +468,8 @@ export default {
       var amount5 = 0
       var amount6 = 0
       this.tableData.forEach(item => {
-        if (item.coaCode.substr(0, item.coaCode.length - 2) == parentCode && ((item.type == 1 && item.isAuxiliary == 1) || (item.type == 0 && item.isAuxiliary == 0))) {
-          console.log('1212213')
+        const flag = (item.type == 1 && item.isAuxiliary == 1) || (item.type == 0 && item.isAuxiliary == 0)
+        if (item.coaCode.substr(0, parLen) == parentCode && item.coaCode.length > parLen && flag) {
           amount1 += Number(item.beginBalance)
           amount2 += Number(item.beginBalanceQty)
           amount3 += Number(item.yearNetDr)
@@ -488,6 +491,23 @@ export default {
           }
         }
       })
+    },
+    getParentCodeLength(len) {
+      const userInfo = JSON.parse(sessionStorage.userInfo)
+      const rules = userInfo.glBookEntity.codingRule.split('-')
+      const newRules = rules.map((item, index) => {
+        return this.getSum(rules, index)
+      })
+      console.log(newRules)
+      const prevIndex = newRules.indexOf(len) - 1
+      return newRules[prevIndex]
+    },
+    getSum(arr, index) {
+      let sum = 0
+      for(let i = 0; i <= index; i++) {
+        sum += Number(arr[i])
+      }
+      return sum
     },
     showSuplyConfig(index) {
       this.dialogFormVisible2 = true
