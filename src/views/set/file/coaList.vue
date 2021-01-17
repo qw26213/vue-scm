@@ -196,7 +196,7 @@ export default {
     ])
   },
   mounted() {
-    this.$store.dispatch('voucher/getCoaList')
+    this.$store.dispatch('voucher/getCoaList', 0)
     this.getCoaClass()
   },
   methods: {
