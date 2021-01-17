@@ -121,8 +121,14 @@ export default {
     ])
   },
   created() {
-    this.$store.dispatch('voucher/getCoaList', 0)
-    this.getList()
+    this.$store.dispatch('voucher/getCoaList', 0).then(res => {
+      this.$nextTick(() => {
+        if (this.coaArr.length > 0) {
+          this.listQuery.coaCode1 = this.coaArr[0].coaCode
+        }
+        this.getList()
+      })
+    })
   },
   methods: {
     changeVal(obj) {

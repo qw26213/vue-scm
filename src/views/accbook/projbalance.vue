@@ -11,20 +11,15 @@
       <el-select v-model="listQuery.coaCode2" size="small" placeholder="科目" filterable>
         <el-option v-for="item in coaArr" :key="item.id" :label="item.name" :value="item.coaCode" />
       </el-select>
+      <el-select v-model="listQuery.auxiliaryType" size="small" placeholder="辅助类别" @change="auxiliaryChange">
+        <el-option v-for="item in auxiliaryArr" :key="item.auxiliaryTypeCode" :label="item.auxiliaryTypeName" :value="item.auxiliaryTypeCode" />
+      </el-select>
+      <el-select v-model="listQuery.auxiliaryCode" size="small" placeholder="辅助名称">
+        <el-option label="全部" :value="null" />
+        <el-option v-for="item in modalList" :key="item.id" :label="item.text" :value="item.id" />
+      </el-select>
       <el-popover placement="bottom" title="更多" width="280" trigger="click">
         <div>
-          <p>
-            <span>辅助类别：</span>
-            <el-select v-model="listQuery.auxiliaryType" size="small" placeholder="辅助类别" @change="auxiliaryChange">
-              <el-option v-for="item in auxiliaryArr" :key="item.auxiliaryTypeCode" :label="item.auxiliaryTypeName" :value="item.auxiliaryTypeCode" />
-            </el-select>
-          </p>
-          <p>
-            <span>辅助名称：</span>
-            <el-select v-model="listQuery.auxiliaryCode" size="small" placeholder="辅助名称">
-              <el-option v-for="item in modalList" :key="item.id" :label="item.text" :value="item.id" />
-            </el-select>
-          </p>
           <p>
             <el-checkbox v-model="listQuery.isShowCoa" :false-label="0" :true-label="1">显示末级科目</el-checkbox>
           </p>
@@ -55,48 +50,48 @@
         <el-table-column label="期初余额">
           <el-table-column label="借方" align="right">
             <template slot-scope="{row}">
-              <span>{{ row.beginBalanceDr }}</span>
+              <span>{{ row.beginBalanceDr | Fixed }}</span>
             </template>
           </el-table-column>
           <el-table-column label="贷方" align="right">
             <template slot-scope="{row}">
-              <span>{{ row.beginBalanceCr }}</span>
+              <span>{{ row.beginBalanceCr | Fixed }}</span>
             </template>
           </el-table-column>
         </el-table-column>
         <el-table-column label="本期发生额">
           <el-table-column label="借方" align="right">
             <template slot-scope="{row}">
-              <span>{{ row.beginBalanceDr }}</span>
+              <span>{{ row.beginBalanceDr | Fixed }}</span>
             </template>
           </el-table-column>
           <el-table-column label="贷方" align="right">
             <template slot-scope="{row}">
-              <span>{{ row.beginBalanceCr }}</span>
+              <span>{{ row.beginBalanceCr | Fixed }}</span>
             </template>
           </el-table-column>
         </el-table-column>
         <el-table-column label="本年累计发生额">
           <el-table-column label="借方" align="right">
             <template slot-scope="{row}">
-              <span>{{ row.yearNetDr }}</span>
+              <span>{{ row.yearNetDr | Fixed }}</span>
             </template>
           </el-table-column>
           <el-table-column label="贷方" align="right">
             <template slot-scope="{row}">
-              <span>{{ row.yearNetCr }}</span>
+              <span>{{ row.yearNetCr | Fixed }}</span>
             </template>
           </el-table-column>
         </el-table-column>
         <el-table-column label="期末余额">
           <el-table-column label="借方" align="right">
             <template slot-scope="{row}">
-              <span>{{ row.balanceDr }}</span>
+              <span>{{ row.balanceDr | Fixed }}</span>
             </template>
           </el-table-column>
           <el-table-column label="贷方" align="right">
             <template slot-scope="{row}">
-              <span>{{ row.balanceCr }}</span>
+              <span>{{ row.balanceCr | Fixed }}</span>
             </template>
           </el-table-column>
         </el-table-column>
