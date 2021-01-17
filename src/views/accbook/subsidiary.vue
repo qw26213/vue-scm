@@ -76,6 +76,7 @@ import { mapGetters } from 'vuex'
 import Pagination from '@/components/Pagination'
 import PeriodList from '@/components/voucher/periodList'
 import { getNowMonth } from '@/utils/index'
+import { getCoas } from '@/api/voucher'
 export default {
   name: 'subsidiary',
   components: { Pagination, PeriodList },
@@ -98,23 +99,18 @@ export default {
         coaCode1: this.$route.query.coaCode,
         isShowNetAndBalanceNotEqualToZero: 1,
         pageIndex: 1
-      }
+      },
+      coaArr: []
     }
   },
-  computed: {
-    ...mapGetters([
-      'coaArr'
-    ])
-  },
   created() {
-    this.$store.dispatch('voucher/getCoaList', 0).then(res => {
-      this.$nextTick(() => {
-        if (this.coaArr.length > 0) {
-          this.listQuery.coaCode1 = this.coaArr[0].coaCode
-        }
-        console.log(12334)
-        this.getList()
-      })
+    var obj = { includeRoot: 0 }
+    getCoas(obj).then(res => {
+      this.coaArr = res.data.data || []
+      if (this.coaArr.length > 0) {
+        this.listQuery.coaCode1 = this.coaArr[0].coaCode
+      }
+      this.getList()
     })
   },
   methods: {

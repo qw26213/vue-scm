@@ -109,6 +109,7 @@
 </template>
 <script>
 import { getSubsidiarynum, exportSubsidiaryNum, printSubsidiaryNum } from '@/api/accbook'
+import { getCoas } from '@/api/voucher'
 import { mapGetters } from 'vuex'
 import Pagination from '@/components/Pagination'
 import PeriodList from '@/components/voucher/periodList'
@@ -141,24 +142,18 @@ export default {
         isShowNetAndBalanceNotEqualToZero: 1,
         pageIndex: 1,
         limit: 20
-      }
+      },
+      coaArr: []
     }
   },
-  computed: {
-    ...mapGetters([
-      'coaArr'
-    ])
-  },
   created() {
-    this.$store.dispatch('voucher/getCoaList', 0).then(res => {
-      this.$nextTick(() => {
-        if (this.coaArr.length > 0) {
-          console.log(this.coaArr.length)
-          console.log('121212')
-          this.listQuery.coaCode1 = this.coaArr[0].coaCode
-        }
-        this.getList()
-      })
+    var obj = { includeRoot: 0 }
+    getCoas(obj).then(res => {
+      this.coaArr = res.data.data || []
+      if (this.coaArr.length > 0) {
+        this.listQuery.coaCode1 = this.coaArr[0].coaCode
+      }
+      this.getList()
     })
   },
   methods: {

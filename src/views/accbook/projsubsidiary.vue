@@ -85,6 +85,7 @@ import Pagination from '@/components/Pagination'
 import { getProj, getDept, getStaff, getSupplier, getItem, getinvCatg, getCust } from '@/api/user'
 import PeriodList from '@/components/voucher/periodList'
 import { getNowMonth } from '@/utils/index'
+import { getCoas } from '@/api/voucher'
 export default {
   name: 'projsubsidiary',
   components: { Pagination, PeriodList },
@@ -113,17 +114,20 @@ export default {
         isShowNetAndBalanceNotEqualToZero: 1,
         pageIndex: 1,
         limit: 20
-      }
+      },
+      coaArr: []
     }
   },
   computed: {
     ...mapGetters([
-      'auxiliaryArr',
-      'coaArr'
+      'auxiliaryArr'
     ])
   },
   created() {
-    this.$store.dispatch('voucher/getCoaList', 'projsub')
+    var obj = { includeRoot: 0, isAuxiliary: 1 }
+    getCoas(obj).then(res => {
+      this.coaArr = res.data.data || []
+    })
     this.$store.dispatch('voucher/getAuxiliaryTypeList')
     this.getList()
   },
