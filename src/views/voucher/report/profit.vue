@@ -244,15 +244,17 @@ export default {
   methods: {
     getList() {
       getProfitData(this.listQuery).then(res => {
-        this.initTable(res.data.data[0])
+        if (res.data.data && res.data.data.length > 0) {
+          const obj = res.data.data[0]
+          for (const key in obj) {
+            if (key && key.indexOf('r') >= 0 && key.indexOf('c') >=0 && key.length < 6 && this.$el.querySelector('span[name = ' + key + ']')) {
+              this.$el.querySelector('span[name = ' + key + ']').innerText = obj[key]
+            }
+          }
+        }
       }).catch(() => {
         this.listLoading = false
       })
-    }
-  },
-  initTable(obj) {
-    for (var key in obj) {
-      this.$el.querySelector('span[name = ' + key + ']').innerText = obj[key]
     }
   }
 }

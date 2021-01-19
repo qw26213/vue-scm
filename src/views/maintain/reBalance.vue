@@ -127,7 +127,7 @@ export default {
             }],
             listQuery: {
                 periodCode1: '',
-                isOnlyAdjustNet: '1'
+                isOnlyAdjustNet: ''
             },
             periodList: [],
             tableData: []
@@ -140,14 +140,15 @@ export default {
         getPeriod() {
             getPeriodList().then(res => {
                 this.periodList = res.data.data
-                this.listQuery.periodCode1 = res.data.data[0].id
-                this.getData('0')
+                // this.listQuery.periodCode1 = res.data.data[0].id
+                // this.getData('0')
             })
         },
         getData(type) {
             this.listQuery.isAutoCommit = type
             reBalance(this.listQuery).then(res => {
                 if (res.data.errorCode === '0') {
+                    this.$message.success(res.data.msg)
                     this.tableData = res.data.data || []
                 }
             })

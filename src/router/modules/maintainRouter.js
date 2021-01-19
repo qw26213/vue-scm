@@ -10,9 +10,9 @@ const maintainRouter = {
             icon: 'maintain'
         },
         children: [{
-            path: 'rebuildBalance',
-            component: () => import('@/views/maintain/rebuildBalance'),
-            name: 'rebuildBalance',
+            path: 'reBalance',
+            component: () => import('@/views/maintain/reBalance'),
+            name: 'reBalance',
             meta: {
                 roles: ['7410'],
                 title: '重建余额表'
