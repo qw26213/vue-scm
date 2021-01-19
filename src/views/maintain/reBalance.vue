@@ -19,17 +19,17 @@
             <el-table :data="tableData" border fit resize empty-text="无错误数据" style="width: 100%;">
                 <el-table-column label="科目编码">
                     <template slot-scope="{row}">
-                        <span>{{ row.coaCode }}</span>
+                        <span>{{ row && row.coaCode }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="科目名称" min-width="100" align="center">
                     <template slot-scope="{row}">
-                        <span>{{ row.coaName }}</span>
+                        <span>{{ row && row.coaName }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="期间" min-width="80" align="center">
                     <template slot-scope="{row}">
-                        <span>{{ row.periodCode }}</span>
+                        <span>{{ row && row.periodCode }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="错误信息" min-width="80" align="center">
@@ -42,48 +42,48 @@
                 <el-table-column label="期初借方" align="center">
                     <el-table-column label="数量" min-width="80" align="right">
                         <template slot-scope="{row}">
-                            <span>{{ row.beginBalanceQtyDr | toFix }}</span>
+                            <span>{{ row && row.beginBalanceQtyDr | zeroNull }}</span>
                         </template>
                     </el-table-column>
                     <el-table-column label="金额" min-width="80" align="right">
                         <template slot-scope="{row}">
-                            <span>{{ row.beginBalanceDr | toFix }}</span>
+                            <span>{{ row && row.beginBalanceDr | Fixed }}</span>
                         </template>
                     </el-table-column>
                 </el-table-column>
                 <el-table-column label="期初贷方" align="center">
                     <el-table-column label="数量" min-width="80" align="right">
                         <template slot-scope="{row}">
-                            <span>{{ row.beginBalanceQtyCr | toFix }}</span>
+                            <span>{{ row && row.beginBalanceQtyCr | zeroNull }}</span>
                         </template>
                     </el-table-column>
                     <el-table-column label="金额" min-width="80" align="right">
                         <template slot-scope="{row}">
-                            <span>{{ row.beginBalanceCr | toFix }}</span>
+                            <span>{{ row.beginBalanceCr | zeroNull }}</span>
                         </template>
                     </el-table-column>
                 </el-table-column>
                 <el-table-column label="本期借方" align="center">
                     <el-table-column label="数量" min-width="80" align="right">
                         <template slot-scope="{row}">
-                            <span>{{ row.periodNetQtyDr | toFix }}</span>
+                            <span>{{ row && row.periodNetQtyDr | zeroNull }}</span>
                         </template>
                     </el-table-column>
                     <el-table-column label="金额" min-width="80" align="right">
                         <template slot-scope="{row}">
-                            <span>{{ row.periodNetDr | toFix }}</span>
+                            <span>{{ row && row.periodNetDr | Fixed }}</span>
                         </template>
                     </el-table-column>
                 </el-table-column>
                 <el-table-column label="本期贷方" align="center">
                     <el-table-column label="数量" min-width="80" align="right">
                         <template slot-scope="{row}">
-                            <span>{{ row.periodNetQtyCr | toFix }}</span>
+                            <span>{{ row && row.periodNetQtyCr | zeroNull }}</span>
                         </template>
                     </el-table-column>
                     <el-table-column label="金额" min-width="80" align="right">
                         <template slot-scope="{row}">
-                            <span>{{ row.periodNetCr | toFix }}</span>
+                            <span>{{ row && row.periodNetCr | Fixed }}</span>
                         </template>
                     </el-table-column>
                 </el-table-column>
@@ -96,9 +96,11 @@ import { reBalance, getPeriodList } from '@/api/user'
 export default {
     name: 'rebuildBalance',
     filters: {
-        toFix(val) {
-            if (!val || isNaN(val)) { return '0.00' }
-            return parseFloat(val).toFix(2)
+        zeroNull: function(num) {
+          return num ? num : ''
+        },
+        Fixed(num) {
+          return num ? num.toFixed(2) : ''
         }
     },
     data() {
