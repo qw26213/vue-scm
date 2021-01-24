@@ -5,6 +5,10 @@
       <el-select v-model="listQuery.periodCode" placeholder="会计期间" size="small" @change="getList">
         <el-option v-for="item in periodList" :key="item.id" :label="item.text" :value="item.id" />
       </el-select>
+      <el-button-group style="float:right">
+        <el-button type="default" size="small" icon="el-icon-printer" @click="printBook">打印</el-button>
+        <el-button type="default" size="small" icon="el-icon-document" @click="exportBook">导出</el-button>
+      </el-button-group>
     </div>
     <div class="contentDiv">
       <div class="el-table el-table--fit el-table--border el-table--enable-row-hover el-table--enable-row-transition el-table--small" style="width: 100%;">
@@ -219,7 +223,7 @@
   </div>
 </template>
 <script>
-import { getProfitData, getPeriodList } from '@/api/report'
+import { getProfitData, getPeriodList, printProfitData, exportProfitData } from '@/api/report'
 import { getNowMonth } from '@/utils/index'
 export default {
   name: 'reportProfit',
@@ -252,6 +256,16 @@ export default {
             }
           }
         }
+      }).catch(() => {
+        this.listLoading = false
+      })
+    },
+    exportBook() {
+      exportProfitData(this.listQuery)
+    },
+    printBook() {
+      printProfitData(this.listQuery).then(res => {
+        window.open('http://' + window.location.host + res.data.data)
       }).catch(() => {
         this.listLoading = false
       })

@@ -524,8 +524,8 @@ export default {
       }
       for (var i = 0; i < this.tableData.length; i++) {
         if (this.tableData[i].accountedDr || this.tableData[i].accountedCr) {
-          this.$set(this.tableData[i], 'accountedDr', this.tableData[i].accountedDr * 100)
-          this.$set(this.tableData[i], 'accountedCr', this.tableData[i].accountedCr * 100)
+          this.$set(this.tableData[i], 'accountedDr', Number(this.tableData[i].accountedDr * 100).toFixed(0))
+          this.$set(this.tableData[i], 'accountedCr', Number(this.tableData[i].accountedCr * 100).toFixed(0))
         }
       }
       this.getTotalMoney()
