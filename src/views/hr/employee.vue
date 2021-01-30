@@ -53,11 +53,6 @@
             <span>{{ row.endDate }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="残疾/烈属/孤老" align="center" width="120">
-          <template slot-scope="{row}">
-            <span>{{ row.isIncomplete==1?'是':'否' }}</span>
-          </template>
-        </el-table-column>
         <el-table-column label="是否雇员" align="center" width="100">
           <template slot-scope="{row}">
             <span>{{ row.isEmployee==1?'是':'否' }}</span>
@@ -116,9 +111,6 @@
           <el-radio v-model="temp.status" label="1">正常</el-radio>
           <el-radio v-model="temp.status" label="0">不正常</el-radio>
         </el-form-item>
-        <el-form-item label="" prop="isIncomplete">
-          <el-checkbox v-model="temp.isIncomplete" false-label="0" true-label="1" style="margin-right:20px">残疾/烈属/孤老</el-checkbox>
-        </el-form-item>
         <el-form-item label="" prop="isEmployee">
           <el-checkbox v-model="temp.isEmployee" false-label="0" true-label="1">雇员</el-checkbox>
         </el-form-item>
@@ -128,18 +120,18 @@
         <el-button type="primary" @click="handleSave()">确定</el-button>
       </div>
     </el-dialog>
-    <el-dialog title="人员导入" :visible.sync="dialogVisible2" width="448px">
-      <el-form ref="dataForm" label-position="left" label-width="72px" style="margin-left:20px;">
+    <el-dialog title="人员导入" :visible.sync="dialogVisible2" width="500px">
+      <el-form ref="dataForm" label-position="left" label-width="72px" style="margin-left:10px;">
         <el-form-item label="选择文件">
-          <el-button size="small" type="primary" round @click="handFileImport"><i class="el-icon-upload" style="margin-right:5px;font-size:14px" />选择文件</el-button>
+          <input type="file" @click="handFileImport">
         </el-form-item>
         <p>
-          <el-checkbox>同时在辅助核算-部门中新增或按编码修改部门名称</el-checkbox>
+          <el-checkbox>同时在设置-基本档案-部门中新增或按编码修改部门名称</el-checkbox>
         </p>
         <p>
-          <el-checkbox>如果辅助核算-职员中不存在,同时在辅助核算-职员中增加</el-checkbox>
+          <el-checkbox>同时在设置-基本档案-部门中新增或按身份证号修改员工</el-checkbox>
         </p>
-        <p>注：如果按证照类型+证照号码存在人员重复,会按最新数据自动更新人员,原薪资数据不变!</p>
+        <p>注：如果按证照类型+证照号码存在人员重复,会按最新数据自动更新人员</p>
       </el-form>
       <div slot="footer" class="dialog-footer" align="center">
         <el-button @click="dialogVisible2 = false">取消</el-button>
@@ -241,7 +233,7 @@ export default {
         headers: { 'Content-Type': 'multipart/form-data' }
       }).then(res => {
         if (res.status == 200) {
-          this.$message.success('导入成功')
+          this.$message.success('人员导入成功')
           this.dialogVisible2 = false
           this.getList()
         } else {

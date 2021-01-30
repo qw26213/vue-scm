@@ -66,7 +66,7 @@
           <el-date-picker v-model="temp2.periodCode" :editable="false" type="month" placeholder="选择月份" style="width:100%" value-format="yyyy-MM" />
         </el-form-item>
         <el-form-item label="选择文件">
-          <el-button size="small" type="primary" round @click="handFileImport"><i class="el-icon-upload" style="margin-right:5px;font-size:14px" />上传</el-button>
+          <input type="file" @click="handFileImport">
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer" align="center">
@@ -157,8 +157,9 @@ export default {
         headers: { 'Content-Type': 'multipart/form-data' }
       }).then(res => {
         if (res.status == 200) {
+          this.$message.success('薪酬导入成功')
           this.dialogVisible2 = false
-          this.paydetailFileImport()
+          this.getList()
         } else {
           this.$message.error('系统错误')
         }
