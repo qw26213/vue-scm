@@ -289,7 +289,7 @@ export function addNullObj2(arr) {
     for (var i = 0; i < arr.length; i++) {
         newArr.splice(i, 1, arr[i])
     }
-    return newArr;
+    return newArr
 }
 
 export function deepClone(source) {
@@ -362,8 +362,8 @@ export function fetchRoles(arr) {
 export function getNowDate(type) {
     var d = new Date();
     var y = d.getFullYear()
-    var m = d.getMonth() + 1;
-    var d = d.getDate();
+    var m = d.getMonth() + 1
+    var d = d.getDate()
     if (type === 1) {
         return y + '-' + (m < 10 ? '0' + m : m) + '-' + '01'
     } else {
@@ -372,10 +372,28 @@ export function getNowDate(type) {
 }
 
 export function getNowMonth() {
-    var d = new Date();
+    var d = new Date()
     var y = d.getFullYear()
-    var m = d.getMonth() + 1;
+    var m = d.getMonth() + 1
     return y + '-' + (m < 10 ? '0' + m : m)
+}
+
+export function getPrevMonth() {
+    var d = new Date()
+    var y = d.getFullYear()
+    var m = d.getMonth()
+    if (m === 0) {
+        y = y - 1
+        m = 12
+    }
+    return y + '-' + (m < 10 ? '0' + m : m)
+}
+
+export function getPrevSeason() {
+    var d = new Date()
+    var m = d.getMonth() >= 3 ? d.getMonth() : d.getMonth() + 9
+    var s = ['1', '1', '1', '2', '2', '2', '3', '3', '3', '4', '4', '4']
+    return s[m]
 }
 
 export function convertCurrency(money) {

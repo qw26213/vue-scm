@@ -8,22 +8,21 @@
         <el-option label="上半年报" value="6" />
         <el-option label="年报" value="C" />
       </el-select>
-      <label v-if="listQuery.periodType==3 || listQuery.periodType==6 || listQuery.periodType=='C'" class="label">年份:</label>
-      <el-select v-if="listQuery.periodType==3 || listQuery.periodType==6 || listQuery.periodType=='C'" v-model="listQuery.periodYear" placeholder="年份" size="small">
-        <el-option v-for="item in yearArr" :key="item" :label="item" :value="item" />
+      <label v-if="listQuery.periodType && listQuery.periodType !== '1'" class="label">年份:</label>
+      <el-select v-if="listQuery.periodType && listQuery.periodType !== '1'" v-model="listQuery.periodYear" placeholder="年份" size="small" @change="getData">
+        <el-option v-for="item in yearArr" :key="item" :label="item + '年'" :value="item" />
       </el-select>
       <label v-if="listQuery.periodType==3" class="label">季度:</label>
-      <el-select v-if="listQuery.periodType==3" v-model="listQuery.quarter" placeholder="季度" size="small">
+      <el-select v-if="listQuery.periodType==3" v-model="listQuery.quarter" placeholder="季度" size="small" @change="getData">
         <el-option label="一季度" value="1" />
         <el-option label="二季度" value="2" />
         <el-option label="三季度" value="3" />
         <el-option label="四季度" value="4" />
       </el-select>
       <label v-if="listQuery.periodType==1" class="label">会计期间:</label>
-      <el-select v-if="listQuery.periodType==1" v-model="listQuery.periodCode" placeholder="会计期间" size="small">
+      <el-select v-if="listQuery.periodType==1" v-model="listQuery.periodCode" placeholder="会计期间" size="small" @change="getData">
         <el-option v-for="item in periodList" :key="item.id" :label="item.text" :value="item.id" />
       </el-select>
-      <el-button size="small" class="filter-item" type="primary" @click="getData">查询</el-button>
       <el-button-group style="float:right">
         <el-button type="default" size="small" icon="el-icon-printer" @click="printBook">打印</el-button>
         <el-button type="default" size="small" icon="el-icon-document" @click="exportBook">导出</el-button>
@@ -380,7 +379,7 @@
 </template>
 <script>
 import { getProfitData, getPeriodList, printProfitData, exportProfitData } from '@/api/report'
-import { getNowMonth, uniqueArr } from '@/utils/index'
+import { getNowMonth, uniqueArr, getPrevMonth, getPrevSeason } from '@/utils/index'
 export default {
   name: 'reportProfit',
   data() {
@@ -406,9 +405,15 @@ export default {
     }
   },
   created() {
-    this.getData()
     getPeriodList().then(res => {
       this.periodList = res.data.data
+      const prevMonth = getPrevMonth()
+      if (this.periodList.some(it => it.id === prevMonth)) {
+        this.listQuery.periodCode = prevMonth
+      } else {
+        this.listQuery.periodCode = this.periodList.length > 0 ? this.periodList[0].id : ''
+      }
+      this.getData()
       this.initYearArr()
     })
   },
@@ -431,19 +436,42 @@ export default {
       if (val === '1') {
         this.listQuery.periodYear = ''
         this.listQuery.quarter = ''
+        const prevMonth = getPrevMonth()
+        if (this.periodList.some(it => it.id === prevMonth)) {
+          this.listQuery.periodCode = prevMonth
+        } else {
+          this.listQuery.periodCode = this.periodList.length > 0 ? this.periodList[0].id : ''
+        }
       } else {
-        this.listQuery.periodCode = ''
+          this.listQuery.periodCode = ''
       }
       if (val === '3') {
-        this.listQuery.periodYear = this.yearArr.length > 0 ? this.yearArr[0] : ''
-        this.listQuery.quarter = '1'
+        const prevSeason = getPrevSeason()
+        const yearVal = prevSeason === '4' ? new Date().getFullYear() - 1 : new Date().getFullYear()
+        if (this.yearArr.some(it => it == yearVal)) {
+          this.listQuery.periodYear = String(yearVal)
+          this.listQuery.quarter = prevSeason
+        } else {
+          this.listQuery.periodYear = this.yearArr.length > 0 ? this.yearArr[0] : ''
+          this.listQuery.quarter = '1'
+        }
       }
       if (val === '6') {
-        this.listQuery.periodYear = this.yearArr.length > 0 ? this.yearArr[0] : ''
+        const yearVal = new Date().getFullYear() - 1
+        if (new Date().getMonth() < 6 && this.yearArr.some(it => it == yearVal)) {
+          this.listQuery.periodYear = String(yearVal)
+        } else {
+          this.listQuery.periodYear = this.yearArr.length > 0 ? this.yearArr[0] : ''
+        }
         this.listQuery.quarter = ''
       }
       if (val === 'C') {
-        this.listQuery.periodYear = this.yearArr.length > 0 ? this.yearArr[0] : ''
+        const yearVal = new Date().getFullYear() - 1
+        if (this.yearArr.some(it => it == yearVal)) {
+          this.listQuery.periodYear = String(yearVal)
+        } else {
+          this.listQuery.periodYear = this.yearArr.length > 0 ? this.yearArr[0] : ''
+        }
         this.listQuery.quarter = ''
       }
       this.getData()
