@@ -26,7 +26,7 @@ export function getPayData(data) {
 
 export function employeeImport(data) {
   return request({
-    url: '/drp/hr/employee/importdata',
+    url: '/drp/hr/employee/importData',
     method: 'post',
     data
   })
@@ -34,7 +34,7 @@ export function employeeImport(data) {
 
 export function paydetailImport(data) {
   return request({
-    url: '/drp/hr/paydetail/importdata',
+    url: '/drp/hr/paydetail/importData',
     method: 'post',
     data
   })

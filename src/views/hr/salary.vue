@@ -71,7 +71,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer" align="center">
         <el-button @click="dialogVisible2 = false">取消</el-button>
-        <el-button type="primary" @click="handleImport()">导入</el-button>
+        <el-button type="primary" @click="handleImport()">上传并导入</el-button>
       </div>
     </el-dialog>
   </div>
@@ -145,24 +145,14 @@ export default {
       this.formData.append('file', fileObj)
       this.formData.append('fileName', 'employee.xlsx')
     },
-    paydetailFileImport() {
-      const obj = {
-        periodCode: this.temp2.periodCode,
-        fileName: 'employee.xlsx'
-      }
-      paydetailImport(obj).then(res => {
-        if (res.data.errorCode == 0) {
-          this.getList()
-        } else {
-          this.$message.error(res.data.msg)
-        }
-      })
-    },
     handleImport() {
+      const obj = this.formData
+      obj.periodCode = this.temp2.periodCode
+      obj.fileName = 'employee.xlsx'
       this.$axios({
-        url: '/drp/hr/paydetail/uploadexcel',
+        url: '/drp/hr/paydetail/importData',
         method: 'POST',
-        data: this.formData,
+        data: obj,
         timeout: 10000,
         headers: { 'Content-Type': 'multipart/form-data' }
       }).then(res => {

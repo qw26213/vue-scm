@@ -1,24 +1,24 @@
 <template>
   <div class="app-container">
-    <div class="filterDiv tx-r">
-      <el-button size="small" type="primary" @click="handleAdd">新增</el-button>
-      <el-button size="small" type="primary" @click="downloadModel">下载模板</el-button>
-      <el-button size="small" type="primary" @click="handImport">人员导入</el-button>
-    </div>
     <input ref="uploadFile" enctype="multipart/form-data" style="display:none" type="file" @change="importFile($event)">
     <div class="contentDiv">
+      <div class="tx-r" style="margin-bottom:15px">
+        <el-button size="small" type="primary" @click="handleAdd">新增</el-button>
+        <el-button size="small" type="primary" @click="downloadModel">下载模板</el-button>
+        <el-button size="small" type="primary" @click="handImport">人员导入</el-button>
+      </div>
       <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;">
-        <el-table-column label="姓名" width="100">
+        <el-table-column label="姓名" min-width="100">
           <template slot-scope="{row}">
             <span>{{ row.name }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="证照类型" width="100">
+        <el-table-column label="证照类型" min-width="100">
           <template slot-scope="{row}">
             <span>{{ row.certificateName }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="证照号码">
+        <el-table-column label="证照号码" min-width="160">
           <template slot-scope="{row}">
             <span>{{ row.certificateNumber }}</span>
           </template>
@@ -31,6 +31,16 @@
         <el-table-column label="状态" align="center" width="100">
           <template slot-scope="{row}">
             <span>{{ row.status==1?'正常':'不正常' }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="联系电话" align="center" width="140">
+          <template slot-scope="{row}">
+            <span>{{ row.tel }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="部门" align="left" width="100">
+          <template slot-scope="{row}">
+            <span>{{ row.deptName }}</span>
           </template>
         </el-table-column>
         <el-table-column label="入职日期" align="center" width="120">
@@ -48,22 +58,17 @@
             <span>{{ row.isIncomplete==1?'是':'否' }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="是否雇员" align="center" width="80">
+        <el-table-column label="是否雇员" align="center" width="100">
           <template slot-scope="{row}">
             <span>{{ row.isEmployee==1?'是':'否' }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="联系电话" align="center" width="120">
+        <el-table-column label="备注" align="left" width="120" show-overflow-tooltip>
           <template slot-scope="{row}">
-            <span>{{ row.tel }}</span>
+            <span>{{ row.remarks }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="部门" align="left" width="100">
-          <template slot-scope="{row}">
-            <span>{{ row.deptName }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" fixed="right" align="center" width="140">
+        <el-table-column label="操作" fixed="right" align="center" width="120">
           <template slot-scope="{row}">
             <el-button type="text" size="small" @click="handleCompile(row)">编辑</el-button>
             <el-button type="text" size="small" @click="showBind1(row.id)">删除</el-button>
@@ -124,12 +129,9 @@
       </div>
     </el-dialog>
     <el-dialog title="人员导入" :visible.sync="dialogVisible2" width="448px">
-      <el-form ref="dataForm" :model="temp2" label-position="left" label-width="72px" style="margin-left:20px;">
-        <el-form-item label="选择月份" style="margin-right:20px">
-          <el-date-picker v-model="temp2.periodCode" :editable="false" type="month" placeholder="选择月份" style="width:230px" :clearable="false" value-format="yyyy-MM" />
-        </el-form-item>
+      <el-form ref="dataForm" label-position="left" label-width="72px" style="margin-left:20px;">
         <el-form-item label="选择文件">
-          <el-button size="small" type="primary" round @click="handFileImport"><i class="el-icon-upload" style="margin-right:5px;font-size:14px" />上传</el-button>
+          <el-button size="small" type="primary" round @click="handFileImport"><i class="el-icon-upload" style="margin-right:5px;font-size:14px" />选择文件</el-button>
         </el-form-item>
         <p>
           <el-checkbox>同时在辅助核算-部门中新增或按编码修改部门名称</el-checkbox>
@@ -141,7 +143,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer" align="center">
         <el-button @click="dialogVisible2 = false">取消</el-button>
-        <el-button type="primary" @click="handleImport()">导入</el-button>
+        <el-button type="primary" @click="handleImport()">上传并导入</el-button>
       </div>
     </el-dialog>
   </div>
@@ -179,9 +181,6 @@ export default {
         status: '1',
         isIncomplete: 0,
         tel: ''
-      },
-      temp2: {
-        periodCode: getNowMonth()
       },
       formData: null,
       dialogVisible1: false,
@@ -231,30 +230,20 @@ export default {
       this.formData.append('file', fileObj)
       this.formData.append('fileName', 'employee.xlsx')
     },
-    employeeFileImport() {
-      const obj = {
-        periodCode: this.temp2.periodCode,
-        fileName: 'employee.xlsx'
-      }
-      employeeImport(obj).then(res => {
-        if (res.data.errorCode == 0) {
-          this.getList()
-        } else {
-          this.$message.error(res.data.msg)
-        }
-      })
-    },
     handleImport() {
+      const obj = this.formData
+      obj.fileName = 'employee.xlsx'
       this.$axios({
-        url: '/drp/hr/employee/excelupload',
+        url: '/drp/hr/employee/importData',
         method: 'POST',
-        data: this.formData,
+        data: obj,
         timeout: 10000,
         headers: { 'Content-Type': 'multipart/form-data' }
       }).then(res => {
         if (res.status == 200) {
+          this.$message.success('导入成功')
           this.dialogVisible2 = false
-          this.employeeFileImport()
+          this.getList()
         } else {
           this.$message.error('系统错误')
         }
