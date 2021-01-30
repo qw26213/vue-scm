@@ -1,10 +1,28 @@
 <template>
   <div class="app-container">
-    <div class="filterDiv">
-      <label class="label">会计期间:</label>
-      <el-select v-model="listQuery.periodCode" placeholder="会计期间" size="small" @change="getList">
+    <div class="filterDiv"> 
+      <label class="label" style="padding-left:0">类别:</label>
+      <el-select v-model="listQuery.periodType" placeholder="类别" size="small">
+        <el-option label="月报" value="1" />
+        <el-option label="季报" value="3" />
+      </el-select>
+      <label v-if="listQuery.periodType==3" class="label">年份:</label>
+      <el-select v-if="listQuery.periodType==3" v-model="listQuery.periodYear" placeholder="年份" size="small">
+        <el-option label="2021" value="2021" />
+        <el-option label="2020" value="2020" />
+      </el-select>
+      <label v-if="listQuery.periodType==3" class="label">季度:</label>
+      <el-select v-if="listQuery.periodType==3" v-model="listQuery.quarter" placeholder="季度" size="small">
+        <el-option label="一季度" value="1" />
+        <el-option label="二季度" value="2" />
+        <el-option label="三季度" value="3" />
+        <el-option label="四季度" value="4" />
+      </el-select>
+      <label v-if="listQuery.periodType==1" class="label">会计期间:</label>
+      <el-select v-if="listQuery.periodType==1" v-model="listQuery.periodCode" placeholder="会计期间" size="small">
         <el-option v-for="item in periodList" :key="item.id" :label="item.text" :value="item.id" />
       </el-select>
+      <el-button size="small" class="filter-item" type="primary" @click="getList">查询</el-button>
       <el-button-group style="float:right">
         <el-button type="default" size="small" icon="el-icon-printer" @click="printBook">打印</el-button>
         <el-button type="default" size="small" icon="el-icon-document" @click="exportBook">导出</el-button>
@@ -235,6 +253,9 @@ export default {
       total: 0,
       listLoading: true,
       listQuery: {
+        periodType: '1',
+        periodYear: '',
+        quarter: '',
         periodCode: getNowMonth()
       }
     }
@@ -285,6 +306,9 @@ td {
     font-size: 14px;
     color: #606266;
     line-height: 40px;
-    padding: 0 12px 0 0;
+    padding: 0 6px 0 5px;
 }
+td span {display: block;padding-right: 10px;}
+.tx-c{text-align: center!important;}
+.tx-r{text-align: right!important;}
 </style>

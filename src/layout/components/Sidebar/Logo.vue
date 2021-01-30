@@ -2,19 +2,20 @@
   <div class="sidebar-logo-container" :class="{'collapse':collapse}">
     <transition name="sidebarLogoFade">
       <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
-        <img v-if="logo" :src="logo" class="sidebar-logo">
-        <h1 v-else class="sidebar-title">{{ title }} </h1>
+        <img v-if="logoUrl" :src="logoUrl" class="sidebar-logo" />
+        <img v-else class="sidebar-title" :src="logoName" />
       </router-link>
       <router-link v-else key="expand" class="sidebar-logo-link" to="/">
-        <img v-if="logo" :src="logo" class="sidebar-logo">
-        <h1 class="sidebar-title">{{ title }} </h1>
+        <img v-if="logoUrl" :src="logoUrl" class="sidebar-logo" />
+        <img class="sidebar-title" :src="logoName" />
       </router-link>
     </transition>
   </div>
 </template>
 
 <script>
-import logoUrl from '@/assets/favicon.png';
+import logoUrl from '@/assets/favicon_01.png';
+import logoName from '@/assets/favicon_02.png';
 export default {
   name: 'SidebarLogo',
   props: {
@@ -26,7 +27,8 @@ export default {
   data() {
     return {
       title: '丰扬快销管理系统',
-      logo: logoUrl
+      logoUrl: logoUrl,
+      logoName: logoName
     }
   }
 }
@@ -56,8 +58,8 @@ export default {
     width: 100%;
 
     & .sidebar-logo {
-      width: 24px;
-      height: 24px;
+      width: 28px;
+      height: 28px;
       vertical-align: middle;
       margin-right: 5px;
     }
@@ -65,11 +67,8 @@ export default {
     & .sidebar-title {
       display: inline-block;
       margin: 0;
-      color: #fff;
-      font-weight: 600;
-      line-height: 50px;
-      font-size: 14px;
-      font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
+      height: 28px;
+      width: 97px;
       vertical-align: middle;
     }
   }

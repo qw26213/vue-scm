@@ -2,6 +2,7 @@
   <div class="app-container">
     <div class="filterDiv">
       <el-radio-group v-model="coaClassCode" size="small" @change="getData">
+        <el-radio-button label="">全部</el-radio-button>
         <el-radio-button v-for="(item,index) in coaClassList" :key="index" :label="item.coaClassCode">{{ item.coaClassName }}</el-radio-button>
       </el-radio-group>
       <el-button type="primary" size="small" style="float:right" @click="updateDispNameByUuid()">校正名称</el-button>
@@ -197,6 +198,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch('voucher/getCoaList', 0)
+    this.getData()
     this.getCoaClass()
   },
   methods: {
@@ -270,8 +272,6 @@ export default {
     getCoaClass() {
       coaClassification({ coaClassLevel: 1 }).then(res => {
         this.coaClassList = res.data.data
-        this.coaClassCode = res.data.data[0].coaClassCode
-        this.getData()
       })
     },
     getData() {

@@ -120,8 +120,8 @@
     </el-row>
     <el-dialog :close-on-click-modal="false" title="修改企业信息" :visible.sync="dialogFormVisible1" width="440px">
       <el-form ref="dataForm" :rules="rules1" :model="temp1" label-position="left" label-width="100px" style="width: 360px; margin-left:20px;">
-        <el-form-item label="企业代码" prop="orgCode">
-          <el-input v-model="temp1.orgCode" placeholder="企业代码" />
+        <el-form-item label="企业代码" prop="orgCode" required>
+          <el-input v-model="temp1.orgCode" disabled placeholder="企业代码" />
         </el-form-item>
         <el-form-item label="企业名称" prop="orgName">
           <el-input v-model="temp1.orgName" placeholder="企业名称" />

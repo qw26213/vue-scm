@@ -28,7 +28,7 @@
             <span>{{ row.importFlag==1?'是':'否' }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center">
+        <el-table-column label="操作" position="right" align="center">
           <template slot-scope="{row}">
             <el-button type="text" size="small" @click="handleCompile(row)">编辑</el-button>
             <el-button type="text" size="small" @click="showBind1(row.id)">删除</el-button>
@@ -66,7 +66,7 @@
           <el-date-picker v-model="temp2.periodCode" :editable="false" type="month" placeholder="选择月份" style="width:100%" value-format="yyyy-MM" />
         </el-form-item>
         <el-form-item label="选择文件">
-          <el-button size="small" type="primary" @click="handFileImport"><i class="el-icon-upload" style="margin-right:5px" />点击上传</el-button>
+          <el-button size="small" type="primary" round @click="handFileImport"><i class="el-icon-upload" style="margin-right:5px;font-size:14px" />上传</el-button>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer" align="center">

@@ -130,7 +130,7 @@
           <el-date-picker v-model="temp2.periodCode" :editable="false" type="month" placeholder="选择月份" style="width:230px" :clearable="false" value-format="yyyy-MM" />
         </el-form-item>
         <el-form-item label="选择文件">
-          <el-button size="small" type="primary" @click="handFileImport"><i class="el-icon-upload" style="margin-right:5px" />点击上传</el-button>
+          <el-button size="small" type="primary" round @click="handFileImport"><i class="el-icon-upload" style="margin-right:5px;font-size:14px" />上传</el-button>
         </el-form-item>
         <p>
           <el-checkbox>同时在辅助核算-部门中新增或按编码修改部门名称</el-checkbox>
