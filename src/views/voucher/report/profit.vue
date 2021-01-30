@@ -10,8 +10,7 @@
       </el-select>
       <label v-if="listQuery.periodType==3 || listQuery.periodType==6 || listQuery.periodType=='C'" class="label">年份:</label>
       <el-select v-if="listQuery.periodType==3 || listQuery.periodType==6 || listQuery.periodType=='C'" v-model="listQuery.periodYear" placeholder="年份" size="small">
-        <el-option label="2021" value="2021" />
-        <el-option label="2020" value="2020" />
+        <el-option v-for="item in yearArr" :key="item" :label="item" :value="item" />
       </el-select>
       <label v-if="listQuery.periodType==3" class="label">季度:</label>
       <el-select v-if="listQuery.periodType==3" v-model="listQuery.quarter" placeholder="季度" size="small">
@@ -24,7 +23,7 @@
       <el-select v-if="listQuery.periodType==1" v-model="listQuery.periodCode" placeholder="会计期间" size="small">
         <el-option v-for="item in periodList" :key="item.id" :label="item.text" :value="item.id" />
       </el-select>
-      <el-button size="small" class="filter-item" type="primary" @click="getList">查询</el-button>
+      <el-button size="small" class="filter-item" type="primary" @click="getData">查询</el-button>
       <el-button-group style="float:right">
         <el-button type="default" size="small" icon="el-icon-printer" @click="printBook">打印</el-button>
         <el-button type="default" size="small" icon="el-icon-document" @click="exportBook">导出</el-button>
@@ -381,7 +380,7 @@
 </template>
 <script>
 import { getProfitData, getPeriodList, printProfitData, exportProfitData } from '@/api/report'
-import { getNowMonth } from '@/utils/index'
+import { getNowMonth, uniqueArr } from '@/utils/index'
 export default {
   name: 'reportProfit',
   data() {
@@ -394,6 +393,7 @@ export default {
       tableKey: 0,
       tableData: [],
       periodList: [],
+      yearArr: [],
       total: 0,
       glBookEntity: path,
       listLoading: true,
@@ -406,13 +406,14 @@ export default {
     }
   },
   created() {
-    this.getList()
+    this.getData()
     getPeriodList().then(res => {
       this.periodList = res.data.data
+      this.initYearArr()
     })
   },
   methods: {
-    getList() {
+    getData() {
       getProfitData(this.listQuery).then(res => {
         if (res.data.data && res.data.data.length > 0) {
           const obj = res.data.data[0]
@@ -426,9 +427,33 @@ export default {
         this.listLoading = false
       })
     },
-    typeChange() {
-      this.listQuery.periodYear = ''
-      this.listQuery.quarter = ''
+    typeChange(val) {
+      if (val === '1') {
+        this.listQuery.periodYear = ''
+        this.listQuery.quarter = ''
+      } else {
+        this.listQuery.periodCode = ''
+      }
+      if (val === '3') {
+        this.listQuery.periodYear = this.yearArr.length > 0 ? this.yearArr[0] : ''
+        this.listQuery.quarter = '1'
+      }
+      if (val === '6') {
+        this.listQuery.periodYear = this.yearArr.length > 0 ? this.yearArr[0] : ''
+        this.listQuery.quarter = ''
+      }
+      if (val === 'C') {
+        this.listQuery.periodYear = this.yearArr.length > 0 ? this.yearArr[0] : ''
+        this.listQuery.quarter = ''
+      }
+      this.getData()
+    },
+    initYearArr() {
+      var arr = []
+      this.periodList.forEach(item => {
+          arr.push(item.seasonCode.substring(0, 4))
+      })
+      this.yearArr = uniqueArr(arr)
     },
     exportBook() {
       exportProfitData(this.listQuery)
