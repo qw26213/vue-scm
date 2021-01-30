@@ -1,6 +1,11 @@
 <template>
   <div class="app-container">
     <div class="filterDiv">
+      <el-tabs v-model="activeTab">
+        <el-tab-pane label="传统样式" name="1" />
+        <el-tab-pane label="分期间" name="2" />
+        <el-tab-pane label="汇总样式" name="3" />
+      </el-tabs>
       <label class="label">期间</label>
       <PeriodList :start="listQuery.periodCode1" :end="listQuery.periodCode2" />
       <label class="label">科目</label>
@@ -36,7 +41,7 @@
         <el-button type="primary" size="small" icon="el-icon-document" title="导出" @click="exportBook" />
       </el-button-group>
     </div>
-    <div class="contentDiv">
+    <div class="contentDiv" v-if="activeTab == 1">
       <el-table :key="tableKey" v-loading="listLoading" :data="pageData" cell-class-name="tpCell" border fit highlight-current-row style="width: 100%;" size="small">
         <el-table-column label="科目编码" align="left" show-overflow-tooltip>
           <template slot-scope="{row}">
@@ -79,16 +84,88 @@
           </template>
         </el-table-column>
       </el-table>
-      <pagination v-show="total>10" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.limit" @pagination="getDataByPage" />
+      <pagination v-show="total>10" :total="total" :page.sync="listQuery.pageIndex" @pagination="getDataByPage" />
+    </div>
+    <div class="contentDiv" v-show="activeTab == 2 || activeTab == 3">
+      <el-table :key="tableKey" v-loading="listLoading" :data="pageData" border fit highlight-current-row style="width: 100%;" size="small">
+        <el-table-column label="科目编码" show-overflow-tooltip>
+          <template slot-scope="{row}">
+            <span>{{ row.coaCode }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="科目名称" show-overflow-tooltip>
+          <template slot-scope="{row}">
+            <span v-html="row.pageCoaName" />
+          </template>
+        </el-table-column>
+        <el-table-column label="单位">
+          <template slot-scope="{row}">
+            <span>{{ row.uom }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="期初余额">
+          <el-table-column label="方向" align="center">
+            <template slot-scope="{row}">
+              <span>{{ row.crDrStr }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="金额" align="right">
+            <template slot-scope="{row}">
+              <span>{{ row.beginBalance | Fixed }}</span>
+            </template>
+          </el-table-column>
+        </el-table-column>
+        <el-table-column label="本期借方">
+          <el-table-column label="金额" align="right">
+            <template slot-scope="{row}">
+              <span>{{ row.periodNetDr | Fixed }}</span>
+            </template>
+          </el-table-column>
+        </el-table-column>
+        <el-table-column label="本期贷方">
+          <el-table-column label="金额" align="right">
+            <template slot-scope="{row}">
+              <span>{{ row.periodNetCr | Fixed }}</span>
+            </template>
+          </el-table-column>
+        </el-table-column>
+        <el-table-column label="本年借方">
+          <el-table-column label="金额" align="right">
+            <template slot-scope="{row}">
+              <span>{{ row.yearNetDr | Fixed }}</span>
+            </template>
+          </el-table-column>
+        </el-table-column>
+        <el-table-column label="本年贷方">
+          <el-table-column label="金额" align="right">
+            <template slot-scope="{row}">
+              <span>{{ row.yearNetCr | Fixed }}</span>
+            </template>
+          </el-table-column>
+        </el-table-column>
+        <el-table-column label="期末余额">
+          <el-table-column label="方向" align="center">
+            <template slot-scope="{row}">
+              <span>{{ row.crDrStr }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="金额" align="right">
+            <template slot-scope="{row}">
+              <span>{{ row.balance | Fixed }}</span>
+            </template>
+          </el-table-column>
+        </el-table-column>
+      </el-table>
+      <pagination v-show="total>10" :total="total" :page.sync="listQuery.pageIndex" :limit.sync="listQuery.pageSize" @pagination="getDataByPage" />
     </div>
   </div>
 </template>
 <script>
-import { getTotalAccount, printLedger, exportLedger } from '@/api/accbook'
+import { getLedger, printLedger, exportLedger } from '@/api/accbook'
 import { mapGetters } from 'vuex'
 import Pagination from '@/components/Pagination'
 import PeriodList from '@/components/voucher/periodList'
-import { getNowMonth } from '@/utils/index'
+import { getNowMonth, deepClone } from '@/utils/index'
 export default {
   name: 'ledger',
   components: { Pagination, PeriodList },
@@ -100,9 +177,13 @@ export default {
   },
   data() {
     return {
+      activeTab: '1',
       tableKey: 0,
       periodList: [],
       tableData: [],
+      tableData1: [],
+      tableData2: [],
+      tableData3: [],
       pageData: [],
       total: 0,
       listLoading: true,
@@ -115,7 +196,8 @@ export default {
         coaLevel2: 8,
         isShowAuxiliary: 1,
         isShowNetAndBalanceNotEqualToZero: 1,
-        pageIndex: 1
+        pageIndex: 1,
+        pageSize: 20
       }
     }
   },
@@ -123,6 +205,11 @@ export default {
     ...mapGetters([
       'coaArr'
     ])
+  },
+  watch: {
+    activeTab(val) {
+      this.changeTab(val)
+    }
   },
   created() {
     this.$store.dispatch('voucher/getCoaList', 0)
@@ -134,13 +221,22 @@ export default {
         this.$set(this.listQuery, key, obj[key])
       }
     },
+    changeTab(val) {
+      const tableData = this['tableData' + val]
+      this.tableData = tableData
+      this.total = tableData.length
+      this.listQuery.pageIndex = 1
+      this.getDataByPage()
+    },
     getDataByPage() {
+      const tableData = this['tableData' + this.activeTab]
       var pageIndex = this.listQuery.pageIndex
+      const pageSize = this.activeTab == 1 ? 10 : 20
       var arr = []
-      var min = pageIndex * 10 - 10
-      var max = pageIndex * 10 <= this.total ? pageIndex * 10 : this.total
+      var min = pageIndex * pageSize - pageSize
+      var max = pageIndex * pageSize <= this.total ? pageIndex * pageSize : this.total
       for (var i = min; i < max; i++) {
-        arr.push(this.tableData[i])
+        arr.push(tableData[i])
       }
       this.pageData = arr
     },
@@ -148,10 +244,13 @@ export default {
       console.log('ledger')
       this.listLoading = true
       this.listQuery.pageIndex = 1
-      getTotalAccount(this.listQuery).then(res => {
+      getLedger(this.listQuery).then(res => {
         this.listLoading = false
-        this.tableData = res.data.data
-        this.total = res.data.data.length
+        this.tableData1 = res.data.data && res.data.data.style1
+        this.tableData2 = res.data.data && res.data.data.style2
+        this.tableData3 = res.data.data && res.data.data.style3
+        this.tableData = deepClone(this.tableData1)
+        this.total = this.tableData.length
         this.getDataByPage()
       }).catch(() => {
         this.listLoading = false

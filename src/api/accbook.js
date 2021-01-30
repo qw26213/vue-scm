@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function getTotalAccount(data) {
+export function getLedger(data) {
   return request({
     url: '/drp/accbook/ledger/datatables',
     method: 'post',

@@ -19,7 +19,7 @@
         <el-option label="三季度" value="3" />
         <el-option label="四季度" value="4" />
       </el-select>
-      <label v-if="listQuery.periodType==1" class="label">会计期间:</label>
+      <label v-if="listQuery.periodType==1" class="label">期间:</label>
       <el-select v-if="listQuery.periodType==1" v-model="listQuery.periodCode" placeholder="会计期间" size="small" @change="getData">
         <el-option v-for="item in periodList" :key="item.id" :label="item.text" :value="item.id" />
       </el-select>
