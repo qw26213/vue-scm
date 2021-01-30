@@ -2,12 +2,14 @@
   <div class="app-container">
     <div class="filterDiv"> 
       <label class="label" style="padding-left:0">类别:</label>
-      <el-select v-model="listQuery.periodType" placeholder="类别" size="small">
+      <el-select v-model="listQuery.periodType" placeholder="类别" size="small" @change="typeChange">
         <el-option label="月报" value="1" />
         <el-option label="季报" value="3" />
+        <el-option label="上半年报" value="6" />
+        <el-option label="年报" value="C" />
       </el-select>
-      <label v-if="listQuery.periodType==3" class="label">年份:</label>
-      <el-select v-if="listQuery.periodType==3" v-model="listQuery.periodYear" placeholder="年份" size="small">
+      <label v-if="listQuery.periodType==3 || listQuery.periodType==6 || listQuery.periodType=='C'" class="label">年份:</label>
+      <el-select v-if="listQuery.periodType==3 || listQuery.periodType==6 || listQuery.periodType=='C'" v-model="listQuery.periodYear" placeholder="年份" size="small">
         <el-option label="2021" value="2021" />
         <el-option label="2020" value="2020" />
       </el-select>
@@ -423,6 +425,10 @@ export default {
       }).catch(() => {
         this.listLoading = false
       })
+    },
+    typeChange() {
+      this.listQuery.periodYear = ''
+      this.listQuery.quarter = ''
     },
     exportBook() {
       exportProfitData(this.listQuery)
