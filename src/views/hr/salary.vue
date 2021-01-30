@@ -12,28 +12,45 @@
     <input ref="uploadFile" enctype="multipart/form-data" style="display:none" type="file" @change="importFile($event)">
     <div class="contentDiv">
       <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;">
-        <el-table-column label="序号" type="index" width="50" align="center" />
-        <el-table-column label="会计期间">
-          <template slot-scope="{row}">
-            <span>{{ row.periodCode }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="创建/修改时间">
-          <template slot-scope="{row}">
-            <span>{{ row.updateDate }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="是否导入">
-          <template slot-scope="{row}">
-            <span>{{ row.importFlag==1?'是':'否' }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" align="center">
-          <template slot-scope="{row}">
-            <el-button type="text" size="small" @click="handleCompile(row)">编辑</el-button>
-            <el-button type="text" size="small" @click="showBind1(row.id)">删除</el-button>
-          </template>
-        </el-table-column>
+        <el-table-column label="员工编号" min-width="100" prop="name" />
+        <el-table-column label="姓名" min-width="100" prop="name" />
+        <el-table-column label="部门" align="center" width="100" prop="deptName" />
+        <el-table-column label="证照类型" min-width="100" prop="certificateName" />
+        <el-table-column label="证照号码" min-width="100" prop="certificateNumber" />
+        <el-table-column label="手机号" align="center" width="100" prop="tel" />
+        <el-table-column label="费用类型" align="center" width="100" prop="comeDate" />
+        <el-table-column label="基本工资" align="right" width="100" prop="endDate" />
+        <el-table-column label="奖金及提成" align="right" width="100" prop="endDate" />
+        <el-table-column label="合计" align="right" width="100" prop="remarks" />
+        <el-table-column label="餐补" align="right" width="100" prop="endDate" />
+        <el-table-column label="交通补" align="right" width="100" prop="endDate" />
+        <el-table-column label="通讯补" align="right" width="100" prop="remarks" />
+        <el-table-column label="其它" align="right" width="100" prop="endDate" />
+        <el-table-column label="合计" align="right" width="100" prop="endDate" />
+        <el-table-column label="考勤扣款" align="right" width="100" prop="remarks" />
+        <el-table-column label="工资总额" align="right" width="100" prop="remarks" />
+        <el-table-column label="免征额" align="right" width="100" prop="remarks" />
+        <el-table-column label="养老保险" align="right" width="100" prop="remarks" />
+        <el-table-column label="医疗保险" align="right" width="100" prop="remarks" />
+        <el-table-column label="失业" align="right" width="100" prop="remarks" />
+        <el-table-column label="住房公积金" align="right" width="100" prop="remarks" />
+        <el-table-column label="合计" align="right" width="100" prop="remarks" />
+        <el-table-column label="子女教育" align="right" width="100" prop="remarks" />
+        <el-table-column label="继续教育" align="right" width="100" prop="remarks" />
+        <el-table-column label="房贷利息" align="right" width="100" prop="remarks" />
+        <el-table-column label="房租" align="right" width="100" prop="remarks" />
+        <el-table-column label="赡养父母" align="right" width="100" prop="remarks" />
+        <el-table-column label="其它" align="right" width="100" prop="remarks" />
+        <el-table-column label="合计" align="right" width="100" prop="remarks" />
+        <el-table-column label="当月扣除" align="right" width="100" prop="remarks" />
+        <el-table-column label="应交所得税" align="right" width="100" prop="remarks" />
+        <el-table-column label="代扣个税" align="right" width="100" prop="remarks" />
+        <el-table-column label="实发工资" align="right" width="100" prop="remarks" />
+        <el-table-column label="本年工资累计" align="right" width="120" prop="remarks" />
+        <el-table-column label="本年扣除累计" align="right" width="120" prop="remarks" />
+        <el-table-column label="本年个税累计" align="right" width="120" prop="remarks" />
+        <el-table-column label="签字" align="right" width="100" prop="remarks" />
+        <el-table-column label="备注" align="right" width="100" prop="remarks" />
       </el-table>
       <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
     </div>
@@ -66,7 +83,7 @@
           <el-date-picker v-model="temp2.periodCode" :editable="false" type="month" placeholder="选择月份" style="width:100%" value-format="yyyy-MM" />
         </el-form-item>
         <el-form-item label="选择文件">
-          <input type="file" @click="handFileImport">
+          <input ref="uploadFile" enctype="multipart/form-data" type="file" @change="importFile($event)">
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer" align="center">
@@ -128,27 +145,21 @@ export default {
       this.dialogVisible1 = true
     },
     downloadFile() {
-      this.$message.warning('暂未开发')
-      return
-      window.location.href = '/drp/business/employee.xlsx'
+      window.location.href = '/drp/business/salary.xlsx'
     },
     handImport() {
       this.dialogVisible2 = true
-    },
-    handFileImport() {
-      this.$refs.uploadFile.click()
     },
     importFile(event) {
       this.formData = new FormData()
       var fileObj = event.currentTarget.files[0]
       if (fileObj == null || fileObj == undefined) { return }
       this.formData.append('file', fileObj)
-      this.formData.append('fileName', 'employee.xlsx')
+      this.formData.append('fileName', 'salary.xlsx')
+      this.formData.append('periodCode', this.temp2.periodCode)
     },
     handleImport() {
       const obj = this.formData
-      obj.periodCode = this.temp2.periodCode
-      obj.fileName = 'employee.xlsx'
       this.$axios({
         url: '/drp/hr/paydetail/importData',
         method: 'POST',

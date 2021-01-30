@@ -1,6 +1,5 @@
 <template>
   <div class="app-container">
-    <input ref="uploadFile" enctype="multipart/form-data" style="display:none" type="file" @change="importFile($event)">
     <div class="contentDiv">
       <div class="tx-r" style="margin-bottom:15px">
         <el-button size="small" type="primary" @click="handleAdd">新增</el-button>
@@ -33,7 +32,7 @@
             <span>{{ row.status==1?'正常':'不正常' }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="联系电话" align="center" width="140">
+        <el-table-column label="手机号" align="center" width="140">
           <template slot-scope="{row}">
             <span>{{ row.tel }}</span>
           </template>
@@ -123,7 +122,7 @@
     <el-dialog title="人员导入" :visible.sync="dialogVisible2" width="500px">
       <el-form ref="dataForm" label-position="left" label-width="72px" style="margin-left:10px;">
         <el-form-item label="选择文件">
-          <input type="file" @click="handFileImport">
+          <input ref="uploadFile" enctype="multipart/form-data" type="file" @change="importFile($event)">
         </el-form-item>
         <p>
           <el-checkbox>同时在设置-基本档案-部门中新增或按编码修改部门名称</el-checkbox>
@@ -224,7 +223,6 @@ export default {
     },
     handleImport() {
       const obj = this.formData
-      obj.fileName = 'employee.xlsx'
       this.$axios({
         url: '/drp/hr/employee/importData',
         method: 'POST',
