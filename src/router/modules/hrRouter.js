@@ -25,6 +25,14 @@ const hrRouter = {
             roles: ['4220'],
             title: '薪酬管理'
         }
+    }, {
+        path: 'salarydetail',
+        component: () => import('@/views/hr/salarydetail'),
+        name: 'salarydetail',
+        meta: {
+            roles: ['4220'],
+            title: '薪酬明细'
+        }
     }]
 }
 export default hrRouter;

@@ -18,9 +18,17 @@ export function saveEmployee(data) {
 
 export function getPayData(data) {
   return request({
-    url: '/drp/hr/pay/datatables',
+    url: '/drp/hr/salaryHeader/datatables',
     method: 'post',
     data
+  })
+}
+
+export function getSalaryData(id) {
+  return request({
+    url: '/drp/hr/salaryDetail/getByHeaderId',
+    method: 'post',
+    data: { headerId: id }
   })
 }
 

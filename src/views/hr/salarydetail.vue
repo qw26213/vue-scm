@@ -12,27 +12,45 @@
     <input ref="uploadFile" enctype="multipart/form-data" style="display:none" type="file" @change="importFile($event)">
     <div class="contentDiv">
       <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;">
-        <el-table-column label="序号" type="index" width="50" align="center" />
-        <el-table-column label="会计期间" align="center">
-          <template slot-scope="{row}">
-            <span>{{row.periodCode}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="创建/修改时间" align="center">
-          <template slot-scope="{row}">
-            <span>{{row.updateDate}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="是否导入" align="center">
-          <template slot-scope="{row}">
-            <span>{{row.importFlag==1?'是':'否'}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" align="center">
-          <template slot-scope="{row}">
-            <el-button type="text" size="small" @click="handleDetail(row)">查看明细</el-button>
-          </template>
-        </el-table-column>
+        <el-table-column label="员工编号" min-width="100" prop="name" />
+        <el-table-column label="姓名" min-width="100" prop="employeeName" />
+        <el-table-column label="部门" align="center" width="100" prop="deptName" />
+        <el-table-column label="证照类型" min-width="100" prop="certificateName" />
+        <el-table-column label="证照号码" min-width="100" prop="certificateNumber" />
+        <el-table-column label="手机号" align="center" width="100" prop="tel" />
+        <el-table-column label="费用类型" align="center" width="100" prop="expensesType" />
+        <el-table-column label="基本工资" align="right" width="100" prop="endDate" />
+        <el-table-column label="奖金及提成" align="right" width="100" prop="endDate" />
+        <el-table-column label="合计" align="right" width="100" prop="revenue" />
+        <el-table-column label="餐补" align="right" width="100" prop="endDate" />
+        <el-table-column label="交通补" align="right" width="100" prop="endDate" />
+        <el-table-column label="通讯补" align="right" width="100" prop="remarks" />
+        <el-table-column label="其它" align="right" width="100" prop="endDate" />
+        <el-table-column label="合计" align="right" width="100" prop="endDate" />
+        <el-table-column label="考勤扣款" align="right" width="100" prop="remarks" />
+        <el-table-column label="工资总额" align="right" width="100" prop="remarks" />
+        <el-table-column label="免征额" align="right" width="100" prop="remarks" />
+        <el-table-column label="养老保险" align="right" width="100" prop="endowment" />
+        <el-table-column label="医疗保险" align="right" width="100" prop="medical" />
+        <el-table-column label="失业" align="right" width="100" prop="unemployment" />
+        <el-table-column label="公积金" align="right" width="100" prop="housing" />
+        <el-table-column label="合计" align="right" width="100" prop="summation" />
+        <el-table-column label="子女教育" align="right" width="100" prop="remarks" />
+        <el-table-column label="继续教育" align="right" width="100" prop="remarks" />
+        <el-table-column label="房贷利息" align="right" width="100" prop="remarks" />
+        <el-table-column label="房租" align="right" width="100" prop="remarks" />
+        <el-table-column label="赡养父母" align="right" width="100" prop="remarks" />
+        <el-table-column label="其它" align="right" width="100" prop="remarks" />
+        <el-table-column label="合计" align="right" width="100" prop="delSummation" />
+        <el-table-column label="当月扣除" align="right" width="100" prop="remarks" />
+        <el-table-column label="应交所得税" align="right" width="100" prop="taxable" />
+        <el-table-column label="代扣个税" align="right" width="100" prop="personal" />
+        <el-table-column label="实发工资" align="right" width="100" prop="actualwages" />
+        <el-table-column label="本年工资累计" align="right" width="120" prop="remarks" />
+        <el-table-column label="本年扣除累计" align="right" width="120" prop="remarks" />
+        <el-table-column label="本年个税累计" align="right" width="120" prop="remarks" />
+        <el-table-column label="签字" align="right" width="100" prop="remarks" />
+        <el-table-column label="备注" align="right" width="100" prop="remarks" />
       </el-table>
       <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
     </div>
@@ -59,25 +77,11 @@
         <el-button type="primary" @click="handleSave()">确定</el-button>
       </div>
     </el-dialog>
-    <el-dialog title="薪酬导入" :visible.sync="dialogVisible2" width="460px">
-      <el-form ref="dataForm" :model="temp2" label-position="left" label-width="72px" style="margin-left:10px;width:400px">
-        <el-form-item label="选择月份">
-          <el-date-picker v-model="temp2.periodCode" :editable="false" type="month" placeholder="选择月份" style="width:100%" value-format="yyyy-MM" />
-        </el-form-item>
-        <el-form-item label="选择文件">
-          <input ref="uploadFile" enctype="multipart/form-data" type="file" @change="importFile($event)">
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer" align="center">
-        <el-button @click="dialogVisible2 = false">取消</el-button>
-        <el-button type="primary" @click="handleImport()">上传并导入</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getPayData, getNationalityType, getCertificateType, saveEmployee, paydetailImport } from '@/api/hr'
+import { getSalaryData, getNationalityType, getCertificateType, saveEmployee, paydetailImport } from '@/api/hr'
 import { getDept } from '@/api/basedata'
 import { debounce, getNowMonth, getNowDate } from '@/utils/index'
 import Pagination from '@/components/Pagination'
@@ -103,11 +107,7 @@ export default {
         periodEnd: '',
         cover: '1'
       },
-      temp2: {
-        periodCode: getNowMonth()
-      },
-      dialogVisible1: false,
-      dialogVisible2: false
+      dialogVisible1: false
     }
   },
   created() {
@@ -116,7 +116,8 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      getPayData(this.listQuery).then(res => {
+      const id = this.$route.query.id
+      getSalaryData(id).then(res => {
         this.listLoading = false
         this.tableData = res.data.data
       }).catch(err => {
@@ -126,15 +127,6 @@ export default {
     copyPay() {
       this.dialogVisible1 = true
     },
-    handleDetail() {
-      this.$router.push('/hr/salarydetail?id=' + row.id)
-    },
-    downloadFile() {
-      window.location.href = '/drp/business/salary.xlsx'
-    },
-    handImport() {
-      this.dialogVisible2 = true
-    },
     importFile(event) {
       this.formData = new FormData()
       var fileObj = event.currentTarget.files[0]
@@ -142,26 +134,6 @@ export default {
       this.formData.append('file', fileObj)
       this.formData.append('fileName', 'salary.xlsx')
       this.formData.append('periodCode', this.temp2.periodCode)
-    },
-    handleImport() {
-      const obj = this.formData
-      this.$axios({
-        url: '/drp/hr/paydetail/importData',
-        method: 'POST',
-        data: obj,
-        timeout: 10000,
-        headers: { 'Content-Type': 'multipart/form-data' }
-      }).then(res => {
-        if (res.status == 200) {
-          this.$message.success('薪酬导入成功')
-          this.dialogVisible2 = false
-          this.getList()
-        } else {
-          this.$message.error('系统错误')
-        }
-      }).catch(res => {
-        this.$message.error('导入失败,请稍后重试')
-      })
     }
   }
 }
