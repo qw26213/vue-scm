@@ -8,13 +8,12 @@
     <input ref="uploadFile" enctype="multipart/form-data" style="display:none" type="file" @change="importFile($event)">
     <div class="contentDiv">
       <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;">
-        <el-table-column label="序号" type="index" width="50" align="center" />
-        <el-table-column label="姓名">
+        <el-table-column label="姓名" width="100">
           <template slot-scope="{row}">
             <span>{{ row.name }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="证照类型">
+        <el-table-column label="证照类型" width="100">
           <template slot-scope="{row}">
             <span>{{ row.certificateName }}</span>
           </template>
@@ -64,7 +63,7 @@
             <span>{{ row.deptName }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" width="140">
+        <el-table-column label="操作" fixed="right" align="center" width="140">
           <template slot-scope="{row}">
             <el-button type="text" size="small" @click="handleCompile(row)">编辑</el-button>
             <el-button type="text" size="small" @click="showBind1(row.id)">删除</el-button>

@@ -31,7 +31,7 @@
     <div class="contentDiv">
       <div class="el-table el-table--fit el-table--border el-table--enable-row-hover el-table--enable-row-transition el-table--small" style="width: 100%;">
         <div class="el-table__body-wrapper is-scrolling-none">
-          <table cellspacing="0" cellpadding="0" border="0" class="el-table__body" style="width: 100%">
+          <table v-if="glBookEntity==2013" cellspacing="0" cellpadding="0" border="0" class="el-table__body" style="width: 100%">
             <thead>
               <tr>
                 <th class="tx-c">项目</th>
@@ -235,6 +235,143 @@
               </tr>
             </tbody>
           </table>
+          <table v-if="glBookEntity==2007" cellspacing="0" cellpadding="0" border="0" class="el-table__body" style="width: 100%">
+              <thead>
+                  <tr>
+                      <th class="tx-c">项 目</th>
+                      <th class="tx-c" width="60">行次</th>
+                      <th class="tx-c" width="200">本期金额</th>
+                      <th class="tx-c" width="200">本年累计金额</th>
+                      <th class="tx-c" width="200">上期金额</th>
+                  </tr>
+              </thead>
+              <tr>
+                  <td nowrap>一、营业收入</td>
+                  <td class="tx-c">1</td>
+                  <td><span name="r1c1" class="tx-r uds w_100"></span></td>
+                  <td><span name="r1c3" class="tx-r uds w_100"></span></td>
+                  <td><span name="r1c2" class="tx-r uds w_100"></span></td>
+              </tr>
+              <tr>
+                  <td>减：营业成本</td>
+                  <td class="tx-c">2</td>
+                  <td><span name="r2c1" class="tx-r uds w_100"></span></td>
+                  <td><span name="r2c3" class="tx-r uds w_100"></span></td>
+                  <td><span name="r2c2" class="tx-r uds w_100"></span></td>
+              </tr>
+              <tr>
+                  <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;营业税金及附加</td>
+                  <td class="tx-c">3</td>
+                  <td><span name="r3c1" class="tx-r uds w_100"></span></td>
+                  <td><span name="r3c3" class="tx-r uds w_100"></span></td>
+                  <td><span name="r3c2" class="tx-r uds w_100"></span></td>
+              </tr>
+              <tr>
+                  <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;销售费用</td>
+                  <td class="tx-c">4</td>
+                  <td><span name="r4c1" class="tx-r uds w_100"></span></td>
+                  <td><span name="r4c3" class="tx-r uds w_100"></span></td>
+                  <td><span name="r4c2" class="tx-r uds w_100"></span></td>
+              </tr>
+              <tr>
+                  <td nowrap>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;管理费用</td>
+                  <td class="tx-c">5</td>
+                  <td><span name="r5c1" class="tx-r uds w_100"></span></td>
+                  <td><span name="r5c3" class="tx-r uds w_100"></span></td>
+                  <td><span name="r5c2" class="tx-r uds w_100"></span></td>
+              </tr>
+              <tr>
+                  <td nowrap>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;财务费用</td>
+                  <td class="tx-c">6</td>
+                  <td><span name="r6c1" class="tx-r uds w_100"></span></td>
+                  <td><span name="r6c3" class="tx-r uds w_100"></span></td>
+                  <td><span name="r6c2" class="tx-r uds w_100"></span></td>
+              </tr>
+              <tr>
+                  <td nowrap>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;资产减值损失</td>
+                  <td class="tx-c">7</td>
+                  <td><span name="r7c1" class="tx-r uds w_100"></span></td>
+                  <td><span name="r7c3" class="tx-r uds w_100"></span></td>
+                  <td><span name="r7c2" class="tx-r uds w_100"></span></td>
+              </tr>
+              <tr>
+                  <td>加：公允价值变动收益（损失以“-”填列）</td>
+                  <td class="tx-c">8</td>
+                  <td><span name="r8c1" class="tx-r uds w_100"></span></td>
+                  <td><span name="r8c3" class="tx-r uds w_100"></span></td>
+                  <td><span name="r8c2" class="tx-r uds w_100"></span></td>
+              </tr>
+              <tr>
+                  <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;投资收益（损失以“-”填列）</td>
+                  <td class="tx-c">9</td>
+                  <td><span name="r9c1" class="tx-r uds w_100"></span></td>
+                  <td><span name="r9c3" class="tx-r uds w_100"></span></td>
+                  <td><span name="r9c2" class="tx-r uds w_100"></span></td>
+              </tr>
+              <tr>
+                  <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其中：对联营企业和合营企业的投资收益</td>
+                  <td class="tx-c">10</td>
+                  <td><span name="r10c1" class="tx-r uds w_100"></span></td>
+                  <td><span name="r10c3" class="tx-r uds w_100"></span></td>
+                  <td><span name="r10c2" class="tx-r uds w_100"></span></td>
+              </tr>
+              <tr>
+                  <td>二、营业利润（亏损以“-”填列）</td>
+                  <td class="tx-c">11</td>
+                  <td><span name="r11c1" class="tx-r uds w_100"></span></td>
+                  <td><span name="r11c3" class="tx-r uds w_100"></span></td>
+                  <td><span name="r11c2" class="tx-r uds w_100"></span></td>
+              </tr>
+              <tr>
+                  <td>加：营业外收入</td>
+                  <td class="tx-c">12</td>
+                  <td><span name="r12c1" class="tx-r uds w_100"></span></td>
+                  <td><span name="r12c3" class="tx-r uds w_100"></span></td>
+                  <td><span name="r12c2" class="tx-r uds w_100"></span></td>
+              </tr>
+              <tr>
+                  <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其中：非流动资产处置利得</td>
+                  <td class="tx-c">13</td>
+                  <td><span name="r21c1" class="tx-r uds w_100"></span></td>
+                  <td><span name="r21c3" class="tx-r uds w_100"></span></td>
+                  <td><span name="r21c2" class="tx-r uds w_100"></span></td>
+              </tr>
+              <tr>
+                  <td height="22">减：营业外支出</td>
+                  <td class="tx-c">14</td>
+                  <td><span name="r13c1" class="tx-r uds w_100"></span></td>
+                  <td><span name="r13c3" class="tx-r uds w_100"></span></td>
+                  <td><span name="r13c2" class="tx-r uds w_100"></span></td>
+              </tr>
+              <tr>
+                  <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其中：非流动资产处置损失</td>
+                  <td class="tx-c">15</td>
+                  <td><span name="r14c1" class="tx-r uds w_100"></span></td>
+                  <td><span name="r14c3" class="tx-r uds w_100"></span></td>
+                  <td><span name="r14c2" class="tx-r uds w_100"></span></td>
+              </tr>
+              <tr>
+                  <td>三、利润总额（亏损总额以“-”填列）</td>
+                  <td class="tx-c">16</td>
+                  <td><span name="r15c1" class="tx-r uds w_100"></span></td>
+                  <td><span name="r15c3" class="tx-r uds w_100"></span></td>
+                  <td><span name="r15c2" class="tx-r uds w_100"></span></td>
+              </tr>
+              <tr>
+                  <td>减：所得税费用</td>
+                  <td class="tx-c">17</td>
+                  <td><span name="r16c1" class="tx-r uds w_100"></span></td>
+                  <td><span name="r16c3" class="tx-r uds w_100"></span></td>
+                  <td><span name="r16c2" class="tx-r uds w_100"></span></td>
+              </tr>
+              <tr>
+                  <td>四、净利润（净亏损以“-”填列）</td>
+                  <td class="tx-c">18</td>
+                  <td><span name="r17c1" class="tx-r uds w_100"></span></td>
+                  <td><span name="r17c3" class="tx-r uds w_100"></span></td>
+                  <td><span name="r17c2" class="tx-r uds w_100"></span></td>
+              </tr>
+          </table>
         </div>
       </div>
     </div>
@@ -246,11 +383,17 @@ import { getNowMonth } from '@/utils/index'
 export default {
   name: 'reportProfit',
   data() {
+    const userInfo = JSON.parse(sessionStorage.userInfo)
+    let path = '2013'
+    if (userInfo.glBookEntity && (userInfo.glBookEntity.coahierarchyId == 1||userInfo.glBookEntity.coahierarchyId == 2007)) {
+        path = '2007'
+    }
     return {
       tableKey: 0,
       tableData: [],
       periodList: [],
       total: 0,
+      glBookEntity: path,
       listLoading: true,
       listQuery: {
         periodType: '1',
