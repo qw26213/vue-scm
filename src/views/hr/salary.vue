@@ -7,7 +7,10 @@
       <el-button size="small" type="primary" @click="getList">查询</el-button>
       <el-button size="small" type="primary" @click="copyPay">复制工资表</el-button>
       <el-button size="small" type="primary" @click="downloadModel">下载模板</el-button>
-      <el-button size="small" type="primary" @click="handImport">薪酬导入</el-button>
+      <el-button-group style="float:right">
+        <el-button size="small" type="primary" @click="handImport">导入</el-button>
+        <el-button size="small" type="primary" @click="exportBook">导出</el-button>
+      </el-button-group>
     </div>
     <input ref="uploadFile" enctype="multipart/form-data" style="display:none" type="file" @change="importFile($event)">
     <div class="contentDiv">
@@ -77,7 +80,7 @@
 </template>
 
 <script>
-import { getPayData, getNationalityType, getCertificateType, saveEmployee, paydetailImport } from '@/api/hr'
+import { getPayData, getNationalityType, getCertificateType, saveEmployee, paydetailImport, exportSalary } from '@/api/hr'
 import { getDept } from '@/api/basedata'
 import { debounce, getNowMonth, getNowDate } from '@/utils/index'
 import Pagination from '@/components/Pagination'
@@ -143,10 +146,13 @@ export default {
       this.formData.append('fileName', 'salary.xlsx')
       this.formData.append('periodCode', this.temp2.periodCode)
     },
+    exportBook() {
+      exportSalary(this.listQuery)
+    },
     handleImport() {
       const obj = this.formData
       this.$axios({
-        url: '/drp/hr/paydetail/importData',
+        url: '/drp/hr/salaryDetail/importData',
         method: 'POST',
         data: obj,
         timeout: 10000,

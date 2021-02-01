@@ -1,13 +1,12 @@
 <template>
   <div class="app-container">
     <div class="filterDiv">
-      <el-date-picker v-model="listQuery.periodCode1" :editable="false" type="month" placeholder="开始月份" size="small" value-format="yyyy-MM" />
-      <span class="zhi">至</span>
-      <el-date-picker v-model="listQuery.periodCode2" :editable="false" type="month" placeholder="结束月份" size="small" value-format="yyyy-MM" />
+      <el-date-picker v-model="listQuery.periodCode" :editable="false" type="month" placeholder="开始月份" size="small" value-format="yyyy-MM" />
       <el-button size="small" type="primary" @click="getList">查询</el-button>
       <el-button size="small" type="primary" @click="copyPay">复制工资表</el-button>
-      <el-button size="small" type="primary" @click="downloadModel">下载模板</el-button>
-      <el-button size="small" type="primary" @click="handImport">薪酬导入</el-button>
+      <el-button-group style="float:right">
+        <el-button type="primary" size="small" @click="exportBook">导出</el-button>
+      </el-button-group>
     </div>
     <input ref="uploadFile" enctype="multipart/form-data" style="display:none" type="file" @change="importFile($event)">
     <div class="contentDiv">
@@ -15,7 +14,7 @@
         <el-table-column label="员工编号" min-width="100" prop="name" />
         <el-table-column label="姓名" min-width="100" prop="employeeName" />
         <el-table-column label="部门" align="center" width="100" prop="deptName" />
-        <el-table-column label="证照类型" min-width="100" prop="certificateName" />
+        <el-table-column label="证照类型" min-width="100" prop="certificateType" />
         <el-table-column label="证照号码" min-width="100" prop="certificateNumber" />
         <el-table-column label="手机号" align="center" width="100" prop="tel" />
         <el-table-column label="费用类型" align="center" width="100" prop="expensesType" />
@@ -81,7 +80,7 @@
 </template>
 
 <script>
-import { getSalaryData, getNationalityType, getCertificateType, saveEmployee, paydetailImport } from '@/api/hr'
+import { getSalaryData, getNationalityType, getCertificateType, saveEmployee, paydetailImport, exportSalary } from '@/api/hr'
 import { getDept } from '@/api/basedata'
 import { debounce, getNowMonth, getNowDate } from '@/utils/index'
 import Pagination from '@/components/Pagination'
@@ -96,8 +95,7 @@ export default {
       listLoading: true,
       downloadModel: debounce(this.downloadFile, 1000, true),
       listQuery: {
-        periodCode1: getNowMonth(),
-        periodCode2: getNowMonth(),
+        periodCode: getNowMonth(),
         page: 1,
         limit: 20
       },
@@ -126,6 +124,9 @@ export default {
     },
     copyPay() {
       this.dialogVisible1 = true
+    },
+    exportBook() {
+      exportSalary(this.listQuery)
     },
     importFile(event) {
       this.formData = new FormData()

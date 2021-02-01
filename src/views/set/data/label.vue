@@ -160,7 +160,13 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.delItem(id)
+        delLabel(id).then(res => {
+          if (res.data.errorCode == 0) {
+            this.getList()
+            this.dialogFormVisible = false
+            this.$message.success('删除成功')
+          }
+        })
       })
     },
     handleModify() {
@@ -186,15 +192,6 @@ export default {
               this.$message.success('新增成功')
             }
           })
-        }
-      })
-    },
-    delItem(id) {
-      delLabel(id).then(res => {
-        if (res.data.errorCode == 0) {
-          this.getList()
-          this.dialogFormVisible = false
-          this.$message.success('删除成功')
         }
       })
     }

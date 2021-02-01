@@ -4,12 +4,15 @@
       <div class="tx-r" style="margin-bottom:15px">
         <el-button size="small" type="primary" @click="handleAdd">新增</el-button>
         <el-button size="small" type="primary" @click="downloadModel">下载模板</el-button>
-        <el-button size="small" type="primary" @click="handImport">人员导入</el-button>
+        <el-button-group style="margin-left:12px">
+          <el-button size="small" type="primary" @click="handImport">导入</el-button>
+          <el-button size="small" type="primary" @click="exportBook">导出</el-button>
+        </el-button-group>
       </div>
       <el-table :key="tableKey" v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%;">
         <el-table-column label="姓名" min-width="100">
           <template slot-scope="{row}">
-            <span>{{ row.name }}</span>
+            <span>{{ row.employeeName }}</span>
           </template>
         </el-table-column>
         <el-table-column label="证照类型" min-width="100">
@@ -65,7 +68,7 @@
         <el-table-column label="操作" fixed="right" align="center" width="120">
           <template slot-scope="{row}">
             <el-button type="text" size="small" @click="handleCompile(row)">编辑</el-button>
-            <el-button type="text" size="small" @click="showBind1(row.id)">删除</el-button>
+            <el-button type="text" size="small" @click="handleDel(row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -73,11 +76,11 @@
     </div>
     <el-dialog :title="dialogStatus=='create'?'新增员工':'编辑员工'" :visible.sync="dialogVisible1" width="620px">
       <el-form ref="dataForm" :model="temp" :rules="rules" inline label-position="left" label-width="72px" style="margin-left:20px;">
-        <el-form-item label="编码" style="margin-right:20px" prop="code">
-          <el-input v-model="temp.code" placeholder="编码" />
+        <el-form-item label="员工编号" style="margin-right:20px" prop="code">
+          <el-input v-model="temp.employeeCode" placeholder="员工编号" />
         </el-form-item>
         <el-form-item label="姓名" prop="name">
-          <el-input v-model="temp.name" placeholder="姓名" />
+          <el-input v-model="temp.employeeName" placeholder="姓名" />
         </el-form-item>
         <el-form-item label="国籍" style="margin-right:20px">
           <el-select v-model="temp.nationalityType" placeholder="国籍" style="width:185px" class="filter-item">
@@ -108,7 +111,7 @@
         </el-form-item>
         <el-form-item label="人员状态">
           <el-radio v-model="temp.status" label="1">正常</el-radio>
-          <el-radio v-model="temp.status" label="0">不正常</el-radio>
+          <el-radio v-model="temp.status" label="0">非正常</el-radio>
         </el-form-item>
         <el-form-item label="" prop="isEmployee">
           <el-checkbox v-model="temp.isEmployee" false-label="0" true-label="1">雇员</el-checkbox>
@@ -120,15 +123,15 @@
       </div>
     </el-dialog>
     <el-dialog title="人员导入" :visible.sync="dialogVisible2" width="500px">
-      <el-form ref="dataForm" label-position="left" label-width="72px" style="margin-left:10px;">
-        <el-form-item label="选择文件">
+      <el-form ref="importForm" :model="importForm" label-position="left" label-width="80px" style="margin-left:10px;">
+        <el-form-item label="选择文件" prop="fileName" :rules="fileRule">
           <input ref="uploadFile" enctype="multipart/form-data" type="file" @change="importFile($event)">
         </el-form-item>
         <p>
-          <el-checkbox>同时在设置-基本档案-部门中新增或按编码修改部门名称</el-checkbox>
+          <el-checkbox>如果部门编码不存在,同时在-设置-基本档案中新增部门</el-checkbox>
         </p>
         <p>
-          <el-checkbox>同时在设置-基本档案-部门中新增或按身份证号修改员工</el-checkbox>
+          <el-checkbox>如果员工编码不存在,同时在-设置-基本档案中新增员工</el-checkbox>
         </p>
         <p>注：如果按证照类型+证照号码存在人员重复,会按最新数据自动更新人员</p>
       </el-form>
@@ -140,7 +143,7 @@
   </div>
 </template>
 <script>
-import { getEmployee, getNationalityType, getCertificateType, saveEmployee, employeeImport } from '@/api/hr'
+import { getEmployee, getNationalityType, getCertificateType, saveEmployee, employeeImport, delEmployee, exportEmployee } from '@/api/hr'
 import { getDept } from '@/api/basedata'
 import { parseTime, debounce, getNowMonth } from '@/utils'
 import Pagination from '@/components/Pagination'
@@ -158,10 +161,14 @@ export default {
       certificateList: [],
       deptList: [],
       listQuery: {},
+      importForm: {
+        fileName: ''
+      },
+      fileRule: [{ required: true, message: '不能为空', trigger: 'change' }],
       temp: {
         id: '',
-        code: '',
-        name: '',
+        employeeCode: '',
+        employeeName: '',
         nationalityType: '',
         certificateType: '',
         certificateNumber: '',
@@ -178,8 +185,8 @@ export default {
       dialogVisible2: false,
       dialogStatus: '',
       rules: {
-        name: [{ required: true, message: '姓名不能为空', trigger: 'change' }],
-        code: [{ required: true, message: '编码不能为空', trigger: 'change' }]
+        employeeName: [{ required: true, message: '姓名不能为空', trigger: 'change' }],
+        employeeCode: [{ required: true, message: '编码不能为空', trigger: 'change' }]
       }
     }
   },
@@ -220,25 +227,32 @@ export default {
       if (fileObj == null || fileObj == undefined) { return }
       this.formData.append('file', fileObj)
       this.formData.append('fileName', 'employee.xlsx')
+      this.importForm.fileName = 'emplpoyee'
     },
     handleImport() {
-      const obj = this.formData
-      this.$axios({
-        url: '/drp/hr/employee/importData',
-        method: 'POST',
-        data: obj,
-        timeout: 10000,
-        headers: { 'Content-Type': 'multipart/form-data' }
-      }).then(res => {
-        if (res.status == 200) {
-          this.$message.success('人员导入成功')
-          this.dialogVisible2 = false
-          this.getList()
-        } else {
-          this.$message.error('系统错误')
-        }
-      }).catch(res => {
-        this.$message.error('导入失败,请稍后重试')
+      this.$refs.importForm.validate(valid => {
+          if (valid) {
+            const obj = this.formData
+            this.$axios({
+              url: '/drp/hr/employee/importData',
+              method: 'POST',
+              data: obj,
+              timeout: 10000,
+              headers: { 'Content-Type': 'multipart/form-data' }
+            }).then(res => {
+              if (res.status == 200) {
+                this.$message.success('人员导入成功')
+                this.dialogVisible2 = false
+                this.getList()
+              } else {
+                this.$message.error('系统错误')
+              }
+            }).catch(res => {
+              this.$message.error('导入失败,请稍后重试')
+            })
+          } else {
+            return false
+          }
       })
     },
     handleAdd() {
@@ -274,7 +288,25 @@ export default {
           this.$message.error(res.data.msg)
         }
       })
-    }
+    },
+    exportBook() {
+      exportEmployee(this.listQuery)
+    },
+    handleDel(id) {
+      this.$confirm('确定删除？', '提示', {
+        confirmButtonText: '确定', closeOnClickModal: false,
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        delEmployee(id).then(res => {
+          if (res.data.errorCode == 0) {
+            this.getList()
+            this.dialogFormVisible = false
+            this.$message.success('删除成功')
+          }
+        })
+      })
+    },
   }
 }
 </script>

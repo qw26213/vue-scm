@@ -16,6 +16,14 @@ export function saveEmployee(data) {
   })
 }
 
+export function delEmployee(id) {
+  return request({
+    url: '/drp/hr/employee/deleteById',
+    method: 'post',
+    data: { id: id }
+  })
+}
+
 export function getPayData(data) {
   return request({
     url: '/drp/hr/salaryHeader/datatables',
@@ -42,7 +50,7 @@ export function employeeImport(data) {
 
 export function paydetailImport(data) {
   return request({
-    url: '/drp/hr/paydetail/importData',
+    url: '/drp/hr/salaryDetail/importData',
     method: 'post',
     data
   })
@@ -60,4 +68,38 @@ export function getCertificateType() {
     url: '/drp/std/certificateType/getAll',
     method: 'post'
   })
+}
+
+export function exportEmployee(data) {
+  const exportUrl = '/drp/hr/employee/exportEmployee'
+  var temp = document.createElement('form')
+  temp.action = exportUrl
+  temp.method = 'POST'
+  temp.style.display = 'none'
+  for (var x in data) {
+    var opt = document.createElement('textarea')
+    opt.name = x
+    opt.value = data[x]
+    temp.appendChild(opt)
+  }
+  document.body.appendChild(temp)
+  temp.submit()
+  return temp
+}
+
+export function exportSalary(data) {
+  const exportUrl = '/drp/hr/salaryDetail/exportSalary'
+  var temp = document.createElement('form')
+  temp.action = exportUrl
+  temp.method = 'POST'
+  temp.style.display = 'none'
+  for (var x in data) {
+    var opt = document.createElement('textarea')
+    opt.name = x
+    opt.value = data[x]
+    temp.appendChild(opt)
+  }
+  document.body.appendChild(temp)
+  temp.submit()
+  return temp
 }
