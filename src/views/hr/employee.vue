@@ -127,11 +127,11 @@
         <el-form-item label="选择文件" prop="fileName" :rules="fileRule">
           <input ref="uploadFile" enctype="multipart/form-data" type="file" @change="importFile($event)">
         </el-form-item>
-        <p>
-          <el-checkbox>如果部门编码不存在,同时在-设置-基本档案中新增部门</el-checkbox>
+        <p style="margin-top:28px">
+          <el-checkbox v-model="importForm.updateDept" :false-label="0" :true-label="1">如果部门编码不存在,同时在-设置-基本档案中新增部门</el-checkbox>
         </p>
         <p>
-          <el-checkbox>如果员工编码不存在,同时在-设置-基本档案中新增员工</el-checkbox>
+          <el-checkbox v-model="importForm.updateStaff" :false-label="0" :true-label="1">如果员工编码不存在,同时在-设置-基本档案中新增员工</el-checkbox>
         </p>
         <p>注：如果按证照类型+证照号码存在人员重复,会按最新数据自动更新人员</p>
       </el-form>
@@ -162,9 +162,11 @@ export default {
       deptList: [],
       listQuery: {},
       importForm: {
-        fileName: ''
+        fileName: '',
+        updateDept: 1,
+        updateStaff: 1
       },
-      fileRule: [{ required: true, message: '不能为空', trigger: 'change' }],
+      fileRule: [{ required: true, message: '请选择要导入的文件！', trigger: 'change' }],
       temp: {
         id: '',
         employeeCode: '',
@@ -227,6 +229,8 @@ export default {
       if (fileObj == null || fileObj == undefined) { return }
       this.formData.append('file', fileObj)
       this.formData.append('fileName', 'employee.xlsx')
+      this.formData.append('fileName', this.importForm.updateDept)
+      this.formData.append('fileName', this.importForm.updateStaff)
       this.importForm.fileName = 'emplpoyee'
     },
     handleImport() {
@@ -306,12 +310,13 @@ export default {
           }
         })
       })
-    },
+    }
   }
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
 .filter-item {
     position: relative;
 }
+/deep/.el-form-item{margin-bottom: 18px}
 </style>

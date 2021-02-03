@@ -32,6 +32,14 @@ export function getPayData(data) {
   })
 }
 
+export function delPayData(id) {
+  return request({
+    url: '/drp/hr/salaryHeader/deleteById',
+    method: 'post',
+    data: { id: id }
+  })
+}
+
 export function getSalaryData(id) {
   return request({
     url: '/drp/hr/salaryDetail/getByHeaderId',
