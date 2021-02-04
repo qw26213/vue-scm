@@ -229,8 +229,8 @@ export default {
       if (fileObj == null || fileObj == undefined) { return }
       this.formData.append('file', fileObj)
       this.formData.append('fileName', 'employee.xlsx')
-      this.formData.append('fileName', this.importForm.updateDept)
-      this.formData.append('fileName', this.importForm.updateStaff)
+      this.formData.append('updateDept', this.importForm.updateDept)
+      this.formData.append('updateStaff', this.importForm.updateStaff)
       this.importForm.fileName = 'emplpoyee'
     },
     handleImport() {

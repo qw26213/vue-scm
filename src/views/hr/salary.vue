@@ -1,4 +1,4 @@
-<template>
+复制往期薪酬<template>
     <div class="app-container">
         <div class="filterDiv">
             <el-date-picker v-model="listQuery.periodCode1" :editable="false" type="month" placeholder="开始月份" size="small" value-format="yyyy-MM" />
@@ -40,12 +40,12 @@
             </el-table>
             <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
         </div>
-        <el-dialog title="复制往期薪酬" :visible.sync="dialogVisible1" width="460px">
+        <el-dialog title="复制薪酬" :visible.sync="dialogVisible1" width="460px">
             <el-form ref="dataForm" :model="temp1" label-position="left" label-width="72px" style="margin-left:10px;width:400px">
-                <el-form-item label="复制到">
+                <el-form-item label="目标月份">
                     <el-date-picker v-model="temp1.periodEnd" :editable="false" type="month" placeholder="月份" style="width:200px" value-format="yyyy-MM" />
                 </el-form-item>
-                <el-form-item label="是否覆盖本月">
+                <el-form-item label="是否覆盖">
                     <el-radio v-model="temp1.isCover" label="1">是</el-radio>
                     <el-radio v-model="temp1.isCover" label="0">否</el-radio>
                 </el-form-item>
@@ -147,6 +147,9 @@ export default {
         },
         exportBook() {
             exportSalary(this.listQuery)
+        },
+        handleSave() {
+            
         },
         handleImport() {
             this.$refs.importForm.validate(valid => {
