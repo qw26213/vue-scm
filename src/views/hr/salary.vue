@@ -129,6 +129,17 @@ export default {
     copyPay() {
       this.dialogVisible1 = true
     },
+    handleSave() {
+      copySalary(this.temp1).then(res => {
+        if (res.status == 200) {
+          this.$message.success('复制成功')
+          this.dialogVisible2 = false
+          this.getList()
+        } else {
+          this.$message.error('系统错误')
+        }
+      })
+    },
     handleDetail() {
       this.$router.push('/hr/salarydetail?id=' + row.id)
     },

@@ -56,6 +56,14 @@ export function paydetailImport(data) {
   })
 }
 
+export function copySalary(data) {
+  return request({
+    url: '/drp/hr/salaryDetail/copy',
+    method: 'post',
+    data
+  })
+}
+
 export function getNationalityType() {
   return request({
     url: '/drp/std/nationalityType/getAll',
