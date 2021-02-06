@@ -6,10 +6,7 @@
             <el-date-picker v-model="listQuery.periodCode2" :editable="false" type="month" placeholder="结束月份" size="small" value-format="yyyy-MM" />
             <el-button size="small" type="primary" @click="getList">查询</el-button>
             <el-button size="small" type="primary" @click="downloadModel">下载模板</el-button>
-            <el-button-group style="float:right">
-                <el-button size="small" type="primary" @click="handImport">导入</el-button>
-                <el-button size="small" type="primary" @click="exportBook">导出</el-button>
-            </el-button-group>
+            <el-button size="small" type="primary" @click="handImport">导入</el-button>
         </div>
         <input ref="uploadFile" enctype="multipart/form-data" style="display:none" type="file" @change="importFile($event)">
         <div class="contentDiv">
@@ -34,6 +31,7 @@
                     <template slot-scope="{row}">
                         <el-button type="text" size="small" @click="handleDetail(row)">查看明细</el-button>
                         <el-button size="text" type="primary" @click="copyPay(row)">复制</el-button>
+                        <el-button size="small" type="primary" @click="exportBook(row)">导出</el-button>
                         <el-button type="text" size="small" @click="handleDel(row.id)">删除</el-button>
                     </template>
                 </el-table-column>
@@ -151,8 +149,9 @@ export default {
             this.formData.append('fileName', 'salary.xlsx')
             this.formData.append('periodCode', this.temp2.periodCode)
         },
-        exportBook() {
-            exportSalary(this.listQuery)
+        exportBook(row) {
+            const obj = { periodCode: row.periodCode, headerId: row.id }
+            exportSalary(obj)
         },
         handleImport() {
             this.$refs.importForm.validate(valid => {

@@ -128,8 +128,9 @@ export default {
     copyPay() {
       this.dialogVisible1 = true
     },
-    exportBook() {
-      exportSalary(this.listQuery)
+    exportBook(row) {
+        const obj = { periodCode: this.listQuery.periodCode, headerId: this.$route.query.id }
+        exportSalary(obj)
     },
     importFile(event) {
       this.formData = new FormData()
