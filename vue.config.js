@@ -13,7 +13,7 @@ function getProdExternals() {
     'vue-router': 'VueRouter',
     'axios': 'axios',
     'element-ui': 'ELEMENT'
-  };
+  }
 }
 
 const name = defaultSettings.title || 'vue'

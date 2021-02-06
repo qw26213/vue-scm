@@ -53,34 +53,26 @@
       </el-table>
       <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
     </div>
-    <el-dialog title="复制往期薪酬" :visible.sync="dialogVisible1" width="460px">
-      <el-form ref="dataForm" :model="temp1" label-position="left" label-width="72px" style="margin-left:10px;width:400px">
-        <el-form-item label="工资类型">
-          <el-select v-model="temp1.salaryType" placeholder="工资类型" style="width:100%" class="filter-item">
-            <el-option label="正常工资" value="1" />
-            <el-option label="劳务报酬" value="2" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="期间选择">
-          <el-date-picker v-model="temp1.periodStar" :editable="false" type="month" placeholder="月份" style="width:152px" value-format="yyyy-MM" />
-          <span>至</span>
-          <el-date-picker v-model="temp1.periodEnd" :editable="false" type="month" placeholder="月份" style="width:152px" value-format="yyyy-MM" />
-        </el-form-item>
-        <el-form-item label="是否覆盖">
-          <el-radio v-model="temp1.cover" label="1">是</el-radio>
-          <el-radio v-model="temp1.cover" label="0">否</el-radio>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer" align="center">
-        <el-button @click="dialogVisible1 = false">取消</el-button>
-        <el-button type="primary" @click="handleSave()">确定</el-button>
-      </div>
+    <el-dialog title="复制薪酬" :visible.sync="dialogVisible1" width="460px">
+        <el-form ref="dataForm" :model="temp1" label-position="left" label-width="72px" style="margin-left:10px;width:400px">
+            <el-form-item label="目标月份">
+                <el-date-picker v-model="temp1.periodEnd" :editable="false" type="month" placeholder="月份" style="width:200px" value-format="yyyy-MM" />
+            </el-form-item>
+            <el-form-item label="是否覆盖">
+                <el-radio v-model="temp1.isCover" label="1">是</el-radio>
+                <el-radio v-model="temp1.isCover" label="0">否</el-radio>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer" align="center">
+            <el-button @click="dialogVisible1 = false">取消</el-button>
+            <el-button type="primary" @click="handleSave()">确定</el-button>
+        </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { getSalaryData, getNationalityType, getCertificateType, saveEmployee, paydetailImport, exportSalary } from '@/api/hr'
+import { getSalaryData, getNationalityType, getCertificateType, saveEmployee, paydetailImport, exportSalary, copySalary } from '@/api/hr'
 import { getDept } from '@/api/basedata'
 import { debounce, getNowMonth, getNowDate } from '@/utils/index'
 import Pagination from '@/components/Pagination'
@@ -100,10 +92,10 @@ export default {
         limit: 20
       },
       temp1: {
-        salaryType: '',
-        periodStar: '',
-        periodEnd: '',
-        cover: '1'
+          salaryType: '',
+          periodStar: '',
+          periodEnd: '',
+          isCover: 1
       },
       dialogVisible1: false
     }
@@ -120,6 +112,17 @@ export default {
         this.tableData = res.data.data
       }).catch(err => {
         this.listLoading = false
+      })
+    },
+    handleSave() {
+      copySalary(this.temp1).then(res => {
+        if (res.status == 200) {
+          this.$message.success('复制成功')
+          this.dialogVisible2 = false
+          this.getList()
+        } else {
+          this.$message.error('系统错误')
+        }
       })
     },
     copyPay() {
