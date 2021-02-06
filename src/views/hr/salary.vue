@@ -31,7 +31,7 @@
                     <template slot-scope="{row}">
                         <el-button type="text" size="small" @click="handleDetail(row)">查看明细</el-button>
                         <el-button size="text" type="primary" @click="copyPay(row)">复制</el-button>
-                        <el-button size="small" type="primary" @click="exportBook(row)">导出</el-button>
+                        <el-button size="text" type="primary" @click="exportBook(row)">导出</el-button>
                         <el-button type="text" size="small" @click="handleDel(row.id)">删除</el-button>
                     </template>
                 </el-table-column>
@@ -92,14 +92,15 @@ export default {
                 page: 1,
                 limit: 20
             },
+            importForm: {
+              fileName: '',
+              periodCode: getNowMonth()
+            },
             temp1: {
                 salaryType: '',
                 periodStar: '',
                 periodEnd: '',
                 isCover: 1
-            },
-            temp2: {
-                periodCode: getNowMonth()
             },
             dialogVisible1: false,
             dialogVisible2: false
@@ -132,7 +133,7 @@ export default {
                 }
             })
         },
-        handleDetail() {
+        handleDetail(row) {
             this.$router.push('/hr/salarydetail?id=' + row.id)
         },
         downloadFile() {
