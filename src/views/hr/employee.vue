@@ -110,11 +110,11 @@
           </el-select>
         </el-form-item>
         <el-form-item label="人员状态">
-          <el-radio v-model="temp.status" label="1">正常</el-radio>
-          <el-radio v-model="temp.status" label="0">非正常</el-radio>
+          <el-radio v-model="temp.status" :label="1">正常</el-radio>
+          <el-radio v-model="temp.status" :label="0">非正常</el-radio>
         </el-form-item>
         <el-form-item label="" prop="isEmployee">
-          <el-checkbox v-model="temp.isEmployee" false-label="0" true-label="1">雇员</el-checkbox>
+          <el-checkbox v-model="temp.isEmployee" :false-label="0" :true-label="1">雇员</el-checkbox>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer" align="center">
@@ -179,8 +179,7 @@ export default {
         comeDate: '',
         endDate: '',
         isEmployee: 0,
-        status: '1',
-        isIncomplete: 0,
+        status: 1,
         tel: ''
       },
       formData: null,
@@ -267,9 +266,8 @@ export default {
       for (var key in this.temp) {
         this.temp[key] = ''
       }
-      this.temp.isEmployee = '0'
-      this.temp.status = '1'
-      this.temp.isIncomplete = '0'
+      this.temp.isEmployee = 0
+      this.temp.status = 1
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
@@ -278,7 +276,7 @@ export default {
       this.dialogVisible1 = true
       this.dialogStatus = 'update'
       for (var key in this.temp) {
-        this.temp[key] = String(obj[key])
+        this.temp[key] = obj[key]
       }
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
