@@ -248,11 +248,7 @@ export default {
                 this.$message.success('人员导入成功')
                 this.dialogVisible2 = false
                 this.getList()
-              } else {
-                this.$message.error('系统错误')
               }
-            }).catch(res => {
-              this.$message.error('导入失败,请稍后重试')
             })
           } else {
             return false

@@ -39,13 +39,13 @@
             <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
         </div>
         <el-dialog title="复制薪酬" :visible.sync="dialogVisible1" width="460px">
-            <el-form ref="dataForm" :model="temp1" label-position="left" label-width="72px" style="margin-left:10px;width:400px">
+            <el-form ref="dataForm" :model="copyForm" label-position="left" label-width="72px" style="margin-left:10px;width:400px">
                 <el-form-item label="目标月份">
-                    <el-date-picker v-model="temp1.periodEnd" :editable="false" type="month" placeholder="月份" style="width:200px" value-format="yyyy-MM" />
+                    <el-date-picker v-model="copyForm.periodCode" :editable="false" type="month" placeholder="月份" style="width:200px" value-format="yyyy-MM" />
                 </el-form-item>
                 <el-form-item label="是否覆盖">
-                    <el-radio v-model="temp1.isCover" :label="1">是</el-radio>
-                    <el-radio v-model="temp1.isCover" :label="0">否</el-radio>
+                    <el-radio v-model="copyForm.isCover" :label="1">是</el-radio>
+                    <el-radio v-model="copyForm.isCover" :label="0">否</el-radio>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer" align="center">
@@ -71,7 +71,7 @@
     </div>
 </template>
 <script>
-import { getPayData, delPayData, getNationalityType, getCertificateType, saveEmployee, paydetailImport, exportSalary, copySalary } from '@/api/hr'
+import { getSalaryHeader, delPayData, getNationalityType, getCertificateType, saveEmployee, paydetailImport, exportSalary, copySalary } from '@/api/hr'
 import { getDept } from '@/api/basedata'
 import { debounce, getNowMonth, getNowDate } from '@/utils/index'
 import Pagination from '@/components/Pagination'
@@ -96,10 +96,9 @@ export default {
               fileName: '',
               periodCode: getNowMonth()
             },
-            temp1: {
-                salaryType: '',
-                periodStar: '',
-                periodEnd: '',
+            copyForm: {
+                headerId: '',
+                periodCode: '',
                 isCover: 1
             },
             dialogVisible1: false,
@@ -112,29 +111,28 @@ export default {
     methods: {
         getList() {
             this.listLoading = true
-            getPayData(this.listQuery).then(res => {
+            getSalaryHeader(this.listQuery).then(res => {
                 this.listLoading = false
                 this.tableData = res.data.data
             }).catch(err => {
                 this.listLoading = false
             })
         },
-        copyPay() {
+        copyPay(row) {
+            this.copyForm.headerId = row.id
             this.dialogVisible1 = true
         },
         handleSave() {
-            copySalary(this.temp1).then(res => {
-                if (res.status == 200) {
+            copySalary(this.copyForm).then(res => {
+                if (res.errorCode == 0) {
                     this.$message.success('复制成功')
                     this.dialogVisible2 = false
                     this.getList()
-                } else {
-                    this.$message.error('系统错误')
                 }
             })
         },
         handleDetail(row) {
-            this.$router.push('/hr/salarydetail?id=' + row.id)
+            this.$router.push('/hr/salarydetail?id=' + row.id + '&pericode=' + row.periodCode)
         },
         downloadFile() {
             window.location.href = '/drp/business/salary.xlsx'
@@ -148,7 +146,7 @@ export default {
             if (fileObj == null || fileObj == undefined) { return }
             this.formData.append('file', fileObj)
             this.formData.append('fileName', 'salary.xlsx')
-            this.formData.append('periodCode', this.temp2.periodCode)
+            this.formData.append('periodCode', this.importForm.periodCode)
         },
         exportBook(row) {
             const obj = { periodCode: row.periodCode, headerId: row.id }
@@ -165,15 +163,11 @@ export default {
                         timeout: 10000,
                         headers: { 'Content-Type': 'multipart/form-data' }
                     }).then(res => {
-                        if (res.status == 200) {
+                        if (res.errorCode == 0) {
                             this.$message.success('导入成功')
                             this.dialogVisible2 = false
                             this.getList()
-                        } else {
-                            this.$message.error('系统错误')
                         }
-                    }).catch(res => {
-                        this.$message.error('导入失败,请稍后重试')
                     })
                 } else {
                     return false

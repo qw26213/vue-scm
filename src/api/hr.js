@@ -24,7 +24,7 @@ export function delEmployee(id) {
   })
 }
 
-export function getPayData(data) {
+export function getSalaryHeader(data) {
   return request({
     url: '/drp/hr/salaryHeader/datatables',
     method: 'post',
@@ -40,11 +40,11 @@ export function delPayData(id) {
   })
 }
 
-export function getSalaryData(id) {
+export function getSalaryData(periodCode) {
   return request({
-    url: '/drp/hr/salaryDetail/getByHeaderId',
+    url: '/drp/hr/salaryDetail/getByPeriodCode',
     method: 'post',
-    data: { headerId: id }
+    data: { periodCode }
   })
 }
 
@@ -66,7 +66,7 @@ export function paydetailImport(data) {
 
 export function copySalary(data) {
   return request({
-    url: '/drp/hr/salaryDetail/copy',
+    url: '/drp/hr/salaryDetail/copySalary',
     method: 'post',
     data
   })
