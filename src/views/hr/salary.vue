@@ -38,22 +38,7 @@
             </el-table>
             <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
         </div>
-        <el-dialog title="复制薪酬" :visible.sync="dialogVisible1" width="460px">
-            <el-form ref="dataForm" :model="copyForm" label-position="left" label-width="72px" style="margin-left:10px;width:400px">
-                <el-form-item label="目标月份">
-                    <el-date-picker v-model="copyForm.periodCode" :editable="false" type="month" placeholder="月份" style="width:200px" value-format="yyyy-MM" />
-                </el-form-item>
-                <el-form-item label="是否覆盖">
-                    <el-radio v-model="copyForm.isCover" :label="1">是</el-radio>
-                    <el-radio v-model="copyForm.isCover" :label="0">否</el-radio>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer" align="center">
-                <el-button @click="dialogVisible1 = false">取消</el-button>
-                <el-button type="primary" @click="handleSave()">确定</el-button>
-            </div>
-        </el-dialog>
-        <el-dialog title="薪酬导入" :visible.sync="dialogVisible2" width="460px">
+        <el-dialog title="薪酬导入" :visible.sync="dialogVisible1" width="460px">
             <el-form ref="importForm" :model="importForm" label-position="left" label-width="80px" style="margin-left:10px;width:400px">
                 <el-form-item label="选择月份" prop="periodCode">
                     <el-date-picker v-model="importForm.periodCode" :editable="false" type="month" placeholder="选择月份" style="width:100%" value-format="yyyy-MM" />
@@ -64,8 +49,23 @@
                 <p style="margin-top:28px;color:#f00;">注：覆盖本期已存在的员工薪酬数据</p>
             </el-form>
             <div slot="footer" class="dialog-footer" align="center">
-                <el-button @click="dialogVisible2 = false">取消</el-button>
+                <el-button @click="dialogVisible1 = false">取消</el-button>
                 <el-button type="primary" @click="handleImport()">上传并导入</el-button>
+            </div>
+        </el-dialog>
+        <el-dialog title="复制薪酬" :visible.sync="dialogVisible2" width="460px">
+            <el-form ref="dataForm" :model="copyForm" label-position="left" label-width="72px" style="margin-left:10px;width:400px">
+                <el-form-item label="目标月份">
+                    <el-date-picker v-model="copyForm.periodCode" :editable="false" type="month" placeholder="月份" style="width:200px" value-format="yyyy-MM" />
+                </el-form-item>
+                <el-form-item label="是否覆盖">
+                    <el-radio v-model="copyForm.isCover" :label="1">是</el-radio>
+                    <el-radio v-model="copyForm.isCover" :label="0">否</el-radio>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer" align="center">
+                <el-button @click="dialogVisible2 = false">取消</el-button>
+                <el-button type="primary" @click="handleSave()">确定</el-button>
             </div>
         </el-dialog>
     </div>
@@ -101,8 +101,8 @@ export default {
                 periodCode: '',
                 isCover: 1
             },
-            dialogVisible1: false,
-            dialogVisible2: false
+            dialogVisible2: false,
+            dialogVisible1: false
         }
     },
     created() {
@@ -120,7 +120,7 @@ export default {
         },
         copyPay(row) {
             this.copyForm.headerId = row.id
-            this.dialogVisible1 = true
+            this.dialogVisible2 = true
         },
         handleSave() {
             copySalary(this.copyForm).then(res => {
@@ -138,7 +138,7 @@ export default {
             window.location.href = '/drp/business/salary.xlsx'
         },
         handImport() {
-            this.dialogVisible2 = true
+            this.dialogVisible1 = true
         },
         importFile(event) {
             this.formData = new FormData()
@@ -147,6 +147,7 @@ export default {
             this.formData.append('file', fileObj)
             this.formData.append('fileName', 'salary.xlsx')
             this.formData.append('periodCode', this.importForm.periodCode)
+            this.importForm.fileName = 'salary'
         },
         exportBook(row) {
             const obj = { periodCode: row.periodCode, headerId: row.id }
@@ -165,7 +166,7 @@ export default {
                     }).then(res => {
                         if (res.errorCode == 0) {
                             this.$message.success('导入成功')
-                            this.dialogVisible2 = false
+                            this.dialogVisible1 = false
                             this.getList()
                         }
                     })

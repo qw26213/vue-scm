@@ -104,7 +104,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      const pericode = this.$route.query.pericode
+      const pericode = this.listQuery.periodCode
       getSalaryData(pericode).then(res => {
         this.listLoading = false
         this.tableData = res.data.data
@@ -128,14 +128,6 @@ export default {
     exportBook() {
         const obj = { periodCode: this.listQuery.periodCode, headerId: this.$route.query.id }
         exportSalary(obj)
-    },
-    importFile(event) {
-      this.formData = new FormData()
-      var fileObj = event.currentTarget.files[0]
-      if (fileObj == null || fileObj == undefined) { return }
-      this.formData.append('file', fileObj)
-      this.formData.append('fileName', 'salary.xlsx')
-      this.formData.append('periodCode', this.temp2.periodCode)
     }
   }
 }
