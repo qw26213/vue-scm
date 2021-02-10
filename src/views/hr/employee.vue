@@ -232,6 +232,7 @@ export default {
       this.formData.append('updateDept', this.importForm.updateDept)
       this.formData.append('updateStaff', this.importForm.updateStaff)
       this.importForm.fileName = 'emplpoyee'
+      this.$refs.importForm.validateField('fileName')
     },
     handleImport() {
       this.$refs.importForm.validate(valid => {

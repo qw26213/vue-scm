@@ -40,7 +40,7 @@
         </div>
         <el-dialog title="薪酬导入" :visible.sync="dialogVisible1" width="460px">
             <el-form ref="importForm" :model="importForm" label-position="left" label-width="80px" style="margin-left:10px;width:400px">
-                <el-form-item label="选择月份" prop="periodCode">
+                <el-form-item label="选择月份" prop="periodCode" required>
                     <el-date-picker v-model="importForm.periodCode" :editable="false" type="month" placeholder="选择月份" style="width:100%" value-format="yyyy-MM" />
                 </el-form-item>
                 <el-form-item label="选择文件" prop="fileName" :rules="fileRule">
@@ -148,6 +148,7 @@ export default {
             this.formData.append('fileName', 'salary.xlsx')
             this.formData.append('periodCode', this.importForm.periodCode)
             this.importForm.fileName = 'salary'
+            this.$refs.importForm.validateField('fileName')
         },
         exportBook(row) {
             const obj = { periodCode: row.periodCode, headerId: row.id }
