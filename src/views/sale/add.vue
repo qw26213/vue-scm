@@ -343,8 +343,9 @@ export default {
       })
     },
     changeVal(obj) {
+      console.log(obj)
       for (var key in obj) {
-        this.tableData[obj.index][key] = obj[key]
+        this.$set(this.tableData[obj.index], key, obj[key])
       }
     },
     save() {

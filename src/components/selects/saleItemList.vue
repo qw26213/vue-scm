@@ -22,7 +22,7 @@ export default {
         changeVal(val) {
             this.curId = val;
             const obj = this.itemList.find(it => it.itemId === val)
-            if (obj.id) {
+            if (obj.itemId) {
                 const data = {
                     norms: obj.norms,
                     uom: obj.uom,

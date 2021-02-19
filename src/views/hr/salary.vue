@@ -124,7 +124,7 @@ export default {
         },
         handleSave() {
             copySalary(this.copyForm).then(res => {
-                if (res.errorCode == 0) {
+                if (res.data.errorCode == 0) {
                     this.$message.success('复制成功')
                     this.dialogVisible2 = false
                     this.getList()
