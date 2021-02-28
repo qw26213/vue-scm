@@ -167,12 +167,15 @@ export default {
   },
   methods: {
     printBill(row) {
+      console.log('12222222')
       printByHeaderId('/po/purchase', row.id).then(res => {
         if (res.data.errorCode == 0) {
           window.open('http://' + window.location.host + res.data.data)
         } else {
           this.$messae.warning('文件生成失败')
         }
+      }).catch(err => {
+        this.$messae.error('文件生成失败')
       })
     },
     showAuditInfo(id) {
@@ -214,7 +217,6 @@ export default {
           this.$message.success('审核成功！')
         } else {
           this.auditModalVisible = false
-          this.$message.warning(res.data.msg)
         }
       })
     },
@@ -233,8 +235,6 @@ export default {
           this.dialogFormVisible1 = false
           this.getList()
           this.$message.success('生成入库单成功！')
-        } else {
-          this.$message.warning(res.data.msg)
         }
       }).catch(() => {
         this.$message.error('生成失败，请稍后重试！')
@@ -255,8 +255,6 @@ export default {
           this.dialogFormVisible2 = false
           this.getList()
           this.$message.success('生成采购凭证成功！')
-        } else {
-          this.$message.warning(res.data.msg)
         }
       })
     },
@@ -281,8 +279,6 @@ export default {
           if (res.data.errorCode == 0) {
             this.getList()
             this.$message.success('删除成功')
-          } else {
-            this.$message.warning(res.data.msg)
           }
         })
       })

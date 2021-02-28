@@ -222,8 +222,6 @@ export default {
         if (res.data.errorCode == 0) {
           this.cancelHanle()
           this.$message.success('分配用户成功')
-        } else {
-          this.$message.error(res.data.msg)
         }
       })
     },
@@ -276,8 +274,6 @@ export default {
         if (res.data.errorCode == 0) {
           this.getList()
           this.$message.success('修改状态成功')
-        } else {
-          this.$message.error(res.data.msg)
         }
       })
     },
@@ -298,8 +294,6 @@ export default {
               this.getList()
               this.dialogFormVisible = false
               this.$message.success('修改成功')
-            } else {
-              this.$message.error(res.data.msg)
             }
           })
         }
@@ -313,8 +307,6 @@ export default {
               this.getList()
               this.dialogFormVisible = false
               this.$message.success('新增成功')
-            } else {
-              this.$message.error(res.data.msg)
             }
           })
         }
@@ -326,8 +318,6 @@ export default {
           this.getList()
           this.dialogFormVisible = false
           this.$message.success('删除成功')
-        } else {
-          this.$message.error(res.data.msg)
         }
       })
     }

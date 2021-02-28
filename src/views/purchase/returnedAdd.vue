@@ -82,7 +82,7 @@
         </el-table-column>
         <el-table-column label="税率(%)">
           <template slot-scope="scope">
-            <input v-if="taxFilingCategoryCode==0" type="text" class="inputCell tx-r" value="0" disabled>
+            <input v-if="taxFilingCategoryCode==0 || taxType != 9" type="text" class="inputCell tx-r" value="0" disabled>
             <input v-else v-model="scope.row.taxRate" type="text" class="inputCell tx-r" @change="calculate(scope.$index)">
           </template>
         </el-table-column>
@@ -164,6 +164,7 @@ export default {
       id: '',
       status: this.$route.query.status,
       taxFilingCategoryCode: userInfo.taxFilingCategoryCode,
+      taxType: userInfo.glBookEntity.taxType,
       dialogFormVisible: false,
       tableData: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
       settleData: [{}, {}, {}, {}, {}],

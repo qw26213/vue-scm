@@ -57,11 +57,11 @@ export function buildVoucherByHeaderId(data) {
   })
 }
 
-export function printByHeaderId(url, data) {
+export function printByHeaderId(url, id, billDate) {
   return request({
     url: '/drp' + url + '/printByHeaderId',
     method: 'post',
-    data
+    data: { id, billDate }
   })
 }
 

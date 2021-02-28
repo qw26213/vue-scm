@@ -34,7 +34,7 @@
             <el-option v-for="item in [4,5,6,7,8]" :key="item" :label="item" :value="item" />
           </el-select>
         </el-form-item>
-        <el-form-item label="科目编码规则" label-width="100px" prop="codingRule">
+        <el-form-item label="科目编码规则" label-width="100px" prop="codingRule" style="margin-right:200px">
           <span class="">4 - 2 - 2 -</span>
           <select v-model="codingRuleArr[3]" class="inputItem" :disabled="!!userInfo.glBookEntity">
             <option v-for="item in [2,3,4]" :key="item" :value="item">{{ item }}</option>
@@ -56,10 +56,20 @@
             <option v-for="item in [2,3,4]" :key="item" :value="item">{{ item }}</option>
           </select>
         </el-form-item>
-        <el-form-item>
+        <el-form-item label="计税类型" prop="taxType" label-width="64px">
+          <el-select v-model="temp.taxType" size="small" style="width:125px">
+            <el-option label="开票计税" :value="2" />
+            <el-option label="计税" :value="1" />
+            <el-option label="不计税" :value="0" />
+            <el-option label="按输入税率计税" :value="9" />
+          </el-select>
+        </el-form-item>
+        <el-form-item style="margin-right:300px">
           <span>自定义增值税率</span>
           <el-input v-model="temp.defaultTaxRateStr" placeholder="" size="mini" style="width:50px;margin-right:5px" />%
           <span style="font-size:12px;margin-right:10px">(小规模纳税人为3%，一般纳税人为13%)</span>
+        </el-form-item>
+        <el-form-item style="margin-right:500px">
           <el-checkbox v-model="temp.isDispName" :false-label="0" :true-label="1" style="margin-right:10px">科目名称显示路径</el-checkbox>
           <el-checkbox v-model="temp.isCoaCobinationCode" :false-label="0" :true-label="1" style="margin-right:10px">凭证中显示辅助项编码组合</el-checkbox>
         </el-form-item>
@@ -225,6 +235,7 @@ export default {
         sign1: '',
         sign2: '',
         sign3: '',
+        taxType: 2,
         isPurchase: 1,
         isPurchaseReturned: 1,
         isSales: 1,

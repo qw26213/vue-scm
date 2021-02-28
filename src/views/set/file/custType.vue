@@ -217,8 +217,6 @@ export default {
         if (res.data.errorCode == 0) {
           this.getList()
           this.$message.success(data.isDisable == 1 ? '解禁' : '禁用' + '成功')
-        } else {
-          this.$message.error(res.data.msg)
         }
       })
     },
@@ -231,8 +229,6 @@ export default {
               this.getLeftTree()
               this.dialogFormVisible = false
               this.$message.success('修改成功')
-            } else {
-              this.$message.error(res.data.msg)
             }
           }).catch((err) => {
             this.$message.error('系统错误')
@@ -250,8 +246,6 @@ export default {
               this.getLeftTree()
               this.dialogFormVisible = false
               this.$message.success('新增成功')
-            } else {
-              this.$message.error(res.data.msg)
             }
           }).catch((err) => {
             this.$message.error('系统错误')
@@ -266,8 +260,6 @@ export default {
           this.getLeftTree()
           this.dialogFormVisible = false
           this.$message.success('删除成功')
-        } else {
-          this.$message.error(res.data.msg)
         }
       })
     }

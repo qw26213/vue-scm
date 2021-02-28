@@ -264,8 +264,6 @@ export default {
         if (res.data.errorCode == 0) {
           this.getData()
           this.$message.success('科目表校正完成！')
-        } else {
-          this.$message.warning(res.data.msg)
         }
       })
     },
@@ -278,8 +276,6 @@ export default {
       getCoaDatatables({ coaClassCode: this.coaClassCode }).then(res => {
         if (res.data.errorCode == 0) {
           this.tableData = res.data.data
-        } else {
-          this.$message.warning(res.data.msg)
         }
       })
     },
@@ -293,8 +289,6 @@ export default {
               this.getData()
               this.dialogFormVisible = false
               this.$message.success(this.dialogStatus == 'create' ? '新增下级科目成功' : '修改科目成功')
-            } else {
-              this.$message.warning(res.data.msg)
             }
           })
         }
@@ -326,8 +320,6 @@ export default {
           if (res.data.errorCode == 0) {
             this.getData()
             this.$message.success('修改科目禁用标志完成！')
-          } else {
-            this.$message.error(res.data.msg)
           }
         })
       })
@@ -344,8 +336,6 @@ export default {
           }).catch(err => {
             console.log(err)
           })
-        } else {
-          this.$message.warning(res.data.msg)
         }
       })
     },
@@ -354,8 +344,6 @@ export default {
         if (res.data.errorCode == 0) {
           this.getData()
           this.$message.success('删除科目成功')
-        } else {
-          this.$message.error(res.data.msg)
         }
       })
     }
