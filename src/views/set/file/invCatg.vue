@@ -114,7 +114,7 @@ export default {
   },
   methods: {
     handleNodeClick(e) {
-      this.listQuery.parentId = e.parentId
+      this.listQuery.parentId = e.id
       this.parentId = e.id
       this.getList()
     },

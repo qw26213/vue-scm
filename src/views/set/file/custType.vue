@@ -151,7 +151,7 @@ export default {
     },
     getList() {
       this.listLoading = true
-      getCustTypeTreeDataByParentId({ parentId: this.parentId, includeRoot: 0 }).then(res => {
+      getCustTypeTreeDataByParentId({ parentId: this.temp.parentId, includeRoot: 0 }).then(res => {
         this.listLoading = false
         res.data.data.map(item => {
           if (!item.id) {

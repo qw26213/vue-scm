@@ -185,7 +185,8 @@ export default {
     },
     handleDel(id) {
       this.$confirm('确定删除？', '提示', {
-        confirmButtonText: '确定', closeOnClickModal: false,
+        confirmButtonText: '确定',
+        closeOnClickModal: false,
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {

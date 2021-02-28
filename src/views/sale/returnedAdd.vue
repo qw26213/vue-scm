@@ -112,7 +112,8 @@
         </el-table-column>
         <el-table-column label="税率(%)">
           <template slot-scope="scope">
-            <input v-model="scope.row.taxRate" type="text" class="inputCell tx-r" @change="calculate(scope.$index)" @focus="focusThis($event)">
+            <input v-if="taxFilingCategoryCode==0 || taxType != 9" type="text" class="inputCell tx-r" value="0" disabled>
+            <input v-else v-model="scope.row.taxRate" type="text" class="inputCell tx-r" @change="calculate(scope.$index)" @focus="focusThis($event)">
           </template>
         </el-table-column>
         <el-table-column label="税额">
@@ -182,6 +183,7 @@ import itemList from '@/components/selects/saleItemList'
 import settleTypeList from '@/components/selects/settleTypeList'
 import salesTypeList from '@/components/selects/salesTypeList'
 import { getName, getNowDate } from '@/utils/auth'
+var userInfo = JSON.parse(sessionStorage.userInfo)
 export default {
   name: 'SaleReturnedAdd',
   components: { staffList, warehouseList, custList, truckList, paymentTypeList, itemList, settleTypeList, modalTable, salesTypeList },
@@ -191,6 +193,8 @@ export default {
       status: this.$route.query.status,
       modalTableVisible: false,
       settleData: [{}, {}, {}, {}, {}],
+      taxFilingCategoryCode: userInfo.taxFilingCategoryCode,
+      taxType: userInfo.glBookEntity.taxType,
       dialogFormVisible: false,
       tableData: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
       keys: ['itemId', 'itemCode', 'itemName', 'norms', 'uom', 'subUom', 'exchangeRate', 'batchNo', 'productionDate', 'qualityName', 'qualityDays', 'qty', 'vatPrice', 'amount', 'taxRate', 'taxAmount', 'vatAmount', 'invoiceNo', 'salesTypeCode'],
@@ -243,10 +247,12 @@ export default {
           this.temp.autoAdvr = true
           for (var i = 0; i < res.data.data.salesReturnedLine.length; i++) {
             for (var j = 0; j < this.keys.length; j++) {
-              this.tableData[i][this.keys[j]] = res.data.data.salesReturnedLine[i][this.keys[j]]
-              if (this.tableData[i].taxRate < 1) {
-                this.tableData[i].taxRate = this.tableData[i].taxRate * 100
-              }
+              const key = this.keys[j]
+              const val = res.data.data.salesReturnedLine[i][key]
+              this.$set(this.tableData[i], key, val)
+            }
+            if (this.tableData[i].taxRate < 1) {
+              this.tableData[i].taxRate = this.tableData[i].taxRate * 100
             }
           }
           this.settleData = addNullObj2(res.data.data.settleTypeDetail || [])

@@ -244,7 +244,13 @@ export default {
             this.temp[key] = String(res.data.data[key])
           }
         }
-        this.tableData = addNullObj(res.data.data.presaleLine)
+        for (var i = 0; i < res.data.data.presaleLine.length; i++) {
+          for (var j = 0; j < this.keys.length; j++) {
+            const key = this.keys[j]
+            const val = res.data.data.presaleLine[i][key]
+            this.$set(this.tableData[i], key, val)
+          }
+        }
         this.settleData = addNullObj2(res.data.data.settleTypeDetail)
         this.calculateTotal()
       })

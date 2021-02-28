@@ -263,10 +263,12 @@ export default {
           this.temp.autoAdvr = true
           for (var i = 0; i < res.data.data.deliveryLine.length; i++) {
             for (var j = 0; j < this.keys.length; j++) {
-              this.tableData[i][this.keys[j]] = res.data.data.deliveryLine[i][this.keys[j]]
-              if (this.tableData[i].taxRate < 1) {
-                this.tableData[i].taxRate = this.tableData[i].taxRate * 100
-              }
+              const key = this.keys[j]
+              const val = res.data.data.deliveryLine[i][key]
+              this.$set(this.tableData[i], key, val)
+            }
+            if (this.tableData[i].taxRate < 1) {
+              this.tableData[i].taxRate = this.tableData[i].taxRate * 100
             }
           }
           this.settleData = addNullObj2(res.data.data.settleTypeDetail || [])
