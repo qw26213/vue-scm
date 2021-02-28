@@ -114,7 +114,7 @@ export default {
   },
   methods: {
     handleNodeClick(e) {
-      this.listQuery.parentId = e.id
+      this.listQuery.parentId = e.parentId
       this.parentId = e.id
       this.getList()
     },
@@ -179,6 +179,7 @@ export default {
       updateInvCatgDisabled(obj).then(res => {
         if (res.data.errorCode == 0) {
           this.getList()
+          this.getLeftTree()
           this.$message.success(data.isDisable == 1 ? '解禁' : '禁用' + '成功')
         }
       })
@@ -225,6 +226,7 @@ export default {
       delInvCatg(id).then(res => {
         if (res.data.errorCode == 0) {
           this.getList()
+          this.getLeftTree()
           this.dialogFormVisible = false
           this.$message.success('删除成功')
         }

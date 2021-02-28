@@ -59,9 +59,9 @@
         <el-form-item label="计税类型" prop="taxType" label-width="64px">
           <el-select v-model="temp.taxType" size="small" style="width:125px">
             <el-option label="开票计税" :value="2" />
-            <el-option label="计税" :value="1" />
+            <el-option label="全计税" :value="1" />
             <el-option label="不计税" :value="0" />
-            <el-option label="按输入税率计税" :value="9" />
+            <el-option label="按单据输入税率计税" :value="9" />
           </el-select>
         </el-form-item>
         <el-form-item style="margin-right:300px">

@@ -87,7 +87,8 @@
         </el-table-column>
         <el-table-column label="税率">
           <template slot-scope="scope">
-            <input v-model="scope.row.taxRate" type="text" class="inputCell tx-r" @change="calculate(scope.$index)" @focus="focusThis($event)">
+            <input v-if="taxFilingCategoryCode==0 || taxType != 9" type="text" class="inputCell tx-r" value="0" disabled>
+            <input v-else v-model="scope.row.taxRate" type="text" class="inputCell tx-r" @change="calculate(scope.$index)" @focus="focusThis($event)">
           </template>
         </el-table-column>
         <el-table-column label="税额">
@@ -130,6 +131,7 @@ import { deleteEmptyProp, addNullObj2 } from '@/utils'
 import custList from '@/components/selects/custList'
 import itemList from '@/components/selects/itemList'
 import { getName, getNowDate } from '@/utils/auth'
+var userInfo = JSON.parse(sessionStorage.userInfo)
 export default {
   name: 'OrderAdd',
   components: { custList, itemList },
@@ -137,6 +139,8 @@ export default {
     return {
       id: '',
       status: this.$route.query.status,
+      taxFilingCategoryCode: userInfo.taxFilingCategoryCode,
+      taxType: userInfo.glBookEntity.taxType,
       settleData: [{}, {}, {}, {}, {}],
       dialogFormVisible: false,
       tableData: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],

@@ -137,7 +137,7 @@ export default {
       })
     },
     handleNodeClick(e) {
-      this.listQuery.parentId = e.id
+      this.listQuery.parentId = e.parentId
       this.temp.parentId = e.id
       this.getTable()
     },

@@ -117,7 +117,7 @@ export default {
   },
   methods: {
     handleNodeClick(e) {
-      this.listQuery.parentId = e.id
+      this.listQuery.parentId = e.parentId
       this.temp.parentId = e.id
       this.getList()
     },
@@ -133,6 +133,7 @@ export default {
       updateChannelTypeIdByCustIdList(obj).then(res => {
         if (res.data.errorCode == 0) {
           this.$refs.custTable.closeModal()
+          this.getLeftTree()
           this.getList()
           this.$message.success('分配客户成功')
         } else {
@@ -245,6 +246,7 @@ export default {
       delChannelType(id).then(res => {
         if (res.data.errorCode == 0) {
           this.getList()
+          this.getLeftTree()
           this.dialogFormVisible = false
           this.$message.success('删除成功')
         }

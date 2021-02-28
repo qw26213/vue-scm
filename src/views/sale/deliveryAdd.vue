@@ -127,7 +127,8 @@
         </el-table-column>
         <el-table-column label="税率(%)">
           <template slot-scope="scope">
-            <input v-model="scope.row.taxRate" type="text" @focus="focusThis($event)" class="inputCell tx-r" @change="calculate(scope.$index)">
+            <input v-if="taxFilingCategoryCode==0 || taxType != 9" type="text" class="inputCell tx-r" value="0" disabled>
+            <input v-else v-model="scope.row.taxRate" type="text" @focus="focusThis($event)" class="inputCell tx-r" @change="calculate(scope.$index)">
           </template>
         </el-table-column>
         <el-table-column label="税额">
@@ -193,6 +194,7 @@ import itemList from '@/components/selects/itemList'
 import settleTypeList from '@/components/selects/settleTypeList'
 import salesTypeList from '@/components/selects/salesTypeList'
 import { getName, getNowDate } from '@/utils/auth'
+var userInfo = JSON.parse(sessionStorage.userInfo)
 export default {
   name: 'DeliveryAdd',
   components: { staffList, warehouseList, custList, truckList, itemList, settleTypeList, salesTypeList },
@@ -201,6 +203,8 @@ export default {
       id: '',
       status: this.$route.query.status,
       settleData: [{}, {}, {}, {}, {}],
+      taxFilingCategoryCode: userInfo.taxFilingCategoryCode,
+      taxType: userInfo.glBookEntity.taxType,
       dialogFormVisible: false,
       tableData: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
       keys: ['itemId', 'itemCode', 'itemName', 'norms', 'uom', 'subUom', 'exchangeRate', 'batchNo', 'productionDate', 'qualityName', 'qualityDays', 'qty', 'vatPrice', 'amount', 'taxRate', 'taxAmount', 'vatAmount', 'invoiceNo', 'salesTypeCode'],

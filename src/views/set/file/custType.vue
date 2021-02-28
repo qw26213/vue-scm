@@ -126,7 +126,7 @@ export default {
       })
     },
     handleNodeClick(e) {
-      this.parentId = e.id
+      this.parentId = e.parentId
       this.temp.parentId = e.id
       this.getList()
     },
